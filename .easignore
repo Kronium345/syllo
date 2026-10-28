@@ -1,0 +1,59 @@
+# EAS Build uses this file INSTEAD of .gitignore. Keep the .gitignore entries below
+# in sync with it, so secrets (.env*) and dependencies are never uploaded.
+
+# --- mirrored from .gitignore ---
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+example
+
+# generated native folders
+/ios
+/android
+
+# --- EAS only ---
+
+# Agent and editor setup. .claude/skills holds Windows junctions that the EAS CLI
+# can't copy without symlink rights (EPERM), and builds never need these folders.
+.claude/
+.agents/
+.argent/
+.cursor/
+.vscode/
+.mcp.json
+skills-lock.json
