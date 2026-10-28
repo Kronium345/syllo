@@ -26,6 +26,9 @@ npx eas-cli@latest <cmd>    # EAS builds, submits, and updates (use instead of b
 - `ios/` and `android/` are generated. Never create or edit them by hand; configure native behavior in `app.json` and config plugins.
 - Expo Go only includes its bundled native modules. After adding a library with native code, switch to a development build (`npx expo run:ios|android` or `eas build --profile development`).
 - Web uses server output (`web.output: "server"`), so the first client render must match the server's. Never nest pressables, and don't size layout from `useWindowDimensions` on web (the server sees 0×0); measure with `onLayout`.
+- Android EAS builds are memory-limited (copied from havenly, where they ran the Gradle daemon out of memory with Skia): `plugins/with-gradle-memory-limits.js` runs Gradle one task at a time (`org.gradle.workers.max=1`) and compiles Kotlin in-process, and the `development` profile in `eas.json` compiles only `arm64-v8a` (`ORG_GRADLE_PROJECT_reactNativeArchitectures`). Preview and production keep every ABI.
+- `.easignore` replaces `.gitignore` for EAS uploads: keep the two in sync, and keep agent/editor folders (`.claude/`, `.agents/`, `.argent/`, `.cursor/`, `.vscode/`, `.mcp.json`, `skills-lock.json`) out of it, since `.claude/skills` junctions make the EAS CLI fail with EPERM.
+- **Argent** (`@swmansion/argent`, dev dependency) is the MCP for driving simulators/emulators and devices: config in `.argent/`, `.mcp.json`, `.cursor/mcp.json`, `.vscode/mcp.json`; skills `argent-*` in `.agents/skills/` (pinned in `skills-lock.json`); always-on rules in `.claude/rules/argent.md` and `.cursor/rules/argent.md`.
 - Prefer Expo modules over third-party libraries, and load the matching skill (`expo-overview`, `expo-router`, `expo-ui`, `expo-data-fetching`, …) before writing code it covers.
 
 ## Who owns what
@@ -36,6 +39,7 @@ Each tool has one job. Ask before moving a responsibility to a different tool.
 - **Auth:** Clerk (the tutorial's sponsor) is the source of truth for who the user is. Use the Clerk MCP and the installed types in `node_modules` for current Expo patterns before using an API.
 - **Data:** Supabase (Postgres) holds courses and progress. How Supabase trusts Clerk sessions (and the row-level security that follows) is decided in its plan; check Supabase's and Clerk's current integration docs first.
 - **UI design:** screens come from Screensdesign; designs are attached in the chat (see Building from designs).
+- **Notifications:** local only (`expo-notifications`, no push server or token) in `src/lib/notifications/local.ts`: foreground handler, permission + Android `reminders` channel, and a listener that shows arriving notifications as the Dynamic Island banner. Scheduled notifications tag `data.kind` so a feature can cancel and rebuild its own. The banner (`src/components/ui/dynamic-notifications/`, ported from havenly; Skia + expo-blur + Reanimated + Gesture Handler) is hosted by `DynamicNotificationsHost` inside `GestureHandlerRootView` in the root layout; call `showBanner` from `src/lib/notifications/banner.ts` anywhere. Web has no banner (`.web.tsx` host). Its colors live in `conf/palette.ts` as placeholders until the design system turns them into tokens.
 
 ## Data model
 

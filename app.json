@@ -33,6 +33,12 @@
           "imageWidth": 76
         }
       ],
+      [
+        "expo-notifications",
+        {
+          "color": "#208AEF"
+        }
+      ],
       "./plugins/with-gradle-memory-limits"
     ],
     "experiments": {
