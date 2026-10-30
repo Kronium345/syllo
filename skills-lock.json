@@ -126,6 +126,48 @@
       "sourceType": "github",
       "skillPath": "packages/skills/skills/argent-tv-interact/SKILL.md",
       "computedHash": "78cc0195cddd112a93a49b716ede0eff1067ed9a9c1c453891525c7dd6865100"
+    },
+    "eas-hosting": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/eas-hosting/SKILL.md",
+      "computedHash": "5699a6de9257bebb9b13368aba6b74f5e5be665a9819deb0fcadf2867a74c7c4"
+    },
+    "eas-observe": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/eas-observe/SKILL.md",
+      "computedHash": "a701cee154cb977d73f2185333801a6812a5f18b4a7c6ac79aa032c1fa6db11d"
+    },
+    "eas-simulator": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/eas-simulator/SKILL.md",
+      "computedHash": "4765eff8af40c2051f6ea77484981e606fbab5b6edb0c496f9297a85e5767ab5"
+    },
+    "eas-update": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/eas-update/SKILL.md",
+      "computedHash": "9854dc72af451fffa36dcd5948398850a2747f60f8f9c6043a9f56eb0114462a"
+    },
+    "expo-design-system": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-design-system/SKILL.md",
+      "computedHash": "c6d7e9d13b5239ed3d46054c42d771e032bef857dddfee88690a1ce2fbd46dc6"
+    },
+    "expo-dev-client": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-dev-client/SKILL.md",
+      "computedHash": "08bf029b2c8b22a49742d3801b7e382f7666c47aa9635470eadd26391f2bcee5"
+    },
+    "expo-native-ui": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "skillPath": "plugins/expo/skills/expo-native-ui/SKILL.md",
+      "computedHash": "3e66ba8d791219f78c8adcb0cdce84f49a61e9869983762598d7e4122a4e43ae"
     }
   }
 }

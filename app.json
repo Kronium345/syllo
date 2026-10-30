@@ -39,7 +39,10 @@
           "color": "#208AEF"
         }
       ],
-      "./plugins/with-gradle-memory-limits"
+      "./plugins/with-gradle-memory-limits",
+      "@clerk/expo",
+      "expo-secure-store",
+      "expo-image"
     ],
     "experiments": {
       "typedRoutes": true,
