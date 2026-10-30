@@ -8,7 +8,7 @@ import { Sheet } from "@/components/ui/sheet";
 import { TextField } from "@/components/ui/text-field";
 import { toast } from "@/components/ui/toast";
 import { profileImageUrl } from "@/lib/display-name";
-import { useSupabase } from "@/lib/supabase";
+import { useDeleteMyProfile, useUpsertProfile } from "@/lib/queries/profiles";
 import { type ClerkFailure, reportClerkError } from "@/screens/auth/clerk-errors";
 
 const CONFIRM_WORD = "DELETE";
@@ -21,7 +21,8 @@ const CONFIRM_WORD = "DELETE";
  */
 export function DeleteAccountSheet({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const { user } = useUser();
-  const supabase = useSupabase();
+  const deleteProfile = useDeleteMyProfile();
+  const upsertProfile = useUpsertProfile();
   const [typed, setTyped] = useState("");
   const [deleting, setDeleting] = useState(false);
 
@@ -48,16 +49,17 @@ export function DeleteAccountSheet({ visible, onClose }: { visible: boolean; onC
   // Puts the profile back when the Clerk user wasn't deleted (enrollments can't be restored).
   const restoreProfile = async () => {
     if (!user) return;
-    await supabase
-      .from("profiles")
-      .upsert({ id: user.id, full_name: user.fullName?.trim() || null, avatar_url: profileImageUrl(user) ?? null });
+    await upsertProfile
+      .mutateAsync({ id: user.id, full_name: user.fullName?.trim() || null, avatar_url: profileImageUrl(user) ?? null })
+      .catch((error: Error) => console.warn("Couldn't restore the Supabase profile:", error.message));
   };
 
   const remove = async () => {
     if (!user) return;
     setDeleting(true);
-    const { error: profileError } = await supabase.from("profiles").delete().eq("id", user.id);
-    if (profileError) {
+    try {
+      await deleteProfile.mutateAsync(user.id);
+    } catch {
       toast.error("Couldn't delete your account.", "Check your connection and try again.");
       setDeleting(false);
       return;

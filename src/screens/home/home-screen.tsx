@@ -1,5 +1,4 @@
 import { useUser } from "@clerk/expo";
-import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -7,9 +6,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { colors } from "@/components/ui/placeholder-colors";
 import { displayFirstName, profileImageUrl } from "@/lib/display-name";
 import { showBanner } from "@/lib/notifications/banner";
-import { useSupabase } from "@/lib/supabase";
-
-type CourseCount = { status: "loading" } | { status: "error" } | { status: "ready"; count: number };
+import { useCourseCount } from "@/lib/queries/courses";
 
 // Placeholder home until the design system and the home design exist: greets the
 // learner, proves the Supabase connection (published courses, read through RLS with the
@@ -17,29 +14,8 @@ type CourseCount = { status: "loading" } | { status: "error" } | { status: "read
 export function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { user } = useUser();
-  const supabase = useSupabase();
   const name = displayFirstName(user);
-  const [courses, setCourses] = useState<CourseCount>({ status: "loading" });
-  const [attempt, setAttempt] = useState(0);
-
-  useEffect(() => {
-    let current = true;
-    supabase
-      .from("courses")
-      .select("id", { count: "exact", head: true })
-      .then(({ count, error }) => {
-        if (!current) return;
-        setCourses(error ? { status: "error" } : { status: "ready", count: count ?? 0 });
-      });
-    return () => {
-      current = false;
-    };
-  }, [supabase, attempt]);
-
-  const retry = () => {
-    setCourses({ status: "loading" });
-    setAttempt((n) => n + 1);
-  };
+  const courses = useCourseCount();
 
   return (
     <View style={[styles.container, { paddingTop: insets.top + 16 }]}>
@@ -49,21 +25,21 @@ export function HomeScreen() {
       </View>
 
       <View style={styles.center}>
-        {courses.status === "loading" ? (
+        {courses.isPending ? (
           <View accessibilityRole="progressbar" accessibilityLabel="Loading courses" style={styles.status}>
             <ActivityIndicator color={colors.muted} />
             <Text style={styles.muted}>Loading courses…</Text>
           </View>
-        ) : courses.status === "error" ? (
-          <Pressable accessibilityRole="button" onPress={retry} style={styles.status}>
+        ) : courses.isError ? (
+          <Pressable accessibilityRole="button" onPress={() => courses.refetch()} style={styles.status}>
             <Text style={styles.muted}>Couldn&apos;t load courses.</Text>
-            <Text style={styles.link}>Try again</Text>
+            <Text style={styles.link}>{courses.isFetching ? "Trying again…" : "Try again"}</Text>
           </Pressable>
         ) : (
           <Text style={styles.count}>
-            {courses.count === 0
+            {courses.data === 0
               ? "No courses yet"
-              : `${courses.count} ${courses.count === 1 ? "course" : "courses"} available`}
+              : `${courses.data} ${courses.data === 1 ? "course" : "courses"} available`}
           </Text>
         )}
 

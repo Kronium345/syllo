@@ -1,5 +1,5 @@
 import { Trash2 } from "lucide-react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -7,65 +7,28 @@ import { Button } from "@/components/ui/button";
 import { colors } from "@/components/ui/placeholder-colors";
 import { Sheet } from "@/components/ui/sheet";
 import { toast } from "@/components/ui/toast";
-import { useSupabase } from "@/lib/supabase";
-
-type Course = { id: string; title: string };
+import { type CourseListItem, useCourses, useDeleteCourse } from "@/lib/queries/courses";
+import { NotAllowedError } from "@/services/supabase-result";
 
 // Temporary check that courses load from Supabase: a plain list of titles, each with a
 // delete icon. Only a course's own tutor may delete it (RLS); the real Search screen
 // (search, filters, cards) comes with its design.
 export function SearchScreen() {
   const insets = useSafeAreaInsets();
-  const supabase = useSupabase();
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [status, setStatus] = useState<"loading" | "error" | "ready">("loading");
-  const [attempt, setAttempt] = useState(0);
-  const [deleting, setDeleting] = useState<Course | null>(null);
-  const [busy, setBusy] = useState(false);
+  const courses = useCourses();
+  const deleteCourse = useDeleteCourse();
+  const [deleting, setDeleting] = useState<CourseListItem | null>(null);
 
-  useEffect(() => {
-    let current = true;
-    supabase
-      .from("courses")
-      .select("id, title")
-      .order("title")
-      .then(({ data, error }) => {
-        if (!current) return;
-        if (error) {
-          setStatus("error");
-          return;
-        }
-        setCourses(data);
-        setStatus("ready");
-      });
-    return () => {
-      current = false;
-    };
-  }, [supabase, attempt]);
-
-  const retry = () => {
-    setStatus("loading");
-    setAttempt((n) => n + 1);
-  };
-
-  const deleteCourse = async () => {
+  const confirmDelete = () => {
     if (!deleting) return;
-    setBusy(true);
-    // RLS doesn't error on a refused delete, it just deletes nothing, so ask for the
-    // deleted row back to tell "deleted" from "not allowed".
-    const { data, error } = await supabase.from("courses").delete().eq("id", deleting.id).select("id");
-    setBusy(false);
-    if (error) {
-      toast.error("Couldn't delete the course.", "Check your connection and try again.");
-      return;
-    }
-    if (data.length === 0) {
-      toast.error("You can't delete this course.", "Only its tutor can.");
-    } else {
-      setCourses((current) => current.filter((course) => course.id !== deleting.id));
-      toast.success("Course deleted.", deleting.title);
-    }
-    setDeleting(null);
+    deleteCourse.mutate(deleting, {
+      onSuccess: (course) => toast.success("Course deleted.", course.title),
+      onError: (error) =>
+        error instanceof NotAllowedError
+          ? toast.error("You can't delete this course.", error.message)
+          : toast.error("Couldn't delete the course.", "Check your connection and try again."),
+      onSettled: () => setDeleting(null),
+    });
   };
 
   return (
@@ -74,18 +37,20 @@ export function SearchScreen() {
         Search
       </Text>
 
-      {status === "loading" ? (
+      {courses.isPending ? (
         <View accessibilityRole="progressbar" accessibilityLabel="Loading courses" style={styles.center}>
           <ActivityIndicator color={colors.muted} />
         </View>
-      ) : status === "error" ? (
-        <Pressable accessibilityRole="button" onPress={retry} style={styles.center}>
+      ) : courses.isError ? (
+        <Pressable accessibilityRole="button" onPress={() => courses.refetch()} style={styles.center}>
           <Text style={styles.muted}>Couldn&apos;t load courses.</Text>
-          <Text style={styles.link}>Try again</Text>
+          <Text style={styles.link}>{courses.isFetching ? "Trying again…" : "Try again"}</Text>
         </Pressable>
       ) : (
         <FlatList
-          data={courses}
+          data={courses.data}
+          refreshing={courses.isRefetching}
+          onRefresh={() => courses.refetch()}
           keyExtractor={(course) => course.id}
           renderItem={({ item }) => (
             <View style={styles.row}>
@@ -113,7 +78,13 @@ export function SearchScreen() {
         footer={
           <View style={styles.actions}>
             <Button title="Cancel" variant="secondary" onPress={() => setDeleting(null)} style={styles.action} />
-            <Button title="Delete" variant="danger" loading={busy} onPress={deleteCourse} style={styles.action} />
+            <Button
+              title="Delete"
+              variant="danger"
+              loading={deleteCourse.isPending}
+              onPress={confirmDelete}
+              style={styles.action}
+            />
           </View>
         }
       >

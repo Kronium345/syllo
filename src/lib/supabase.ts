@@ -9,6 +9,9 @@ import type { Database } from "./database.types";
 // Supabase sign-in and nothing for supabase-js to store. Row-level security decides
 // what each learner can read or write, keyed on the token's `sub` (the Clerk user id).
 
+/** The typed client `useSupabase()` returns; services in src/services/ take it as their first argument. */
+export type AppSupabaseClient = ReturnType<typeof createClient<Database>>;
+
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
 const supabasePublishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "";
 
@@ -22,9 +25,9 @@ if (!supabaseUrl || !supabasePublishableKey) {
  * Returns a typed Supabase client that attaches the current Clerk session token to
  * every request.
  *
- * Usage:
+ * Only the hooks in src/lib/queries/ call this; they pass the client to a service:
  *   const supabase = useSupabase();
- *   const { data } = await supabase.from("courses").select();
+ *   useQuery({ queryKey: queryKeys.courses.list(), queryFn: ({ signal }) => getCourses(supabase, signal) });
  */
 export function useSupabase() {
   const { getToken } = useAuth();

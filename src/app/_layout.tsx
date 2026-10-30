@@ -1,12 +1,14 @@
 import { ClerkProvider, useAuth } from "@clerk/expo";
 import { tokenCache } from "@clerk/expo/token-cache";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { DynamicNotificationsHost } from "@/components/dynamic-notifications-host";
 import { ToastHost } from "@/components/ui/toast";
+import { queryClient } from "@/lib/query-client";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
 
@@ -25,13 +27,33 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-        <DynamicNotificationsHost>
-          <RootStack />
-        </DynamicNotificationsHost>
+        <QueryClientProvider client={queryClient}>
+          <QueryCacheReset />
+          <DynamicNotificationsHost>
+            <RootStack />
+          </DynamicNotificationsHost>
+        </QueryClientProvider>
       </ClerkProvider>
       <ToastHost />
     </GestureHandlerRootView>
   );
+}
+
+/**
+ * RLS makes Supabase results per learner (enrollments unlock content), so the cache must
+ * never outlive the account it was fetched for: clear it on sign out or account switch.
+ */
+function QueryCacheReset() {
+  const { isLoaded, userId } = useAuth();
+  const lastUserId = useRef<string | null | undefined>(undefined);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    if (lastUserId.current !== undefined && lastUserId.current !== userId) queryClient.clear();
+    lastUserId.current = userId ?? null;
+  }, [isLoaded, userId]);
+
+  return null;
 }
 
 function RootStack() {
