@@ -8,7 +8,7 @@ import { colors } from "@/components/ui/placeholder-colors";
 import { Sheet } from "@/components/ui/sheet";
 import { toast } from "@/components/ui/toast";
 import { type CourseListItem, useCourses, useDeleteCourse } from "@/lib/queries/courses";
-import { NotAllowedError } from "@/services/supabase-result";
+import { NotAllowedError } from "@/services/errors";
 
 // Temporary check that courses load from Supabase: a plain list of titles, each with a
 // delete icon. Only a course's own tutor may delete it (RLS); the real Search screen
