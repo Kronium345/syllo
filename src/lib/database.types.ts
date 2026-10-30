@@ -239,6 +239,245 @@ export type Database = {
         }
         Relationships: []
       }
+      question_flags: {
+        Row: {
+          created_at: string
+          question_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          question_id: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          question_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "question_flags_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "question_flags_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_answers: {
+        Row: {
+          id: string
+          is_correct: boolean
+          position: number
+          question_id: string
+          text: string
+        }
+        Insert: {
+          id?: string
+          is_correct?: boolean
+          position: number
+          question_id: string
+          text: string
+        }
+        Update: {
+          id?: string
+          is_correct?: boolean
+          position?: number
+          question_id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_attempt_answers: {
+        Row: {
+          answer_id: string | null
+          answered_at: string
+          attempt_id: string
+          correct_answer_id: string
+          is_correct: boolean
+          question_id: string
+        }
+        Insert: {
+          answer_id?: string | null
+          answered_at?: string
+          attempt_id: string
+          correct_answer_id: string
+          is_correct: boolean
+          question_id: string
+        }
+        Update: {
+          answer_id?: string | null
+          answered_at?: string
+          attempt_id?: string
+          correct_answer_id?: string
+          is_correct?: boolean
+          question_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_attempt_answers_answer_id_fkey"
+            columns: ["answer_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_answers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_attempt_answers_attempt_id_fkey"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_attempt_answers_correct_answer_id_fkey"
+            columns: ["correct_answer_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_answers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_attempt_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_attempts: {
+        Row: {
+          correct_count: number
+          finished_at: string | null
+          id: string
+          quiz_id: string
+          skipped_count: number
+          started_at: string
+          total_questions: number
+          user_id: string
+          wrong_count: number
+        }
+        Insert: {
+          correct_count?: number
+          finished_at?: string | null
+          id?: string
+          quiz_id: string
+          skipped_count?: number
+          started_at?: string
+          total_questions: number
+          user_id?: string
+          wrong_count?: number
+        }
+        Update: {
+          correct_count?: number
+          finished_at?: string | null
+          id?: string
+          quiz_id?: string
+          skipped_count?: number
+          started_at?: string
+          total_questions?: number
+          user_id?: string
+          wrong_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_attempts_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_attempts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_questions: {
+        Row: {
+          explanation: string | null
+          id: string
+          position: number
+          prompt: string
+          quiz_id: string
+          reference_url: string | null
+        }
+        Insert: {
+          explanation?: string | null
+          id?: string
+          position: number
+          prompt: string
+          quiz_id: string
+          reference_url?: string | null
+        }
+        Update: {
+          explanation?: string | null
+          id?: string
+          position?: number
+          prompt?: string
+          quiz_id?: string
+          reference_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_questions_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quizzes: {
+        Row: {
+          chapter_id: string
+          id: string
+          is_preview: boolean
+          position: number
+          title: string
+        }
+        Insert: {
+          chapter_id: string
+          id?: string
+          is_preview?: boolean
+          position?: number
+          title: string
+        }
+        Update: {
+          chapter_id?: string
+          id?: string
+          is_preview?: boolean
+          position?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quizzes_chapter_id_fkey"
+            columns: ["chapter_id"]
+            isOneToOne: false
+            referencedRelation: "chapters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tutors: {
         Row: {
           avatar_url: string | null
@@ -282,7 +521,58 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      answer_quiz_question: {
+        Args: {
+          p_answer_id?: string
+          p_attempt_id: string
+          p_question_id: string
+        }
+        Returns: {
+          correct_answer_id: string
+          explanation: string
+          is_correct: boolean
+        }[]
+      }
+      finish_quiz_attempt: {
+        Args: { p_attempt_id: string }
+        Returns: {
+          correct_count: number
+          finished_at: string | null
+          id: string
+          quiz_id: string
+          skipped_count: number
+          started_at: string
+          total_questions: number
+          user_id: string
+          wrong_count: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "quiz_attempts"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      start_quiz_attempt: {
+        Args: { p_quiz_id: string }
+        Returns: {
+          correct_count: number
+          finished_at: string | null
+          id: string
+          quiz_id: string
+          skipped_count: number
+          started_at: string
+          total_questions: number
+          user_id: string
+          wrong_count: number
+        }
+        SetofOptions: {
+          from: "*"
+          to: "quiz_attempts"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
     }
     Enums: {
       [_ in never]: never

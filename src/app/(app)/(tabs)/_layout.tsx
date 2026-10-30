@@ -12,6 +12,7 @@ export default function TabsLayout() {
       screenOptions={{ headerShown: false, animation: "none", sceneStyle: { backgroundColor: colors.surface } }}
     >
       <Tabs.Screen name="home" />
+      <Tabs.Screen name="search" />
       <Tabs.Screen name="profile" />
     </Tabs>
   );

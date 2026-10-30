@@ -1,5 +1,5 @@
 import type { BottomTabBarProps } from "expo-router/js-tabs";
-import { House, type LucideIcon, User } from "lucide-react-native";
+import { House, type LucideIcon, Search, User } from "lucide-react-native";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { colors } from "@/components/ui/placeholder-colors";
@@ -10,6 +10,7 @@ const TAB_HEIGHT = 60;
 
 const tabs: Record<string, { label: string; icon: LucideIcon }> = {
   home: { label: "Home", icon: House },
+  search: { label: "Search", icon: Search },
   profile: { label: "Profile", icon: User },
 };
 
