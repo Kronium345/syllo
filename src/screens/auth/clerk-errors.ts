@@ -1,3 +1,5 @@
+import { toast } from "@/components/ui/toast";
+
 // Clerk methods resolve to { error }. API errors carry a list; the first one says the most.
 export type ClerkFailure = {
   message: string;
@@ -11,6 +13,11 @@ const FALLBACK = "Something went wrong. Try again.";
 export function clerkErrorMessage(error: ClerkFailure | null | undefined) {
   const first = error?.errors?.[0] ?? error;
   return first?.longMessage || first?.message || FALLBACK;
+}
+
+/** One error toast for a failed Clerk call, matching reportInvalid. */
+export function reportClerkError(error: ClerkFailure | null | undefined) {
+  toast.error(clerkErrorMessage(error));
 }
 
 /**

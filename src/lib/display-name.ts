@@ -20,6 +20,11 @@ export function displayFirstName(user: NamedUser) {
   );
 }
 
+/** The learner's photo, or undefined when Clerk only has its generated default image. */
+export function profileImageUrl(user: { hasImage: boolean; imageUrl: string } | null | undefined) {
+  return user?.hasImage ? user.imageUrl : undefined;
+}
+
 /** "Alex van Morgan" → { firstName: "Alex", lastName: "van Morgan" }. One word has no last name. */
 export function splitFullName(fullName: string) {
   const [firstName, ...rest] = fullName.trim().split(/\s+/);

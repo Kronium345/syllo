@@ -1,4 +1,4 @@
-import type { ComponentRef, ReactNode, Ref } from "react";
+import type { ReactNode } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -6,11 +6,11 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  type TextInputProps,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 import type { SocialProvider } from "./use-social-sign-in";
 
@@ -30,36 +30,6 @@ export function AuthScreen({ title, body, children }: { title: string; body?: st
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
-}
-
-export type TextInputRef = ComponentRef<typeof TextInput>;
-
-type AuthFieldProps = TextInputProps & { label: string; error?: string; ref?: Ref<TextInputRef> };
-
-export function AuthField({ label, error, ref, style, ...input }: AuthFieldProps) {
-  return (
-    <View style={styles.field}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput
-        ref={ref}
-        accessibilityLabel={label}
-        accessibilityHint={error}
-        placeholderTextColor="#9CA3AF"
-        style={[styles.input, error ? styles.inputError : null, style]}
-        {...input}
-      />
-    </View>
-  );
-}
-
-/** One line for what went wrong (local checks or Clerk's message), above the submit button. */
-export function ErrorLine({ message }: { message?: string | null }) {
-  if (!message) return null;
-  return (
-    <Text accessibilityRole="alert" style={styles.error}>
-      {message}
-    </Text>
   );
 }
 
@@ -96,9 +66,14 @@ export function SocialButtons({
           onPress={() => onPress(provider)}
           style={[styles.secondary, pending && styles.disabled]}
         >
-          <Text>
-            {pending === provider ? "…" : `Continue with ${provider === "google" ? "Google" : "Apple"}`}
-          </Text>
+          {pending === provider ? (
+            <Text>…</Text>
+          ) : (
+            <>
+              <BrandLogo name={provider} />
+              <Text>Continue with {provider === "google" ? "Google" : "Apple"}</Text>
+            </>
+          )}
         </Pressable>
       ))}
     </View>
@@ -123,16 +98,20 @@ const styles = StyleSheet.create({
   title: { fontSize: 28, fontWeight: "700" },
   muted: { color: "#6B7280" },
   center: { textAlign: "center" },
-  field: { gap: 6 },
-  label: { fontWeight: "500" },
-  input: { borderWidth: 1, borderColor: "#D1D5DB", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, fontSize: 16 },
-  inputError: { borderColor: "#DC2626" },
-  error: { color: "#DC2626" },
   submit: { alignItems: "center", backgroundColor: "#208AEF", borderRadius: 999, paddingVertical: 14 },
   submitText: { color: "#FFFFFF", fontWeight: "600" },
   disabled: { opacity: 0.5 },
   social: { gap: 10 },
-  secondary: { alignItems: "center", borderWidth: 1, borderColor: "#D1D5DB", borderRadius: 999, paddingVertical: 12 },
+  secondary: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    borderWidth: 1,
+    borderColor: "#D1D5DB",
+    borderRadius: 999,
+    paddingVertical: 12,
+  },
   footer: { flexDirection: "row", justifyContent: "center", gap: 6 },
   link: { color: "#208AEF", fontWeight: "600" },
 });

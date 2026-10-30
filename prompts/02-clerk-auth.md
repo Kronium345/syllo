@@ -113,3 +113,5 @@ Changes from the plan:
 - `npx expo install --fix` moved the SDK 58 packages to their expected patch versions: `expo-auth-session` had pulled in second copies of `expo-constants` and `expo-linking`. It also added the `expo-image` config plugin.
 
 Verified: `tsc` and `expo lint` pass (before the patch bump). Not yet run: `tsc`/lint/`expo-doctor` after the patch bump, the web check, and the phone test, because the machine ran out of memory.
+
+Follow-up (user request): havenly's toast setup replaced the inline error line. `react-native-toast-message` + `lucide-react-native` + `react-native-svg` (user chose lucide as the icon library); `src/components/ui/toast.tsx` with `ToastHost` last in the root layout; `reportInvalid` / `reportClerkError` show one toast per failure with red borders kept; welcome, signed-in, signed-out and code-sent toasts as in havenly; `showBanner` falls back to an info toast on web. `tsc` and `expo lint` pass after this change; `expo-doctor` could not run (ENOMEM).

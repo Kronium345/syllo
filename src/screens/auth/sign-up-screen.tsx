@@ -3,10 +3,13 @@ import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import { View } from "react-native";
 
+import { TextField, type TextInputRef } from "@/components/ui/text-field";
+import { toast } from "@/components/ui/toast";
 import { splitFullName } from "@/lib/display-name";
 
-import { AuthField, AuthScreen, ErrorLine, FooterLink, SocialButtons, SubmitButton, type TextInputRef } from "./auth-form";
-import { clerkErrorMessage, clerkFieldErrors } from "./clerk-errors";
+import { AuthScreen, FooterLink, SocialButtons, SubmitButton } from "./auth-form";
+import { clerkFieldErrors, reportClerkError } from "./clerk-errors";
+import { reportInvalid } from "./report-invalid";
 import { useSocialSignIn } from "./use-social-sign-in";
 import { firstInvalid, MIN_PASSWORD_LENGTH, validateEmail, validateName, validateNewPassword } from "./validate";
 
@@ -27,7 +30,6 @@ export function SignUpScreen() {
   const social = useSocialSignIn();
   const [values, setValues] = useState<Record<Field, string>>({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
-  const [message, setMessage] = useState<string | null>(null);
   const nameRef = useRef<TextInputRef>(null);
   const emailRef = useRef<TextInputRef>(null);
   const passwordRef = useRef<TextInputRef>(null);
@@ -38,9 +40,9 @@ export function SignUpScreen() {
     setErrors((current) => ({ ...current, [field]: undefined }));
   };
 
-  const fail = (fieldErrors: Partial<Record<Field, string>>, text: string) => {
+  // Red borders on the failed fields, focus on the first; the caller shows the toast.
+  const markInvalid = (fieldErrors: Partial<Record<Field, string>>) => {
     setErrors(fieldErrors);
-    setMessage(text);
     const field = firstInvalid(fieldErrors, FIELDS);
     if (field) refs[field].current?.focus();
   };
@@ -51,27 +53,29 @@ export function SignUpScreen() {
       email: validateEmail(values.email),
       password: validateNewPassword(values.password),
     };
-    const invalid = firstInvalid(local, FIELDS);
-    if (invalid) return fail(local, local[invalid]!);
+    if (reportInvalid(local)) return markInvalid(local);
 
-    setMessage(null);
     const { firstName, lastName } = splitFullName(values.name);
     const params = { emailAddress: values.email.trim(), password: values.password, firstName, lastName };
     // password() updates the client's current sign-up when one exists. One left over from an
     // earlier attempt (a finished Google sign-up, or one that expired) is gone on Clerk's side,
     // so updating it fails with "No sign up attempt was found". create() always starts a new one.
     const { error } = signUp.id ? await signUp.create(params) : await signUp.password(params);
-    if (error) return fail(clerkFieldErrors(error, fieldForParam), clerkErrorMessage(error));
+    if (error) {
+      markInvalid(clerkFieldErrors(error, fieldForParam));
+      return reportClerkError(error);
+    }
 
     if (signUp.status === "complete") {
       // The instance didn't ask for verification: start the session straight away.
       const { error: finalizeError } = await signUp.finalize();
-      if (finalizeError) setMessage(clerkErrorMessage(finalizeError));
+      if (finalizeError) return reportClerkError(finalizeError);
+      toast.success(`Welcome to Syllo, ${firstName}.`);
       return;
     }
 
     const { error: sendError } = await signUp.verifications.sendEmailCode();
-    if (sendError) return setMessage(clerkErrorMessage(sendError));
+    if (sendError) return reportClerkError(sendError);
     // The email stays on Clerk's sign-up, never in the URL.
     router.push("/verify-email");
   };
@@ -79,7 +83,7 @@ export function SignUpScreen() {
   return (
     <AuthScreen title="Create your account" body="Learn at your own pace, one lesson at a time.">
       <View style={{ gap: 12 }}>
-        <AuthField
+        <TextField
           ref={nameRef}
           label="Full name"
           placeholder="e.g. Alex Morgan"
@@ -91,7 +95,7 @@ export function SignUpScreen() {
           returnKeyType="next"
           onSubmitEditing={() => emailRef.current?.focus()}
         />
-        <AuthField
+        <TextField
           ref={emailRef}
           label="Email address"
           placeholder="you@example.com"
@@ -106,7 +110,7 @@ export function SignUpScreen() {
           returnKeyType="next"
           onSubmitEditing={() => passwordRef.current?.focus()}
         />
-        <AuthField
+        <TextField
           ref={passwordRef}
           label="Password"
           placeholder={`At least ${MIN_PASSWORD_LENGTH} characters`}
@@ -123,7 +127,6 @@ export function SignUpScreen() {
       </View>
       {/* Mount point for Clerk's bot protection challenge (web). */}
       <View nativeID="clerk-captcha" />
-      <ErrorLine message={message ?? social.message} />
       <SubmitButton title="Create account" busy={fetchStatus === "fetching"} onPress={submit} />
       <SocialButtons pending={social.pending} onPress={social.start} />
       <FooterLink prompt="Already have an account?" action="Sign in" onPress={() => router.replace("/sign-in")} />

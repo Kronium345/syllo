@@ -3,8 +3,12 @@ import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import { View } from "react-native";
 
-import { AuthField, AuthScreen, ErrorLine, FooterLink, SocialButtons, SubmitButton, type TextInputRef } from "./auth-form";
-import { clerkErrorMessage, clerkFieldErrors } from "./clerk-errors";
+import { TextField, type TextInputRef } from "@/components/ui/text-field";
+import { toast } from "@/components/ui/toast";
+
+import { AuthScreen, FooterLink, SocialButtons, SubmitButton } from "./auth-form";
+import { clerkFieldErrors, reportClerkError } from "./clerk-errors";
+import { reportInvalid } from "./report-invalid";
 import { useSocialSignIn } from "./use-social-sign-in";
 import { firstInvalid, validateEmail, validatePassword } from "./validate";
 
@@ -24,7 +28,6 @@ export function SignInScreen() {
   const social = useSocialSignIn();
   const [values, setValues] = useState<Record<Field, string>>({ email: "", password: "" });
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
-  const [message, setMessage] = useState<string | null>(null);
   const emailRef = useRef<TextInputRef>(null);
   const passwordRef = useRef<TextInputRef>(null);
   const refs = { email: emailRef, password: passwordRef };
@@ -34,26 +37,29 @@ export function SignInScreen() {
     setErrors((current) => ({ ...current, [field]: undefined }));
   };
 
-  const fail = (fieldErrors: Partial<Record<Field, string>>, text: string) => {
+  // Red borders on the failed fields, focus on the first; the caller shows the toast.
+  const markInvalid = (fieldErrors: Partial<Record<Field, string>>) => {
     setErrors(fieldErrors);
-    setMessage(text);
     const field = firstInvalid(fieldErrors, FIELDS);
     if (field) refs[field].current?.focus();
   };
 
   const submit = async () => {
     const local = { email: validateEmail(values.email), password: validatePassword(values.password) };
-    const invalid = firstInvalid(local, FIELDS);
-    if (invalid) return fail(local, local[invalid]!);
+    if (reportInvalid(local)) return markInvalid(local);
 
-    setMessage(null);
     const { error } = await signIn.password({ emailAddress: values.email.trim(), password: values.password });
-    if (error) return fail(clerkFieldErrors(error, fieldForParam), clerkErrorMessage(error));
+    if (error) {
+      markInvalid(clerkFieldErrors(error, fieldForParam));
+      return reportClerkError(error);
+    }
 
     if (signIn.status === "complete") {
       // Starting the session closes the (auth) group; the index route redirects to /home.
       const { error: finalizeError } = await signIn.finalize();
-      if (finalizeError) setMessage(clerkErrorMessage(finalizeError));
+      if (finalizeError) return reportClerkError(finalizeError);
+      const firstName = signIn.userData.firstName;
+      toast.success(firstName ? `Welcome back, ${firstName}.` : "Welcome back.");
       return;
     }
 
@@ -61,19 +67,19 @@ export function SignInScreen() {
     const needsCode = signIn.status === "needs_client_trust" || signIn.status === "needs_second_factor";
     if (needsCode && signIn.supportedSecondFactors.some((factor) => factor.strategy === "email_code")) {
       const { error: sendError } = await signIn.mfa.sendEmailCode();
-      if (sendError) return setMessage(clerkErrorMessage(sendError));
+      if (sendError) return reportClerkError(sendError);
       router.push({ pathname: "/verify-email", params: { flow: "sign-in" } });
       return;
     }
 
-    setMessage("This sign-in needs a step Syllo doesn't support yet.");
+    toast.error("This sign-in needs a step Syllo doesn't support yet.");
     await signIn.reset();
   };
 
   return (
     <AuthScreen title="Welcome back" body="Sign in to pick up where you left off.">
       <View style={{ gap: 12 }}>
-        <AuthField
+        <TextField
           ref={emailRef}
           label="Email address"
           placeholder="you@example.com"
@@ -88,7 +94,7 @@ export function SignInScreen() {
           returnKeyType="next"
           onSubmitEditing={() => passwordRef.current?.focus()}
         />
-        <AuthField
+        <TextField
           ref={passwordRef}
           label="Password"
           placeholder="Your password"
@@ -103,7 +109,6 @@ export function SignInScreen() {
           onSubmitEditing={submit}
         />
       </View>
-      <ErrorLine message={message ?? social.message} />
       <SubmitButton title="Sign in" busy={fetchStatus === "fetching"} onPress={submit} />
       <SocialButtons pending={social.pending} onPress={social.start} />
       <FooterLink prompt="New to Syllo?" action="Create an account" onPress={() => router.replace("/sign-up")} />

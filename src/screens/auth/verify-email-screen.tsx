@@ -3,8 +3,11 @@ import { Redirect, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text } from "react-native";
 
-import { AuthField, AuthScreen, ErrorLine, SubmitButton } from "./auth-form";
-import { clerkErrorMessage, type ClerkFailure } from "./clerk-errors";
+import { TextField } from "@/components/ui/text-field";
+import { toast } from "@/components/ui/toast";
+
+import { AuthScreen, SubmitButton } from "./auth-form";
+import { type ClerkFailure, reportClerkError } from "./clerk-errors";
 
 const CODE_LENGTH = 6;
 const RESEND_SECONDS = 30;
@@ -36,7 +39,6 @@ export function VerifyEmailScreen() {
   });
   const [code, setCode] = useState("");
   const [invalid, setInvalid] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(RESEND_SECONDS);
 
   useEffect(() => {
@@ -53,14 +55,14 @@ export function VerifyEmailScreen() {
   const reject = (error?: ClerkFailure | null) => {
     setInvalid(true);
     setCode("");
-    setMessage(clerkErrorMessage(error));
+    reportClerkError(error);
   };
 
   const verify = async () => {
     if (busy) return;
     if (code.length < CODE_LENGTH) {
       setInvalid(true);
-      setMessage(`Enter the ${CODE_LENGTH}-digit code.`);
+      toast.error(`Enter the ${CODE_LENGTH}-digit code.`);
       return;
     }
     // Finalizing starts the session: the (auth) group closes and the index route
@@ -70,24 +72,27 @@ export function VerifyEmailScreen() {
       if (error) return reject(error);
       if (signUp.status !== "complete") return reject();
       const { error: finalizeError } = await signUp.finalize();
-      if (finalizeError) reject(finalizeError);
+      if (finalizeError) return reject(finalizeError);
+      toast.success(signUp.firstName ? `Welcome to Syllo, ${signUp.firstName}.` : "Welcome to Syllo.");
       return;
     }
     const { error } = await signIn.mfa.verifyEmailCode({ code });
     if (error) return reject(error);
     if (signIn.status !== "complete") return reject();
     const { error: finalizeError } = await signIn.finalize();
-    if (finalizeError) reject(finalizeError);
+    if (finalizeError) return reject(finalizeError);
+    const firstName = signIn.userData.firstName;
+    toast.success(firstName ? `Welcome back, ${firstName}.` : "Welcome back.");
   };
 
   const resend = async () => {
     const { error } =
       flow === "sign-up" ? await signUp.verifications.sendEmailCode() : await signIn.mfa.sendEmailCode();
-    if (error) return setMessage(clerkErrorMessage(error));
+    if (error) return reportClerkError(error);
     setCooldown(RESEND_SECONDS);
     setCode("");
     setInvalid(false);
-    setMessage(`We sent a new code to ${email}.`);
+    toast.info(`Code sent to ${email}.`);
   };
 
   return (
@@ -95,7 +100,7 @@ export function VerifyEmailScreen() {
       title="Check your email"
       body={`We sent a ${CODE_LENGTH}-digit code to ${email}${flow === "sign-in" ? " to verify it's you" : ""}.`}
     >
-      <AuthField
+      <TextField
         label="Verification code"
         placeholder="123456"
         value={code}
@@ -103,7 +108,7 @@ export function VerifyEmailScreen() {
           setCode(text.replace(/\D/g, "").slice(0, CODE_LENGTH));
           setInvalid(false);
         }}
-        error={invalid ? (message ?? undefined) : undefined}
+        error={invalid ? "Check the code and try again." : undefined}
         keyboardType="number-pad"
         autoComplete="one-time-code"
         textContentType="oneTimeCode"
@@ -112,7 +117,6 @@ export function VerifyEmailScreen() {
         onSubmitEditing={verify}
         autoFocus
       />
-      <ErrorLine message={message} />
       <SubmitButton title="Verify" busy={busy} onPress={verify} />
       <Pressable
         accessibilityRole="button"

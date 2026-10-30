@@ -42,7 +42,13 @@
       "./plugins/with-gradle-memory-limits",
       "@clerk/expo",
       "expo-secure-store",
-      "expo-image"
+      "expo-image",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Syllo to use your photos for your profile picture."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
