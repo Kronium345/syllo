@@ -16,6 +16,9 @@ npx tsc --noEmit            # type check
 npx expo-doctor             # diagnose dependency and config issues
 npx expo install --fix      # fix incompatible package versions
 npx eas-cli@latest <cmd>    # EAS builds, submits, and updates (use instead of bare `eas`)
+npx supabase migration new <name>  # new schema change in supabase/migrations/
+npm run db:push             # apply migrations + seed to the linked hosted project
+npm run db:types            # regenerate src/lib/database.types.ts
 ~~~
 
 ## Expo
@@ -43,22 +46,30 @@ Each tool has one job. Ask before moving a responsibility to a different tool.
   - Google/Apple use experimental `useSSO()` from `@clerk/expo/experimental` (browser flow, works in Expo Go, activates the session itself). On web the buttons show a notice instead. Native sheets need a development build.
   - Sessions persist through `tokenCache` (`expo-secure-store`). The Native API must be on in the Clerk Dashboard. Greet with `displayFirstName(user)`.
   - Profile (prompts/03): photos live on Clerk (no instance setting needed): picked with `expo-image-picker` (library, square crop, quality 0.7, base64), uploaded with `user.setProfileImage({ file: dataUrl | null })` + `user.reload()`, read with `profileImageUrl(user)` (only when `hasImage`; Clerk's default image shows as our initial `Avatar`). `/account` edits names (`user.update`), changes the password (`user.updatePassword` in `useReverification`; when Clerk wants re-verification the learner is asked to sign in again), lists devices (`user.getSessions`, `session.revoke`) and deletes the account with `user.delete()` (Clerk `delete_self` on). When Supabase holds learner data, deletion moves to an API route that removes that data first. Sign out lives in Profile's Settings sheet.
-- **Data:** Supabase (Postgres) holds courses and progress. How Supabase trusts Clerk sessions (and the row-level security that follows) is decided in its plan; check Supabase's and Clerk's current integration docs first.
+- **Data:** Supabase (Postgres) holds courses and learner data (prompts/04). Hosted project **syllo** `qlpbjfzyvfyrrpcisnpu` (eu-west-2 London, free plan, org `ahbhgyuptetukbjfpupw`); no local Docker stack yet (`supabase/config.toml` is ready for `npx supabase start`). Managed with the Supabase CLI (dev dependency, linked) and the Supabase MCP; `supabase/` holds `migrations/` and `seed.sql`.
+  - Clerk is a Supabase third-party auth provider (domain `still-mastiff-2250.clerk.accounts.dev`, added in the dashboard: hosted third-party auth can't be set from the CLI; don't `supabase config push`, it would overwrite hosted auth settings with local-dev defaults). Clerk session tokens carry `role: "authenticated"` (`session.claims`, set with the Clerk MCP). The production Clerk instance will need its own provider entry. Supabase Auth is unused.
+  - The app uses `useSupabase()` from `src/lib/supabase.ts` (supabase-js, typed with the generated `src/lib/database.types.ts`, Clerk token via `accessToken`). Env: `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (the `sb_publishable_` key). No service-role key in the app.
+  - RLS on every table, `to authenticated` only (anon reads nothing). Compare the user with `((select auth.jwt()) ->> 'sub')` (the advisor rejects other forms). User ids are Clerk ids (`text`, default `auth.jwt()->>'sub'`).
+  - `useSyncProfile` (mounted in `(app)/_layout.tsx`) upserts the learner's `profiles` row from Clerk after sign-in and on name/photo changes. Deleting the account deletes the profile first (enrollments cascade), then the Clerk user, restoring the profile if Clerk's step doesn't happen.
 - **UI design:** screens come from Screensdesign; designs are attached in the chat (see Building from designs).
 - **Notifications:** local only (`expo-notifications`, no push server or token) in `src/lib/notifications/local.ts`: foreground handler, permission + Android `reminders` channel, and a listener that shows arriving notifications as the Dynamic Island banner. Scheduled notifications tag `data.kind` so a feature can cancel and rebuild its own. The banner (`src/components/ui/dynamic-notifications/`, ported from havenly; Skia + expo-blur + Reanimated + Gesture Handler) is hosted by `DynamicNotificationsHost` inside `GestureHandlerRootView` in the root layout; call `showBanner` from `src/lib/notifications/banner.ts` anywhere. Web has no banner (`.web.tsx` host). Its colors live in `conf/palette.ts` as placeholders until the design system turns them into tokens.
 
 ## Data model
 
-From the tutorial. Columns and relations are decided in the Supabase plan.
+From the tutorial; the schema is in `supabase/migrations/`.
 
-- **User**: a learner (signed in through Clerk).
-- **Tutor**: a course creator.
-- **Course** → **Chapter** → **Lesson**: a course is made of ordered chapters, a chapter of ordered lessons.
+- **profiles**: one per learner, `id` = Clerk user id. A learner reads and writes only their own.
+- **tutors**: course creators (`profile_id` links a Clerk user in Part 2). Readable by all learners.
+- **courses** → **chapters** → **lessons**: ordered by `position`. Published courses and their outline (lesson titles, durations, `is_preview`) are readable by all learners.
+- **lesson_contents**: a lesson's `video_url` and markdown `body`, readable only for preview lessons or courses the learner is enrolled in. Kept apart from `lessons` so RLS can show the outline but hide the content.
+- **enrollments**: learner ↔ course (unique). A learner enrolls themselves only in published courses, and can leave.
+- No write policies on course content yet (Part 2). Seed: 3 tutors, 6 courses, 19 chapters, 58 lessons, ids from `md5()` of readable keys so `seed.sql` can re-run.
 
 ## Rules
 
 - Secret keys (Clerk secret key, Supabase service role key, database URLs) never reach the app bundle. Use them only in API routes and local scripts. Never put them behind `EXPO_PUBLIC_`, which is bundled into the app. Never commit `.env`. Keep variable names, without values, in `.env.example`.
 - Ask before adding a dependency or service, changing the database schema once data exists, or deleting data.
+- Every schema change is a migration file in `supabase/migrations/` applied with `npm run db:push`; never change the hosted schema by hand. After each one, regenerate the types and run the Supabase security and performance advisors (no new warnings). In Git Bash, prefix CLIs that take `/paths` (e.g. `clerk api /users`) with `MSYS_NO_PATHCONV=1`.
 - Feedback uses `toast.success|error|info(title, message?)` from `@/components/ui/toast` (`react-native-toast-message` with our own card, ported from havenly: top of screen, 3.5s, lucide icons, one `ToastHost` mounted last in the root layout). Never import the library in screens. Form validation shows red field borders plus one toast (`reportInvalid`), never inline error text; Clerk errors do the same with Clerk's message (`clerkFieldErrors`, `reportClerkError`). `showBanner` falls back to an info toast where there's no banner (web). Toast colors are placeholders until the design system.
 - Icons come from `lucide-react-native` (with `react-native-svg`). Third-party marks (Google, Apple) are SVGs in `assets/brand/` drawn by `BrandLogo`.
 - Shared UI in `src/components/ui/` (ported from havenly): `Sheet`, `Avatar`, `Button`, `IconButton`, `ProfileRow`/`ProfileRowGroup`, `TextField` (password eye toggle), `BrandLogo`, `toast`. Until the design system, their colors come from `placeholder-colors.ts` (one place to swap for tokens).

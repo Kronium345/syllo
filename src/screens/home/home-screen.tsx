@@ -1,18 +1,45 @@
 import { useUser } from "@clerk/expo";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Avatar } from "@/components/ui/avatar";
 import { colors } from "@/components/ui/placeholder-colors";
 import { displayFirstName, profileImageUrl } from "@/lib/display-name";
 import { showBanner } from "@/lib/notifications/banner";
+import { useSupabase } from "@/lib/supabase";
+
+type CourseCount = { status: "loading" } | { status: "error" } | { status: "ready"; count: number };
 
 // Placeholder home until the design system and the home design exist: greets the
-// learner and keeps the Dynamic Island banner check. Sign out lives in Profile → Settings.
+// learner, proves the Supabase connection (published courses, read through RLS with the
+// Clerk session) and keeps the Dynamic Island banner check. Sign out lives in Profile → Settings.
 export function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { user } = useUser();
+  const supabase = useSupabase();
   const name = displayFirstName(user);
+  const [courses, setCourses] = useState<CourseCount>({ status: "loading" });
+  const [attempt, setAttempt] = useState(0);
+
+  useEffect(() => {
+    let current = true;
+    supabase
+      .from("courses")
+      .select("id", { count: "exact", head: true })
+      .then(({ count, error }) => {
+        if (!current) return;
+        setCourses(error ? { status: "error" } : { status: "ready", count: count ?? 0 });
+      });
+    return () => {
+      current = false;
+    };
+  }, [supabase, attempt]);
+
+  const retry = () => {
+    setCourses({ status: "loading" });
+    setAttempt((n) => n + 1);
+  };
 
   return (
     <View style={[styles.container, { paddingTop: insets.top + 16 }]}>
@@ -22,6 +49,24 @@ export function HomeScreen() {
       </View>
 
       <View style={styles.center}>
+        {courses.status === "loading" ? (
+          <View accessibilityRole="progressbar" accessibilityLabel="Loading courses" style={styles.status}>
+            <ActivityIndicator color={colors.muted} />
+            <Text style={styles.muted}>Loading courses…</Text>
+          </View>
+        ) : courses.status === "error" ? (
+          <Pressable accessibilityRole="button" onPress={retry} style={styles.status}>
+            <Text style={styles.muted}>Couldn&apos;t load courses.</Text>
+            <Text style={styles.link}>Try again</Text>
+          </Pressable>
+        ) : (
+          <Text style={styles.count}>
+            {courses.count === 0
+              ? "No courses yet"
+              : `${courses.count} ${courses.count === 1 ? "course" : "courses"} available`}
+          </Text>
+        )}
+
         {/* Temporary: checks the Dynamic Island banner until real screens exist. */}
         <Pressable
           accessibilityRole="button"
@@ -39,6 +84,10 @@ const styles = StyleSheet.create({
   container: { flex: 1, paddingHorizontal: 20 },
   greeting: { flexDirection: "row", alignItems: "center", gap: 12 },
   title: { fontSize: 24, fontWeight: "700", color: colors.ink },
-  center: { flex: 1, alignItems: "center", justifyContent: "center" },
+  center: { flex: 1, alignItems: "center", justifyContent: "center", gap: 24 },
+  status: { alignItems: "center", gap: 8 },
+  muted: { color: colors.muted },
+  link: { fontWeight: "600", color: colors.accent },
+  count: { fontSize: 18, fontWeight: "600", color: colors.ink },
   button: { paddingHorizontal: 16, paddingVertical: 10, borderRadius: 999, borderWidth: 1 },
 });

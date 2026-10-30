@@ -57,3 +57,6 @@ example
 .vscode/
 .mcp.json
 skills-lock.json
+
+# Database as code (migrations, seed, CLI state): managed with the Supabase CLI, not part of app builds.
+supabase/
