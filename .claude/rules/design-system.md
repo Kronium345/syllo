@@ -12,7 +12,8 @@ Syllo's UI replicates the Screensdesign prototype one-to-one (`C:\Users\danie\Do
 ## Tokens: `tailwind.config.js`, the only place values live
 
 - Read them through `tw` (`tw\`px-screen bg-canvas\``, `tw.style(cond && "...")`), `color("primary")` for props that take a colour string, and `AppText` for text. Import from `@/theme`. Never write a hex value, `rgb(a)(`, `fontSize`, `fontWeight` or `fontFamily` in `src/` (lint-enforced; `src/theme/` is exempt).
-- Tailwind's default palette is replaced: only the tokens exist (`bg-blue-500` resolves to nothing). Prototype → token:
+- Tailwind's default palette is replaced: only the tokens exist (`bg-blue-500` resolves to nothing).
+- **Dark only (prompts/10, user decision):** the tokens keep the prototype's roles but hold its dark inverse: `canvas` #0F172A, `surface` #1E293B, `subtle` #273449, `track`/`border` #334155, `ink` #F8FAFC, `muted` #94A3B8, `primary` #3B82F6 with tints #172554 / #1E3A8A, and darker status tints with lighter `deep` text shades. So translate the HTML by role (white → `surface`, gray-50 → `subtle`, text-main → `ink`), never by its literal colour. Prototype → token:
   - `--color-primary` → `primary`, blue-50 → `primary-tint`, blue-100 → `primary-soft`, white on primary → `on-primary`.
   - `--color-text-main` → `ink`, `--color-text-muted` → `muted`, gray-300 → `faint`, gray-400 → `placeholder`.
   - `--color-bg` → `canvas`, white → `surface`, gray-50 → `subtle`, gray-100 → `track`, `--color-border`/gray-200 → `border`.
@@ -39,6 +40,6 @@ Syllo's UI replicates the Screensdesign prototype one-to-one (`C:\Users\danie\Do
 1. Open the screen's HTML in `screens/` (not the all-in-one file) and list every element, class and copy string in the plan.
 2. Translate class by class: `px-6` → `px-screen`, `text-[var(--color-text-main)]` → `text-ink`, `text-[15px]` → `text-15`, `rounded-[20px]` → `rounded-card`, `.custom-shadow` → `shadow-card`, gray/blue/orange utilities → their tokens above.
 3. Copy text exactly. Images: illustrations and photos from `media.screensdesign.com` go into `assets/images/` (marked placeholder if missing); course data comes from Supabase.
-4. Light mode only (`userInterfaceStyle: "light"`); no `dark:` classes.
+4. Dark only (`userInterfaceStyle: "dark"`, light status bar); no `dark:` classes, the tokens already are the dark values.
 5. Compare on web at 393×852 next to the HTML, list differences, fix, then the user checks Expo Go.
 6. `npx tsc --noEmit` and `npx expo lint` pass.

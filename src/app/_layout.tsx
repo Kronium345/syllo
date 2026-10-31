@@ -31,12 +31,12 @@ SplashScreen.preventAutoHideAsync();
 configurePurchases();
 
 export default function RootLayout() {
-  // Lets twrnc follow the device (font scale, window size). Light mode only.
+  // Lets twrnc follow the device (font scale, window size). Dark only (prompts/10).
   useDeviceContext(tw);
 
   return (
     <GestureHandlerRootView style={tw`flex-1 bg-canvas`}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
         <QueryClientProvider client={queryClient}>
           <QueryCacheReset />

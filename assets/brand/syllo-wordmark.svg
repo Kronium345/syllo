@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 440">
+  <!-- Syllo wordmark: lowercase "syllo" drawn with rounded strokes (geometric, like the
+       mark's S), so the splash needs no font file. Drawn in ink; the splash script
+       recolours it white. -->
+  <g fill="none" stroke="#0B0B1A" stroke-width="56" stroke-linecap="round" stroke-linejoin="round">
+    <!-- s -->
+    <path d="M176 186 C158 164 128 156 100 160 C66 165 50 186 56 210 C62 234 92 242 118 249 C150 258 180 270 178 298 C176 326 146 340 112 338 C86 336 64 326 50 306" />
+    <!-- y -->
+    <path d="M244 168 L306 312" />
+    <path d="M372 168 L292 360 C280 388 262 400 236 398" />
+    <!-- l l -->
+    <path d="M448 56 L448 312" />
+    <path d="M528 56 L528 312" />
+    <!-- o -->
+    <circle cx="660" cy="242" r="76" />
+  </g>
+</svg>

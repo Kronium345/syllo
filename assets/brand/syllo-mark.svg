@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Syllo app mark: a rounded "S" rising from an open book (the two page curves meet at
+       the spine). Drawn in ink; the scripts recolour it (white on the icon and splash).
+       Kept inside the Android adaptive-icon safe zone (about 60% of the canvas). -->
+  <g fill="none" stroke="#0B0B1A" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-width="104"
+      d="M652 290 C612 236 548 218 488 226 C404 238 360 294 372 350 C384 408 446 428 512 448 C590 472 656 496 662 564 C668 632 606 680 524 684 C454 688 396 660 362 612" />
+    <path stroke-width="52" d="M512 826 C452 786 352 770 252 794" />
+    <path stroke-width="52" d="M512 826 C572 786 672 770 772 794" />
+  </g>
+</svg>

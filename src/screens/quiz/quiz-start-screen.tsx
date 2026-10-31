@@ -156,7 +156,7 @@ function StartBody({ quiz }: { quiz: QuizStart }) {
             value={timed}
             onValueChange={setTimed}
             trackColor={{ false: color("track"), true: color("primary") }}
-            thumbColor={color("surface")}
+            thumbColor={color("white")}
             ios_backgroundColor={color("track")}
           />
         </View>

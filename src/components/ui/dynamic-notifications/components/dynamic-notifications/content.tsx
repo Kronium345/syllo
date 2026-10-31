@@ -71,7 +71,7 @@ const Content: React.FC<INotificationContent> &
 
           <AnimatedBlurView
             pointerEvents="none"
-            tint="light"
+            tint="dark"
             blurMethod="dimezisBlurViewSdk31Plus"
             animatedProps={blur.animatedProps}
             style={[
