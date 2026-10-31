@@ -1,14 +1,17 @@
 import { X } from "lucide-react-native";
 import type { ReactNode } from "react";
-import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Modal, Pressable, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { tw } from "@/theme";
+
 import { IconButton } from "./icon-button";
-import { colors } from "./placeholder-colors";
+import { AppText } from "./text";
 
 /**
  * Bottom sheet over a darkened screen. Closes on the backdrop, the close button and
- * Android's back button. `footer` stays pinned under the scrolling content. Ported from havenly.
+ * Android's back button. `footer` stays pinned under the scrolling content.
+ * Not in the design: built from its tokens (surface, border, 24 gutter, rounded-3xl top).
  */
 export function Sheet({
   visible,
@@ -26,43 +29,24 @@ export function Sheet({
   const insets = useSafeAreaInsets();
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose} statusBarTranslucent>
-      <View style={styles.root}>
-        <Pressable accessibilityRole="button" accessibilityLabel="Close" onPress={onClose} style={styles.scrim} />
-        <View accessibilityViewIsModal style={[styles.card, { paddingBottom: Math.max(insets.bottom, 12) }]}>
-          <View style={styles.handleRow}>
-            <View style={styles.handle} />
+      <View style={tw`flex-1 justify-end`}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Close" onPress={onClose} style={tw`absolute inset-0 bg-scrim`} />
+        <View accessibilityViewIsModal style={[tw`max-h-[85%] rounded-t-3xl bg-surface`, { paddingBottom: Math.max(insets.bottom, 12) }]}>
+          <View style={tw`items-center pt-2.5`}>
+            <View style={tw`h-1 w-10 rounded-full bg-border`} />
           </View>
-          <View style={styles.header}>
-            <Text accessibilityRole="header" style={styles.title}>
+          <View style={tw`flex-row items-center justify-between px-screen pt-3 pb-2`}>
+            <AppText variant="title" accessibilityRole="header">
               {title}
-            </Text>
-            <IconButton icon={X} accessibilityLabel="Close" size="md" onPress={onClose} />
+            </AppText>
+            <IconButton icon={X} accessibilityLabel="Close" variant="close" onPress={onClose} />
           </View>
-          <ScrollView contentContainerStyle={styles.body} keyboardShouldPersistTaps="handled">
+          <ScrollView contentContainerStyle={tw`px-screen pb-4`} keyboardShouldPersistTaps="handled">
             {children}
           </ScrollView>
-          {footer ? <View style={styles.footer}>{footer}</View> : null}
+          {footer ? <View style={tw`border-t border-border px-screen pt-3`}>{footer}</View> : null}
         </View>
       </View>
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  root: { flex: 1, justifyContent: "flex-end" },
-  scrim: { ...StyleSheet.absoluteFill, backgroundColor: colors.scrim },
-  card: { maxHeight: "85%", borderTopLeftRadius: 24, borderTopRightRadius: 24, backgroundColor: colors.surface },
-  handleRow: { alignItems: "center", paddingTop: 10 },
-  handle: { width: 40, height: 4, borderRadius: 2, backgroundColor: colors.border },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 8,
-  },
-  title: { fontSize: 20, fontWeight: "700", color: colors.ink },
-  body: { paddingHorizontal: 20, paddingBottom: 16 },
-  footer: { borderTopWidth: 1, borderTopColor: colors.border, paddingHorizontal: 20, paddingTop: 12 },
-});

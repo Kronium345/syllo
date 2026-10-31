@@ -11,11 +11,36 @@ const TANSTACK_DATA_HOOKS = ['useQuery', 'useQueries', 'useInfiniteQuery', 'useS
 const AWAIT_WITHOUT_THROW_ON_ERROR =
   'AwaitExpression > CallExpression:not([callee.property.name="throwOnError"]):has(CallExpression[callee.property.name=/^(from|rpc)$/])';
 
+// Design-system rules (.claude/rules/design-system.md): colours and type come only from the
+// tokens in tailwind.config.js, read through `tw`, `color()` or `AppText`.
+const DESIGN_TOKEN_SELECTORS = [
+  {
+    selector: 'Literal[value=/^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/]',
+    message: 'Use a colour token (tw`bg-primary`, color("primary")) instead of a hex value.',
+  },
+  {
+    selector: 'Literal[value=/^rgba?\\(/], TemplateElement[value.raw=/rgba?\\(/]',
+    message: 'Use a colour token from tailwind.config.js instead of rgb()/rgba().',
+  },
+  {
+    selector: 'Property[key.name=/^(fontSize|fontWeight|fontFamily)$/]',
+    message: 'Use AppText variants or tw`text-14 font-bold` instead of raw font styles.',
+  },
+];
+
 module.exports = defineConfig([
   expoConfig,
   {
     // Agent/editor tooling isn't app code (same folders .easignore keeps out of EAS uploads).
     ignores: ['dist/*', '.agents/*', '.argent/*', '.claude/*', '.cursor/*', '.vscode/*'],
+  },
+  {
+    // No raw colours or font styles anywhere in the app; the theme is the only place for them.
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/theme/**'],
+    rules: {
+      'no-restricted-syntax': ['error', ...DESIGN_TOKEN_SELECTORS],
+    },
   },
   {
     // Screens, routes and components get remote data only through the hooks in src/lib/queries/.
@@ -60,6 +85,8 @@ module.exports = defineConfig([
       'no-restricted-syntax': [
         'error',
         { selector: AWAIT_WITHOUT_THROW_ON_ERROR, message: 'End Supabase queries with .throwOnError() so failures reject.' },
+        // Later blocks replace a rule instead of merging it, so the design rules are repeated.
+        ...DESIGN_TOKEN_SELECTORS,
       ],
     },
   },
@@ -73,6 +100,7 @@ module.exports = defineConfig([
           selector: 'CallExpression[callee.property.name=/^(from|rpc)$/][callee.object.name="supabase"]',
           message: 'Query Supabase in a service in src/services/<area>.ts and call it from the hook.',
         },
+        ...DESIGN_TOKEN_SELECTORS,
       ],
     },
   },

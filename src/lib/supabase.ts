@@ -27,7 +27,7 @@ if (!supabaseUrl || !supabasePublishableKey) {
  *
  * Only the hooks in src/lib/queries/ call this; they pass the client to a service:
  *   const supabase = useSupabase();
- *   useQuery({ queryKey: queryKeys.courses.list(), queryFn: ({ signal }) => getCourses(supabase, signal) });
+ *   useQuery({ queryKey: queryKeys.courses.categories(), queryFn: ({ signal }) => getCategories(supabase, signal) });
  */
 export function useSupabase() {
   const { getToken } = useAuth();

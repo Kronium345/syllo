@@ -1,10 +1,12 @@
 import { useSignIn, useSignUp } from "@clerk/expo";
 import { Redirect, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable } from "react-native";
 
+import { AppText } from "@/components/ui/text";
 import { TextField } from "@/components/ui/text-field";
 import { toast } from "@/components/ui/toast";
+import { tw } from "@/theme";
 
 import { AuthScreen, SubmitButton } from "./auth-form";
 import { type ClerkFailure, reportClerkError } from "./clerk-errors";
@@ -125,16 +127,10 @@ export function VerifyEmailScreen() {
         onPress={resend}
         hitSlop={8}
       >
-        <Text style={[styles.resend, (cooldown > 0 || busy) && styles.disabled]}>
+        <AppText style={tw.style("text-center text-14 font-semibold text-primary", (cooldown > 0 || busy) && "opacity-50")}>
           {cooldown > 0 ? `Resend code in ${cooldown}s` : "Resend code"}
-        </Text>
+        </AppText>
       </Pressable>
     </AuthScreen>
   );
 }
-
-// Placeholder styles until the design system exists (prompts/01-design-system.md).
-const styles = StyleSheet.create({
-  resend: { textAlign: "center", color: "#208AEF", fontWeight: "600" },
-  disabled: { opacity: 0.5 },
-});

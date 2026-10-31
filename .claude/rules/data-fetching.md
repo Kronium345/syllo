@@ -12,18 +12,19 @@ Every piece of remote data in Syllo moves through three layers. `npx expo lint` 
 ## 1. Services: `src/services/<area>.ts`, the only code that talks to Supabase
 
 - Plain async functions: no React, no hooks, no TanStack (lint-enforced).
-- The Supabase client is the first argument, because it carries the learner's Clerk token: `getCourses(supabase, signal?)`, `deleteCourse(supabase, courseId)`. Type it `AppSupabaseClient` from `@/lib/supabase`.
+- The Supabase client is the first argument, because it carries the learner's Clerk token: `getCategories(supabase, signal?)`, `deleteCourse(supabase, courseId)`. Type it `AppSupabaseClient` from `@/lib/supabase`.
 - **End every query with `.throwOnError()`** (lint-enforced for awaited `.from()` / `.rpc()` chains). It rejects with the `PostgrestError` (keeping its `code`) and types `data` as non-null. Never destructure `error` and check it by hand, and never return `{ data, error }` to callers. The only exceptions are calls that have no `.throwOnError()`, such as Storage or Auth; there, throw the returned error yourself.
 - Accept an optional `signal?: AbortSignal` on reads and pass it with `.abortSignal(signal)` before `.throwOnError()`, so TanStack can cancel.
 - Select explicit columns. `quiz_answers` must never select `is_correct`, and `select("*")` on it is refused by the database.
 - RLS doesn't error on a refused write, it affects 0 rows. Writes that can be refused `.select("id")` the rows back and throw `NotAllowedError` (from `@/services/errors`) when none come back.
 - Return plain data (types exported from the service file), never query builders.
+- `src/services/purchases.ts` wraps the RevenueCat SDK instead of Supabase: same layering, but no client argument and no `.throwOnError()` (the SDK rejects by itself). A cancelled purchase resolves `false`, never throws.
 
 ## 2. Hooks: `src/lib/queries/<area>/use-<name>.ts`, one hook per file
 
 - Each wraps exactly one service in `useQuery` / `useMutation`. They never call `supabase.from()` / `.rpc()` themselves (lint-enforced).
-- Get the client with `useSupabase()` and pass it to the service: `queryFn: ({ signal }) => getCourses(supabase, signal)`.
-- Query keys come only from `src/lib/queries/keys.ts` (nested factories, e.g. `queryKeys.courses.list()`). Add new keys there; never inline arrays.
+- Get the client with `useSupabase()` and pass it to the service: `queryFn: ({ signal }) => getCategories(supabase, signal)`.
+- Query keys come only from `src/lib/queries/keys.ts` (nested factories, e.g. `queryKeys.courses.categories()`). Add new keys there; never inline arrays.
 - Mutations invalidate every affected key in `onSettled` (a prefix such as `queryKeys.courses.all` covers its children) and may update cached data in `onSuccess` with `setQueryData` for instant UI.
 - Re-export each hook (and the service's types screens need) from `<area>/index.ts`; screens import from `@/lib/queries/<area>`.
 - Don't override the client defaults (`src/lib/query-client.ts`: 60s stale, no retry on permission/PostgREST/constraint errors, no mutation retry) without a reason in a comment.

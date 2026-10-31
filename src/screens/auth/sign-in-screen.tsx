@@ -5,6 +5,7 @@ import { View } from "react-native";
 
 import { TextField, type TextInputRef } from "@/components/ui/text-field";
 import { toast } from "@/components/ui/toast";
+import { tw } from "@/theme";
 
 import { AuthScreen, FooterLink, SocialButtons, SubmitButton } from "./auth-form";
 import { clerkFieldErrors, reportClerkError } from "./clerk-errors";
@@ -78,7 +79,7 @@ export function SignInScreen() {
 
   return (
     <AuthScreen title="Welcome back" body="Sign in to pick up where you left off.">
-      <View style={{ gap: 12 }}>
+      <View style={tw`gap-4`}>
         <TextField
           ref={emailRef}
           label="Email address"

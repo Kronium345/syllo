@@ -1,40 +1,41 @@
 import { Image } from "expo-image";
 import { memo } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 
-import { PALETTE } from "../../conf/palette";
+import { AppText } from "@/components/ui/text";
+import { tw } from "@/theme";
+
 import { useDynamicNotifications } from "../../hooks/use-dynamic-notifications";
 import type { INotificationBody } from "../../interfaces/notification-content.interface";
 
 // The card's contents: avatar, title in the accent, one-line message, optional icon.
-// Plain Text styles until the design system adds a text component and tokens.
 const NotificationBody: React.FC<INotificationBody> = memo<INotificationBody>(({ notification }: INotificationBody) => {
   const context = useDynamicNotifications();
   const accent = notification.accent ?? context.accent;
   const TrailingIcon = notification.icon;
 
   return (
-    <View style={styles.row}>
+    <View style={tw`flex-1 flex-row items-center gap-3 pl-3 pr-5`}>
       {notification.avatar ? (
         <Image
           source={{ uri: notification.avatar }}
-          style={styles.avatar}
+          style={tw`w-12 h-12 rounded-full bg-subtle`}
           contentFit="cover"
           transition={180}
           cachePolicy="memory-disk"
         />
       ) : (
-        <View style={styles.avatar} />
+        <View style={tw`w-12 h-12 rounded-full bg-subtle`} />
       )}
 
-      <View style={styles.text}>
-        <Text numberOfLines={1} style={[styles.title, { color: accent }]}>
+      <View style={tw`flex-1`}>
+        <AppText numberOfLines={1} style={[tw`text-16 font-semibold`, { color: accent }]}>
           {notification.title}
-        </Text>
+        </AppText>
         {notification.message ? (
-          <Text numberOfLines={1} style={styles.message}>
+          <AppText numberOfLines={1} style={tw`text-14 font-medium text-muted`}>
             {notification.message}
-          </Text>
+          </AppText>
         ) : null}
       </View>
 
@@ -44,13 +45,5 @@ const NotificationBody: React.FC<INotificationBody> = memo<INotificationBody>(({
 });
 
 NotificationBody.displayName = "DynamicNotifications.Body";
-
-const styles = StyleSheet.create({
-  row: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12, paddingLeft: 12, paddingRight: 20 },
-  avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: PALETTE.avatar },
-  text: { flex: 1 },
-  title: { fontSize: 16, lineHeight: 22, fontWeight: "600" },
-  message: { fontSize: 14, lineHeight: 20, fontWeight: "500", color: PALETTE.message },
-});
 
 export { NotificationBody };

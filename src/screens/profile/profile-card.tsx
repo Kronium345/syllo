@@ -1,9 +1,10 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 import { Avatar } from "@/components/ui/avatar";
-import { colors } from "@/components/ui/placeholder-colors";
+import { AppText } from "@/components/ui/text";
+import { pressScale, tw } from "@/theme";
 
-/** Photo, name and email at the top of Profile. Opens Account. */
+/** Photo, name and email at the top of Profile, as a hero card (rounded-card + shadow). Opens Account. */
 export function ProfileCard({
   name,
   email,
@@ -21,33 +22,22 @@ export function ProfileCard({
       accessibilityLabel={`${name}${email ? `, ${email}` : ""}`}
       accessibilityHint="Opens your account"
       onPress={onPress}
-      style={({ pressed }) => [styles.card, { opacity: pressed ? 0.85 : 1 }]}
+      style={({ pressed }) => [
+        tw`flex-row items-center gap-4 rounded-card border border-border bg-surface p-5 shadow-card`,
+        pressScale(pressed),
+      ]}
     >
-      <Avatar imageUrl={imageUrl} name={name} size="xl" />
-      <View style={styles.text}>
-        <Text numberOfLines={2} style={styles.name}>
+      <Avatar imageUrl={imageUrl} name={name} size="md" />
+      <View style={tw`flex-1 gap-1`}>
+        <AppText variant="title" numberOfLines={2}>
           {name}
-        </Text>
+        </AppText>
         {email ? (
-          <Text numberOfLines={1} style={styles.email}>
+          <AppText variant="callout" numberOfLines={1}>
             {email}
-          </Text>
+          </AppText>
         ) : null}
       </View>
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-    borderRadius: 20,
-    backgroundColor: colors.canvas,
-    padding: 12,
-  },
-  text: { flex: 1, gap: 4 },
-  name: { fontSize: 22, fontWeight: "700", color: colors.ink },
-  email: { fontSize: 15, color: colors.muted },
-});

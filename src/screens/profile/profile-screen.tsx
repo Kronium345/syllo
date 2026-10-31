@@ -2,20 +2,21 @@ import { useUser } from "@clerk/expo";
 import { useRouter } from "expo-router";
 import { CircleHelp, Settings, User } from "lucide-react-native";
 import { useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { IconButton } from "@/components/ui/icon-button";
-import { colors } from "@/components/ui/placeholder-colors";
 import { ProfileRow, ProfileRowGroup } from "@/components/ui/profile-row";
+import { AppText } from "@/components/ui/text";
 import { displayFirstName, profileImageUrl } from "@/lib/display-name";
 import { emailSupport } from "@/lib/support";
+import { tw } from "@/theme";
 
 import { ProfileCard } from "./profile-card";
 import { SettingsSheet } from "./settings-sheet";
 
 // Profile tab: who is signed in, Account, Help & support and Settings (sign out).
-// Placeholder styles until the design system exists.
+// Not in the design: built from its tokens (canvas page, title-xl, bordered cards).
 export function ProfileScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -26,39 +27,24 @@ export function ProfileScreen() {
   const name = user?.fullName?.trim() || displayFirstName(user);
 
   return (
-    <View style={styles.screen}>
-      <ScrollView contentContainerStyle={[styles.content, { paddingTop: insets.top + 8 }]}>
-        <View style={styles.header}>
-          <Text accessibilityRole="header" style={styles.title}>
+    <View style={tw`flex-1 bg-canvas`}>
+      <ScrollView contentContainerStyle={[tw`gap-6 px-screen pb-8`, { paddingTop: insets.top + 16 }]}>
+        <View style={tw`flex-row items-center justify-between`}>
+          <AppText variant="title-xl" accessibilityRole="header">
             Profile
-          </Text>
+          </AppText>
           <IconButton icon={Settings} accessibilityLabel="Settings" onPress={() => setSettingsOpen(true)} />
         </View>
 
-        <ProfileCard
-          name={name}
-          email={email}
-          imageUrl={profileImageUrl(user)}
-          onPress={() => router.push("/account")}
-        />
+        <ProfileCard name={name} email={email} imageUrl={profileImageUrl(user)} onPress={() => router.push("/account")} />
 
-        <View style={styles.panel}>
-          <ProfileRowGroup>
-            <ProfileRow icon={User} label="Account" onPress={() => router.push("/account")} />
-            <ProfileRow icon={CircleHelp} label="Help & support" onPress={emailSupport} />
-          </ProfileRowGroup>
-        </View>
+        <ProfileRowGroup>
+          <ProfileRow icon={User} label="Account" onPress={() => router.push("/account")} />
+          <ProfileRow icon={CircleHelp} label="Help & support" onPress={emailSupport} />
+        </ProfileRowGroup>
       </ScrollView>
 
       <SettingsSheet visible={settingsOpen} email={email} onClose={() => setSettingsOpen(false)} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.surface },
-  content: { gap: 16, paddingHorizontal: 20, paddingBottom: 32 },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  title: { fontSize: 32, fontWeight: "700", color: colors.ink },
-  panel: { borderRadius: 20, backgroundColor: colors.canvas, padding: 4 },
-});

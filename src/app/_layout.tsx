@@ -3,12 +3,17 @@ import { tokenCache } from "@clerk/expo/token-cache";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useDeviceContext } from "twrnc";
 
 import { DynamicNotificationsHost } from "@/components/dynamic-notifications-host";
 import { ToastHost } from "@/components/ui/toast";
+import { configurePurchases } from "@/lib/purchases/configure";
+import { PurchasesIdentity } from "@/lib/purchases/purchases-identity";
 import { queryClient } from "@/lib/query-client";
+import { tw } from "@/theme";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
 
@@ -22,13 +27,20 @@ if (!publishableKey) {
 const CLERK_SPLASH_TIMEOUT_MS = 5000;
 
 SplashScreen.preventAutoHideAsync();
+// RevenueCat, once per launch (anonymous until PurchasesIdentity logs the Clerk user in).
+configurePurchases();
 
 export default function RootLayout() {
+  // Lets twrnc follow the device (font scale, window size). Light mode only.
+  useDeviceContext(tw);
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={tw`flex-1 bg-canvas`}>
+      <StatusBar style="dark" />
       <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
         <QueryClientProvider client={queryClient}>
           <QueryCacheReset />
+          <PurchasesIdentity />
           <DynamicNotificationsHost>
             <RootStack />
           </DynamicNotificationsHost>
@@ -73,8 +85,10 @@ function RootStack() {
   // while loading and the index route waits before redirecting. Signing in or out
   // flips these guards; no router call is needed.
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack screenOptions={{ headerShown: false, contentStyle: tw`bg-canvas` }}>
       <Stack.Screen name="index" />
+      {/* Dev-only token and component preview (redirects home in release builds). */}
+      <Stack.Screen name="design-system" />
       <Stack.Protected guard={!isSignedIn}>
         <Stack.Screen name="(auth)" />
       </Stack.Protected>

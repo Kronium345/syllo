@@ -180,6 +180,39 @@ export type Database = {
           },
         ]
       }
+      lesson_progress: {
+        Row: {
+          completed_at: string
+          lesson_id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          lesson_id: string
+          user_id?: string
+        }
+        Update: {
+          completed_at?: string
+          lesson_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lesson_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lessons: {
         Row: {
           chapter_id: string
@@ -221,6 +254,9 @@ export type Database = {
           created_at: string
           full_name: string | null
           id: string
+          interests: string[]
+          onboarding_completed_at: string | null
+          onboarding_goal: string | null
           updated_at: string
         }
         Insert: {
@@ -228,6 +264,9 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          interests?: string[]
+          onboarding_completed_at?: string | null
+          onboarding_goal?: string | null
           updated_at?: string
         }
         Update: {
@@ -235,6 +274,9 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          interests?: string[]
+          onboarding_completed_at?: string | null
+          onboarding_goal?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -533,6 +575,7 @@ export type Database = {
           is_correct: boolean
         }[]
       }
+      course_student_count: { Args: { p_course_id: string }; Returns: number }
       finish_quiz_attempt: {
         Args: { p_attempt_id: string }
         Returns: {

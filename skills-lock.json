@@ -168,6 +168,12 @@
       "sourceType": "github",
       "skillPath": "plugins/expo/skills/expo-native-ui/SKILL.md",
       "computedHash": "3e66ba8d791219f78c8adcb0cdce84f49a61e9869983762598d7e4122a4e43ae"
+    },
+    "screensdesign-data": {
+      "source": "screensdesign-com/screensdesign-agent-skill",
+      "sourceType": "github",
+      "skillPath": "screensdesign-data/SKILL.md",
+      "computedHash": "4ade116fc12c23a7c817b43063121a1190ef595b380d0ccce91c60d82a5b3ee1"
     }
   }
 }

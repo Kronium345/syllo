@@ -1,49 +1,58 @@
 import type { LucideIcon } from "lucide-react-native";
-import { Pressable, type StyleProp, type ViewStyle } from "react-native";
+import { Pressable, type StyleProp, View, type ViewStyle } from "react-native";
 
-import { colors } from "./placeholder-colors";
+import { type ColorToken, pressScale, tw } from "@/theme";
 
-const sizes = { md: { box: 40, icon: 20 }, lg: { box: 48, icon: 24 } } as const;
+import { Glass } from "./glass";
+import { Icon } from "./icon";
 
-/** A round icon-only button. `accessibilityLabel` names the action. Ported from havenly. */
+// The prototype's icon buttons.
+const variants: Record<Variant, { box: string; ink: ColorToken; glass?: boolean; scale: 0.9 | 0.95 }> = {
+  // Back buttons on quizzes, the bell: 40, rounded-xl, border (white on canvas pages).
+  outline: { box: "w-10 h-10 rounded-xl border border-border bg-surface", ink: "ink", scale: 0.9 },
+  // Floating over photos (course details): 40, white/90 + blur + border.
+  glass: { box: "w-10 h-10 rounded-xl border border-border", ink: "ink", glass: true, scale: 0.9 },
+  // Over the video (lesson player): 40, black/20 + white/20 border, white icon.
+  "glass-dark": { box: "w-10 h-10 rounded-xl border border-veil bg-veil-dark", ink: "white", scale: 0.9 },
+  // Explore's filter button: 48, rounded-2xl, border, white.
+  filter: { box: "w-12 h-12 rounded-2xl border border-border bg-surface", ink: "ink", scale: 0.9 },
+  // The paywall's close: 32, round, white/80.
+  close: { box: "w-8 h-8 rounded-full bg-glass-soft", ink: "ink", scale: 0.95 },
+};
+
+type Variant = "outline" | "glass" | "glass-dark" | "filter" | "close";
+
+/** A square/round icon-only button. `accessibilityLabel` names the action. */
 export function IconButton({
-  icon: Glyph,
+  icon,
   accessibilityLabel,
-  variant = "plain",
-  size = "lg",
+  variant = "outline",
   onPress,
   style,
 }: {
   icon: LucideIcon;
   accessibilityLabel: string;
-  variant?: "plain" | "outline";
-  size?: keyof typeof sizes;
+  variant?: Variant;
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
 }) {
-  const s = sizes[size];
+  const v = variants[variant];
+  const content = <Icon as={icon} size="lg" color={v.ink} />;
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       hitSlop={4}
       onPress={onPress}
-      style={({ pressed }) => [
-        {
-          width: s.box,
-          height: s.box,
-          borderRadius: s.box / 2,
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: variant === "outline" ? colors.surface : colors.canvas,
-          borderWidth: variant === "outline" ? 1 : 0,
-          borderColor: colors.border,
-          opacity: pressed ? 0.7 : 1,
-        },
-        style,
-      ]}
+      style={({ pressed }) => [pressScale(pressed, v.scale), style]}
     >
-      <Glyph size={s.icon} color={colors.ink} strokeWidth={2} />
+      {v.glass ? (
+        <Glass tone="strong" style={tw.style("items-center justify-center", v.box)}>
+          {content}
+        </Glass>
+      ) : (
+        <View style={tw.style("items-center justify-center", v.box)}>{content}</View>
+      )}
     </Pressable>
   );
 }

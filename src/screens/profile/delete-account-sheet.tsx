@@ -1,15 +1,16 @@
 import { useReverification, useUser } from "@clerk/expo";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 
 import { Button } from "@/components/ui/button";
-import { colors } from "@/components/ui/placeholder-colors";
 import { Sheet } from "@/components/ui/sheet";
+import { AppText } from "@/components/ui/text";
 import { TextField } from "@/components/ui/text-field";
 import { toast } from "@/components/ui/toast";
 import { profileImageUrl } from "@/lib/display-name";
 import { useDeleteMyProfile, useUpsertProfile } from "@/lib/queries/profiles";
 import { type ClerkFailure, reportClerkError } from "@/screens/auth/clerk-errors";
+import { tw } from "@/theme";
 
 const CONFIRM_WORD = "DELETE";
 
@@ -87,24 +88,24 @@ export function DeleteAccountSheet({ visible, onClose }: { visible: boolean; onC
       onClose={close}
       title="Delete account"
       footer={
-        <View style={styles.actions}>
-          <Button title="Keep account" variant="secondary" onPress={close} style={styles.action} />
+        <View style={tw`flex-row gap-3`}>
+          <Button title="Keep account" variant="outline" onPress={close} style={tw`flex-1`} />
           <Button
             title="Delete"
             variant="danger"
             loading={deleting}
             disabled={typed.trim() !== CONFIRM_WORD}
             onPress={remove}
-            style={styles.action}
+            style={tw`flex-1`}
           />
         </View>
       }
     >
-      <View style={styles.body}>
-        <Text style={styles.text}>
+      <View style={tw`gap-4`}>
+        <AppText variant="body" style={tw`text-ink`}>
           This permanently deletes your Syllo account, your profile and your enrolled courses. It can&apos;t be
           undone.
-        </Text>
+        </AppText>
         <TextField
           label={`Type ${CONFIRM_WORD} to confirm`}
           value={typed}
@@ -117,10 +118,3 @@ export function DeleteAccountSheet({ visible, onClose }: { visible: boolean; onC
     </Sheet>
   );
 }
-
-const styles = StyleSheet.create({
-  body: { gap: 16 },
-  text: { fontSize: 15, lineHeight: 22, color: colors.ink },
-  actions: { flexDirection: "row", gap: 12 },
-  action: { flex: 1 },
-});

@@ -1,31 +1,29 @@
 import type { ReactNode } from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { BrandLogo } from "@/components/ui/brand-logo";
+import { Button } from "@/components/ui/button";
+import { AppText } from "@/components/ui/text";
+import { tw } from "@/theme";
 
 import type { SocialProvider } from "./use-social-sign-in";
 
-// The building blocks of the auth screens. Plain placeholder styles until the design
-// system exists (prompts/01-design-system.md); the Clerk logic lives in the screens.
+// The building blocks of the auth screens. The design has no auth screens, so they follow
+// its onboarding quizzes: canvas page, 24 gutter, title-xl + subtitle header, primary
+// button, and the welcome screen's "Already have an account? Log In" footer.
 
 export function AuthScreen({ title, body, children }: { title: string; body?: string; children: ReactNode }) {
   return (
-    <SafeAreaView style={styles.safe}>
-      <KeyboardAvoidingView style={styles.safe} behavior={Platform.OS === "ios" ? "padding" : undefined}>
-        <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-          <Text accessibilityRole="header" style={styles.title}>
-            {title}
-          </Text>
-          {body ? <Text style={styles.muted}>{body}</Text> : null}
+    <SafeAreaView style={tw`flex-1 bg-canvas`}>
+      <KeyboardAvoidingView style={tw`flex-1`} behavior={Platform.OS === "ios" ? "padding" : undefined}>
+        <ScrollView contentContainerStyle={tw`grow justify-center gap-6 px-screen py-8`} keyboardShouldPersistTaps="handled">
+          <View style={tw`gap-3`}>
+            <AppText variant="title-xl" accessibilityRole="header">
+              {title}
+            </AppText>
+            {body ? <AppText variant="subtitle">{body}</AppText> : null}
+          </View>
           {children}
         </ScrollView>
       </KeyboardAvoidingView>
@@ -34,17 +32,7 @@ export function AuthScreen({ title, body, children }: { title: string; body?: st
 }
 
 export function SubmitButton({ title, busy, onPress }: { title: string; busy?: boolean; onPress: () => void }) {
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityState={{ disabled: busy, busy }}
-      disabled={busy}
-      onPress={onPress}
-      style={[styles.submit, busy && styles.disabled]}
-    >
-      <Text style={styles.submitText}>{busy ? "…" : title}</Text>
-    </Pressable>
-  );
+  return <Button title={title} loading={busy} onPress={onPress} />;
 }
 
 export function SocialButtons({
@@ -55,26 +43,22 @@ export function SocialButtons({
   onPress: (provider: SocialProvider) => void;
 }) {
   return (
-    <View style={styles.social}>
-      <Text style={[styles.muted, styles.center]}>or</Text>
+    <View style={tw`gap-3`}>
+      <View style={tw`flex-row items-center gap-3`}>
+        <View style={tw`flex-1 h-px bg-border`} />
+        <AppText variant="caption">or</AppText>
+        <View style={tw`flex-1 h-px bg-border`} />
+      </View>
       {(["google", "apple"] as const).map((provider) => (
-        <Pressable
+        <Button
           key={provider}
-          accessibilityRole="button"
-          accessibilityState={{ disabled: !!pending, busy: pending === provider }}
-          disabled={!!pending}
+          variant="outline"
+          title={`Continue with ${provider === "google" ? "Google" : "Apple"}`}
+          leading={<BrandLogo name={provider} />}
+          loading={pending === provider}
+          disabled={!!pending && pending !== provider}
           onPress={() => onPress(provider)}
-          style={[styles.secondary, pending && styles.disabled]}
-        >
-          {pending === provider ? (
-            <Text>…</Text>
-          ) : (
-            <>
-              <BrandLogo name={provider} />
-              <Text>Continue with {provider === "google" ? "Google" : "Apple"}</Text>
-            </>
-          )}
-        </Pressable>
+        />
       ))}
     </View>
   );
@@ -82,36 +66,11 @@ export function SocialButtons({
 
 export function FooterLink({ prompt, action, onPress }: { prompt: string; action: string; onPress: () => void }) {
   return (
-    <View style={styles.footer}>
-      <Text style={styles.muted}>{prompt}</Text>
+    <View style={tw`flex-row justify-center gap-1`}>
+      <AppText variant="caption">{prompt}</AppText>
       <Pressable accessibilityRole="link" onPress={onPress} hitSlop={8}>
-        <Text style={styles.link}>{action}</Text>
+        <AppText style={tw`text-13 font-semibold text-primary`}>{action}</AppText>
       </Pressable>
     </View>
   );
 }
-
-// Placeholder styles until the design system exists (prompts/01-design-system.md).
-const styles = StyleSheet.create({
-  safe: { flex: 1 },
-  content: { flexGrow: 1, justifyContent: "center", gap: 16, padding: 24 },
-  title: { fontSize: 28, fontWeight: "700" },
-  muted: { color: "#6B7280" },
-  center: { textAlign: "center" },
-  submit: { alignItems: "center", backgroundColor: "#208AEF", borderRadius: 999, paddingVertical: 14 },
-  submitText: { color: "#FFFFFF", fontWeight: "600" },
-  disabled: { opacity: 0.5 },
-  social: { gap: 10 },
-  secondary: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
-    borderWidth: 1,
-    borderColor: "#D1D5DB",
-    borderRadius: 999,
-    paddingVertical: 12,
-  },
-  footer: { flexDirection: "row", justifyContent: "center", gap: 6 },
-  link: { color: "#208AEF", fontWeight: "600" },
-});

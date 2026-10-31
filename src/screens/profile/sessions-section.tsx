@@ -1,13 +1,15 @@
 import { useAuth, useUser } from "@clerk/expo";
 import { Laptop, Smartphone } from "lucide-react-native";
 import { useCallback, useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
-import { colors } from "@/components/ui/placeholder-colors";
+import { Icon } from "@/components/ui/icon";
 import { Sheet } from "@/components/ui/sheet";
+import { AppText } from "@/components/ui/text";
 import { toast } from "@/components/ui/toast";
 import { type ClerkFailure, reportClerkError } from "@/screens/auth/clerk-errors";
+import { tw } from "@/theme";
 
 type Session = Awaited<ReturnType<NonNullable<ReturnType<typeof useUser>["user"]>["getSessions"]>>[number];
 
@@ -84,29 +86,29 @@ export function SessionsSection() {
   };
 
   return (
-    <View style={styles.section}>
-      <Text accessibilityRole="header" style={styles.heading}>
+    <View style={tw`gap-3`}>
+      <AppText variant="heading" accessibilityRole="header">
         Signed-in devices
-      </Text>
+      </AppText>
       {result.status === "loading" ? (
-        <View accessibilityRole="progressbar" accessibilityLabel="Loading devices" style={styles.skeleton} />
+        <View accessibilityRole="progressbar" accessibilityLabel="Loading devices" style={tw`h-16 rounded-2xl bg-subtle border border-border`} />
       ) : result.status === "error" ? (
-        <Pressable accessibilityRole="button" onPress={reload} style={styles.card}>
-          <Text style={styles.body}>Couldn&apos;t load your devices. Tap to try again.</Text>
+        <Pressable accessibilityRole="button" onPress={reload} style={tw`flex-row items-center gap-3 rounded-2xl border border-border bg-surface p-4`}>
+          <AppText style={tw`text-15 text-ink`}>Couldn&apos;t load your devices. Tap to try again.</AppText>
         </Pressable>
       ) : (
         result.sessions.map((session) => {
           const isThis = session.id === sessionId;
           const Glyph = session.latestActivity?.isMobile ? Smartphone : Laptop;
           return (
-            <View key={session.id} style={styles.card}>
-              <Glyph size={24} color={colors.ink} strokeWidth={2} />
-              <View style={styles.cardText}>
-                <Text style={styles.device}>
+            <View key={session.id} style={tw`flex-row items-center gap-3 rounded-2xl border border-border bg-surface p-4`}>
+              <Icon as={Glyph} size="xl" color="ink" />
+              <View style={tw`flex-1 gap-0.5`}>
+                <AppText style={tw`text-15 font-medium text-ink`}>
                   {deviceName(session)}
                   {isThis ? " (this device)" : ""}
-                </Text>
-                <Text style={styles.caption}>{lastActive(session)}</Text>
+                </AppText>
+                <AppText variant="caption">{lastActive(session)}</AppText>
               </View>
               {isThis ? null : (
                 <Pressable
@@ -115,7 +117,7 @@ export function SessionsSection() {
                   hitSlop={8}
                   onPress={() => setRevoking(session)}
                 >
-                  <Text style={styles.danger}>Sign out</Text>
+                  <AppText style={tw`text-15 font-semibold text-danger`}>Sign out</AppText>
                 </Pressable>
               )}
             </View>
@@ -128,28 +130,14 @@ export function SessionsSection() {
         onClose={() => setRevoking(null)}
         title="Sign out of this device?"
         footer={
-          <View style={styles.actions}>
-            <Button title="Cancel" variant="secondary" onPress={() => setRevoking(null)} style={styles.action} />
-            <Button title="Sign out" loading={busy} onPress={revoke} style={styles.action} />
+          <View style={tw`flex-row gap-3`}>
+            <Button title="Cancel" variant="outline" onPress={() => setRevoking(null)} style={tw`flex-1`} />
+            <Button title="Sign out" loading={busy} onPress={revoke} style={tw`flex-1`} />
           </View>
         }
       >
-        <Text style={styles.body}>{revoking ? `${deviceName(revoking)} will need to sign in again.` : ""}</Text>
+        <AppText variant="body" style={tw`text-ink`}>{revoking ? `${deviceName(revoking)} will need to sign in again.` : ""}</AppText>
       </Sheet>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  section: { gap: 12 },
-  heading: { fontSize: 18, fontWeight: "700", color: colors.ink },
-  skeleton: { height: 64, borderRadius: 16, backgroundColor: colors.canvas },
-  card: { flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 16, backgroundColor: colors.canvas, padding: 16 },
-  cardText: { flex: 1, gap: 2 },
-  device: { fontSize: 15, fontWeight: "500", color: colors.ink },
-  caption: { fontSize: 13, color: colors.muted },
-  body: { fontSize: 15, color: colors.ink },
-  danger: { fontSize: 15, fontWeight: "600", color: colors.danger },
-  actions: { flexDirection: "row", gap: 12 },
-  action: { flex: 1 },
-});

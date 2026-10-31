@@ -1,11 +1,12 @@
 import { useClerk } from "@clerk/expo";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 
 import { Button } from "@/components/ui/button";
-import { colors } from "@/components/ui/placeholder-colors";
 import { Sheet } from "@/components/ui/sheet";
+import { AppText } from "@/components/ui/text";
 import { toast } from "@/components/ui/toast";
+import { tw } from "@/theme";
 
 export function SettingsSheet({ visible, email, onClose }: { visible: boolean; email?: string; onClose: () => void }) {
   const { signOut } = useClerk();
@@ -28,22 +29,16 @@ export function SettingsSheet({ visible, email, onClose }: { visible: boolean; e
       visible={visible}
       onClose={onClose}
       title="Settings"
-      footer={<Button title="Sign out" variant="secondary" loading={signingOut} onPress={handleSignOut} />}
+      footer={<Button title="Sign out" variant="outline" loading={signingOut} onPress={handleSignOut} />}
     >
       {email ? (
-        <View style={styles.signedIn}>
-          <Text style={styles.caption}>Signed in as</Text>
-          <Text numberOfLines={1} style={styles.email}>
+        <View style={tw`gap-1`}>
+          <AppText variant="caption">Signed in as</AppText>
+          <AppText numberOfLines={1} style={tw`text-16 text-ink`}>
             {email}
-          </Text>
+          </AppText>
         </View>
       ) : null}
     </Sheet>
   );
 }
-
-const styles = StyleSheet.create({
-  signedIn: { gap: 4 },
-  caption: { fontSize: 13, color: colors.muted },
-  email: { fontSize: 16, color: colors.ink },
-});

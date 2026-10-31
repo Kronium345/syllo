@@ -3,18 +3,19 @@ import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
 import { useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
-import { colors } from "@/components/ui/placeholder-colors";
+import { AppText } from "@/components/ui/text";
 import { TextField } from "@/components/ui/text-field";
 import { toast } from "@/components/ui/toast";
 import { displayFirstName, profileImageUrl } from "@/lib/display-name";
 import { type ClerkFailure, reportClerkError } from "@/screens/auth/clerk-errors";
 import { reportInvalid } from "@/screens/auth/report-invalid";
+import { color, tw } from "@/theme";
 
 import { ChangePasswordSheet } from "./change-password-sheet";
 import { DeleteAccountSheet } from "./delete-account-sheet";
@@ -103,38 +104,42 @@ export function AccountScreen() {
   };
 
   return (
-    <View style={styles.screen}>
+    <View style={tw`flex-1 bg-canvas`}>
       <ScrollView
-        contentContainerStyle={[styles.content, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 32 }]}
+        contentContainerStyle={[tw`px-screen`, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 32 }]}
         keyboardShouldPersistTaps="handled"
       >
-        <IconButton icon={ChevronLeft} accessibilityLabel="Back" variant="outline" size="md" onPress={goBack} />
-        <Text accessibilityRole="header" style={styles.title}>
+        <IconButton icon={ChevronLeft} accessibilityLabel="Back" onPress={goBack} />
+        <AppText variant="title-xl" accessibilityRole="header" style={tw`mt-6`}>
           Account
-        </Text>
+        </AppText>
 
-        <View style={styles.photo}>
+        <View style={tw`mt-6 items-center gap-3`}>
           <View>
             <Avatar imageUrl={profileImageUrl(user)} name={firstName || displayFirstName(user)} size="xl" />
             {photoBusy ? (
-              <View accessibilityRole="progressbar" accessibilityLabel="Updating photo" style={styles.photoBusy}>
-                <ActivityIndicator color={colors.ink} />
+              <View
+                accessibilityRole="progressbar"
+                accessibilityLabel="Updating photo"
+                style={tw`absolute inset-0 items-center justify-center rounded-full bg-glass`}
+              >
+                <ActivityIndicator color={color("ink")} />
               </View>
             ) : null}
           </View>
-          <View style={styles.photoActions}>
+          <View style={tw`flex-row gap-6`}>
             <Pressable accessibilityRole="button" hitSlop={8} disabled={photoBusy} onPress={pickPhoto}>
-              <Text style={styles.link}>{user?.hasImage ? "Change photo" : "Add photo"}</Text>
+              <AppText style={tw`text-14 font-semibold text-primary`}>{user?.hasImage ? "Change photo" : "Add photo"}</AppText>
             </Pressable>
             {user?.hasImage ? (
               <Pressable accessibilityRole="button" hitSlop={8} disabled={photoBusy} onPress={() => updatePhoto(null)}>
-                <Text style={styles.danger}>Remove photo</Text>
+                <AppText style={tw`text-14 font-semibold text-danger`}>Remove photo</AppText>
               </Pressable>
             ) : null}
           </View>
         </View>
 
-        <View style={styles.fields}>
+        <View style={tw`mt-8 gap-4`}>
           <TextField
             label="First name"
             value={firstName}
@@ -156,37 +161,35 @@ export function AccountScreen() {
             maxLength={MAX_NAME_LENGTH + 10}
           />
           {email ? (
-            <View style={styles.email}>
-              <Text style={styles.caption}>Email</Text>
-              <Text style={styles.body}>{email}</Text>
+            <View style={tw`gap-1 px-1`}>
+              <AppText variant="caption">Email</AppText>
+              <AppText style={tw`text-15 text-ink`}>{email}</AppText>
             </View>
           ) : null}
         </View>
 
-        <Button title="Save" loading={saving} disabled={!changed} onPress={save} style={styles.save} />
+        <Button title="Save" loading={saving} disabled={!changed} onPress={save} style={tw`mt-8`} />
 
-        <View style={styles.section}>
-          <Text accessibilityRole="header" style={styles.heading}>
+        <View style={tw`mt-10 gap-3`}>
+          <AppText variant="heading" accessibilityRole="header">
             Password
-          </Text>
+          </AppText>
           {user?.passwordEnabled ? (
-            <Button title="Change password" variant="secondary" onPress={() => setSheet("password")} />
+            <Button title="Change password" variant="outline" onPress={() => setSheet("password")} />
           ) : (
-            <Text style={styles.caption}>
-              You sign in with Google or Apple, so there&apos;s no Syllo password to change.
-            </Text>
+            <AppText variant="caption">You sign in with Google or Apple, so there&apos;s no Syllo password to change.</AppText>
           )}
         </View>
 
-        <View style={styles.section}>
+        <View style={tw`mt-10`}>
           <SessionsSection />
         </View>
 
-        <View style={[styles.section, styles.dangerZone]}>
-          <Pressable accessibilityRole="button" hitSlop={8} onPress={() => setSheet("delete")} style={styles.start}>
-            <Text style={styles.danger}>Delete account</Text>
+        <View style={tw`mt-10 gap-2 border-t border-border pt-6`}>
+          <Pressable accessibilityRole="button" hitSlop={8} onPress={() => setSheet("delete")} style={tw`self-start`}>
+            <AppText style={tw`text-15 font-semibold text-danger`}>Delete account</AppText>
           </Pressable>
-          <Text style={styles.caption}>Permanently removes your Syllo account and profile.</Text>
+          <AppText variant="caption">Permanently removes your Syllo account and profile.</AppText>
         </View>
       </ScrollView>
 
@@ -195,29 +198,3 @@ export function AccountScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.surface },
-  content: { paddingHorizontal: 20 },
-  title: { marginTop: 28, fontSize: 32, fontWeight: "700", color: colors.ink },
-  photo: { marginTop: 28, alignItems: "center", gap: 12 },
-  photoBusy: {
-    ...StyleSheet.absoluteFill,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 999,
-    backgroundColor: colors.glass,
-  },
-  photoActions: { flexDirection: "row", gap: 24 },
-  link: { fontSize: 15, fontWeight: "600", color: colors.ink, textDecorationLine: "underline" },
-  danger: { fontSize: 15, fontWeight: "600", color: colors.danger },
-  fields: { marginTop: 32, gap: 16 },
-  email: { gap: 2, paddingHorizontal: 4 },
-  caption: { fontSize: 13, lineHeight: 18, color: colors.muted },
-  body: { fontSize: 15, color: colors.ink },
-  save: { marginTop: 32 },
-  section: { marginTop: 40, gap: 12 },
-  heading: { fontSize: 18, fontWeight: "700", color: colors.ink },
-  dangerZone: { gap: 8, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 24 },
-  start: { alignSelf: "flex-start" },
-});

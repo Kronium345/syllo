@@ -1,28 +1,34 @@
 import { ChevronRight, type LucideIcon } from "lucide-react-native";
 import { Children, Fragment, type ReactNode } from "react";
-import { Pressable, type StyleProp, StyleSheet, Text, View, type ViewStyle } from "react-native";
+import { Pressable, type StyleProp, View, type ViewStyle } from "react-native";
 
-import { colors } from "./placeholder-colors";
+import { tw } from "@/theme";
 
-/** One tappable settings row: icon tile, label, chevron. Ported from havenly. */
-export function ProfileRow({ icon: Glyph, label, onPress }: { icon: LucideIcon; label: string; onPress?: () => void }) {
+import { Icon } from "./icon";
+import { AppText } from "./text";
+
+/**
+ * One tappable settings row: icon tile, label, chevron. Not in the design: built like its
+ * curriculum rows (primary-soft tile, rounded-lg, 14 medium ink label).
+ */
+export function ProfileRow({ icon, label, onPress }: { icon: LucideIcon; label: string; onPress?: () => void }) {
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
       onPress={onPress}
-      style={({ pressed }) => [styles.row, pressed && { backgroundColor: colors.canvas }]}
+      style={({ pressed }) => [tw`flex-row items-center gap-4 px-4 py-3`, pressed && tw`bg-subtle`]}
     >
-      <View style={styles.tile}>
-        <Glyph size={22} color={colors.ink} strokeWidth={2} />
+      <View style={tw`w-10 h-10 rounded-xl bg-primary-tint items-center justify-center`}>
+        <Icon as={icon} size="lg" color="primary" />
       </View>
-      <Text style={styles.label}>{label}</Text>
-      <ChevronRight size={20} color={colors.muted} strokeWidth={2} />
+      <AppText style={tw`flex-1 text-15 font-medium text-ink`}>{label}</AppText>
+      <Icon as={ChevronRight} size="md" color="muted" />
     </Pressable>
   );
 }
 
-/** Groups rows on one surface with hairlines between them, not a box per row. */
+/** Groups rows in one bordered card with hairlines between them, not a box per row. */
 export function ProfileRowGroup({
   title,
   children,
@@ -34,16 +40,16 @@ export function ProfileRowGroup({
 }) {
   const rows = Children.toArray(children);
   return (
-    <View style={[styles.group, style]}>
+    <View style={[tw`gap-3`, style]}>
       {title ? (
-        <Text accessibilityRole="header" style={styles.title}>
+        <AppText variant="heading" accessibilityRole="header">
           {title}
-        </Text>
+        </AppText>
       ) : null}
-      <View style={styles.surface}>
+      <View style={tw`rounded-2xl bg-surface border border-border overflow-hidden`}>
         {rows.map((row, index) => (
           <Fragment key={index}>
-            {index > 0 ? <View style={styles.hairline} /> : null}
+            {index > 0 ? <View style={tw`ml-18 mr-4 h-px bg-track`} /> : null}
             {row}
           </Fragment>
         ))}
@@ -51,20 +57,3 @@ export function ProfileRowGroup({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  row: { flexDirection: "row", alignItems: "center", gap: 16, paddingHorizontal: 12, paddingVertical: 10 },
-  tile: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.canvas,
-  },
-  label: { flex: 1, fontSize: 16, color: colors.ink },
-  group: { gap: 12 },
-  title: { paddingHorizontal: 4, fontSize: 18, fontWeight: "700", color: colors.ink },
-  surface: { overflow: "hidden", borderRadius: 16, backgroundColor: colors.surface },
-  hairline: { marginLeft: 72, marginRight: 12, height: StyleSheet.hairlineWidth, backgroundColor: colors.border },
-});

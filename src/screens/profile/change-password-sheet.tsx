@@ -1,6 +1,6 @@
 import { useReverification, useUser } from "@clerk/expo";
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 
 import { Button } from "@/components/ui/button";
 import { Sheet } from "@/components/ui/sheet";
@@ -9,6 +9,7 @@ import { toast } from "@/components/ui/toast";
 import { type ClerkFailure, reportClerkError } from "@/screens/auth/clerk-errors";
 import { reportInvalid } from "@/screens/auth/report-invalid";
 import { validateNewPassword, validatePassword } from "@/screens/auth/validate";
+import { tw } from "@/theme";
 
 type Field = "current" | "next" | "confirm";
 
@@ -70,13 +71,13 @@ export function ChangePasswordSheet({ visible, onClose }: { visible: boolean; on
       onClose={close}
       title="Change password"
       footer={
-        <View style={styles.actions}>
-          <Button title="Cancel" variant="secondary" onPress={close} style={styles.action} />
-          <Button title="Save" loading={saving} onPress={save} style={styles.action} />
+        <View style={tw`flex-row gap-3`}>
+          <Button title="Cancel" variant="outline" onPress={close} style={tw`flex-1`} />
+          <Button title="Save" loading={saving} onPress={save} style={tw`flex-1`} />
         </View>
       }
     >
-      <View style={styles.fields}>
+      <View style={tw`gap-4`}>
         <TextField
           label="Current password"
           value={current}
@@ -111,9 +112,3 @@ export function ChangePasswordSheet({ visible, onClose }: { visible: boolean; on
     </Sheet>
   );
 }
-
-const styles = StyleSheet.create({
-  actions: { flexDirection: "row", gap: 12 },
-  action: { flex: 1 },
-  fields: { gap: 16 },
-});

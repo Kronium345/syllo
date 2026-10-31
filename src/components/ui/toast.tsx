@@ -1,35 +1,39 @@
 import { CircleAlert, CircleCheck, Info, type LucideIcon } from "lucide-react-native";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Toast, { type ToastConfig, type ToastConfigParams } from "react-native-toast-message";
 
-// Ported from havenly. Placeholder colors until the design system exists
-// (prompts/01-design-system.md); then these become theme tokens.
+import { type ColorToken, tw } from "@/theme";
+
+import { Icon } from "./icon";
+import { AppText } from "./text";
+
+// Ported from havenly. Not in the design: a white card with the design's border,
+// rounded-2xl and custom-shadow, and a tinted icon badge per tone.
 
 const VISIBILITY_MS = 3500;
 
-const tones: Record<"success" | "error" | "info", { tint: string; color: string; icon: LucideIcon }> = {
-  success: { tint: "#DCFCE7", color: "#16A34A", icon: CircleCheck },
-  error: { tint: "#FEE2E2", color: "#DC2626", icon: CircleAlert },
-  info: { tint: "#DBEAFE", color: "#208AEF", icon: Info },
+const tones: Record<"success" | "error" | "info", { tint: string; color: ColorToken; icon: LucideIcon }> = {
+  success: { tint: "bg-success-tint", color: "success-deep", icon: CircleCheck },
+  error: { tint: "bg-danger-tint", color: "danger-deep", icon: CircleAlert },
+  info: { tint: "bg-primary-tint", color: "primary", icon: Info },
 };
 
 function ToastCard({ type, text1, text2 }: ToastConfigParams<unknown> & { type: keyof typeof tones }) {
   const tone = tones[type];
-  const Glyph = tone.icon;
   return (
     <Pressable
       accessibilityRole="alert"
       accessibilityLabel={[text1, text2].filter(Boolean).join(" ")}
       onPress={() => Toast.hide()}
-      style={styles.card}
+      style={tw`mx-4 self-stretch flex-row items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3 shadow-card`}
     >
-      <View style={[styles.badge, { backgroundColor: tone.tint }]}>
-        <Glyph size={20} color={tone.color} strokeWidth={2} />
+      <View style={tw.style("w-8 h-8 rounded-full items-center justify-center", tone.tint)}>
+        <Icon as={tone.icon} size="lg" color={tone.color} />
       </View>
-      <View style={styles.text}>
-        {text1 ? <Text style={styles.title}>{text1}</Text> : null}
-        {text2 ? <Text style={styles.message}>{text2}</Text> : null}
+      <View style={tw`flex-1 gap-0.5`}>
+        {text1 ? <AppText variant="callout-strong">{text1}</AppText> : null}
+        {text2 ? <AppText variant="caption">{text2}</AppText> : null}
       </View>
     </Pressable>
   );
@@ -57,24 +61,3 @@ export const toast = {
   info: show("info"),
   hide: () => Toast.hide(),
 };
-
-const styles = StyleSheet.create({
-  card: {
-    marginHorizontal: 16,
-    alignSelf: "stretch",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
-    backgroundColor: "#FFFFFF",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    boxShadow: "0 6px 16px rgba(16, 19, 28, 0.12)",
-  },
-  badge: { width: 32, height: 32, borderRadius: 16, alignItems: "center", justifyContent: "center" },
-  text: { flex: 1, gap: 2 },
-  title: { fontSize: 15, lineHeight: 20, fontWeight: "600", color: "#0B0B1A" },
-  message: { fontSize: 13, lineHeight: 18, color: "#6B7280" },
-});

@@ -1,8 +1,11 @@
 import { Eye, EyeOff } from "lucide-react-native";
 import { type ComponentRef, type Ref, useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, type TextInputProps, View } from "react-native";
+import { Pressable, TextInput, type TextInputProps, View } from "react-native";
 
-import { colors } from "./placeholder-colors";
+import { color, tw } from "@/theme";
+
+import { Icon } from "./icon";
+import { AppText } from "./text";
 
 export type TextInputRef = ComponentRef<typeof TextInput>;
 
@@ -14,21 +17,41 @@ type TextFieldProps = TextInputProps & {
   ref?: Ref<TextInputRef>;
 };
 
-/** Labelled text input. Password fields get havenly's eye toggle. Placeholder styles. */
-export function TextField({ label, error, ref, style, secureTextEntry, ...input }: TextFieldProps) {
-  // Password fields start hidden; the eye button reveals them.
+/**
+ * Labelled text input in the design's field style (Explore's search field: subtle fill,
+ * hairline border, rounded-2xl, primary ring on focus). Password fields get an eye toggle.
+ * Forms aren't in the design, so the label sizing is estimated (caption-strong).
+ */
+export function TextField({ label, error, ref, style, secureTextEntry, onFocus, onBlur, ...input }: TextFieldProps) {
   const [hidden, setHidden] = useState(true);
+  const [focused, setFocused] = useState(false);
   return (
-    <View style={styles.field}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={[styles.inputRow, error ? styles.inputError : null]}>
+    <View style={tw`gap-2`}>
+      <AppText variant="caption-strong">{label}</AppText>
+      <View
+        style={[
+          tw.style("flex-row items-center gap-3 bg-subtle border rounded-2xl px-4", error ? "border-danger" : "border-border"),
+          focused && !error && tw`shadow-focus`,
+        ]}
+      >
         <TextInput
           ref={ref}
           accessibilityLabel={label}
           accessibilityHint={error}
-          placeholderTextColor={colors.placeholder}
+          placeholderTextColor={color("placeholder")}
+          selectionColor={color("primary")}
+          cursorColor={color("primary")}
           secureTextEntry={secureTextEntry && hidden}
-          style={[styles.input, style]}
+          onFocus={(event) => {
+            setFocused(true);
+            onFocus?.(event);
+          }}
+          onBlur={(event) => {
+            setFocused(false);
+            onBlur?.(event);
+          }}
+          // outlineWidth 0: no browser focus ring on web; the field draws its own.
+          style={[tw`flex-1 py-3.5 text-15 text-ink`, { outlineWidth: 0 }, style]}
           {...input}
         />
         {secureTextEntry ? (
@@ -38,28 +61,10 @@ export function TextField({ label, error, ref, style, secureTextEntry, ...input 
             hitSlop={8}
             onPress={() => setHidden((value) => !value)}
           >
-            {hidden ? <EyeOff size={20} color={colors.muted} /> : <Eye size={20} color={colors.muted} />}
+            <Icon as={hidden ? EyeOff : Eye} size="lg" color="muted" />
           </Pressable>
         ) : null}
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  field: { gap: 6 },
-  label: { fontWeight: "500", color: colors.ink },
-  inputRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    borderWidth: 1,
-    borderColor: "#D1D5DB",
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    backgroundColor: colors.surface,
-  },
-  // outlineWidth 0: no browser focus ring on web; the row draws the border.
-  input: { flex: 1, paddingVertical: 12, fontSize: 16, color: colors.ink, outlineWidth: 0 },
-  inputError: { borderColor: colors.danger },
-});
