@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { ScrollView, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
+import { OptionCard } from "@/components/ui/option-card";
 import { StickyFooter } from "@/components/ui/sticky-footer";
 import { AppText } from "@/components/ui/text";
 import { GOALS } from "@/lib/onboarding/options";
@@ -9,7 +10,6 @@ import { onboarding, useOnboardingAnswers } from "@/lib/onboarding/store";
 import { tw } from "@/theme";
 
 import { OnboardingHeader } from "./onboarding-header";
-import { OptionCard } from "./option-card";
 
 /** goal_selection_quiz (step 1/6): one primary goal. */
 export function GoalScreen() {

@@ -18,6 +18,7 @@ import {
   useOffering,
   usePurchasePackage,
   useRestorePurchases,
+  useSyncPremium,
 } from "@/lib/queries/purchases";
 import { color, pressScale, tw } from "@/theme";
 
@@ -32,13 +33,24 @@ function annualSavings(annual: PurchasesPackage, monthly: PurchasesPackage): num
   return yearOfMonthly > 0 ? Math.round((1 - annual.product.price / yearOfMonthly) * 100) : 0;
 }
 
-/** Signing up is free; the paywall's close and a finished purchase both continue to it. */
-function continueToSignUp() {
-  router.push("/sign-up");
-}
+/**
+ * premium_paywall: Pro Monthly or Annual through RevenueCat.
+ * - `onboarding` (step 5/6, signed out): close and a finished purchase continue to the free sign-up.
+ * - `upgrade` (`/premium`, signed in, e.g. at the quiz limit): close goes back; a purchase or
+ *   restore first asks the server to re-read Pro status (premium-sync), then goes back.
+ */
+export function PaywallScreen({ mode = "onboarding" }: { mode?: "onboarding" | "upgrade" }) {
+  const sync = useSyncPremium();
+  const leave = () => {
+    if (mode === "onboarding") router.push("/sign-up");
+    else if (router.canGoBack()) router.back();
+    else router.replace("/home");
+  };
+  const unlocked = () => {
+    if (mode === "upgrade") sync.mutate(undefined, { onSettled: leave });
+    else leave();
+  };
 
-/** premium_paywall (step 5/6): Pro Monthly or Annual through RevenueCat, then sign-up. */
-export function PaywallScreen() {
   const closeTop = useTopPadding(48);
   const offering = useOffering();
   const purchase = usePurchasePackage();
@@ -53,15 +65,18 @@ export function PaywallScreen() {
   const subscribe = () => {
     if (!purchasesSupported) {
       toast.info("Subscribe in the app", "Subscriptions are available in the iOS and Android app.");
-      continueToSignUp();
+      if (mode === "onboarding") leave();
       return;
     }
     if (!selected) return;
     purchase.mutate(selected, {
       onSuccess: (purchased) => {
         if (!purchased) return; // Cancelled: stay here, no message.
-        toast.success("You're Premium!", "Now create your free account to start learning.");
-        continueToSignUp();
+        toast.success(
+          "You're Premium!",
+          mode === "onboarding" ? "Now create your free account to start learning." : "Unlimited quizzes are unlocked.",
+        );
+        unlocked();
       },
       onError: () => toast.error("Couldn't complete the purchase.", "You haven't been charged. Please try again."),
     });
@@ -73,10 +88,14 @@ export function PaywallScreen() {
       return;
     }
     restore.mutate(undefined, {
-      onSuccess: (premium) =>
-        premium
-          ? toast.success("Purchases restored.", "Premium is active on this account.")
-          : toast.info("Nothing to restore.", "No earlier Premium purchase was found."),
+      onSuccess: (premium) => {
+        if (!premium) {
+          toast.info("Nothing to restore.", "No earlier Premium purchase was found.");
+          return;
+        }
+        toast.success("Purchases restored.", "Premium is active on this account.");
+        if (mode === "upgrade") unlocked();
+      },
       onError: () => toast.error("Couldn't restore purchases.", "Check your connection and try again."),
     });
   };
@@ -96,7 +115,7 @@ export function PaywallScreen() {
             icon={X}
             variant="close"
             accessibilityLabel="Not now"
-            onPress={continueToSignUp}
+            onPress={leave}
             style={[tw`absolute right-6`, { top: closeTop }]}
           />
         </View>
@@ -170,7 +189,7 @@ export function PaywallScreen() {
       <StickyFooter>
         <Button
           title="Subscribe Now"
-          loading={purchase.isPending}
+          loading={purchase.isPending || sync.isPending}
           disabled={purchasesSupported && !selected}
           onPress={subscribe}
           style={tw`mb-4`}

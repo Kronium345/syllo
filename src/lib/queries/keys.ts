@@ -28,6 +28,13 @@ export const queryKeys = {
     all: ["profiles"] as const,
     me: (userId: string | null | undefined) => [...queryKeys.profiles.all, "me", userId ?? null] as const,
   },
+  quizzes: {
+    all: ["quizzes"] as const,
+    start: (quizId: string) => [...queryKeys.quizzes.all, "start", quizId] as const,
+    sessionsLeft: () => [...queryKeys.quizzes.all, "sessions-left"] as const,
+    attempt: (attemptId: string) => [...queryKeys.quizzes.all, "attempt", attemptId] as const,
+    flags: () => [...queryKeys.quizzes.all, "flags"] as const,
+  },
   purchases: {
     all: ["purchases"] as const,
     offering: () => [...queryKeys.purchases.all, "offering"] as const,

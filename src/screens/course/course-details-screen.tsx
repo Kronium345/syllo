@@ -189,6 +189,7 @@ function CourseBody({ course }: { course: CourseDetails }) {
                 isEnrolled={course.isEnrolled}
                 completed={completed}
                 onOpenLesson={(lesson) => openLesson(lesson.id)}
+                onOpenQuiz={(quizId) => router.push({ pathname: "/quiz/[id]", params: { id: quizId } })}
                 onLocked={() => toast.info("Enroll to unlock", "Enrolling is free.")}
               />
             ))}

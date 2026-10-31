@@ -22,7 +22,8 @@ import { showBanner } from "@/lib/notifications/banner";
 import { GOALS, INTERESTS } from "@/lib/onboarding/options";
 import { InterestCard } from "@/screens/onboarding/interest-card";
 import { OnboardingHeader } from "@/screens/onboarding/onboarding-header";
-import { OptionCard } from "@/screens/onboarding/option-card";
+import { AnswerCard } from "@/screens/quiz/answer-card";
+import { OptionCard } from "@/components/ui/option-card";
 import { type ColorToken, type TextVariant, tw } from "@/theme";
 
 const COLORS: ColorToken[] = [
@@ -243,6 +244,13 @@ export function DesignSystemScreen() {
             <InterestCard icon={INTERESTS[0].icon} label={INTERESTS[0].label} selected onPress={() => {}} />
             <InterestCard icon={INTERESTS[1].icon} label={INTERESTS[1].label} selected={false} onPress={() => {}} />
           </View>
+        </Section>
+
+        <Section title="Quiz answers">
+          <AnswerCard letter="A" text="Idle answer" state="idle" />
+          <AnswerCard letter="B" text="Correct answer" state="correct" />
+          <AnswerCard letter="C" text="Wrong pick" state="wrong" />
+          <AnswerCard letter="D" text="Other answers after grading" state="dimmed" />
         </Section>
 
         <Section title="Notifications">

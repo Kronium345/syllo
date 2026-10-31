@@ -31,8 +31,9 @@ const DESIGN_TOKEN_SELECTORS = [
 module.exports = defineConfig([
   expoConfig,
   {
-    // Agent/editor tooling isn't app code (same folders .easignore keeps out of EAS uploads).
-    ignores: ['dist/*', '.agents/*', '.argent/*', '.claude/*', '.cursor/*', '.vscode/*'],
+    // Agent/editor tooling isn't app code (same folders .easignore keeps out of EAS uploads);
+    // Edge Functions are Deno code, deployed separately.
+    ignores: ['dist/*', '.agents/*', '.argent/*', '.claude/*', '.cursor/*', '.vscode/*', 'supabase/functions/*'],
   },
   {
     // No raw colours or font styles anywhere in the app; the theme is the only place for them.

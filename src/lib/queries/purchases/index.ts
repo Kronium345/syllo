@@ -5,3 +5,4 @@ export { useOffering } from "./use-offering";
 export { usePremium } from "./use-premium";
 export { usePurchasePackage } from "./use-purchase-package";
 export { useRestorePurchases } from "./use-restore-purchases";
+export { useSyncPremium } from "./use-sync-premium";

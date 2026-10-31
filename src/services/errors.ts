@@ -7,3 +7,11 @@ export class NotAllowedError extends Error {
     this.name = "NotAllowedError";
   }
 }
+
+/** The free quiz limit is used up (start_quiz_attempt raises P0002); Pro removes it. */
+export class QuizLimitError extends Error {
+  constructor(message = "You've used today's 3 free quizzes.") {
+    super(message);
+    this.name = "QuizLimitError";
+  }
+}

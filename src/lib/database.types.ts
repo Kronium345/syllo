@@ -248,6 +248,32 @@ export type Database = {
           },
         ]
       }
+      premium_entitlements: {
+        Row: {
+          expires_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          expires_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          expires_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "premium_entitlements_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -402,6 +428,39 @@ export type Database = {
           },
         ]
       }
+      quiz_attempt_questions: {
+        Row: {
+          attempt_id: string
+          position: number
+          question_id: string
+        }
+        Insert: {
+          attempt_id: string
+          position: number
+          question_id: string
+        }
+        Update: {
+          attempt_id?: string
+          position?: number
+          question_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_attempt_questions_attempt_id_fkey"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_attempt_questions_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quiz_attempts: {
         Row: {
           correct_count: number
@@ -410,6 +469,7 @@ export type Database = {
           quiz_id: string
           skipped_count: number
           started_at: string
+          timed: boolean
           total_questions: number
           user_id: string
           wrong_count: number
@@ -421,6 +481,7 @@ export type Database = {
           quiz_id: string
           skipped_count?: number
           started_at?: string
+          timed?: boolean
           total_questions: number
           user_id?: string
           wrong_count?: number
@@ -432,6 +493,7 @@ export type Database = {
           quiz_id?: string
           skipped_count?: number
           started_at?: string
+          timed?: boolean
           total_questions?: number
           user_id?: string
           wrong_count?: number
@@ -585,6 +647,7 @@ export type Database = {
           quiz_id: string
           skipped_count: number
           started_at: string
+          timed: boolean
           total_questions: number
           user_id: string
           wrong_count: number
@@ -596,8 +659,13 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      quiz_sessions_left: { Args: never; Returns: number }
       start_quiz_attempt: {
-        Args: { p_quiz_id: string }
+        Args: {
+          p_question_count?: number
+          p_quiz_id: string
+          p_timed?: boolean
+        }
         Returns: {
           correct_count: number
           finished_at: string | null
@@ -605,6 +673,7 @@ export type Database = {
           quiz_id: string
           skipped_count: number
           started_at: string
+          timed: boolean
           total_questions: number
           user_id: string
           wrong_count: number

@@ -3,7 +3,6 @@ import { Pressable, View } from "react-native";
 
 import { Icon } from "@/components/ui/icon";
 import { AppText } from "@/components/ui/text";
-import { featureComingSoon } from "@/lib/coming-soon";
 import { isLocked } from "@/lib/course-outline";
 import { formatClock } from "@/lib/format-duration";
 import type { ChapterOutline, LessonOutline } from "@/lib/queries/courses";
@@ -18,6 +17,7 @@ export function ChapterSection({
   isEnrolled,
   completed,
   onOpenLesson,
+  onOpenQuiz,
   onLocked,
 }: {
   chapter: ChapterOutline;
@@ -27,6 +27,7 @@ export function ChapterSection({
   isEnrolled: boolean;
   completed: ReadonlySet<string>;
   onOpenLesson: (lesson: LessonOutline) => void;
+  onOpenQuiz: (quizId: string) => void;
   onLocked: () => void;
 }) {
   return (
@@ -71,23 +72,28 @@ export function ChapterSection({
               </Pressable>
             );
           })}
-          {chapter.quizzes.map((quiz) => (
-            <Pressable
-              key={quiz.id}
-              accessibilityRole="button"
-              accessibilityLabel={`${quiz.title || "Chapter quiz"}, quiz`}
-              onPress={() => featureComingSoon("Quizzes")}
-              style={({ pressed }) => [tw`flex-row items-center gap-4`, { opacity: pressed ? 0.7 : 1 }]}
-            >
-              <View style={tw`w-8 h-8 rounded-lg bg-primary-soft items-center justify-center`}>
-                <Icon as={ListChecks} size="sm" color="primary" />
-              </View>
-              <View style={tw`flex-1`}>
-                <AppText style={tw`text-14 font-medium text-ink`}>{quiz.title || "Chapter quiz"}</AppText>
-                <AppText variant="footnote">Quiz</AppText>
-              </View>
-            </Pressable>
-          ))}
+          {chapter.quizzes.map((quiz) => {
+            const locked = !isEnrolled && !quiz.isPreview;
+            const detail = !locked && quiz.questionCount > 0 ? `Quiz · ${quiz.questionCount} questions` : "Quiz";
+            return (
+              <Pressable
+                key={quiz.id}
+                accessibilityRole="button"
+                accessibilityLabel={`${quiz.title || "Chapter quiz"}, ${detail}${locked ? ", locked" : ""}`}
+                onPress={() => (locked ? onLocked() : onOpenQuiz(quiz.id))}
+                style={({ pressed }) => [tw`flex-row items-center gap-4`, { opacity: pressed ? 0.7 : 1 }]}
+              >
+                <View style={tw`w-8 h-8 rounded-lg bg-primary-soft items-center justify-center`}>
+                  <Icon as={ListChecks} size="sm" color="primary" />
+                </View>
+                <View style={tw`flex-1`}>
+                  <AppText style={tw`text-14 font-medium text-ink`}>{quiz.title || "Chapter quiz"}</AppText>
+                  <AppText variant="footnote">{detail}</AppText>
+                </View>
+                {locked ? <Icon as={Lock} size="md" color="faint" /> : null}
+              </Pressable>
+            );
+          })}
           {chapter.lessons.length === 0 && chapter.quizzes.length === 0 ? (
             <AppText variant="footnote">Nothing in this chapter yet.</AppText>
           ) : null}

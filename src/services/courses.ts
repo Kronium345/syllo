@@ -98,7 +98,8 @@ export type ChapterOutline = {
   title: string;
   position: number;
   lessons: LessonOutline[];
-  quizzes: { id: string; title: string }[];
+  /** `questionCount` is 0 while the quiz is locked (RLS hides its questions). */
+  quizzes: { id: string; title: string; isPreview: boolean; questionCount: number }[];
 };
 export type CourseDetails = {
   id: string;
@@ -123,7 +124,7 @@ type DetailsRow = {
     title: string;
     position: number;
     lessons: { id: string; title: string; position: number; duration_seconds: number; is_preview: boolean }[];
-    quizzes: { id: string; title: string }[];
+    quizzes: { id: string; title: string; is_preview: boolean; quiz_questions: { count: number }[] }[];
   }[];
   enrollments: { id: string }[];
 };
@@ -143,7 +144,7 @@ export async function getCourseDetails(
     .from("courses")
     .select(
       "id, slug, title, description, cover_image_url, tutors(id, name, headline, avatar_url), " +
-        "chapters(id, title, position, lessons(id, title, position, duration_seconds, is_preview), quizzes(id, title)), " +
+        "chapters(id, title, position, lessons(id, title, position, duration_seconds, is_preview), quizzes(id, title, is_preview, quiz_questions(count))), " +
         "enrollments(id)",
     )
     .eq("id", courseId);
@@ -170,7 +171,12 @@ export async function getCourseDetails(
         durationSeconds: lesson.duration_seconds,
         isPreview: lesson.is_preview,
       })),
-      quizzes: chapter.quizzes,
+      quizzes: chapter.quizzes.map((quiz) => ({
+        id: quiz.id,
+        title: quiz.title,
+        isPreview: quiz.is_preview,
+        questionCount: quiz.quiz_questions[0]?.count ?? 0,
+      })),
     })),
     isEnrolled: row.enrollments.length > 0,
   };
