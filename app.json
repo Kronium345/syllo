@@ -8,7 +8,10 @@
     "scheme": "syllo",
     "userInterfaceStyle": "dark",
     "ios": {
-      "bundleIdentifier": "com.kronium.syllo"
+      "bundleIdentifier": "com.kronium.syllo",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -17,7 +20,10 @@
         "monochromeImage": "./assets/images/android-adaptive-foreground.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.kronium.syllo"
+      "package": "com.kronium.syllo",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "output": "server",
@@ -54,6 +60,16 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "9bf9c253-c5b7-45bc-946c-51d8b6556a4e"
+      }
     }
   }
 }
