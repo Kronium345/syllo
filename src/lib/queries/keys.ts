@@ -34,6 +34,7 @@ export const queryKeys = {
     sessionsLeft: () => [...queryKeys.quizzes.all, "sessions-left"] as const,
     attempt: (attemptId: string) => [...queryKeys.quizzes.all, "attempt", attemptId] as const,
     flags: () => [...queryKeys.quizzes.all, "flags"] as const,
+    unfinished: () => [...queryKeys.quizzes.all, "unfinished"] as const,
   },
   purchases: {
     all: ["purchases"] as const,

@@ -244,3 +244,20 @@ export async function setFlag(supabase: AppSupabaseClient, questionId: string, f
     if ((error as { code?: string }).code !== "23505") throw error;
   }
 }
+
+export type UnfinishedAttempt = { attemptId: string; quizTitle: string };
+
+/** The learner's quiz attempts that were started but not finished, newest first (study reminders). */
+export async function getUnfinishedAttempts(supabase: AppSupabaseClient, signal?: AbortSignal): Promise<UnfinishedAttempt[]> {
+  const query = supabase
+    .from("quiz_attempts")
+    .select("id, quizzes(title)")
+    .is("finished_at", null)
+    .order("started_at", { ascending: false })
+    .limit(20);
+  const { data } = await (signal ? query.abortSignal(signal) : query).throwOnError();
+  return (data as unknown as { id: string; quizzes: { title: string } | null }[]).map((row) => ({
+    attemptId: row.id,
+    quizTitle: row.quizzes?.title ?? "quiz",
+  }));
+}

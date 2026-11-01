@@ -19,6 +19,7 @@ import { featureComingSoon } from "@/lib/coming-soon";
 import { nextLesson } from "@/lib/course-outline";
 import { displayFirstName, profileImageUrl } from "@/lib/display-name";
 import { greeting } from "@/lib/format-duration";
+import { useAskNotificationsOnce } from "@/lib/notifications/use-study-reminders";
 import { categoriesFor } from "@/lib/onboarding/options";
 import { type CourseCard, useCourseDetails, useCourseFeed } from "@/lib/queries/courses";
 import { useLatestEnrollment } from "@/lib/queries/enrollments";
@@ -30,6 +31,8 @@ import { RecommendedCard } from "./recommended-card";
 
 /** learning_dashboard: greeting, continue card, recommendations and learning stats. */
 export function HomeScreen() {
+  // Study reminders (prompts/12): ask for notification permission the first time Home opens.
+  useAskNotificationsOnce();
   const { user } = useUser();
   const paddingTop = useTopPadding(56);
   const feed = useCourseFeed();

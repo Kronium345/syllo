@@ -1,6 +1,6 @@
 import { Redirect, router, useLocalSearchParams } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import { Bookmark, ExternalLink, Lightbulb, Timer, X } from "lucide-react-native";
+import { Bookmark, ExternalLink, Lightbulb, Timer, Trophy, X } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 
@@ -22,6 +22,8 @@ import {
   useFlags,
   useSetFlag,
 } from "@/lib/queries/quizzes";
+import { showBanner } from "@/lib/notifications/banner";
+import { POINTS_PER_CORRECT } from "@/lib/quiz/points";
 import { answerLetter, seededShuffle } from "@/lib/quiz/shuffle";
 import { color, tw } from "@/theme";
 
@@ -91,11 +93,24 @@ function Player({ attempt }: { attempt: Attempt }) {
     );
   };
 
+  // mutateAsync, not mutate's per-call callbacks: finishing refetches the attempt, and the
+  // finished attempt redirects this screen to results before those callbacks would run (TanStack
+  // Query skips them once the component has unmounted). The promise still settles.
   const toResults = () =>
-    finish.mutate(attempt.id, {
-      onSuccess: () => router.replace({ pathname: "/attempt/[id]/results", params: { id: attempt.id } }),
-      onError: () => toast.error("Couldn't finish the quiz.", "Check your connection and try again."),
-    });
+    finish.mutateAsync(attempt.id).then(
+      () => {
+        // The Dynamic Island banner celebrates the finish over the results screen. The
+        // cached attempt already counts every graded answer (useAnswerQuestion).
+        const correct = Object.values(attempt.given).filter((given) => given.isCorrect).length;
+        showBanner({
+          title: "Quiz complete",
+          message: `${correct}/${attempt.total} correct · +${correct * POINTS_PER_CORRECT} points`,
+          icon: Trophy,
+        });
+        router.replace({ pathname: "/attempt/[id]/results", params: { id: attempt.id } });
+      },
+      () => toast.error("Couldn't finish the quiz.", "Check your connection and try again."),
+    );
 
   // The timer: 15s per unanswered question; running out submits a skip.
   const [tick, setTick] = useState({ questionId: question.id, left: QUESTION_SECONDS });

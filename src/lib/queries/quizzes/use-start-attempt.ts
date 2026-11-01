@@ -15,6 +15,8 @@ export function useStartAttempt() {
       Promise.all([
         queryClient.invalidateQueries({ queryKey: queryKeys.quizzes.sessionsLeft() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.quizzes.start(vars.quizId) }),
+        // A new unfinished attempt changes the study reminders.
+        queryClient.invalidateQueries({ queryKey: queryKeys.quizzes.unfinished() }),
       ]),
   });
 }

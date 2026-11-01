@@ -8,10 +8,9 @@ import { StickyFooter } from "@/components/ui/sticky-footer";
 import { AppText } from "@/components/ui/text";
 import { useTopPadding } from "@/components/ui/use-top-padding";
 import { useAttempt } from "@/lib/queries/quizzes";
+import { POINTS_PER_CORRECT } from "@/lib/quiz/points";
 import { color, type ColorToken, tw } from "@/theme";
 
-/** Points per correct answer, as in the older app (computed, not stored). */
-const POINTS_PER_CORRECT = 10;
 
 /** Quiz results (prompts/09; not in the prototype, built in its style). */
 export function QuizResultsScreen() {

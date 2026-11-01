@@ -18,7 +18,10 @@ import { SearchField } from "@/components/ui/search-field";
 import { StickyFooter } from "@/components/ui/sticky-footer";
 import { AppText } from "@/components/ui/text";
 import { TextField } from "@/components/ui/text-field";
+import { toast } from "@/components/ui/toast";
 import { showBanner } from "@/lib/notifications/banner";
+import { requestPermission } from "@/lib/notifications/local";
+import { scheduleTestStudyReminder } from "@/lib/notifications/study-reminders";
 import { GOALS, INTERESTS } from "@/lib/onboarding/options";
 import { InterestCard } from "@/screens/onboarding/interest-card";
 import { OnboardingHeader } from "@/screens/onboarding/onboarding-header";
@@ -258,6 +261,19 @@ export function DesignSystemScreen() {
             title="Show test banner"
             variant="outline"
             onPress={() => showBanner({ title: "Lesson unlocked", message: "Chapter 2 is ready for you." })}
+          />
+          <Button
+            title="Test study reminder (10s)"
+            variant="outline"
+            onPress={() =>
+              requestPermission()
+                .then((granted) =>
+                  granted
+                    ? scheduleTestStudyReminder().then(() => toast.info("Reminder in 10 seconds", "Leave the app to see it."))
+                    : toast.info("Notifications are off for Syllo"),
+                )
+                .catch(() => toast.error("Couldn't schedule the test reminder."))
+            }
           />
         </Section>
       </ScrollView>

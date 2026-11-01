@@ -45,3 +45,6 @@ example
 
 # EAS Metadata (App Store listing + App Review contact and demo login): local only, never committed.
 store.config.json
+
+# Argent test credentials (typed into the app via {{secret:NAME}} placeholders): local only.
+.argent/secrets.env

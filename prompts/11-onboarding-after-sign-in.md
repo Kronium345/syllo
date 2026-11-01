@@ -1,6 +1,6 @@
 # 11 · Onboarding after sign-in, gated on the profile row
 
-Status: built (type check and lint pending: the PC ran out of memory)
+Status: done
 
 ## Goal
 Onboarding runs after sign-in and ends by writing the learner's answers to their `profiles` row. The signed-in layout sends anyone without a profile row to onboarding, and anyone with one straight to the app.
@@ -92,4 +92,5 @@ Onboarding runs after sign-in and ends by writing the learner's answers to their
   - Welcome → `/sign-up`.
   - Header `n/5`, and no back button on Goal (a spacer keeps the bar in place).
 - **Typed routes:** regenerated; `/onboarding/paywall` is present and `/paywall` is gone.
-- **Not verified:** `npx tsc --noEmit` and `npx expo lint`, which ran out of memory (exit 134; Windows commit memory dropped to 34 MB). The Expo Go flow also hasn't been run.
+- **Checks:** `npx tsc --noEmit` and `npx expo lint` pass (rerun later with a 3 GB heap; the first try ran out of memory).
+- **Device test:** Argent on an Android dev build (SM-S942B). Sign-up → Goal 1/5 (no back) → Interests → Insight → Testimonials → paywall (Test Store plans) → close → Home. The row was created only at the paywall close. Relaunch went straight to Home, and `syllo://onboarding/goal` stayed on Home.
