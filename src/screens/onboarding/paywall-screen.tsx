@@ -1,3 +1,4 @@
+import { useUser } from "@clerk/expo";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import { Check, Clock, X } from "lucide-react-native";
@@ -20,6 +21,9 @@ import {
   useRestorePurchases,
   useSyncPremium,
 } from "@/lib/queries/purchases";
+import { profileImageUrl } from "@/lib/display-name";
+import { onboarding } from "@/lib/onboarding/store";
+import { useCompleteOnboarding } from "@/lib/queries/profiles";
 import { color, pressScale, tw } from "@/theme";
 
 // Pro features (the user's list, replacing the prototype's three rows).
@@ -34,15 +38,41 @@ function annualSavings(annual: PurchasesPackage, monthly: PurchasesPackage): num
 }
 
 /**
- * premium_paywall: Pro Monthly or Annual through RevenueCat.
- * - `onboarding` (step 5/6, signed out): close and a finished purchase continue to the free sign-up.
- * - `upgrade` (`/premium`, signed in, e.g. at the quiz limit): close goes back; a purchase or
- *   restore first asks the server to re-read Pro status (premium-sync), then goes back.
+ * premium_paywall: Pro Monthly or Annual through RevenueCat. Both modes are signed in.
+ * - `onboarding` (the last onboarding step, 5/5): close or a finished purchase finishes
+ *   onboarding: it creates the profile row with the answers (prompts/11), which flips the
+ *   (app) layout's gate to Home, then asks the server to store Pro status (premium-sync
+ *   couldn't before the row existed).
+ * - `upgrade` (`/premium`, e.g. at the quiz limit): close goes back; a purchase or restore
+ *   first asks the server to re-read Pro status, then goes back.
  */
 export function PaywallScreen({ mode = "onboarding" }: { mode?: "onboarding" | "upgrade" }) {
+  const { user } = useUser();
   const sync = useSyncPremium();
+  const complete = useCompleteOnboarding();
+
+  const finishOnboarding = () => {
+    if (!user || complete.isPending) return;
+    const answers = onboarding.get();
+    complete.mutate(
+      {
+        id: user.id,
+        full_name: user.fullName?.trim() || null,
+        avatar_url: profileImageUrl(user) ?? null,
+        goal: answers.goal,
+        interests: answers.interests,
+      },
+      {
+        onSuccess: () => {
+          onboarding.reset();
+          sync.mutate(undefined, { onError: (error) => console.warn("premium-sync failed:", error.message) });
+        },
+        onError: () => toast.error("Couldn't finish setting up.", "Check your connection and try again."),
+      },
+    );
+  };
   const leave = () => {
-    if (mode === "onboarding") router.push("/sign-up");
+    if (mode === "onboarding") finishOnboarding();
     else if (router.canGoBack()) router.back();
     else router.replace("/home");
   };
@@ -74,7 +104,7 @@ export function PaywallScreen({ mode = "onboarding" }: { mode?: "onboarding" | "
         if (!purchased) return; // Cancelled: stay here, no message.
         toast.success(
           "You're Premium!",
-          mode === "onboarding" ? "Now create your free account to start learning." : "Unlimited quizzes are unlocked.",
+          mode === "onboarding" ? "Welcome to Syllo Pro." : "Unlimited quizzes are unlocked.",
         );
         unlocked();
       },
@@ -189,7 +219,7 @@ export function PaywallScreen({ mode = "onboarding" }: { mode?: "onboarding" | "
       <StickyFooter>
         <Button
           title="Subscribe Now"
-          loading={purchase.isPending || sync.isPending}
+          loading={purchase.isPending || sync.isPending || complete.isPending}
           disabled={purchasesSupported && !selected}
           onPress={subscribe}
           style={tw`mb-4`}

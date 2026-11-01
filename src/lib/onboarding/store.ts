@@ -2,8 +2,8 @@ import { useSyncExternalStore } from "react";
 
 import type { GoalId, InterestId } from "./options";
 
-// The answers a signed-out visitor gives during onboarding, kept in memory until they've
-// signed up, then saved to their Supabase profile (useSaveOnboardingAnswers) and cleared.
+// The answers a learner gives during onboarding (after sign-in, prompts/11), kept in memory
+// until the last step creates their profile row with them (useCompleteOnboarding), then cleared.
 
 export type OnboardingAnswers = { goal: GoalId | null; interests: InterestId[] };
 

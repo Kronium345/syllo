@@ -42,3 +42,6 @@ example
 # generated native folders
 /ios
 /android
+
+# EAS Metadata (App Store listing + App Review contact and demo login): local only, never committed.
+store.config.json

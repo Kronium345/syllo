@@ -10,7 +10,7 @@ import { tw } from "@/theme";
 
 import { OnboardingHeader } from "./onboarding-header";
 
-/** educational_insight (step 3/6). */
+/** educational_insight (step 3/5). */
 export function InsightScreen() {
   return (
     <View style={tw`flex-1 bg-canvas`}>

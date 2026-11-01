@@ -6,7 +6,19 @@ import type { AppSupabaseClient } from "@/lib/supabase";
 
 export type ProfileRow = { id: string; full_name: string | null; avatar_url: string | null };
 
-/** Creates or updates the learner's own profile row (also used to restore it). */
+/** Keeps an existing profile row's name and photo in step with Clerk; no row, no change. */
+export async function updateProfile(supabase: AppSupabaseClient, profile: ProfileRow): Promise<void> {
+  await supabase
+    .from("profiles")
+    .update({ full_name: profile.full_name, avatar_url: profile.avatar_url })
+    .eq("id", profile.id)
+    .throwOnError();
+}
+
+/**
+ * Creates or replaces the learner's own profile row. Used only to restore it when account
+ * deletion stops after removing it; everything else must not create the row (prompts/11).
+ */
 export async function upsertProfile(supabase: AppSupabaseClient, profile: ProfileRow): Promise<void> {
   await supabase.from("profiles").upsert(profile).throwOnError();
 }
@@ -23,26 +35,32 @@ export type OnboardingProfile = {
 };
 
 /**
- * Saves the onboarding answers to the learner's own profile. An upsert on `id`, so it
- * works even before useSyncProfile has created the row.
+ * Finishes onboarding by creating the learner's profile row (prompts/11). The row's
+ * existence is what "onboarded" means, so only this inserts it. A row that already exists
+ * (e.g. finished on another device) counts as done.
  */
-export async function saveOnboarding(
+export async function completeOnboarding(
   supabase: AppSupabaseClient,
-  userId: string,
-  answers: { goal: string | null; interests: string[] },
+  profile: ProfileRow & { goal: string | null; interests: string[] },
 ): Promise<void> {
-  await supabase
-    .from("profiles")
-    .upsert({
-      id: userId,
-      onboarding_goal: answers.goal,
-      interests: answers.interests,
-      onboarding_completed_at: new Date().toISOString(),
-    })
-    .throwOnError();
+  try {
+    await supabase
+      .from("profiles")
+      .insert({
+        id: profile.id,
+        full_name: profile.full_name,
+        avatar_url: profile.avatar_url,
+        onboarding_goal: profile.goal,
+        interests: profile.interests,
+        onboarding_completed_at: new Date().toISOString(),
+      })
+      .throwOnError();
+  } catch (error) {
+    if ((error as { code?: string }).code !== "23505") throw error;
+  }
 }
 
-/** The learner's onboarding answers, or null before their profile row exists. */
+/** The learner's profile (onboarding answers), or null before onboarding has created the row. */
 export async function getMyProfile(
   supabase: AppSupabaseClient,
   userId: string,

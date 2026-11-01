@@ -14,7 +14,7 @@ import { OnboardingHeader } from "./onboarding-header";
 // Two tiles per row (`grid grid-cols-2 gap-3`).
 const ROWS = Array.from({ length: Math.ceil(INTERESTS.length / 2) }, (_, row) => INTERESTS.slice(row * 2, row * 2 + 2));
 
-/** interest_selection_quiz (step 2/6): at least three topics. */
+/** interest_selection_quiz (step 2/5): at least three topics. */
 export function InterestsScreen() {
   const { interests } = useOnboardingAnswers();
   return (

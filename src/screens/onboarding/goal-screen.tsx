@@ -11,12 +11,12 @@ import { tw } from "@/theme";
 
 import { OnboardingHeader } from "./onboarding-header";
 
-/** goal_selection_quiz (step 1/6): one primary goal. */
+/** goal_selection_quiz (step 1/5, the first screen after sign-up): one primary goal. */
 export function GoalScreen() {
   const { goal } = useOnboardingAnswers();
   return (
     <View style={tw`flex-1 bg-surface`}>
-      <OnboardingHeader step={1} />
+      <OnboardingHeader step={1} showBack={false} />
       <ScrollView style={tw`flex-1`} contentContainerStyle={tw`px-screen pb-6`}>
         <View style={tw`mb-8 mt-4`}>
           <AppText variant="title-xl" accessibilityRole="header" style={tw`mb-3`}>

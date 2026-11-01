@@ -28,7 +28,7 @@ const TESTIMONIALS = [
   },
 ];
 
-/** social_proof_testimonials (step 4/6). */
+/** social_proof_testimonials (step 4/5). */
 export function TestimonialsScreen() {
   return (
     <View style={tw`flex-1 bg-surface`}>
@@ -69,7 +69,7 @@ export function TestimonialsScreen() {
         </View>
       </ScrollView>
       <StickyFooter>
-        <Button title="Next" onPress={() => router.push("/paywall")} />
+        <Button title="Next" onPress={() => router.push("/onboarding/paywall")} />
       </StickyFooter>
     </View>
   );

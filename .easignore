@@ -60,3 +60,6 @@ skills-lock.json
 
 # Database as code (migrations, seed, CLI state): managed with the Supabase CLI, not part of app builds.
 supabase/
+
+# EAS Metadata (App Store listing + App Review contact and demo login): local only, never committed.
+store.config.json

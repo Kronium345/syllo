@@ -30,7 +30,8 @@ function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...cors, "Content-Type": "application/json" } });
 }
 
-type Sync = { userId: string; premium: boolean; expiresAt: string | null };
+/** `stored` is false when the learner has no profile row yet (still onboarding). */
+type Sync = { userId: string; premium: boolean; expiresAt: string | null; stored: boolean };
 
 /** Reads the subscriber from RevenueCat and writes (or clears) their entitlement row. */
 async function syncUser(userId: string): Promise<Sync> {
@@ -46,9 +47,13 @@ async function syncUser(userId: string): Promise<Sync> {
   const expiresAt = entitlement ? (entitlement.expires_date ?? null) : null;
   const premium = !!entitlement && (expiresAt === null || new Date(expiresAt).getTime() > Date.now());
 
+  // A profile row means "onboarded" (prompts/11), so this function never creates one. Before
+  // onboarding finishes there's nowhere to store the status; the app syncs again right after
+  // it inserts the row.
+  const { data: profile } = await admin.from("profiles").select("id").eq("id", userId).maybeSingle().throwOnError();
+  if (!profile) return { userId, premium, expiresAt, stored: false };
+
   if (entitlement) {
-    // The row references profiles; the app normally creates the profile first.
-    await admin.from("profiles").upsert({ id: userId }, { onConflict: "id", ignoreDuplicates: true }).throwOnError();
     await admin
       .from("premium_entitlements")
       .upsert({ user_id: userId, expires_at: expiresAt, updated_at: new Date().toISOString() })
@@ -56,7 +61,7 @@ async function syncUser(userId: string): Promise<Sync> {
   } else {
     await admin.from("premium_entitlements").delete().eq("user_id", userId).throwOnError();
   }
-  return { userId, premium, expiresAt };
+  return { userId, premium, expiresAt, stored: true };
 }
 
 /** Clerk user ids mentioned in a RevenueCat webhook event (anonymous ids are skipped). */

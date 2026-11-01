@@ -16,7 +16,7 @@ const LEARNERS = [
   require("@/assets/images/onboarding/avatar-3.png"),
 ];
 
-/** welcome_onboarding: the first screen signed-out visitors see. */
+/** welcome_onboarding: the first screen signed-out visitors see. Onboarding follows sign-up (prompts/11). */
 export function WelcomeScreen() {
   return (
     <View style={tw`flex-1 bg-canvas`}>
@@ -64,7 +64,7 @@ export function WelcomeScreen() {
       </ScrollView>
 
       <StickyFooter tone="canvas">
-        <Button title="Get Started" onPress={() => router.push("/onboarding/goal")} />
+        <Button title="Get Started" onPress={() => router.push("/sign-up")} />
         <AppText variant="caption" style={tw`text-center mt-4`}>
           Already have an account?{" "}
           <AppText
