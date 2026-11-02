@@ -22,6 +22,11 @@ export const queryKeys = {
     details: (courseId: string) => [...queryKeys.courses.all, "details", courseId] as const,
     students: (courseId: string) => [...queryKeys.courses.all, "students", courseId] as const,
   },
+  viva: {
+    all: ["viva"] as const,
+    sessionsLeft: () => [...queryKeys.viva.all, "sessions-left"] as const,
+    session: (sessionId: string) => [...queryKeys.viva.all, "session", sessionId] as const,
+  },
   reviews: {
     all: ["reviews"] as const,
     mine: (courseId: string, userId: string | null | undefined) =>

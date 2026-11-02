@@ -9,8 +9,8 @@ import { AppText } from "@/components/ui/text";
 import { useTopPadding } from "@/components/ui/use-top-padding";
 import { useAttempt } from "@/lib/queries/quizzes";
 import { POINTS_PER_CORRECT } from "@/lib/quiz/points";
+import { VivaEntry } from "@/screens/viva/viva-entry";
 import { color, type ColorToken, tw } from "@/theme";
-
 
 /** Quiz results (prompts/09; not in the prototype, built in its style). */
 export function QuizResultsScreen() {
@@ -71,6 +71,7 @@ export function QuizResultsScreen() {
           onPress={() => router.push({ pathname: "/attempt/[id]/review", params: { id: attempt.data?.id ?? "" } })}
           style={tw`mb-3`}
         />
+        <VivaEntry attemptId={attempt.data.id} />
         <View style={tw`flex-row gap-3`}>
           <Button
             title="Retake quiz"

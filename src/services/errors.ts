@@ -23,3 +23,35 @@ export class QuizLimitError extends Error {
     this.name = "QuizLimitError";
   }
 }
+
+/** The viva limit is used up (start_viva_session raises P0002): free 1 per 7 days, Pro 5 per 24 hours. */
+export class VivaLimitError extends Error {
+  constructor(message = "You've used this week's free viva.") {
+    super(message);
+    this.name = "VivaLimitError";
+  }
+}
+
+/** Viva practice needs the learner's AI consent (18+, voice to Google Gemini) first (P0003). */
+export class AiConsentRequiredError extends Error {
+  constructor(message = "Agree to AI feedback first.") {
+    super(message);
+    this.name = "AiConsentRequiredError";
+  }
+}
+
+/** This viva question already has feedback (viva-answer 409). */
+export class AlreadyAnsweredError extends Error {
+  constructor(message = "You've already answered this question.") {
+    super(message);
+    this.name = "AlreadyAnsweredError";
+  }
+}
+
+/** Gemini heard no answer on the first try (viva-answer 422): record again. */
+export class NoAnswerError extends Error {
+  constructor(message = "We couldn't hear an answer.") {
+    super(message);
+    this.name = "NoAnswerError";
+  }
+}

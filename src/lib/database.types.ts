@@ -380,6 +380,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          ai_consent_at: string | null
           avatar_url: string | null
           created_at: string
           full_name: string | null
@@ -390,6 +391,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          ai_consent_at?: string | null
           avatar_url?: string | null
           created_at?: string
           full_name?: string | null
@@ -400,6 +402,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          ai_consent_at?: string | null
           avatar_url?: string | null
           created_at?: string
           full_name?: string | null
@@ -757,6 +760,197 @@ export type Database = {
           },
         ]
       }
+      viva_answers: {
+        Row: {
+          accuracy: number
+          audio_seconds: number
+          clarity: number
+          created_at: string
+          improvements: string[]
+          input_tokens: number | null
+          model: string
+          model_answer: string
+          output_tokens: number | null
+          question_id: string
+          reasoning: number
+          score: number
+          session_id: string
+          strengths: string[]
+          transcript: string
+          verdict: string
+        }
+        Insert: {
+          accuracy: number
+          audio_seconds: number
+          clarity: number
+          created_at?: string
+          improvements?: string[]
+          input_tokens?: number | null
+          model: string
+          model_answer: string
+          output_tokens?: number | null
+          question_id: string
+          reasoning: number
+          score: number
+          session_id: string
+          strengths?: string[]
+          transcript: string
+          verdict: string
+        }
+        Update: {
+          accuracy?: number
+          audio_seconds?: number
+          clarity?: number
+          created_at?: string
+          improvements?: string[]
+          input_tokens?: number | null
+          model?: string
+          model_answer?: string
+          output_tokens?: number | null
+          question_id?: string
+          reasoning?: number
+          score?: number
+          session_id?: string
+          strengths?: string[]
+          transcript?: string
+          verdict?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "viva_answers_session_id_question_id_fkey"
+            columns: ["session_id", "question_id"]
+            isOneToOne: true
+            referencedRelation: "viva_session_questions"
+            referencedColumns: ["session_id", "question_id"]
+          },
+        ]
+      }
+      viva_feedback_reports: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          question_id: string
+          reason: string
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          question_id: string
+          reason: string
+          session_id: string
+          user_id?: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          question_id?: string
+          reason?: string
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "viva_feedback_reports_session_id_question_id_fkey"
+            columns: ["session_id", "question_id"]
+            isOneToOne: false
+            referencedRelation: "viva_answers"
+            referencedColumns: ["session_id", "question_id"]
+          },
+          {
+            foreignKeyName: "viva_feedback_reports_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      viva_session_questions: {
+        Row: {
+          position: number
+          question_id: string
+          reason: string
+          session_id: string
+          tries: number
+        }
+        Insert: {
+          position: number
+          question_id: string
+          reason: string
+          session_id: string
+          tries?: number
+        }
+        Update: {
+          position?: number
+          question_id?: string
+          reason?: string
+          session_id?: string
+          tries?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "viva_session_questions_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "viva_session_questions_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "viva_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      viva_sessions: {
+        Row: {
+          attempt_id: string
+          finished_at: string | null
+          id: string
+          started_at: string
+          total_questions: number
+          user_id: string
+        }
+        Insert: {
+          attempt_id: string
+          finished_at?: string | null
+          id?: string
+          started_at?: string
+          total_questions: number
+          user_id?: string
+        }
+        Update: {
+          attempt_id?: string
+          finished_at?: string | null
+          id?: string
+          started_at?: string
+          total_questions?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "viva_sessions_attempt_id_fkey"
+            columns: ["attempt_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_attempts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "viva_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -796,6 +990,24 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      finish_viva_session: {
+        Args: { p_session_id: string }
+        Returns: {
+          attempt_id: string
+          finished_at: string | null
+          id: string
+          started_at: string
+          total_questions: number
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "viva_sessions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      give_ai_consent: { Args: never; Returns: undefined }
       quiz_sessions_left: { Args: never; Returns: number }
       start_quiz_attempt: {
         Args: {
@@ -822,6 +1034,25 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      start_viva_session: {
+        Args: { p_attempt_id: string }
+        Returns: {
+          attempt_id: string
+          finished_at: string | null
+          id: string
+          started_at: string
+          total_questions: number
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "viva_sessions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      viva_sessions_left: { Args: never; Returns: number }
+      withdraw_ai_consent: { Args: never; Returns: undefined }
     }
     Enums: {
       [_ in never]: never

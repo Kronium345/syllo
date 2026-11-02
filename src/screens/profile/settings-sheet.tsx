@@ -9,12 +9,16 @@ import { toast } from "@/components/ui/toast";
 import { requestPermission } from "@/lib/notifications/local";
 import { setRemindersEnabled, useRemindersEnabled } from "@/lib/notifications/preferences";
 import { cancelStudyReminders, resyncStudyReminders } from "@/lib/notifications/study-reminders";
+import { useMyProfile } from "@/lib/queries/profiles";
+import { useAiConsent } from "@/lib/queries/viva";
 import { color, tw } from "@/theme";
 
 export function SettingsSheet({ visible, email, onClose }: { visible: boolean; email?: string; onClose: () => void }) {
   const { signOut } = useClerk();
   const [signingOut, setSigningOut] = useState(false);
   const reminders = useRemindersEnabled();
+  const profile = useMyProfile();
+  const aiConsent = useAiConsent();
 
   const handleSignOut = async () => {
     setSigningOut(true);
@@ -47,6 +51,14 @@ export function SettingsSheet({ visible, email, onClose }: { visible: boolean; e
     await resyncStudyReminders();
   };
 
+  // Viva practice consent (prompts/17). Only withdrawing happens here; giving it needs the
+  // 18+ confirmation in the consent sheet before a viva.
+  const withdrawAiConsent = () =>
+    aiConsent.mutate(false, {
+      onSuccess: () => toast.success("AI feedback turned off.", "We'll ask again before your next viva."),
+      onError: () => toast.error("Couldn't save your choice.", "Check your connection and try again."),
+    });
+
   return (
     <Sheet
       visible={visible}
@@ -73,6 +85,25 @@ export function SettingsSheet({ visible, email, onClose }: { visible: boolean; e
               accessibilityLabel="Study reminders"
               value={reminders}
               onValueChange={toggleReminders}
+              trackColor={{ false: color("track"), true: color("primary") }}
+              thumbColor={color("white")}
+              ios_backgroundColor={color("track")}
+            />
+          </View>
+        ) : null}
+        {profile.data?.aiConsentAt ? (
+          <View style={tw`flex-row items-center gap-4`}>
+            <View style={tw`flex-1`}>
+              <AppText style={tw`text-16 font-semibold text-ink`}>AI feedback for vivas</AppText>
+              <AppText variant="caption">Your voice answers are sent to Google Gemini for marking</AppText>
+            </View>
+            <Switch
+              accessibilityLabel="AI feedback for vivas"
+              value={!aiConsent.isPending}
+              disabled={aiConsent.isPending}
+              onValueChange={(next) => {
+                if (!next) withdrawAiConsent();
+              }}
               trackColor={{ false: color("track"), true: color("primary") }}
               thumbColor={color("white")}
               ios_backgroundColor={color("track")}

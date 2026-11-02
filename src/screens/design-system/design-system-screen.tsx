@@ -27,6 +27,8 @@ import { InterestCard } from "@/screens/onboarding/interest-card";
 import { OnboardingHeader } from "@/screens/onboarding/onboarding-header";
 import { ResourceCard } from "@/screens/lesson/resource-card";
 import { AnswerCard } from "@/screens/quiz/answer-card";
+import { AiConsentSheet } from "@/screens/viva/ai-consent-sheet";
+import { VerdictBadge, VivaFeedbackCard } from "@/screens/viva/viva-feedback-card";
 import { OptionCard } from "@/components/ui/option-card";
 import { type ColorToken, type TextVariant, tw } from "@/theme";
 
@@ -76,6 +78,20 @@ const VARIANTS: TextVariant[] = [
   "tab",
 ];
 
+const SAMPLE_FEEDBACK = {
+  transcript:
+    "Warfarin is affected because clarithromycin inhibits CYP3A4, so the INR goes up and there's a bleeding risk.",
+  verdict: "partly_correct" as const,
+  score: 6,
+  accuracy: 4,
+  reasoning: 3,
+  clarity: 4,
+  strengths: ["Named the enzyme involved", "Linked it to a raised INR"],
+  improvements: ["Say what to do: monitor INR closely or pick another antibiotic"],
+  modelAnswer:
+    "Clarithromycin inhibits CYP3A4 and can raise the INR in patients on warfarin, increasing bleeding risk. Monitor the INR closely or choose an alternative antibiotic.",
+};
+
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <View style={tw`gap-4`}>
@@ -94,6 +110,7 @@ export function DesignSystemScreen() {
   const [chip, setChip] = useState("All Courses");
   const [search, setSearch] = useState("");
   const [goal, setGoal] = useState(true);
+  const [consentOpen, setConsentOpen] = useState(false);
 
   return (
     <View style={tw`flex-1 bg-canvas`}>
@@ -274,6 +291,23 @@ export function DesignSystemScreen() {
           <AnswerCard letter="B" text="Correct answer" state="correct" />
           <AnswerCard letter="C" text="Wrong pick" state="wrong" />
           <AnswerCard letter="D" text="Other answers after grading" state="dimmed" />
+        </Section>
+
+        <Section title="Viva feedback (prompts/17)">
+          <View style={tw`flex-row flex-wrap gap-2`}>
+            <VerdictBadge verdict="correct" />
+            <VerdictBadge verdict="partly_correct" />
+            <VerdictBadge verdict="incorrect" />
+            <VerdictBadge verdict="no_answer" />
+          </View>
+          <VivaFeedbackCard
+            feedback={SAMPLE_FEEDBACK}
+            referenceUrl="https://bnf.nice.org.uk/"
+            onReport={() => toast.info("Report this feedback", "Opens the report sheet in a viva.")}
+          />
+          {/* Continue really saves consent for the signed-in account. */}
+          <Button title="Open AI consent sheet" variant="outline" onPress={() => setConsentOpen(true)} />
+          <AiConsentSheet visible={consentOpen} onClose={() => setConsentOpen(false)} onAgreed={() => setConsentOpen(false)} />
         </Section>
 
         <Section title="Notifications">

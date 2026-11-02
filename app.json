@@ -55,7 +55,16 @@
           "photosPermission": "Allow Syllo to use your photos for your profile picture."
         }
       ],
-      "expo-video"
+      "expo-video",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Allow Syllo to use your microphone so you can answer practice questions out loud.",
+          "enableBackgroundRecording": false,
+          "enableBackgroundPlayback": false
+        }
+      ],
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true,

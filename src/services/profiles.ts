@@ -32,6 +32,8 @@ export type OnboardingProfile = {
   onboardingGoal: string | null;
   interests: string[];
   onboardingCompletedAt: string | null;
+  /** When the learner agreed to AI feedback and confirmed 18+ (viva practice, prompts/17). */
+  aiConsentAt: string | null;
 };
 
 /**
@@ -68,10 +70,15 @@ export async function getMyProfile(
 ): Promise<OnboardingProfile | null> {
   const query = supabase
     .from("profiles")
-    .select("onboarding_goal, interests, onboarding_completed_at")
+    .select("onboarding_goal, interests, onboarding_completed_at, ai_consent_at")
     .eq("id", userId);
   const { data } = await (signal ? query.abortSignal(signal) : query).maybeSingle().throwOnError();
   return data
-    ? { onboardingGoal: data.onboarding_goal, interests: data.interests, onboardingCompletedAt: data.onboarding_completed_at }
+    ? {
+        onboardingGoal: data.onboarding_goal,
+        interests: data.interests,
+        onboardingCompletedAt: data.onboarding_completed_at,
+        aiConsentAt: data.ai_consent_at,
+      }
     : null;
 }

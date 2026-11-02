@@ -70,6 +70,8 @@ export default function AppLayout() {
           <Stack.Screen name="attempt/[id]/index" />
           <Stack.Screen name="attempt/[id]/results" />
           <Stack.Screen name="attempt/[id]/review" />
+          <Stack.Screen name="viva/[id]/index" />
+          <Stack.Screen name="viva/[id]/results" />
           <Stack.Screen name="premium" />
         </Stack.Protected>
       </Stack>
