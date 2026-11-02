@@ -195,7 +195,7 @@ The full rules are in [`AGENTS.md`](AGENTS.md) under "How we build features", "R
 | 13 | Explore filters | done |
 | 14 | Share a course from the native toolbar | done |
 | 15 | Real lesson videos on Cloudflare R2 | done |
-| 16 | Ratings, tutor follows, lesson resources, Free/Premium access | done (device walk-through pending) |
+| 16 | Ratings, tutor follows, lesson resources, Free/Premium access | done |
 
 Other recent changes:
 - The lesson player's footer became a compact native bottom toolbar.

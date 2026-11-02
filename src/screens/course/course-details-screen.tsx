@@ -287,7 +287,8 @@ function CourseBody({
                 </View>
                 <Button
                   title={course.tutor.isFollowed ? "Following" : "Follow"}
-                  variant={course.tutor.isFollowed ? "outline" : "outline-primary"}
+                  // Same compact style in both states (the design's Follow), so the tutor's name keeps its width.
+                  variant="outline-primary"
                   onPress={() => {
                     const tutor = course.tutor;
                     if (!tutor) return;

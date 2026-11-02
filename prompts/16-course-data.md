@@ -1,6 +1,6 @@
 # 16 · Course data: ratings, tutor follows, lesson resources, Free/Premium access
 
-Status: done (device walk-through pending: phone disconnected)
+Status: done
 
 ## Context
 An audit of the course, chapter and lesson screens against the database and the Screensdesign prototype found four things the UI shows that the schema doesn't store:
@@ -147,5 +147,13 @@ On approval: copy this plan to `prompts/16-course-data.md` with `Status: approve
   - `lesson-resource`: no token → 401; a preview lesson's file → 200 `application/pdf` with `attachment; filename=…`; a locked lesson's files hidden.
   - Test data removed afterwards (only the account's original enrollment remains).
   - tsc and lint pass; the Supabase security advisor is clean, and performance shows only INFO unused indexes, 2 of them new FK indexes.
-- **Not verified:** the Samsung walk-through (the phone was disconnected); iOS.
+- **Samsung walk-through (later the same day):**
+  - Home and Explore show "New" and "Included in Premium".
+  - Data Analysis with pandas: "Included in Premium" / "Unlock with Premium" opens the paywall.
+  - Python 1.1 (preview): the Resources card shows "677 KB • PDF" with its credit, and tapping it downloaded the PDF (692.86 KB) from R2.
+  - Python for Everyone (free): Enroll opens lesson 1; "Rate this course" → 4 stars → "Thanks for rating!", the badge reads 4.0 (1) and the row "Your rating: 4/5".
+  - Follow → Following, which survives an app restart. Following now keeps Follow's compact `outline-primary` style; the larger `outline` variant made it taller.
+  - Also confirmed: the lesson toolbar is a tight centred group and ‹ is greyed out on the first lesson.
+  - The test review, follow and enrollment were removed afterwards.
+- **Not verified:** iOS.
 - **Estimated values (no design):** the rate sheet (stars `2xl`, `gap-2`, comment `min-h-[96px]`), the "Rate this course" row (`-mt-4 mb-8`, `bg-subtle`, `rounded-2xl`), and the resource card (48 icon tile `bg-primary-tint`, `rounded-xl`; caption `footnote` italic).
