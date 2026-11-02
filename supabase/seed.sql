@@ -42,6 +42,10 @@ insert into public.courses (id, slug, title, subtitle, description, cover_image_
    'https://picsum.photos/seed/syllo-design-systems/800/450', 'Design', 'intermediate', md5('tutor:leo')::uuid, true)
 on conflict (id) do nothing;
 
+-- Premium sample courses (prompts/16): enrolling and non-preview lessons need Pro.
+update public.courses set access = 'premium'
+where slug in ('advanced-animations', 'data-analysis-pandas', 'design-systems');
+
 -- Chapters: (course slug, position, title).
 insert into public.chapters (id, course_id, position, title)
 select md5('chapter:' || slug || ':' || position)::uuid, md5('course:' || slug)::uuid, position, title

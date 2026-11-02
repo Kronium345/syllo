@@ -8,6 +8,14 @@ export class NotAllowedError extends Error {
   }
 }
 
+/** A premium course needs Pro to enroll (prompts/16: the enrollments RLS policy refused it). */
+export class PremiumRequiredError extends Error {
+  constructor(message = "This course is included in Premium.") {
+    super(message);
+    this.name = "PremiumRequiredError";
+  }
+}
+
 /** The free quiz limit is used up (start_quiz_attempt raises P0002); Pro removes it. */
 export class QuizLimitError extends Error {
   constructor(message = "You've used today's 3 free quizzes.") {

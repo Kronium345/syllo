@@ -25,6 +25,7 @@ import { scheduleTestStudyReminder } from "@/lib/notifications/study-reminders";
 import { GOALS, INTERESTS } from "@/lib/onboarding/options";
 import { InterestCard } from "@/screens/onboarding/interest-card";
 import { OnboardingHeader } from "@/screens/onboarding/onboarding-header";
+import { ResourceCard } from "@/screens/lesson/resource-card";
 import { AnswerCard } from "@/screens/quiz/answer-card";
 import { OptionCard } from "@/components/ui/option-card";
 import { type ColorToken, type TextVariant, tw } from "@/theme";
@@ -171,6 +172,10 @@ export function DesignSystemScreen() {
             <View style={tw`bg-ink p-2 rounded-xl`}>
               <Badge label="4.8" variant="rating" />
             </View>
+            {/* A course without ratings yet (prompts/16). */}
+            <View style={tw`bg-ink p-2 rounded-xl`}>
+              <Badge label="New" variant="rating" />
+            </View>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={tw`gap-2`}>
             {["All Courses", "Design", "Business", "Coding", "Marketing"].map((label) => (
@@ -196,6 +201,20 @@ export function DesignSystemScreen() {
           <View style={tw`bg-black p-4 rounded-xl`}>
             <ProgressBar progress={0.65} size="sm" track="bg-veil-strong" />
           </View>
+        </Section>
+
+        <Section title="Lesson resource (prompts/16)">
+          {/* Sample data: tapping asks lesson-resource for a link and shows the "Locked" toast. */}
+          <ResourceCard
+            resource={{
+              id: "00000000-0000-0000-0000-000000000000",
+              title: "Typography Line Terms",
+              fileName: "Typography Line Terms.svg",
+              sizeBytes: 75038,
+              mimeType: "image/svg+xml",
+              credit: 'File: "Typography Line Terms.svg" by Max Naylor, Public domain, via Wikimedia Commons.',
+            }}
+          />
         </Section>
 
         <Section title="Fields">

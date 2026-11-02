@@ -1,6 +1,6 @@
 import type { AppSupabaseClient } from "@/lib/supabase";
 
-import { NotAllowedError } from "./errors";
+import { NotAllowedError, PremiumRequiredError } from "./errors";
 
 // Course data in Supabase: plain async functions, no React. Hooks in
 // src/lib/queries/courses/ wrap them with caching. RLS decides what each learner sees.
@@ -16,6 +16,11 @@ export type CourseCard = {
   coverImageUrl: string | null;
   category: string | null;
   level: CourseLevel | null;
+  /** free: anyone can enroll. premium: needs Pro (prompts/16). */
+  access: CourseAccess;
+  /** Null until the course has ratings ("New"). */
+  ratingAverage: number | null;
+  ratingCount: number;
   tutorName: string | null;
   lessonCount: number;
   durationSeconds: number;
@@ -24,6 +29,7 @@ export type CourseCard = {
 };
 
 export type CourseLevel = "beginner" | "intermediate" | "advanced";
+export type CourseAccess = "free" | "premium";
 /** Course length buckets for Explore's filters (prompts/13). */
 export type DurationFilter = "any" | "under-1h" | "1-2h" | "over-2h";
 export type CourseSort = "title" | "newest" | "shortest" | "longest";
@@ -38,7 +44,7 @@ export type CourseFeedFilter = {
 };
 
 const CARD_COLUMNS =
-  "id, slug, title, cover_image_url, category, level, tutors(name), chapters(lessons(id, duration_seconds))";
+  "id, slug, title, cover_image_url, category, level, access, rating_average, rating_count, tutors(name), chapters(lessons(id, duration_seconds))";
 
 type CardRow = {
   id: string;
@@ -47,6 +53,9 @@ type CardRow = {
   cover_image_url: string | null;
   category: string | null;
   level: string | null;
+  access: string;
+  rating_average: number | null;
+  rating_count: number;
   tutors: { name: string } | null;
   chapters: { lessons: { id: string; duration_seconds: number }[] }[];
 };
@@ -60,6 +69,9 @@ function toCard(row: CardRow): CourseCard {
     coverImageUrl: row.cover_image_url,
     category: row.category,
     level: isCourseLevel(row.level) ? row.level : null,
+    access: toAccess(row.access),
+    ratingAverage: row.rating_average === null ? null : Number(row.rating_average),
+    ratingCount: row.rating_count,
     tutorName: row.tutors?.name ?? null,
     lessonCount: lessons.length,
     durationSeconds: lessons.reduce((total, lesson) => total + lesson.duration_seconds, 0),
@@ -70,6 +82,10 @@ function toCard(row: CardRow): CourseCard {
 /** `%` and `_` are wildcards in ilike; a learner typing them means the characters. */
 function likePattern(search: string): string {
   return `%${search.replace(/[\\%_]/g, (char) => `\\${char}`)}%`;
+}
+
+function toAccess(access: string): CourseAccess {
+  return access === "premium" ? "premium" : "free";
 }
 
 function isCourseLevel(level: string | null): level is CourseLevel {
@@ -159,7 +175,11 @@ export type CourseDetails = {
   description: string | null;
   coverImageUrl: string | null;
   level: CourseLevel | null;
-  tutor: { id: string; name: string; headline: string | null; avatarUrl: string | null } | null;
+  access: CourseAccess;
+  ratingAverage: number | null;
+  ratingCount: number;
+  /** `isFollowed`: the learner follows this tutor (RLS returns only their own follow rows). */
+  tutor: { id: string; name: string; headline: string | null; avatarUrl: string | null; isFollowed: boolean } | null;
   chapters: ChapterOutline[];
   isEnrolled: boolean;
 };
@@ -171,7 +191,16 @@ type DetailsRow = {
   description: string | null;
   cover_image_url: string | null;
   level: string | null;
-  tutors: { id: string; name: string; headline: string | null; avatar_url: string | null } | null;
+  access: string;
+  rating_average: number | null;
+  rating_count: number;
+  tutors: {
+    id: string;
+    name: string;
+    headline: string | null;
+    avatar_url: string | null;
+    tutor_follows: { tutor_id: string }[];
+  } | null;
   chapters: {
     id: string;
     title: string;
@@ -196,7 +225,8 @@ export async function getCourseDetails(
   const query = supabase
     .from("courses")
     .select(
-      "id, slug, title, description, cover_image_url, level, tutors(id, name, headline, avatar_url), " +
+      "id, slug, title, description, cover_image_url, level, access, rating_average, rating_count, " +
+        "tutors(id, name, headline, avatar_url, tutor_follows(tutor_id)), " +
         "chapters(id, title, position, lessons(id, title, position, duration_seconds, is_preview), quizzes(id, title, is_preview, quiz_questions(count))), " +
         "enrollments(id)",
     )
@@ -211,8 +241,17 @@ export async function getCourseDetails(
     description: row.description,
     coverImageUrl: row.cover_image_url,
     level: isCourseLevel(row.level) ? row.level : null,
+    access: toAccess(row.access),
+    ratingAverage: row.rating_average === null ? null : Number(row.rating_average),
+    ratingCount: row.rating_count,
     tutor: row.tutors
-      ? { id: row.tutors.id, name: row.tutors.name, headline: row.tutors.headline, avatarUrl: row.tutors.avatar_url }
+      ? {
+          id: row.tutors.id,
+          name: row.tutors.name,
+          headline: row.tutors.headline,
+          avatarUrl: row.tutors.avatar_url,
+          isFollowed: row.tutors.tutor_follows.length > 0,
+        }
       : null,
     chapters: [...row.chapters].sort(byPosition).map((chapter) => ({
       id: chapter.id,
@@ -254,14 +293,18 @@ export async function getEnrolledCourses(supabase: AppSupabaseClient, signal?: A
 }
 
 /**
- * Enrolls the learner in a published course (free for now). Already being enrolled is
- * fine (unique violation). RLS refuses drafts, which rejects with its PostgrestError.
+ * Enrolls the learner in a published course. Already being enrolled is fine (unique
+ * violation). RLS refuses premium courses without Pro (prompts/16) with code 42501, which
+ * becomes PremiumRequiredError; drafts are refused the same way but never reach the app.
  */
 export async function enroll(supabase: AppSupabaseClient, courseId: string): Promise<void> {
   try {
     await supabase.from("enrollments").insert({ course_id: courseId }).throwOnError();
   } catch (error) {
-    if ((error as { code?: string }).code !== "23505") throw error;
+    const code = (error as { code?: string }).code;
+    if (code === "23505") return;
+    if (code === "42501") throw new PremiumRequiredError();
+    throw error;
   }
 }
 

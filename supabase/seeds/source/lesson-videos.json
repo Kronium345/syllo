@@ -1,12 +1,16 @@
 {
-  "_comment": "prompts/15: one openly licensed clip per chapter, shared by that chapter's lessons. `file` is a Wikimedia Commons file page title; `null` keeps the placeholder video. `npm run upload:lesson-videos -- --check` prints each file's licence, author and length; only CC0 / CC BY / CC BY-SA are uploaded. `maxSeconds` trims long talks.",
+  "_comment": "prompts/15: one openly licensed clip per chapter, shared by that chapter's lessons. `file` is a Wikimedia Commons file page title; `null` keeps the placeholder video. `npm run upload:lesson-videos -- --check` prints each file's licence, author and length; only CC0 / CC BY / CC BY-SA are uploaded. `maxSeconds` trims long talks. Optional `resources`: Commons files (PDF/SVG…) attached to every lesson of the chapter as lesson_resources (prompts/16).",
   "chapters": [
     {
       "course": "advanced-animations",
       "chapter": 1,
       "topic": "Motion principles",
       "file": "File:The CSS-Podcast – 090 – Scroll-driven animations.webm",
-      "maxSeconds": 600
+      "maxSeconds": 600,
+      "resources": [
+        "File:CSS3 Ease-in-out timing function curve.svg",
+        "File:CSS3 Ease-in timing function curve.svg"
+      ]
     },
     {
       "course": "advanced-animations",
@@ -40,14 +44,20 @@
       "chapter": 3,
       "topic": "Asking questions",
       "file": "File:Visualizing Data Illah Nourbakhsh & Matthew C. Hansen.webm",
-      "maxSeconds": 600
+      "maxSeconds": 600,
+      "resources": [
+        "File:Box plot with interquartile range and outliers.svg"
+      ]
     },
     {
       "course": "data-analysis-pandas",
       "chapter": 4,
       "topic": "Telling the story",
       "file": "File:WIKIMANIA Day 2 Nairobi - Adding Our World in Data (OWID) Visualizations to Wikipedia.webm",
-      "maxSeconds": 600
+      "maxSeconds": 600,
+      "resources": [
+        "File:Boxplot vs PDF.svg"
+      ]
     },
     {
       "course": "design-systems",
@@ -73,20 +83,29 @@
       "chapter": 1,
       "topic": "Your first program",
       "file": "File:Installing Jupyter Notebooks-Anaconda - Python for Beginners.webm",
-      "maxSeconds": 600
+      "maxSeconds": 600,
+      "resources": [
+        "File:Non-Programmer's Tutorial for Python 3.pdf"
+      ]
     },
     {
       "course": "python-for-everyone",
       "chapter": 2,
       "topic": "Making decisions",
-      "file": null
+      "file": null,
+      "resources": [
+        "File:Flowchart-If Then Else.svg"
+      ]
     },
     {
       "course": "python-for-everyone",
       "chapter": 3,
       "topic": "Functions and files",
       "file": "File:6 - 1 - Chapter 4 - Functions (28 03).webm",
-      "maxSeconds": 600
+      "maxSeconds": 600,
+      "resources": [
+        "File:A Byte of Python.pdf"
+      ]
     },
     {
       "course": "react-native-basics",
@@ -121,14 +140,22 @@
       "chapter": 2,
       "topic": "Typography and colour",
       "file": "File:Lea Verou - The Chroma Zone.webm",
-      "maxSeconds": 600
+      "maxSeconds": 600,
+      "resources": [
+        "File:Typography Line Terms.svg",
+        "File:Color wheel vector.svg"
+      ]
     },
     {
       "course": "ui-design-fundamentals",
       "chapter": 3,
       "topic": "Layout and spacing",
       "file": "File:DotCSS 2018 - Mandy Michael - Variable Fonts and the Future of Web Design.webm",
-      "maxSeconds": 600
+      "maxSeconds": 600,
+      "resources": [
+        "File:CSS grid lines.svg",
+        "File:CSS grid layout default.svg"
+      ]
     }
   ]
 }

@@ -1,6 +1,7 @@
 // Course hooks, one per file. Import from "@/lib/queries/courses".
 export type {
   ChapterOutline,
+  CourseAccess,
   CourseCard,
   CourseDetails,
   CourseFeedFilter,

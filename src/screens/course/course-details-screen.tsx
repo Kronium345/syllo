@@ -1,7 +1,7 @@
 import ShareIcon from "@expo/material-symbols/share.xml";
 import { Image } from "expo-image";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import { ChevronLeft, Clock, LayoutTemplate, Share2, Star } from "lucide-react-native";
+import { ChevronLeft, ChevronRight, Clock, LayoutTemplate, Share2, Star } from "lucide-react-native";
 import { useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -15,18 +15,23 @@ import { StickyFooter } from "@/components/ui/sticky-footer";
 import { AppText } from "@/components/ui/text";
 import { toast } from "@/components/ui/toast";
 import { useTopPadding } from "@/components/ui/use-top-padding";
-import { featureComingSoon } from "@/lib/coming-soon";
 import { nextLesson, orderedLessons } from "@/lib/course-outline";
+import { ratingLabel } from "@/lib/course-rating";
 import { formatHoursMinutes } from "@/lib/format-duration";
+import { formatCount } from "@/lib/format-number";
 import { courseCover, tutorPhoto } from "@/lib/local-images";
 import { type CourseDetails, useCourseDetails } from "@/lib/queries/courses";
 import { useEnroll } from "@/lib/queries/enrollments";
+import { useFollowTutor } from "@/lib/queries/follows";
 import { useProgress } from "@/lib/queries/progress";
+import { usePremium, useSyncPremium } from "@/lib/queries/purchases";
+import { useMyReview } from "@/lib/queries/reviews";
 import { shareCourse } from "@/lib/share-course";
-import { placeholderRating } from "@/screens/home/placeholder-stats";
-import { color, tw } from "@/theme";
+import { PremiumRequiredError } from "@/services/errors";
+import { color, pressScale, tw } from "@/theme";
 
 import { ChapterSection } from "./chapter-section";
+import { RateCourseSheet } from "./rate-course-sheet";
 
 // iOS/Android use the native header with a Stack.Toolbar share button (prompts/14); web has
 // no native toolbar, so it keeps the design's floating glass back and share buttons.
@@ -115,6 +120,11 @@ function CourseBody({
   onPastHeroChange: (pastHero: boolean) => void;
 }) {
   const enroll = useEnroll();
+  const follow = useFollowTutor();
+  const premium = usePremium();
+  const syncPremium = useSyncPremium();
+  const myReview = useMyReview(course.id, { enabled: course.isEnrolled });
+  const [rating, setRating] = useState(false);
   const progress = useProgress();
   const completed = new Set((progress.data ?? []).map((row) => row.lessonId));
   const lessons = orderedLessons(course);
@@ -134,6 +144,10 @@ function CourseBody({
       return next;
     });
 
+  const isPro = premium.data === true;
+  // Unknown Pro status (web, still loading) lets the learner try; the database decides.
+  const needsPremium = course.access === "premium" && !course.isEnrolled && premium.data === false;
+
   const openLesson = (lessonId: string) => router.push({ pathname: "/lesson/[id]", params: { id: lessonId } });
 
   const start = () => {
@@ -143,13 +157,37 @@ function CourseBody({
       else toast.info("No lessons yet", "This course's lessons are on their way.");
       return;
     }
+    // Premium courses need Pro (prompts/16): send learners without it to the paywall.
+    if (needsPremium) {
+      router.push("/premium");
+      return;
+    }
+    const enrolled = () => {
+      toast.success("You're enrolled!", course.title);
+      const first = lessons[0];
+      if (first) openLesson(first.id);
+    };
     enroll.mutate(course.id, {
-      onSuccess: () => {
-        toast.success("You're enrolled!", course.title);
-        const first = lessons[0];
-        if (first) openLesson(first.id);
+      onSuccess: enrolled,
+      onError: async (error) => {
+        if (!(error instanceof PremiumRequiredError)) {
+          toast.error("Couldn't enroll.", "Check your connection and try again.");
+          return;
+        }
+        // RevenueCat says Pro but the database hasn't caught up: sync once, then retry.
+        if (isPro) {
+          try {
+            await syncPremium.mutateAsync();
+            await enroll.mutateAsync(course.id);
+            enrolled();
+            return;
+          } catch {
+            // Fall through to the paywall.
+          }
+        }
+        toast.info("Included in Premium", "Upgrade to start this course.");
+        router.push("/premium");
       },
-      onError: () => toast.error("Couldn't enroll.", "Check your connection and try again."),
     });
   };
 
@@ -190,9 +228,10 @@ function CourseBody({
             <View style={tw`flex-row flex-wrap items-center gap-x-4 gap-y-3`}>
               <View style={tw`flex-row items-center gap-1.5`}>
                 <Icon as={Star} size="md" color="primary" />
-                <AppText style={tw`text-14 font-bold text-ink`}>{placeholderRating(course.id)}</AppText>
-                {/* PLACEHOLDER until courses have ratings. */}
-                <AppText style={tw`text-14 text-muted`}>(2.4k)</AppText>
+                <AppText style={tw`text-14 font-bold text-ink`}>{ratingLabel(course)}</AppText>
+                {course.ratingCount > 0 ? (
+                  <AppText style={tw`text-14 text-muted`}>({formatCount(course.ratingCount)})</AppText>
+                ) : null}
               </View>
               <View style={tw`flex-row items-center gap-1.5`}>
                 <Icon as={Clock} size="md" color="muted" />
@@ -206,6 +245,25 @@ function CourseBody({
               </View>
             </View>
           </View>
+
+          {course.isEnrolled ? (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={myReview.data ? `Your rating: ${myReview.data.rating} stars. Edit` : "Rate this course"}
+              onPress={() => setRating(true)}
+              style={({ pressed }) => [
+                tw`-mt-4 mb-8 flex-row items-center gap-3 px-4 py-3.5 rounded-2xl border border-border bg-subtle`,
+                pressScale(pressed, 0.98),
+              ]}
+            >
+              <Icon as={Star} size="lg" color="star" filled={!!myReview.data} />
+              <AppText style={tw`flex-1 text-15 font-semibold text-ink`}>
+                {myReview.data ? `Your rating: ${myReview.data.rating}/5` : "Rate this course"}
+              </AppText>
+              <AppText style={tw`text-14 font-semibold text-primary`}>{myReview.data ? "Edit" : "Rate"}</AppText>
+              <Icon as={ChevronRight} size="md" color="muted" />
+            </Pressable>
+          ) : null}
 
           {course.description ? (
             <View style={tw`mb-8`}>
@@ -227,7 +285,18 @@ function CourseBody({
                   <AppText style={tw`text-16 font-bold text-ink`}>{course.tutor.name}</AppText>
                   {course.tutor.headline ? <AppText variant="caption">{course.tutor.headline}</AppText> : null}
                 </View>
-                <Button title="Follow" variant="outline-primary" onPress={() => featureComingSoon("Following tutors")} />
+                <Button
+                  title={course.tutor.isFollowed ? "Following" : "Follow"}
+                  variant={course.tutor.isFollowed ? "outline" : "outline-primary"}
+                  onPress={() => {
+                    const tutor = course.tutor;
+                    if (!tutor) return;
+                    follow.mutate(
+                      { courseId: course.id, tutorId: tutor.id, follow: !tutor.isFollowed },
+                      { onError: () => toast.error("Couldn't update.", "Check your connection and try again.") },
+                    );
+                  }}
+                />
               </View>
             </View>
           ) : null}
@@ -261,16 +330,26 @@ function CourseBody({
         <View style={tw`flex-row items-center justify-between mb-4`}>
           <View>
             <AppText variant="footnote">Full Access</AppText>
-            <AppText style={tw`text-24 font-bold text-ink`}>Free</AppText>
+            <AppText style={tw`text-24 font-bold text-ink`}>
+              {course.access === "premium" ? "Included in Premium" : "Free"}
+            </AppText>
           </View>
         </View>
         <Button
-          title={course.isEnrolled ? "Continue Learning" : "Enroll in Course"}
+          title={course.isEnrolled ? "Continue Learning" : needsPremium ? "Unlock with Premium" : "Enroll in Course"}
           variant="primary-bold"
           loading={enroll.isPending}
           onPress={start}
         />
       </StickyFooter>
+
+      <RateCourseSheet
+        visible={rating}
+        courseId={course.id}
+        courseTitle={course.title}
+        current={myReview.data ?? null}
+        onClose={() => setRating(false)}
+      />
     </>
   );
 }

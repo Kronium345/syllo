@@ -5,7 +5,7 @@ import { enroll } from "@/services/courses";
 import { useSupabase } from "../../supabase";
 import { queryKeys } from "../keys";
 
-/** Enrolls the learner in a course (free). Enrollment lists, the course and its lessons refetch. */
+/** Enrolls the learner in a course. A premium course without Pro rejects with PremiumRequiredError. Enrollment lists, the course and its lessons refetch. */
 export function useEnroll() {
   const supabase = useSupabase();
   const queryClient = useQueryClient();

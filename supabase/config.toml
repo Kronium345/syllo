@@ -398,6 +398,10 @@ verify_jwt = false
 [functions.lesson-video]
 verify_jwt = false
 
+# lesson-resource: same pattern as lesson-video, for lesson_resources downloads (prompts/16).
+[functions.lesson-resource]
+verify_jwt = false
+
 [analytics]
 enabled = true
 port = 54327

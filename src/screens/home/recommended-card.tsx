@@ -5,12 +5,11 @@ import { Pressable, View } from "react-native";
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "@/components/ui/icon";
 import { AppText } from "@/components/ui/text";
+import { ratingLabel } from "@/lib/course-rating";
 import { formatTotalHours } from "@/lib/format-duration";
 import { courseCover } from "@/lib/local-images";
 import type { CourseCard } from "@/lib/queries/courses";
 import { pressScale, tw } from "@/theme";
-
-import { placeholderRating } from "./placeholder-stats";
 
 /** A 240-wide carousel card (learning_dashboard #course-card). */
 export function RecommendedCard({ course, onPress }: { course: CourseCard; onPress: () => void }) {
@@ -35,7 +34,7 @@ export function RecommendedCard({ course, onPress }: { course: CourseCard; onPre
             style={tw`w-full h-full`}
           />
         ) : null}
-        <Badge label={placeholderRating(course.id)} variant="rating" style={tw`absolute top-3 right-3`} />
+        <Badge label={ratingLabel(course)} variant="rating" style={tw`absolute top-3 right-3`} />
       </View>
       <View style={tw`p-4`}>
         <AppText variant="card-title" numberOfLines={2} style={tw`mb-2`}>

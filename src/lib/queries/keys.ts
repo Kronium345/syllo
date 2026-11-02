@@ -22,6 +22,11 @@ export const queryKeys = {
     details: (courseId: string) => [...queryKeys.courses.all, "details", courseId] as const,
     students: (courseId: string) => [...queryKeys.courses.all, "students", courseId] as const,
   },
+  reviews: {
+    all: ["reviews"] as const,
+    mine: (courseId: string, userId: string | null | undefined) =>
+      [...queryKeys.reviews.all, "mine", courseId, userId ?? null] as const,
+  },
   enrollments: {
     all: ["enrollments"] as const,
     latest: () => [...queryKeys.enrollments.all, "latest"] as const,

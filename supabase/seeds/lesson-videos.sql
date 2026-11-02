@@ -143,3 +143,94 @@ from public.lessons l
 join public.chapters ch on ch.id = l.chapter_id
 join public.courses c on c.id = ch.course_id
 where lc.lesson_id = l.id and c.slug = 'ui-design-fundamentals' and ch.position = 3;
+
+-- Lesson resources (prompts/16): rebuilt from scratch on every run.
+delete from public.lesson_resources where storage_key like 'resources/%';
+
+-- advanced-animations / chapter 1: File:CSS3 Ease-in-out timing function curve.svg, CC0
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 1, 'CSS3 Ease in out timing function curve', 'CSS3 Ease-in-out timing function curve.svg', 52993, 'image/svg+xml', 'resources/advanced-animations-1-1.svg', 'File: "CSS3 Ease-in-out timing function curve.svg" by Minijackson, CC0, via Wikimedia Commons.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'advanced-animations' and ch.position = 1;
+
+-- advanced-animations / chapter 1: File:CSS3 Ease-in timing function curve.svg, CC0
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 2, 'CSS3 Ease in timing function curve', 'CSS3 Ease-in timing function curve.svg', 52959, 'image/svg+xml', 'resources/advanced-animations-1-2.svg', 'File: "CSS3 Ease-in timing function curve.svg" by Minijackson, CC0, via Wikimedia Commons.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'advanced-animations' and ch.position = 1;
+
+-- data-analysis-pandas / chapter 3: File:Box plot with interquartile range and outliers.svg, CC BY 4.0
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 1, 'Box plot with interquartile range and outliers', 'Box plot with interquartile range and outliers.svg', 4691, 'image/svg+xml', 'resources/data-analysis-pandas-3-1.svg', 'File: "Box plot with interquartile range and outliers.svg" by Derek Jansen, CC BY 4.0, via Wikimedia Commons.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'data-analysis-pandas' and ch.position = 3;
+
+-- data-analysis-pandas / chapter 4: File:Boxplot vs PDF.svg, CC BY-SA 2.5
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 1, 'Boxplot vs PDF', 'Boxplot vs PDF.svg', 504354, 'image/svg+xml', 'resources/data-analysis-pandas-4-1.svg', 'File: "Boxplot vs PDF.svg" by Original uploader was Jhguch at en.wikipedia ; Derivative work: Chen-Pan Liao ( talk )., CC BY-SA 2.5, via Wikimedia Commons.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'data-analysis-pandas' and ch.position = 4;
+
+-- python-for-everyone / chapter 1: File:Non-Programmer's Tutorial for Python 3.pdf, CC BY-SA 4.0
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 1, 'Non Programmer''s Tutorial for Python 3', 'Non-Programmer''s Tutorial for Python 3.pdf', 692856, 'application/pdf', 'resources/python-for-everyone-1-1.pdf', 'File: "Non-Programmer''s Tutorial for Python 3.pdf" by JackPotte, CC BY-SA 4.0, via Wikimedia Commons.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'python-for-everyone' and ch.position = 1;
+
+-- python-for-everyone / chapter 2: File:Flowchart-If Then Else.svg, CC BY-SA 4.0
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 1, 'Flowchart If Then Else', 'Flowchart-If Then Else.svg', 19456, 'image/svg+xml', 'resources/python-for-everyone-2-1.svg', 'File: "Flowchart-If Then Else.svg" by みそがい, CC BY-SA 4.0, via Wikimedia Commons.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'python-for-everyone' and ch.position = 2;
+
+-- python-for-everyone / chapter 3: File:A Byte of Python.pdf, CC BY-SA 4.0
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 1, 'A Byte of Python', 'A Byte of Python.pdf', 1164874, 'application/pdf', 'resources/python-for-everyone-3-1.pdf', 'File: "A Byte of Python.pdf" by Swaroop C H, CC BY-SA 4.0, via Wikimedia Commons.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'python-for-everyone' and ch.position = 3;
+
+-- ui-design-fundamentals / chapter 2: File:Typography Line Terms.svg, Public domain
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 1, 'Typography Line Terms', 'Typography Line Terms.svg', 75038, 'image/svg+xml', 'resources/ui-design-fundamentals-2-1.svg', 'File: "Typography Line Terms.svg" by Max Naylor, Public domain, via Wikimedia Commons.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'ui-design-fundamentals' and ch.position = 2;
+
+-- ui-design-fundamentals / chapter 2: File:Color wheel vector.svg, CC BY-SA 4.0
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 2, 'Color wheel vector', 'Color wheel vector.svg', 49385, 'image/svg+xml', 'resources/ui-design-fundamentals-2-2.svg', 'File: "Color wheel vector.svg" by Amousey but heavily based on public domain work File:RGB color wheel 360.svg by László Németh (25 June 2013)., CC BY-SA 4.0, via Wikimedia Commons.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'ui-design-fundamentals' and ch.position = 2;
+
+-- ui-design-fundamentals / chapter 3: File:CSS grid lines.svg, CC BY-SA 4.0
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 1, 'CSS grid lines', 'CSS grid lines.svg', 6759, 'image/svg+xml', 'resources/ui-design-fundamentals-3-1.svg', 'File: "CSS grid lines.svg" by Hunsvotti, CC BY-SA 4.0, via Wikimedia Commons.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'ui-design-fundamentals' and ch.position = 3;
+
+-- ui-design-fundamentals / chapter 3: File:CSS grid layout default.svg, CC BY-SA 4.0
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 2, 'CSS grid layout default', 'CSS grid layout default.svg', 8088, 'image/svg+xml', 'resources/ui-design-fundamentals-3-2.svg', 'File: "CSS grid layout default.svg" by Hunsvotti, CC BY-SA 4.0, via Wikimedia Commons.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'ui-design-fundamentals' and ch.position = 3;

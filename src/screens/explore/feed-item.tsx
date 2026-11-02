@@ -5,10 +5,10 @@ import { Pressable, View } from "react-native";
 import { Icon } from "@/components/ui/icon";
 import { AppText } from "@/components/ui/text";
 import { levelLabel } from "@/lib/course-level";
+import { ratingLabel } from "@/lib/course-rating";
 import { formatHoursMinutes } from "@/lib/format-duration";
 import { courseCover } from "@/lib/local-images";
 import type { CourseCard } from "@/lib/queries/courses";
-import { placeholderRating } from "@/screens/home/placeholder-stats";
 import { pressScale, tw } from "@/theme";
 
 /** One course in Explore's feed (course_search_feed #course-item). */
@@ -39,7 +39,7 @@ export function FeedItem({ course, first, onPress }: { course: CourseCard; first
         <AppText style={tw`flex-1 mr-4 text-18 font-bold text-ink leading-snug`}>{course.title}</AppText>
         <View style={tw`flex-row items-center gap-1 bg-primary-tint px-2 py-0.5 rounded-md`}>
           <Icon as={Star} size="xs" color="star-deep" />
-          <AppText style={tw`text-12 font-bold text-primary`}>{placeholderRating(course.id)}</AppText>
+          <AppText style={tw`text-12 font-bold text-primary`}>{ratingLabel(course)}</AppText>
         </View>
       </View>
       <View style={tw`flex-row flex-wrap items-center gap-x-3 gap-y-1`}>
@@ -61,7 +61,9 @@ export function FeedItem({ course, first, onPress }: { course: CourseCard; first
         ) : null}
       </View>
       <View style={tw`mt-3 flex-row items-center justify-between`}>
-        <AppText style={tw`text-18 font-bold text-ink`}>Included in Premium</AppText>
+        <AppText style={tw`text-18 font-bold text-ink`}>
+          {course.access === "premium" ? "Included in Premium" : "Free"}
+        </AppText>
         <AppText style={tw`text-13 font-bold text-primary`}>View Details</AppText>
       </View>
     </Pressable>

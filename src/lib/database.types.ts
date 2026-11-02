@@ -68,8 +68,54 @@ export type Database = {
           },
         ]
       }
+      course_reviews: {
+        Row: {
+          comment: string | null
+          course_id: string
+          created_at: string
+          id: string
+          rating: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          course_id: string
+          created_at?: string
+          id?: string
+          rating: number
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          comment?: string | null
+          course_id?: string
+          created_at?: string
+          id?: string
+          rating?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_reviews_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_reviews_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
+          access: string
           category: string | null
           cover_image_url: string | null
           created_at: string
@@ -77,12 +123,15 @@ export type Database = {
           id: string
           is_published: boolean
           level: string | null
+          rating_average: number | null
+          rating_count: number
           slug: string
           subtitle: string | null
           title: string
           tutor_id: string
         }
         Insert: {
+          access?: string
           category?: string | null
           cover_image_url?: string | null
           created_at?: string
@@ -90,12 +139,15 @@ export type Database = {
           id?: string
           is_published?: boolean
           level?: string | null
+          rating_average?: number | null
+          rating_count?: number
           slug: string
           subtitle?: string | null
           title: string
           tutor_id: string
         }
         Update: {
+          access?: string
           category?: string | null
           cover_image_url?: string | null
           created_at?: string
@@ -103,6 +155,8 @@ export type Database = {
           id?: string
           is_published?: boolean
           level?: string | null
+          rating_average?: number | null
+          rating_count?: number
           slug?: string
           subtitle?: string | null
           title?: string
@@ -212,6 +266,53 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lesson_resources: {
+        Row: {
+          created_at: string
+          credit: string | null
+          file_name: string
+          id: string
+          lesson_id: string
+          mime_type: string
+          position: number
+          size_bytes: number
+          storage_key: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          credit?: string | null
+          file_name: string
+          id?: string
+          lesson_id: string
+          mime_type: string
+          position: number
+          size_bytes: number
+          storage_key: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          credit?: string | null
+          file_name?: string
+          id?: string
+          lesson_id?: string
+          mime_type?: string
+          position?: number
+          size_bytes?: number
+          storage_key?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_resources_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
             referencedColumns: ["id"]
           },
         ]
@@ -581,6 +682,39 @@ export type Database = {
             columns: ["chapter_id"]
             isOneToOne: false
             referencedRelation: "chapters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tutor_follows: {
+        Row: {
+          created_at: string
+          tutor_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          tutor_id: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          tutor_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tutor_follows_tutor_id_fkey"
+            columns: ["tutor_id"]
+            isOneToOne: false
+            referencedRelation: "tutors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tutor_follows_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]

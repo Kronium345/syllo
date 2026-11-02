@@ -12,6 +12,10 @@
 // aws4fetch, and writes supabase/seeds/lesson-videos.sql (video_key + a credit line in each
 // lesson's notes). `npm run db:push` then applies it, like the other seeds.
 //
+// Lesson resources (prompts/16): a chapter's optional `resources` list (Commons PDFs/SVGs…)
+// is licence-checked the same way, uploaded as is to `resources/<course>-<chapter>-<n>.<ext>`
+// and written as lesson_resources rows for every lesson of the chapter, with a plain-text credit.
+//
 // R2 keys come from .env.local WITHOUT the EXPO_PUBLIC_ prefix (scripts only, never bundled):
 // R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET.
 import { spawn } from "node:child_process";
@@ -74,6 +78,8 @@ async function commonsInfo(titles) {
             licenceUrl: stripHtml(meta.LicenseUrl?.value) || null,
             author: stripHtml(meta.Artist?.value) || "Unknown author",
             seconds: Math.round(video.duration ?? 0),
+            mime: video.mime ?? "application/octet-stream",
+            bytes: video.size ?? 0,
             url: video.url,
             pageUrl: video.descriptionurl,
             derivatives: video.derivatives ?? [],
@@ -120,12 +126,12 @@ function r2Client() {
       if (!response.ok) throw new Error(`R2 HEAD ${key} → ${response.status}`);
       return true;
     },
-    async put(key, file) {
+    async put(key, file, contentType = "video/mp4") {
       const body = await fsp.readFile(file);
       const response = await client.fetch(`${base}/${key}`, {
         method: "PUT",
         body,
-        headers: { "Content-Type": "video/mp4" },
+        headers: { "Content-Type": contentType },
       });
       if (!response.ok) throw new Error(`R2 PUT ${key} → ${response.status} ${await response.text()}`);
     },
@@ -164,6 +170,42 @@ function creditLine(clip) {
   const name = clip.title.replace(/^File:/, "").replace(/\.(webm|ogv|ogg)$/i, "");
   const author = clip.author.replace(/[*_]/g, "");
   return `*Video: "${name}" by ${author}, ${clip.licence}, via Wikimedia Commons.*`;
+}
+
+const RESOURCE_MAX_BYTES = 25 * 1024 * 1024;
+const extensionOf = (title) => (title.match(/\.([a-z0-9]+)$/i)?.[1] ?? "bin").toLowerCase();
+const resourceKey = (entry, index, clip) => `resources/${entry.course}-${entry.chapter}-${index + 1}.${extensionOf(clip.title)}`;
+/** "Flowchart-If Then Else.svg" → "Flowchart If Then Else". */
+const resourceTitle = (clip) =>
+  clip.title.replace(/^File:/, "").replace(/\.[a-z0-9]+$/i, "").replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+const resourceCredit = (clip) =>
+  `File: "${clip.title.replace(/^File:/, "")}" by ${clip.author.replace(/[*_]/g, "")}, ${clip.licence}, via Wikimedia Commons.`;
+
+async function downloadTo(url, file) {
+  const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
+  if (!response.ok || !response.body) throw new Error(`Download failed: ${response.status}`);
+  await pipeline(Readable.fromWeb(response.body), fs.createWriteStream(file));
+}
+
+function resourcesSql(resources) {
+  const lines = [
+    "",
+    "-- Lesson resources (prompts/16): rebuilt from scratch on every run.",
+    "delete from public.lesson_resources where storage_key like 'resources/%';",
+  ];
+  for (const row of resources) {
+    lines.push(
+      "",
+      `-- ${row.entry.course} / chapter ${row.entry.chapter}: ${row.clip.title}, ${row.clip.licence}`,
+      "insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)",
+      `select l.id, ${row.position}, ${sqlString(resourceTitle(row.clip))}, ${sqlString(row.clip.title.replace(/^File:/, ""))}, ${Number(row.clip.bytes)}, ${sqlString(row.clip.mime)}, ${sqlString(row.key)}, ${sqlString(resourceCredit(row.clip))}`,
+      "from public.lessons l",
+      "join public.chapters ch on ch.id = l.chapter_id",
+      "join public.courses c on c.id = ch.course_id",
+      `where c.slug = ${sqlString(row.entry.course)} and ch.position = ${Number(row.entry.chapter)};`,
+    );
+  }
+  return lines.join("\n");
 }
 
 function seedSql(rows) {
@@ -219,6 +261,23 @@ async function main() {
     console.log(`${allowed ? "✓" : "✗"} ${label(entry)} (${entry.topic}): ${clip.title} | ${clip.licence} | ${clip.author} | ${minutes}`);
     if (allowed) usable.push({ entry, clip, key: keyFor(entry) });
   }
+  // Resources: every chapter's optional `resources` list.
+  const resourceEntries = chapters
+    .filter((entry) => Array.isArray(entry.resources) && entry.resources.length && (!only || label(entry) === only))
+    .flatMap((entry) => entry.resources.map((file, index) => ({ entry, file, index })));
+  const resourceInfo = resourceEntries.length ? await commonsInfo(resourceEntries.map((item) => item.file)) : new Map();
+  const usableResources = [];
+  for (const item of resourceEntries) {
+    const clip = resourceInfo.get(item.file);
+    if (!clip) {
+      console.log(`✗ resource ${label(item.entry)}: ${item.file} not found on Commons`);
+      continue;
+    }
+    const allowed = ALLOWED_LICENCE.test(clip.licence) && clip.bytes <= RESOURCE_MAX_BYTES;
+    const size = `${(clip.bytes / 1e6).toFixed(2)} MB`;
+    console.log(`${allowed ? "✓" : "✗"} resource ${label(item.entry)}: ${clip.title} | ${clip.licence} | ${clip.author} | ${clip.mime} | ${size}`);
+    if (allowed) usableResources.push({ entry: item.entry, clip, key: resourceKey(item.entry, item.index, clip), position: item.index + 1 });
+  }
   if (checkOnly) return;
 
   const r2 = r2Client();
@@ -248,11 +307,38 @@ async function main() {
     }
   }
 
+  const resourceRows = [];
+  for (const row of usableResources) {
+    if (await r2.exists(row.key)) {
+      console.log(`  ${row.key} already in R2`);
+      resourceRows.push(row);
+      continue;
+    }
+    if (sqlOnly) {
+      console.log(`  ${row.key} not in R2 yet; left out of the SQL`);
+      continue;
+    }
+    const workDir = await fsp.mkdtemp(path.join(os.tmpdir(), "syllo-resource-"));
+    try {
+      const file = path.join(workDir, `file.${extensionOf(row.clip.title)}`);
+      await downloadTo(row.clip.url, file);
+      row.clip.bytes = (await fsp.stat(file)).size;
+      console.log(`  uploading ${row.key} (${(row.clip.bytes / 1e6).toFixed(2)} MB)…`);
+      await r2.put(row.key, file, row.clip.mime);
+      resourceRows.push(row);
+    } catch (error) {
+      console.error(`✗ resource ${label(row.entry)}: ${error.message}`);
+    } finally {
+      await fsp.rm(workDir, { recursive: true, force: true });
+    }
+  }
+
   if (only) {
     console.log("--only: the seed SQL is left as it is; run without --only (or with --sql-only) to rewrite it.");
     return;
   }
-  await fsp.writeFile(SEED, seedSql(rows));
+  await fsp.writeFile(SEED, seedSql(rows) + resourcesSql(resourceRows) + "\n");
+  console.log(`  …and ${resourceRows.length} resource file(s).`);
   console.log(`Wrote ${path.relative(root, SEED)} for ${rows.length} chapter(s). Next: npm run db:push`);
 }
 

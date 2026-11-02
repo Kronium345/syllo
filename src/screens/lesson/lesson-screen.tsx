@@ -13,11 +13,13 @@ import { courseCover } from "@/lib/local-images";
 import { type CourseDetails, useCourseDetails, useStudentCount } from "@/lib/queries/courses";
 import { type Lesson, useLesson, useLessonVideo } from "@/lib/queries/lessons";
 import { useProgress, useSetLessonCompleted } from "@/lib/queries/progress";
+import { usePremium } from "@/lib/queries/purchases";
 import { color, tw } from "@/theme";
 
 import { LessonActions } from "./lesson-actions";
 import { leaveLesson, LessonVideo } from "./lesson-video";
 import { Markdown } from "./markdown";
+import { ResourceCard } from "./resource-card";
 
 /** Height of the native bottom toolbar above the safe area (measured on Android: about 80dp). */
 const TOOLBAR_HEIGHT = 80;
@@ -74,6 +76,9 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
   const previous = index > 0 ? lessons[index - 1] : null;
   const next = index >= 0 && index < lessons.length - 1 ? lessons[index + 1] : null;
   const locked = lesson.content === null;
+  const premium = usePremium();
+  // Enrolled in a premium course without Pro (e.g. a lapsed subscription): RLS hides the content.
+  const premiumLocked = locked && course.isEnrolled && course.access === "premium" && premium.data !== true;
 
   // Replace, so Back from any lesson returns to the course rather than the previous lesson.
   const goTo = (lessonId: string) => router.replace({ pathname: "/lesson/[id]", params: { id: lessonId } });
@@ -126,7 +131,7 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
                   : `${students.data.toLocaleString()} ${students.data === 1 ? "student" : "students"}`}
               </AppText>
             </View>
-            {lesson.content?.body ? (
+            {lesson.resources.length > 0 ? (
               <View style={tw`flex-row items-center gap-2`}>
                 <Icon as={FileText} size="md" color="muted" />
                 <AppText variant="caption">Resources included</AppText>
@@ -135,11 +140,21 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
           </View>
         </View>
 
-        {locked ? (
+        {premiumLocked ? (
           <View style={tw`items-center gap-3 py-6`}>
             <Icon as={Lock} size="xl" color="faint" />
             <AppText variant="callout" style={tw`text-center`}>
-              Enroll to watch this lesson. Enrolling is free.
+              This is a Premium course. Upgrade to keep learning.
+            </AppText>
+            <Button title="See Premium" onPress={() => router.push("/premium")} style={tw`self-stretch`} />
+          </View>
+        ) : locked ? (
+          <View style={tw`items-center gap-3 py-6`}>
+            <Icon as={Lock} size="xl" color="faint" />
+            <AppText variant="callout" style={tw`text-center`}>
+              {course.access === "premium"
+                ? "This lesson is part of a Premium course. Enroll with Premium to watch it."
+                : "Enroll to watch this lesson. Enrolling is free."}
             </AppText>
             <Button title="Back to the course" variant="outline" onPress={() => leaveLesson(course.id)} style={tw`self-stretch`} />
           </View>
@@ -149,6 +164,15 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
               Description
             </AppText>
             <Markdown source={lesson.content.body} skipTitle={lesson.title} />
+          </View>
+        ) : null}
+
+        {!locked && lesson.resources.length > 0 ? (
+          <View style={tw`mt-8 gap-3`}>
+            <AppText variant="heading">Resources</AppText>
+            {lesson.resources.map((resource) => (
+              <ResourceCard key={resource.id} resource={resource} />
+            ))}
           </View>
         ) : null}
       </ScrollView>

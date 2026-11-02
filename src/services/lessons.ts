@@ -16,12 +16,34 @@ export type Lesson = {
   isPreview: boolean;
   chapterPosition: number;
   courseId: string;
+  /** Downloadable files (prompts/16), in order. Empty when there are none or the lesson is locked. */
+  resources: LessonResource[];
   /**
    * Null when the lesson is locked (not a preview, not enrolled). `videoKey` is set when the
    * video is in the private R2 bucket (prompts/15): get a playable link with getLessonVideoUrl.
    * Otherwise `videoUrl` is an outside link that plays as it is.
    */
   content: { videoUrl: string | null; videoKey: string | null; body: string | null } | null;
+};
+
+export type LessonResource = {
+  id: string;
+  title: string;
+  fileName: string;
+  sizeBytes: number;
+  mimeType: string;
+  /** Attribution for openly licensed files ("Video/File: … by …, CC BY …"). */
+  credit: string | null;
+};
+
+type ResourceRow = {
+  id: string;
+  position: number;
+  title: string;
+  file_name: string;
+  size_bytes: number;
+  mime_type: string;
+  credit: string | null;
 };
 
 type LessonRow = {
@@ -32,13 +54,15 @@ type LessonRow = {
   is_preview: boolean;
   chapters: { position: number; course_id: string } | null;
   lesson_contents: { video_url: string | null; video_key: string | null; body: string | null } | null;
+  lesson_resources: ResourceRow[];
 };
 
 /** One lesson with its place in the course and, when unlocked, its video and notes. */
 export async function getLesson(supabase: AppSupabaseClient, lessonId: string, signal?: AbortSignal): Promise<Lesson | null> {
   const query = supabase
     .from("lessons")
-    .select("id, title, position, duration_seconds, is_preview, chapters(position, course_id), lesson_contents(video_url, video_key, body)")
+    .select("id, title, position, duration_seconds, is_preview, chapters(position, course_id), lesson_contents(video_url, video_key, body), " +
+        "lesson_resources(id, position, title, file_name, size_bytes, mime_type, credit)")
     .eq("id", lessonId);
   const { data } = await (signal ? query.abortSignal(signal) : query).maybeSingle().throwOnError();
   if (!data) return null;
@@ -52,6 +76,16 @@ export async function getLesson(supabase: AppSupabaseClient, lessonId: string, s
     isPreview: row.is_preview,
     chapterPosition: row.chapters.position,
     courseId: row.chapters.course_id,
+    resources: [...row.lesson_resources]
+      .sort((a, b) => a.position - b.position)
+      .map((resource) => ({
+        id: resource.id,
+        title: resource.title,
+        fileName: resource.file_name,
+        sizeBytes: Number(resource.size_bytes),
+        mimeType: resource.mime_type,
+        credit: resource.credit,
+      })),
     content: row.lesson_contents
       ? { videoUrl: row.lesson_contents.video_url, videoKey: row.lesson_contents.video_key, body: row.lesson_contents.body }
       : null,
@@ -77,6 +111,24 @@ export async function getLessonVideoUrl(supabase: AppSupabaseClient, lessonId: s
     throw error;
   }
   if (!data?.url) throw new Error("lesson-video returned no link");
+  return { url: data.url, expiresAt: data.expiresAt ?? null };
+}
+
+/**
+ * A download link for a lesson resource (prompts/16): the lesson-resource Edge Function checks
+ * access through RLS and signs a 1-hour R2 link that saves the file. Locked → NotAllowedError.
+ */
+export async function getLessonResourceUrl(supabase: AppSupabaseClient, resourceId: string): Promise<LessonVideoLink> {
+  const { data, error } = await supabase.functions.invoke<LessonVideoLink>("lesson-resource", {
+    method: "POST",
+    body: { resourceId },
+  });
+  if (error) {
+    const status = error instanceof FunctionsHttpError ? (error.context as Response).status : 0;
+    if (status === 403 || status === 404) throw new NotAllowedError("You can't open this file yet.");
+    throw error;
+  }
+  if (!data?.url) throw new Error("lesson-resource returned no link");
   return { url: data.url, expiresAt: data.expiresAt ?? null };
 }
 
