@@ -39,6 +39,16 @@ const isWeb = process.env.EXPO_OS === "web";
 /** The cover photo's height (h-[260px]). */
 const HERO_HEIGHT = 260;
 
+/**
+ * The footer button: enroll (or unlock) before enrolling; once enrolled, "Start Lesson" until a
+ * lesson is completed, "Continue Learning" part-way, "Review Course" when every lesson is done.
+ */
+function footerTitle(enrolled: boolean, needsPremium: boolean, done: number, total: number): string {
+  if (!enrolled) return needsPremium ? "Unlock with Premium" : "Enroll in Course";
+  if (done === 0) return "Start Lesson";
+  return total > 0 && done >= total ? "Review Course" : "Continue Learning";
+}
+
 function goBack() {
   if (router.canGoBack()) router.back();
   else router.replace("/home");
@@ -128,6 +138,7 @@ function CourseBody({
   const progress = useProgress();
   const completed = new Set((progress.data ?? []).map((row) => row.lessonId));
   const lessons = orderedLessons(course);
+  const lessonsDone = lessons.filter((lesson) => completed.has(lesson.id)).length;
   const durationSeconds = lessons.reduce((total, lesson) => total + lesson.durationSeconds, 0);
   const [openChapters, setOpenChapters] = useState<Set<string>>(
     () => new Set(course.chapters[0] ? [course.chapters[0].id] : []),
@@ -337,7 +348,7 @@ function CourseBody({
           </View>
         </View>
         <Button
-          title={course.isEnrolled ? "Continue Learning" : needsPremium ? "Unlock with Premium" : "Enroll in Course"}
+          title={footerTitle(course.isEnrolled, needsPremium, lessonsDone, lessons.length)}
           variant="primary-bold"
           loading={enroll.isPending}
           onPress={start}

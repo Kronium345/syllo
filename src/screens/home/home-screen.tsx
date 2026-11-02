@@ -22,11 +22,12 @@ import { greeting } from "@/lib/format-duration";
 import { useAskNotificationsOnce } from "@/lib/notifications/use-study-reminders";
 import { categoriesFor } from "@/lib/onboarding/options";
 import { type CourseCard, useCourseDetails, useCourseFeed } from "@/lib/queries/courses";
-import { useLatestEnrollment } from "@/lib/queries/enrollments";
+import { useEnrolledCourses, useLatestEnrollment } from "@/lib/queries/enrollments";
 import { useMyProfile } from "@/lib/queries/profiles";
 import { type LearningStats, useLearningStats } from "@/lib/queries/progress";
 import { color, type ColorToken, tw } from "@/theme";
 
+import { EnrolledCourseCard } from "./enrolled-course-card";
 import { InterviewCard } from "./interview-card";
 import { RecommendedCard } from "./recommended-card";
 
@@ -38,6 +39,7 @@ export function HomeScreen() {
   const paddingTop = useTopPadding(56);
   const feed = useCourseFeed();
   const latest = useLatestEnrollment();
+  const enrolled = useEnrolledCourses();
   const profile = useMyProfile();
   const stats = useLearningStats();
   const firstName = displayFirstName(user);
@@ -52,10 +54,11 @@ export function HomeScreen() {
     ];
   }, [feed.data, profile.data?.interests]);
 
-  const refreshing = feed.isRefetching || latest.isRefetching || stats.isRefetching;
+  const refreshing = feed.isRefetching || latest.isRefetching || stats.isRefetching || enrolled.isRefetching;
   const refresh = () => {
     feed.refetch();
     latest.refetch();
+    enrolled.refetch();
     stats.refetch();
   };
   const streakDays = stats.data?.streakDays ?? 0;
@@ -107,6 +110,34 @@ export function HomeScreen() {
         ) : (
           <>
             <ContinueCard course={latest.data ?? null} fallback={recommended[0]} stats={stats.data} />
+
+            {/* The learner's enrolled courses, newest first; hidden until they enroll in one. */}
+            {enrolled.data && enrolled.data.length > 0 ? (
+              <>
+                <View style={tw`px-screen mt-10 mb-4 flex-row items-center justify-between`}>
+                  <AppText variant="heading" accessibilityRole="header">
+                    Your courses
+                  </AppText>
+                  <Pressable accessibilityRole="link" hitSlop={8} onPress={() => router.navigate("/my-courses")}>
+                    <AppText style={tw`text-14 font-semibold text-primary`}>See All</AppText>
+                  </Pressable>
+                </View>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={tw`gap-4 px-screen pb-4`}
+                >
+                  {enrolled.data.map((course) => (
+                    <EnrolledCourseCard
+                      key={course.id}
+                      course={course}
+                      completed={stats.data?.completedLessonIds}
+                      onPress={() => openCourse(course.id)}
+                    />
+                  ))}
+                </ScrollView>
+              </>
+            ) : null}
 
             <View style={tw`px-screen mt-10 mb-4 flex-row items-center justify-between`}>
               <AppText variant="heading" accessibilityRole="header">
