@@ -31,7 +31,7 @@ export function Sheet({
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose} statusBarTranslucent>
       <View style={tw`flex-1 justify-end`}>
         <Pressable accessibilityRole="button" accessibilityLabel="Close" onPress={onClose} style={tw`absolute inset-0 bg-scrim`} />
-        <View accessibilityViewIsModal style={[tw`max-h-[85%] rounded-t-3xl bg-surface`, { paddingBottom: Math.max(insets.bottom, 12) }]}>
+        <View accessibilityViewIsModal style={[tw`max-h-[85%] rounded-t-3xl bg-surface`, { paddingBottom: insets.bottom + 16 }]}>
           <View style={tw`items-center pt-2.5`}>
             <View style={tw`h-1 w-10 rounded-full bg-border`} />
           </View>

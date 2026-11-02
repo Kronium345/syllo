@@ -4,7 +4,10 @@ export type {
   CourseCard,
   CourseDetails,
   CourseFeedFilter,
+  CourseLevel,
   CourseListItem,
+  CourseSort,
+  DurationFilter,
   LessonOutline,
 } from "@/services/courses";
 export { useCategories } from "./use-categories";

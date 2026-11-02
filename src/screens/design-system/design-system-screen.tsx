@@ -156,6 +156,7 @@ export function DesignSystemScreen() {
             <IconButton icon={Bell} accessibilityLabel="Notifications" />
             <IconButton icon={Share2} accessibilityLabel="Share" variant="glass" />
             <IconButton icon={SlidersHorizontal} accessibilityLabel="Filters" variant="filter" />
+            <IconButton icon={SlidersHorizontal} accessibilityLabel="Filters" variant="filter" badge={2} />
             <IconButton icon={X} accessibilityLabel="Close" variant="close" />
             <View style={tw`bg-black p-2 rounded-xl`}>
               <IconButton icon={ChevronLeft} accessibilityLabel="Back" variant="glass-dark" />

@@ -9,23 +9,26 @@ import { IconButton } from "@/components/ui/icon-button";
 import { SearchField } from "@/components/ui/search-field";
 import { AppText } from "@/components/ui/text";
 import { useTopPadding } from "@/components/ui/use-top-padding";
-import { featureComingSoon } from "@/lib/coming-soon";
 import { useCategories, useCourseFeed } from "@/lib/queries/courses";
 import { color, tw } from "@/theme";
 
 import { FeedItem } from "./feed-item";
+import { FilterSheet } from "./filter-sheet";
+import { activeFilterCount, EMPTY_FILTERS, type ExploreFilters } from "./filters";
 
 // Wait this long after the last keystroke before searching.
 const SEARCH_DEBOUNCE_MS = 300;
 
-/** course_search_feed: search, category chips and the course feed. */
+/** course_search_feed: search, category chips, the Filters sheet (prompts/13) and the course feed. */
 export function ExploreScreen() {
   const paddingTop = useTopPadding(56);
   const [text, setText] = useState("");
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<string | null>(null);
+  const [filters, setFilters] = useState<ExploreFilters>(EMPTY_FILTERS);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const categories = useCategories();
-  const feed = useCourseFeed({ search, category });
+  const feed = useCourseFeed({ search, ...filters });
+  const activeCount = activeFilterCount(filters);
 
   useEffect(() => {
     const timer = setTimeout(() => setSearch(text.trim()), SEARCH_DEBOUNCE_MS);
@@ -33,8 +36,12 @@ export function ExploreScreen() {
   }, [text]);
 
   const count = feed.data?.length ?? 0;
-  const term = search || category;
-  const results = `Found ${count} ${count === 1 ? "result" : "results"}${term ? ` for "${term}"` : ""}`;
+  const onlyCategory = filters.categories.length === 1 ? filters.categories[0] : null;
+  const term = search || onlyCategory;
+  // "Filtered" whenever something beyond the search term and a single category narrows or sorts the feed.
+  const filtered = activeCount > (onlyCategory ? 1 : 0) || (!!search && !!onlyCategory);
+  const results = `Found ${count} ${count === 1 ? "result" : "results"}${term ? ` for "${term}"` : ""}${filtered ? " · Filtered" : ""}`;
+  const clearFilters = () => setFilters(EMPTY_FILTERS);
 
   return (
     <View style={tw`flex-1 bg-surface`}>
@@ -50,7 +57,8 @@ export function ExploreScreen() {
           icon={SlidersHorizontal}
           variant="filter"
           accessibilityLabel="Filters"
-          onPress={() => featureComingSoon("Filters")}
+          badge={activeCount}
+          onPress={() => setSheetOpen(true)}
         />
       </Glass>
 
@@ -63,6 +71,7 @@ export function ExploreScreen() {
           categories.refetch();
         }}
         keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
         ListHeaderComponent={
           <>
             <ScrollView
@@ -71,9 +80,18 @@ export function ExploreScreen() {
               keyboardShouldPersistTaps="handled"
               contentContainerStyle={tw`gap-2 px-screen py-4`}
             >
-              <Chip label="All Courses" selected={category === null} onPress={() => setCategory(null)} />
+              <Chip
+                label="All Courses"
+                selected={filters.categories.length === 0}
+                onPress={() => setFilters((current) => ({ ...current, categories: [] }))}
+              />
               {(categories.data ?? []).map((name) => (
-                <Chip key={name} label={name} selected={category === name} onPress={() => setCategory(name)} />
+                <Chip
+                  key={name}
+                  label={name}
+                  selected={filters.categories.includes(name)}
+                  onPress={() => setFilters((current) => ({ ...current, categories: [name] }))}
+                />
               ))}
             </ScrollView>
             {feed.isSuccess ? (
@@ -97,6 +115,13 @@ export function ExploreScreen() {
                 {feed.isFetching ? "Trying again…" : "Try again"}
               </AppText>
             </Pressable>
+          ) : activeCount > 0 ? (
+            <View style={tw`py-16 items-center gap-2`}>
+              <AppText variant="callout">No courses match your filters.</AppText>
+              <Pressable accessibilityRole="button" hitSlop={8} onPress={clearFilters}>
+                <AppText style={tw`text-14 font-semibold text-primary`}>Clear filters</AppText>
+              </Pressable>
+            </View>
           ) : (
             <AppText variant="callout" style={tw`py-16 text-center`}>
               No courses match your search.
@@ -104,6 +129,18 @@ export function ExploreScreen() {
           )
         }
         contentContainerStyle={tw`pb-6`}
+      />
+
+      <FilterSheet
+        visible={sheetOpen}
+        applied={filters}
+        categories={categories.data ?? []}
+        search={search}
+        onApply={(next) => {
+          setFilters(next);
+          setSheetOpen(false);
+        }}
+        onClose={() => setSheetOpen(false)}
       />
     </View>
   );

@@ -5,8 +5,19 @@ import type { CourseFeedFilter } from "@/services/courses";
 export const queryKeys = {
   courses: {
     all: ["courses"] as const,
+    // Normalised so the same filters (in any order) share one cache entry.
     feed: (filter: CourseFeedFilter) =>
-      [...queryKeys.courses.all, "feed", { search: filter.search?.trim() ?? "", category: filter.category ?? null }] as const,
+      [
+        ...queryKeys.courses.all,
+        "feed",
+        {
+          search: filter.search?.trim() ?? "",
+          categories: [...(filter.categories ?? [])].sort(),
+          levels: [...(filter.levels ?? [])].sort(),
+          duration: filter.duration ?? "any",
+          sort: filter.sort ?? "title",
+        },
+      ] as const,
     categories: () => [...queryKeys.courses.all, "categories"] as const,
     details: (courseId: string) => [...queryKeys.courses.all, "details", courseId] as const,
     students: (courseId: string) => [...queryKeys.courses.all, "students", courseId] as const,

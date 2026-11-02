@@ -15,6 +15,7 @@ export type CourseCard = {
   title: string;
   coverImageUrl: string | null;
   category: string | null;
+  level: CourseLevel | null;
   tutorName: string | null;
   lessonCount: number;
   durationSeconds: number;
@@ -22,9 +23,22 @@ export type CourseCard = {
   lessonIds: string[];
 };
 
-export type CourseFeedFilter = { search?: string; category?: string | null };
+export type CourseLevel = "beginner" | "intermediate" | "advanced";
+/** Course length buckets for Explore's filters (prompts/13). */
+export type DurationFilter = "any" | "under-1h" | "1-2h" | "over-2h";
+export type CourseSort = "title" | "newest" | "shortest" | "longest";
 
-const CARD_COLUMNS = "id, slug, title, cover_image_url, category, tutors(name), chapters(lessons(id, duration_seconds))";
+export type CourseFeedFilter = {
+  search?: string;
+  /** Empty or missing: every category. */
+  categories?: string[];
+  levels?: CourseLevel[];
+  duration?: DurationFilter;
+  sort?: CourseSort;
+};
+
+const CARD_COLUMNS =
+  "id, slug, title, cover_image_url, category, level, tutors(name), chapters(lessons(id, duration_seconds))";
 
 type CardRow = {
   id: string;
@@ -32,6 +46,7 @@ type CardRow = {
   title: string;
   cover_image_url: string | null;
   category: string | null;
+  level: string | null;
   tutors: { name: string } | null;
   chapters: { lessons: { id: string; duration_seconds: number }[] }[];
 };
@@ -44,6 +59,7 @@ function toCard(row: CardRow): CourseCard {
     title: row.title,
     coverImageUrl: row.cover_image_url,
     category: row.category,
+    level: isCourseLevel(row.level) ? row.level : null,
     tutorName: row.tutors?.name ?? null,
     lessonCount: lessons.length,
     durationSeconds: lessons.reduce((total, lesson) => total + lesson.duration_seconds, 0),
@@ -56,18 +72,53 @@ function likePattern(search: string): string {
   return `%${search.replace(/[\\%_]/g, (char) => `\\${char}`)}%`;
 }
 
-/** Published courses (RLS hides drafts) for the cards, filtered by title search and category. */
+function isCourseLevel(level: string | null): level is CourseLevel {
+  return level === "beginner" || level === "intermediate" || level === "advanced";
+}
+
+const HOUR = 3600;
+
+/** Whether a course of this many seconds falls in the length bucket. */
+export function matchesDuration(seconds: number, bucket: DurationFilter = "any"): boolean {
+  switch (bucket) {
+    case "under-1h":
+      return seconds < HOUR;
+    case "1-2h":
+      return seconds >= HOUR && seconds <= 2 * HOUR;
+    case "over-2h":
+      return seconds > 2 * HOUR;
+    default:
+      return true;
+  }
+}
+
+/**
+ * Published courses (RLS hides drafts) for the cards: title search, categories, levels and
+ * title/newest order run in the database. Length is the sum of lesson durations, so the
+ * duration filter and the shortest/longest sorts run here, after the rows are summed up.
+ */
 export async function getCourseFeed(
   supabase: AppSupabaseClient,
   filter: CourseFeedFilter,
   signal?: AbortSignal,
 ): Promise<CourseCard[]> {
-  let query = supabase.from("courses").select(CARD_COLUMNS).order("title");
+  let query = supabase.from("courses").select(CARD_COLUMNS);
   const search = filter.search?.trim();
   if (search) query = query.ilike("title", likePattern(search));
-  if (filter.category) query = query.eq("category", filter.category);
+  if (filter.categories?.length) query = query.in("category", filter.categories);
+  if (filter.levels?.length) query = query.in("level", filter.levels);
+  query =
+    filter.sort === "newest"
+      ? query.order("created_at", { ascending: false }).order("title")
+      : query.order("title");
   const { data } = await (signal ? query.abortSignal(signal) : query).throwOnError();
-  return (data as unknown as CardRow[]).map(toCard);
+  const cards = (data as unknown as CardRow[])
+    .map(toCard)
+    .filter((card) => matchesDuration(card.durationSeconds, filter.duration));
+  // Array.prototype.sort is stable, so equal lengths keep the title order.
+  if (filter.sort === "shortest") cards.sort((a, b) => a.durationSeconds - b.durationSeconds);
+  if (filter.sort === "longest") cards.sort((a, b) => b.durationSeconds - a.durationSeconds);
+  return cards;
 }
 
 /** The distinct categories of published courses, for Explore's chips. */
@@ -107,6 +158,7 @@ export type CourseDetails = {
   title: string;
   description: string | null;
   coverImageUrl: string | null;
+  level: CourseLevel | null;
   tutor: { id: string; name: string; headline: string | null; avatarUrl: string | null } | null;
   chapters: ChapterOutline[];
   isEnrolled: boolean;
@@ -118,6 +170,7 @@ type DetailsRow = {
   title: string;
   description: string | null;
   cover_image_url: string | null;
+  level: string | null;
   tutors: { id: string; name: string; headline: string | null; avatar_url: string | null } | null;
   chapters: {
     id: string;
@@ -143,7 +196,7 @@ export async function getCourseDetails(
   const query = supabase
     .from("courses")
     .select(
-      "id, slug, title, description, cover_image_url, tutors(id, name, headline, avatar_url), " +
+      "id, slug, title, description, cover_image_url, level, tutors(id, name, headline, avatar_url), " +
         "chapters(id, title, position, lessons(id, title, position, duration_seconds, is_preview), quizzes(id, title, is_preview, quiz_questions(count))), " +
         "enrollments(id)",
     )
@@ -157,6 +210,7 @@ export async function getCourseDetails(
     title: row.title,
     description: row.description,
     coverImageUrl: row.cover_image_url,
+    level: isCourseLevel(row.level) ? row.level : null,
     tutor: row.tutors
       ? { id: row.tutors.id, name: row.tutors.name, headline: row.tutors.headline, avatarUrl: row.tutors.avatar_url }
       : null,

@@ -7,6 +7,10 @@ import { useMyProfile } from "@/lib/queries/profiles";
 import { useSyncProfile } from "@/lib/use-sync-profile";
 import { color, tw } from "@/theme";
 
+// A deep link straight to a pushed screen (e.g. syllo://course/<id>, prompts/14) loads the
+// tabs underneath, so Back goes Home instead of leaving the user without a way out.
+export const unstable_settings = { anchor: "(tabs)" };
+
 /**
  * Signed in from here on. A learner is onboarded when their `profiles` row exists
  * (prompts/11): only finishing onboarding creates it. Until then only the onboarding

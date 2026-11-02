@@ -4,12 +4,25 @@ import { tw } from "@/theme";
 
 import { AppText } from "./text";
 
-/** Category filter chip (Explore): primary fill when selected, subtle with a border otherwise. */
-export function Chip({ label, selected = false, onPress }: { label: string; selected?: boolean; onPress?: () => void }) {
+/**
+ * Category filter chip (Explore): primary fill when selected, subtle with a border otherwise.
+ * `role="radio"` for one-of-many choices (the filter sheet's sort and duration).
+ */
+export function Chip({
+  label,
+  selected = false,
+  role = "button",
+  onPress,
+}: {
+  label: string;
+  selected?: boolean;
+  role?: "button" | "radio";
+  onPress?: () => void;
+}) {
   return (
     <Pressable
-      accessibilityRole="button"
-      accessibilityState={{ selected }}
+      accessibilityRole={role}
+      accessibilityState={role === "radio" ? { checked: selected } : { selected }}
       onPress={onPress}
       style={({ pressed }) =>
         tw.style(

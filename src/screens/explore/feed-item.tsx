@@ -1,9 +1,10 @@
 import { Image } from "expo-image";
-import { Clock, Star, User } from "lucide-react-native";
+import { ChartNoAxesColumnIncreasing, Clock, Star, User } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 
 import { Icon } from "@/components/ui/icon";
 import { AppText } from "@/components/ui/text";
+import { levelLabel } from "@/lib/course-level";
 import { formatHoursMinutes } from "@/lib/format-duration";
 import { courseCover } from "@/lib/local-images";
 import type { CourseCard } from "@/lib/queries/courses";
@@ -41,7 +42,7 @@ export function FeedItem({ course, first, onPress }: { course: CourseCard; first
           <AppText style={tw`text-12 font-bold text-primary`}>{placeholderRating(course.id)}</AppText>
         </View>
       </View>
-      <View style={tw`flex-row items-center gap-3`}>
+      <View style={tw`flex-row flex-wrap items-center gap-x-3 gap-y-1`}>
         {course.tutorName ? (
           <View style={tw`flex-row items-center gap-1`}>
             <Icon as={User} size="sm" color="muted" />
@@ -52,6 +53,12 @@ export function FeedItem({ course, first, onPress }: { course: CourseCard; first
           <Icon as={Clock} size="sm" color="muted" />
           <AppText variant="caption">{formatHoursMinutes(course.durationSeconds)}</AppText>
         </View>
+        {course.level ? (
+          <View style={tw`flex-row items-center gap-1`}>
+            <Icon as={ChartNoAxesColumnIncreasing} size="sm" color="muted" />
+            <AppText variant="caption">{levelLabel(course.level)}</AppText>
+          </View>
+        ) : null}
       </View>
       <View style={tw`mt-3 flex-row items-center justify-between`}>
         <AppText style={tw`text-18 font-bold text-ink`}>Included in Premium</AppText>

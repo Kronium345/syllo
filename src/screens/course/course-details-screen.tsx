@@ -1,8 +1,10 @@
+import ShareIcon from "@expo/material-symbols/share.xml";
 import { Image } from "expo-image";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import { ChevronLeft, Clock, LayoutTemplate, Share2, Star } from "lucide-react-native";
 import { useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, Share, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -20,10 +22,17 @@ import { courseCover, tutorPhoto } from "@/lib/local-images";
 import { type CourseDetails, useCourseDetails } from "@/lib/queries/courses";
 import { useEnroll } from "@/lib/queries/enrollments";
 import { useProgress } from "@/lib/queries/progress";
+import { shareCourse } from "@/lib/share-course";
 import { placeholderRating } from "@/screens/home/placeholder-stats";
 import { color, tw } from "@/theme";
 
 import { ChapterSection } from "./chapter-section";
+
+// iOS/Android use the native header with a Stack.Toolbar share button (prompts/14); web has
+// no native toolbar, so it keeps the design's floating glass back and share buttons.
+const isWeb = process.env.EXPO_OS === "web";
+/** The cover photo's height (h-[260px]). */
+const HERO_HEIGHT = 260;
 
 function goBack() {
   if (router.canGoBack()) router.back();
@@ -35,9 +44,37 @@ export function CourseDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const headerTop = useTopPadding(48);
   const course = useCourseDetails(id);
+  const data = course.data;
+  // Once the photo scrolls away, the header gets the page colour so content doesn't run under its icons.
+  const [pastHero, setPastHero] = useState(false);
 
   return (
     <View style={tw`flex-1 bg-surface`}>
+      {isWeb ? null : (
+        <>
+          {/* Shown in every state, so Back works while loading or after an error. */}
+          <Stack.Screen
+            options={{
+              headerShown: true,
+              headerTransparent: true,
+              title: "",
+              headerTintColor: color("white"),
+              headerBackButtonDisplayMode: "minimal",
+              headerStyle: { backgroundColor: pastHero ? color("surface") : "transparent" },
+              headerShadowVisible: false,
+            }}
+          />
+          {data ? (
+            <Stack.Toolbar placement="right">
+              <Stack.Toolbar.Button
+                icon={process.env.EXPO_OS === "ios" ? "square.and.arrow.up" : ShareIcon}
+                accessibilityLabel="Share course"
+                onPress={() => shareCourse(data)}
+              />
+            </Stack.Toolbar>
+          ) : null}
+        </>
+      )}
       {course.isPending ? (
         <View accessibilityRole="progressbar" accessibilityLabel="Loading course" style={tw`flex-1 items-center justify-center`}>
           <ActivityIndicator color={color("muted")} />
@@ -54,26 +91,29 @@ export function CourseDetailsScreen() {
           <AppText variant="callout">This course isn&apos;t available.</AppText>
         </View>
       ) : (
-        <CourseBody course={course.data} />
+        <CourseBody course={course.data} onPastHeroChange={setPastHero} />
       )}
 
-      {/* Floating header (absolute top-12 px-6), over the photo. */}
-      <View style={[tw`absolute left-0 right-0 px-screen flex-row items-center justify-between`, { top: headerTop }]}>
-        <IconButton icon={ChevronLeft} variant="glass" accessibilityLabel="Back" onPress={goBack} />
-        {course.data ? (
-          <IconButton
-            icon={Share2}
-            variant="glass"
-            accessibilityLabel="Share course"
-            onPress={() => Share.share({ message: `${course.data?.title} on Syllo` }).catch(() => undefined)}
-          />
-        ) : null}
-      </View>
+      {/* Web only: the design's floating header (absolute top-12 px-6), over the photo. */}
+      {isWeb ? (
+        <View style={[tw`absolute left-0 right-0 px-screen flex-row items-center justify-between`, { top: headerTop }]}>
+          <IconButton icon={ChevronLeft} variant="glass" accessibilityLabel="Back" onPress={goBack} />
+          {data ? (
+            <IconButton icon={Share2} variant="glass" accessibilityLabel="Share course" onPress={() => shareCourse(data)} />
+          ) : null}
+        </View>
+      ) : null}
     </View>
   );
 }
 
-function CourseBody({ course }: { course: CourseDetails }) {
+function CourseBody({
+  course,
+  onPastHeroChange,
+}: {
+  course: CourseDetails;
+  onPastHeroChange: (pastHero: boolean) => void;
+}) {
   const enroll = useEnroll();
   const progress = useProgress();
   const completed = new Set((progress.data ?? []).map((row) => row.lessonId));
@@ -84,6 +124,7 @@ function CourseBody({ course }: { course: CourseDetails }) {
   );
   const cover = courseCover(course);
   const photo = course.tutor ? tutorPhoto(course.tutor) : null;
+  const insets = useSafeAreaInsets();
 
   const toggle = (chapterId: string) =>
     setOpenChapters((current) => {
@@ -114,12 +155,31 @@ function CourseBody({ course }: { course: CourseDetails }) {
 
   return (
     <>
-      <ScrollView style={tw`flex-1`} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={tw`flex-1`}
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
+        // The header's bottom edge (safe area + 56) reaches the photo's end (260).
+        onScroll={(event) => onPastHeroChange(event.nativeEvent.contentOffset.y > HERO_HEIGHT - insets.top - 56)}
+      >
         <View style={tw`h-[260px] w-full bg-track`}>
           {cover ? (
             <Image source={cover} accessibilityIgnoresInvertColors contentFit="cover" style={tw`w-full h-full`} />
           ) : null}
           <Fade to="surface" via={50} />
+          {isWeb ? null : (
+            // Keeps the native header's white back and share icons readable on light photos.
+            <View
+              pointerEvents="none"
+              style={[
+                tw`absolute top-0 left-0 right-0`,
+                {
+                  height: insets.top + 96,
+                  backgroundImage: `linear-gradient(to bottom, ${color("scrim")} 0%, transparent 100%)`,
+                },
+              ]}
+            />
+          )}
         </View>
 
         <View style={tw`px-screen -mt-10`}>

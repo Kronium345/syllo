@@ -5,6 +5,7 @@ import { type ColorToken, pressScale, tw } from "@/theme";
 
 import { Glass } from "./glass";
 import { Icon } from "./icon";
+import { AppText } from "./text";
 
 // The prototype's icon buttons.
 const variants: Record<Variant, { box: string; ink: ColorToken; glass?: boolean; scale: 0.9 | 0.95 }> = {
@@ -22,17 +23,22 @@ const variants: Record<Variant, { box: string; ink: ColorToken; glass?: boolean;
 
 type Variant = "outline" | "glass" | "glass-dark" | "filter" | "close";
 
-/** A square/round icon-only button. `accessibilityLabel` names the action. */
+/**
+ * A square/round icon-only button. `accessibilityLabel` names the action. `badge` (> 0) draws
+ * a count at the top-right corner, e.g. active filters on Explore (prompts/13, not in the design).
+ */
 export function IconButton({
   icon,
   accessibilityLabel,
   variant = "outline",
+  badge = 0,
   onPress,
   style,
 }: {
   icon: LucideIcon;
   accessibilityLabel: string;
   variant?: Variant;
+  badge?: number;
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
 }) {
@@ -41,7 +47,8 @@ export function IconButton({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel}
+      // The count goes in the label: Android keeps a stale accessibilityValue once it's removed.
+      accessibilityLabel={badge > 0 ? `${accessibilityLabel}, ${badge} active` : accessibilityLabel}
       hitSlop={4}
       onPress={onPress}
       style={({ pressed }) => [pressScale(pressed, v.scale), style]}
@@ -53,6 +60,14 @@ export function IconButton({
       ) : (
         <View style={tw.style("items-center justify-center", v.box)}>{content}</View>
       )}
+      {badge > 0 ? (
+        <View
+          pointerEvents="none"
+          style={tw`absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-primary border-2 border-surface items-center justify-center`}
+        >
+          <AppText style={tw`text-11 leading-tight font-bold text-on-primary`}>{badge}</AppText>
+        </View>
+      ) : null}
     </Pressable>
   );
 }
