@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { useVideoPlayer, VideoView } from "expo-video";
 import { ChevronLeft, Maximize, Pause, Play } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
-import { Pressable, View } from "react-native";
+import { ActivityIndicator, Pressable, View } from "react-native";
 
 import { Glass } from "@/components/ui/glass";
 import { Icon } from "@/components/ui/icon";
@@ -22,11 +22,17 @@ import { color, pressScale, tw } from "@/theme";
  */
 export function LessonVideo({
   videoUrl,
+  loading = false,
   poster,
   fallbackDuration,
   onBack,
+  onSourceError,
 }: {
   videoUrl: string | null;
+  /** The signed link is still on its way: show a spinner, not the error. */
+  loading?: boolean;
+  /** Playback failed; the parent may fetch a fresh link (an expired R2 signature). */
+  onSourceError?: () => void;
   poster: ImageSource | null;
   /** The lesson's length from the outline, until the video reports its own. */
   fallbackDuration: number;
@@ -35,7 +41,10 @@ export function LessonVideo({
   const backTop = useTopPadding(48);
   const view = useRef<VideoView>(null);
   const [started, setStarted] = useState(false);
-  const player = useVideoPlayer(videoUrl, (instance) => {
+  // The player keeps its first link: a refreshed signed link would otherwise restart it.
+  // It only switches after a playback error (e.g. the old link expired); see below.
+  const [source, setSource] = useState(videoUrl);
+  const player = useVideoPlayer(source, (instance) => {
     instance.timeUpdateEventInterval = 0.5;
   });
   const { isPlaying } = useEvent(player, "playingChange", { isPlaying: player.playing });
@@ -50,9 +59,20 @@ export function LessonVideo({
   // Leaving the lesson stops the sound.
   useEffect(() => () => player.pause(), [player]);
 
+  // Take the first link once it arrives, or a fresh one after a playback error.
+  if (videoUrl !== null && (source === null || (status === "error" && videoUrl !== source))) setSource(videoUrl);
+
+  // A playback error: ask the parent for a fresh link, once per link.
+  const reportedFor = useRef<string | null>(null);
+  useEffect(() => {
+    if (status !== "error" || reportedFor.current === source) return;
+    reportedFor.current = source;
+    onSourceError?.();
+  }, [status, source, onSourceError]);
+
   const duration = player.duration > 0 ? player.duration : fallbackDuration;
   const progress = duration > 0 ? time.currentTime / duration : 0;
-  const failed = status === "error" || !videoUrl;
+  const failed = !loading && (status === "error" || !source);
 
   const toggle = () => {
     if (failed) return;
@@ -63,7 +83,7 @@ export function LessonVideo({
 
   return (
     <View style={tw`w-full aspect-video bg-black`}>
-      {videoUrl ? (
+      {source ? (
         <VideoView
           ref={view}
           player={player}
@@ -105,7 +125,9 @@ export function LessonVideo({
       </View>
 
       <View pointerEvents="box-none" style={tw`absolute inset-0 items-center justify-center`}>
-        {failed ? (
+        {loading ? (
+          <ActivityIndicator accessibilityLabel="Loading video" color={color("white")} />
+        ) : failed ? (
           <AppText style={tw`text-14 font-medium text-white`}>Couldn&apos;t play this video.</AppText>
         ) : (
           <Pressable

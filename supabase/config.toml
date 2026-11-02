@@ -69,7 +69,7 @@ schema_paths = []
 enabled = true
 # Specifies an ordered list of seed files to load during db reset.
 # Supports glob patterns relative to supabase directory: "./seeds/*.sql"
-sql_paths = ["./seed.sql", "./seeds/exam-prep.sql"]
+sql_paths = ["./seed.sql", "./seeds/exam-prep.sql", "./seeds/lesson-videos.sql"]
 
 [db.network_restrictions]
 # Enable management of network restrictions.
@@ -391,6 +391,11 @@ deno_version = 2
 # premium-sync verifies Clerk session tokens itself (Clerk is a third-party provider) and
 # also receives RevenueCat webhooks, which carry no JWT (prompts/09).
 [functions.premium-sync]
+verify_jwt = false
+
+# lesson-video verifies Clerk session tokens itself, then reads lesson_contents as the
+# learner so RLS decides access, and signs 1-hour R2 links (prompts/15).
+[functions.lesson-video]
 verify_jwt = false
 
 [analytics]

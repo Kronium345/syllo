@@ -30,6 +30,7 @@ export const queryKeys = {
   lessons: {
     all: ["lessons"] as const,
     detail: (lessonId: string) => [...queryKeys.lessons.all, lessonId] as const,
+    video: (lessonId: string) => [...queryKeys.lessons.all, lessonId, "video"] as const,
   },
   progress: {
     all: ["progress"] as const,

@@ -1,0 +1,134 @@
+{
+  "_comment": "prompts/15: one openly licensed clip per chapter, shared by that chapter's lessons. `file` is a Wikimedia Commons file page title; `null` keeps the placeholder video. `npm run upload:lesson-videos -- --check` prints each file's licence, author and length; only CC0 / CC BY / CC BY-SA are uploaded. `maxSeconds` trims long talks.",
+  "chapters": [
+    {
+      "course": "advanced-animations",
+      "chapter": 1,
+      "topic": "Motion principles",
+      "file": "File:The CSS-Podcast – 090 – Scroll-driven animations.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "advanced-animations",
+      "chapter": 2,
+      "topic": "Gestures",
+      "file": null
+    },
+    {
+      "course": "advanced-animations",
+      "chapter": 3,
+      "topic": "Performance",
+      "file": "File:Multithreading in Javascript Using Worker Threads 1080p.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 1,
+      "topic": "Loading data",
+      "file": "File:Scraping Data from Wikipedia Tutorial - Web Scraping in Python.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 2,
+      "topic": "Cleaning and shaping",
+      "file": "File:Clean Your Data- Getting Started with OpenRefine (workshop).webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 3,
+      "topic": "Asking questions",
+      "file": "File:Visualizing Data Illah Nourbakhsh & Matthew C. Hansen.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 4,
+      "topic": "Telling the story",
+      "file": "File:WIKIMANIA Day 2 Nairobi - Adding Our World in Data (OWID) Visualizations to Wikipedia.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "design-systems",
+      "chapter": 1,
+      "topic": "Foundations",
+      "file": "File:Design-principles of the World Wide Web.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "design-systems",
+      "chapter": 2,
+      "topic": "Components",
+      "file": null
+    },
+    {
+      "course": "design-systems",
+      "chapter": 3,
+      "topic": "Running the system",
+      "file": null
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 1,
+      "topic": "Your first program",
+      "file": "File:Installing Jupyter Notebooks-Anaconda - Python for Beginners.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 2,
+      "topic": "Making decisions",
+      "file": null
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 3,
+      "topic": "Functions and files",
+      "file": "File:6 - 1 - Chapter 4 - Functions (28 03).webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 1,
+      "topic": "Getting started",
+      "file": "File:Setup React Native.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 2,
+      "topic": "Components and styling",
+      "file": "File:Debugging JavaScript Chrome DevTools 101.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 3,
+      "topic": "Navigation and data",
+      "file": "File:Building mobile apps with MapLibre SDK.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 1,
+      "topic": "Seeing like a designer",
+      "file": "File:User Experience in Wikipedia - How Can We Improve It?.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 2,
+      "topic": "Typography and colour",
+      "file": "File:Lea Verou - The Chroma Zone.webm",
+      "maxSeconds": 600
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 3,
+      "topic": "Layout and spacing",
+      "file": "File:DotCSS 2018 - Mandy Michael - Variable Fonts and the Future of Web Design.webm",
+      "maxSeconds": 600
+    }
+  ]
+}

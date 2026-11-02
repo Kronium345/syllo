@@ -141,13 +141,18 @@ from (values
 on conflict (id) do nothing;
 
 -- Content for every lesson: a sample video (cycled) and a short markdown body.
+-- PLACEHOLDER videos: openly licensed clips on public hosts (Google's gtv-videos-bucket started
+-- returning 403 in Nov 2026). Real lesson videos will replace them (see prompts/15).
 insert into public.lesson_contents (lesson_id, video_url, body)
 select
   l.id,
-  'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/' ||
-    (array['BigBuckBunny', 'ElephantsDream', 'ForBiggerBlazes', 'ForBiggerEscapes', 'ForBiggerFun',
-           'ForBiggerJoyrides', 'ForBiggerMeltdowns', 'Sintel', 'TearsOfSteel'])
-    [1 + (row_number() over (order by c.slug, ch.position, l.position) - 1)::int % 9] || '.mp4',
+  (array['https://media.w3.org/2010/05/bunny/trailer.mp4',
+         'https://media.w3.org/2010/05/video/movie_300.mp4',
+         'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
+         'https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4',
+         'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4',
+         'https://media.w3.org/2010/05/sintel/trailer.mp4'])
+    [1 + (row_number() over (order by c.slug, ch.position, l.position) - 1)::int % 6],
   '## ' || l.title || E'\n\n' ||
     'In this lesson of **' || c.title || '** you will work through *' || l.title || '* step by step.' ||
     E'\n\n- Watch the video once all the way through\n- Try the idea yourself\n- Come back to the key points below\n\n' ||

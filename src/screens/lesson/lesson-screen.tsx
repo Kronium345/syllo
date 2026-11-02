@@ -1,24 +1,28 @@
 import { router, useLocalSearchParams } from "expo-router";
-import { ArrowLeft, ArrowRight, Circle, CircleCheck, FileText, Lock, Users } from "lucide-react-native";
+import { FileText, Lock, Users } from "lucide-react-native";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Badge } from "@/components/ui/badge";
-import { Button, buttonInk } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { AppText } from "@/components/ui/text";
 import { toast } from "@/components/ui/toast";
 import { orderedLessons, twoDigits } from "@/lib/course-outline";
 import { courseCover } from "@/lib/local-images";
 import { type CourseDetails, useCourseDetails, useStudentCount } from "@/lib/queries/courses";
-import { type Lesson, useLesson } from "@/lib/queries/lessons";
+import { type Lesson, useLesson, useLessonVideo } from "@/lib/queries/lessons";
 import { useProgress, useSetLessonCompleted } from "@/lib/queries/progress";
-import { color, pressScale, tw } from "@/theme";
+import { color, tw } from "@/theme";
 
+import { LessonActions } from "./lesson-actions";
 import { leaveLesson, LessonVideo } from "./lesson-video";
 import { Markdown } from "./markdown";
 
-/** lesson_player: video, lesson header, notes, and the completed / previous / next footer. */
+/** Height of the native bottom toolbar above the safe area (measured on Android: about 80dp). */
+const TOOLBAR_HEIGHT = 80;
+
+/** lesson_player: video, lesson header, notes, and the previous / completed / next toolbar. */
 export function LessonScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const lesson = useLesson(id);
@@ -56,6 +60,10 @@ export function LessonScreen() {
 
 function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails }) {
   const insets = useSafeAreaInsets();
+  // Videos in R2 need a signed link (prompts/15); outside links play as they are.
+  const videoKey = lesson.content?.videoKey ?? null;
+  const hosted = useLessonVideo(lesson.id, { enabled: !!videoKey });
+  const videoUrl = videoKey ? (hosted.data?.url ?? null) : (lesson.content?.videoUrl ?? null);
   const students = useStudentCount(course.id);
   const progress = useProgress();
   const setCompleted = useSetLessonCompleted();
@@ -73,20 +81,32 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
   const toggleCompleted = () =>
     setCompleted.mutate(
       { lessonId: lesson.id, completed: !completed },
-      { onError: () => toast.error("Couldn't save your progress.", "Check your connection and try again.") },
+      {
+        // The toolbar shows only an icon, so say what changed.
+        onSuccess: () => (completed ? toast.info("Marked as not completed") : toast.success("Lesson completed")),
+        onError: () => toast.error("Couldn't save your progress.", "Check your connection and try again."),
+      },
     );
 
   return (
     <View style={tw`flex-1 bg-surface`}>
       <LessonVideo
         key={lesson.id}
-        videoUrl={lesson.content?.videoUrl ?? null}
+        videoUrl={videoUrl}
+        loading={!!videoKey && hosted.isPending}
+        // An expired signed link: fetch a new one, which the player switches to.
+        onSourceError={videoKey ? () => hosted.refetch() : undefined}
         poster={courseCover(course)}
         fallbackDuration={lesson.durationSeconds}
         onBack={() => leaveLesson(course.id)}
       />
 
-      <ScrollView style={tw`flex-1`} contentContainerStyle={tw`px-screen pt-8 pb-8`}>
+      <ScrollView
+        // On iOS/Android the native bottom toolbar floats over the screen without a background
+        // on Android: end the notes above it so text doesn't show through behind its icons.
+        style={[tw`flex-1`, process.env.EXPO_OS === "web" ? null : { marginBottom: insets.bottom + TOOLBAR_HEIGHT }]}
+        contentContainerStyle={tw`px-screen pt-8 pb-8`}
+      >
         <View style={tw`mb-6`}>
           <View style={tw`flex-row items-center gap-2 mb-3`}>
             <Badge label={`Chapter ${twoDigits(lesson.chapterPosition)}`} style={tw`px-2`} />
@@ -133,48 +153,15 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
         ) : null}
       </ScrollView>
 
-      <View style={[tw`bg-surface border-t border-border px-screen pt-6`, { paddingBottom: Math.max(40, insets.bottom + 16) }]}>
-        <Pressable
-          accessibilityRole="checkbox"
-          accessibilityState={{ checked: completed, disabled: locked }}
-          disabled={locked}
-          onPress={toggleCompleted}
-          style={({ pressed }) => [
-            tw.style(
-              "flex-row items-center justify-center gap-2 border py-3 rounded-xl mb-4",
-              completed || pressed ? "border-primary bg-primary-tint" : "border-border",
-            ),
-            { opacity: locked ? 0.4 : 1 },
-          ]}
-        >
-          <Icon as={completed ? CircleCheck : Circle} size="lg" color={completed ? "primary" : "ink"} />
-          <AppText style={tw`text-15 font-semibold text-ink`}>{completed ? "Completed" : "Mark as Completed"}</AppText>
-        </Pressable>
-
-        <View style={tw`flex-row items-center gap-4`}>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityState={{ disabled: !previous }}
-            disabled={!previous}
-            onPress={() => previous && goTo(previous.id)}
-            style={({ pressed }) => [
-              tw`flex-1 flex-row items-center justify-center gap-2 py-3.5 border border-border rounded-2xl`,
-              pressScale(pressed, 0.95),
-              { opacity: previous ? 1 : 0.4 },
-            ]}
-          >
-            <Icon as={ArrowLeft} size="md" color="ink" />
-            <AppText style={tw`text-16 font-bold text-ink`}>Previous</AppText>
-          </Pressable>
-          <Button
-            title={next ? "Next Lesson" : "Finish Course"}
-            variant="primary-bold"
-            trailing={<Icon as={ArrowRight} size="md" color={buttonInk("primary-bold")} />}
-            onPress={() => (next ? goTo(next.id) : leaveLesson(course.id))}
-            style={tw`flex-1 py-3.5`}
-          />
-        </View>
-      </View>
+      <LessonActions
+        previous={previous ? () => goTo(previous.id) : null}
+        next={() => (next ? goTo(next.id) : leaveLesson(course.id))}
+        isLast={!next}
+        completed={completed}
+        locked={locked}
+        saving={setCompleted.isPending}
+        onToggleCompleted={toggleCompleted}
+      />
     </View>
   );
 }

@@ -158,16 +158,19 @@ export type Database = {
         Row: {
           body: string | null
           lesson_id: string
+          video_key: string | null
           video_url: string | null
         }
         Insert: {
           body?: string | null
           lesson_id: string
+          video_key?: string | null
           video_url?: string | null
         }
         Update: {
           body?: string | null
           lesson_id?: string
+          video_key?: string | null
           video_url?: string | null
         }
         Relationships: [
