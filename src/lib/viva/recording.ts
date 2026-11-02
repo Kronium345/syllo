@@ -15,7 +15,17 @@ export const VIVA_RECORDING: RecordingOptions = {
   numberOfChannels: 1,
   sampleRate: 16000,
   bitRate: 32000,
+  // Peak level in dBFS while recording, so a silent recording isn't uploaded.
+  isMeteringEnabled: true,
 };
+
+/**
+ * A recording whose loudest moment stays below this (dBFS) is treated as silence and not sent.
+ * Speech near the phone peaks around -30 to -5; a quiet room stays below about -45.
+ */
+export const QUIET_PEAK_DB = -40;
+/** expo-audio reports -160 for a zero (or failed) reading: no information either way. */
+export const NO_READING_DB = -160;
 
 /**
  * Reads a finished recording as base64. The file stays until it's graded (or thrown away), so a

@@ -15,8 +15,9 @@
 | **Course details** | Cover, rating and review count, length, lesson count, description, the tutor with a working **Follow**, and the curriculum (chapters → lessons and quizzes, with preview and lock states). Enrolled learners can **rate the course** (1–5 stars + comment). A native toolbar has **Share** (summary + `syllo://course/<id>` link). Premium courses need Pro: the footer offers "Unlock with Premium". |
 | **Lesson player** | The video (signed link from private storage), lesson notes in Markdown with a credit line, **Resources** (downloadable PDFs/diagrams), and a native bottom toolbar: previous, mark completed, next or finish. |
 | **Quizzes** | 10 / 20 / all random questions, an optional 15 s timer per question, flags, results with points, and a review screen. Graded only by the database. Free learners get 3 quiz starts per 24 hours; Pro is unlimited. Includes **Pharmacy Exam Prep**: 17 topics, 2,451 questions. |
-| **Premium** | A RevenueCat subscription (monthly or annual) unlocks premium courses and unlimited quizzes. The paywall uses the design's screen with live prices. |
-| **Study reminders** | Local notifications: a 24 h nudge per unfinished quiz or course, plus a daily 18:00 check-in. Tapping one opens the right screen. There's an on/off switch in Settings. |
+| **Viva practice** | After a quiz, "Explain it out loud" picks up to 5 questions (wrong → skipped → flagged; 3 random ones after a perfect score). Syllo reads each one aloud, the learner answers out loud (3 s to 2 min), and AI (Google Gemini) returns a verdict, a score out of 10, accuracy/reasoning/clarity ratings, what went well, what to improve and a model answer. A one-time consent sheet (18+, voice sent to Gemini) comes first; recordings are never stored; every piece of feedback can be reported. Free: 1 viva per 7 days; Pro: 5 per 24 hours. Android/iOS only. |
+| **Premium** | A RevenueCat subscription (monthly or annual) unlocks premium courses, unlimited quizzes and 5 vivas a day. The paywall uses the design's screen with live prices. |
+| **Study reminders** | Local notifications: a 24 h nudge per unfinished quiz or course, plus a daily 18:00 check-in. Tapping one opens the right screen. There's an on/off switch in Settings, which also lets the learner withdraw AI-feedback consent. |
 | **Profile** | Photo, names, password, signed-in devices, sign out, and account deletion (removes the learner's data, then the Clerk user). |
 
 ---
@@ -33,6 +34,8 @@
 | Media | **Cloudflare R2** (private bucket) for lesson videos and resource files, served as 1-hour signed links by Supabase Edge Functions |
 | Payments | **RevenueCat** (`react-native-purchases`, pinned to 10.16.0), with a webhook + Edge Function mirroring Pro status into the database |
 | Video | `expo-video` with the design's own controls |
+| Voice (viva) | `expo-speech` reads questions aloud; `expo-audio` records answers (m4a, mono, 16 kHz); `expo-file-system` reads and deletes the file |
+| AI | **Google Gemini API** (paid tier, `gemini-3.8-flash`), called only from the `viva-answer` Edge Function with structured JSON output |
 | Notifications | `expo-notifications` (local only) + a Dynamic Island-style in-app banner (Skia, Reanimated, Gesture Handler) |
 | Device automation | **Argent** MCP for driving the Android dev build during QA |
 
@@ -57,8 +60,11 @@
 │  • premium-sync   → Pro status     │
 │  • lesson-video   → signed R2 link │──▶ ┌─ Cloudflare R2 ─────────┐
 │  • lesson-resource→ signed download│    │ syllo-lesson-videos     │
-└────────────────────────────────────┘    │ clips/*.mp4, resources/*│
-                                          └─────────────────────────┘
+│  • viva-answer    → AI feedback    │─┐  │ clips/*.mp4, resources/*│
+└────────────────────────────────────┘ │  └─────────────────────────┘
+                                       └─▶ ┌─ Google Gemini API ─┐
+                                           │ transcribe + grade  │
+                                           └─────────────────────┘
 ```
 
 **Rules that keep it safe:**
@@ -67,7 +73,8 @@
   - `private.can_use_quiz`, `private.is_premium`.
   - Quizzes are graded by RPCs; learners can never read `quiz_answers.is_correct`.
 - **Edge Functions act as the learner.** They query with the learner's own token, so RLS applies to them too.
-- **No secret reaches the app bundle.** Only publishable keys use `EXPO_PUBLIC_`. The R2 keys, the RevenueCat secret and the Clerk secret live in Supabase secrets or a local `.env.local` used by scripts.
+- **No secret reaches the app bundle.** Only publishable keys use `EXPO_PUBLIC_`. The R2 keys, the Gemini key, the RevenueCat secret and the Clerk secret live in Supabase secrets or a local `.env.local` used by scripts.
+- **AI is opt-in and contained.** Viva sessions start only after `profiles.ai_consent_at` is set (checked in `start_viva_session`). AI scores are written only by the `viva-answer` function; learners can't write them. The audio is transcribed first with no question context (so the model can't invent a plausible answer for silence), and only real speech is graded. Audio goes app → function → Gemini and is discarded; logs hold only token counts and timing.
 
 ---
 
@@ -87,6 +94,8 @@
 | `quizzes`, `quiz_questions`, `quiz_answers` | Quizzes per chapter. |
 | `quiz_attempts`, `quiz_attempt_questions`, `quiz_attempt_answers`, `question_flags` | Attempts, graded by RPCs (`start_quiz_attempt`, `answer_quiz_question`, `finish_quiz_attempt`). |
 | `premium_entitlements` | Pro status, written only by `premium-sync`. |
+| `viva_sessions` → `viva_session_questions` → `viva_answers` | Viva practice: sessions started by `start_viva_session` (consent, limits, question choice), finished by `finish_viva_session`; transcripts and AI feedback are written only by `viva-answer`. `profiles.ai_consent_at` records consent. |
+| `viva_feedback_reports` | A learner's reports on AI feedback (Inaccurate / Offensive / Other). |
 
 The full schema lives in [`supabase/migrations/`](supabase/migrations/). Seeds:
 - `supabase/seed.sql`: 3 tutors, 6 sample courses, 19 chapters, 58 lessons.
@@ -109,16 +118,16 @@ Each lesson's notes and resource cards credit the author and licence. The source
 
 ```
 src/
-  app/                 Expo Router routes: (auth)/, (app)/ with (tabs)/, course/, lesson/, quiz/, attempt/, premium
+  app/                 Expo Router routes: (auth)/, (app)/ with (tabs)/, course/, lesson/, quiz/, attempt/, viva/, premium
   screens/<screen>/    screen components and screen-only pieces
   components/ui/       AppText, Button, IconButton, Sheet, Chip, Badge, Card, TextField, toast, …
-  lib/                 helpers (course outline, ratings, formatting, sharing, notifications, onboarding, purchases)
+  lib/                 helpers (course outline, ratings, formatting, sharing, notifications, onboarding, purchases, viva recording)
   lib/queries/<area>/  one TanStack Query hook per file + keys.ts
   services/            Supabase/RevenueCat access (plain async functions)
   theme/               twrnc instance + tokens helpers
 supabase/
   migrations/          schema, RLS, functions
-  functions/           premium-sync, lesson-video, lesson-resource (+ _shared/)
+  functions/           premium-sync, lesson-video, lesson-resource, viva-answer (+ _shared/)
   seed.sql, seeds/     sample data (some generated)
 scripts/               brand assets, exam-prep seed, lesson media upload, R2 token helper
 prompts/               one plan per feature (history), TEMPLATE.md
@@ -145,7 +154,7 @@ npx expo start --dev-client  # then open the app on the device
 - **App, publishable keys only:** `EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY`, `EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `EXPO_PUBLIC_REVENUECAT_IOS_API_KEY`, `EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY`.
 - **Scripts only, never `EXPO_PUBLIC_`:** `CLERK_SECRET_KEY`, `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`.
 
-Supabase secrets for the Edge Functions are `REVENUECAT_SECRET_API_KEY` and the four `R2_*` values.
+Supabase secrets for the Edge Functions are `REVENUECAT_SECRET_API_KEY`, the four `R2_*` values, and `GEMINI_API_KEY` + `GEMINI_MODEL` for viva practice (a key from a **paid**, billing-linked Google AI Studio project: the free tier isn't allowed for UK/EEA users). Set them in your own terminal with `npx supabase secrets set NAME=value`.
 
 ### Commands
 ```bash
@@ -155,7 +164,7 @@ npx tsc --noEmit                # type check
 npx supabase migration new <n>  # new schema change
 npm run db:push                 # apply migrations + seeds to the linked project
 npm run db:types                # regenerate src/lib/database.types.ts
-npx supabase functions deploy premium-sync lesson-video lesson-resource
+npx supabase functions deploy premium-sync lesson-video lesson-resource viva-answer
 npm run upload:lesson-videos    # lesson clips + resource files → R2, regenerates seeds/lesson-videos.sql
 node scripts/set-r2-token.mjs   # (own terminal) R2 token → S3 keys in .env.local + Supabase secrets
 npm run generate:app-icon && npm run generate:android-icon && npm run generate:splash
@@ -196,6 +205,7 @@ The full rules are in [`AGENTS.md`](AGENTS.md) under "How we build features", "R
 | 14 | Share a course from the native toolbar | done |
 | 15 | Real lesson videos on Cloudflare R2 | done |
 | 16 | Ratings, tutor follows, lesson resources, Free/Premium access | done |
+| 17 | Viva practice: explain quiz answers out loud, AI feedback | done |
 
 Other recent changes:
 - The lesson player's footer became a compact native bottom toolbar.
