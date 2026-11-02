@@ -2,10 +2,6 @@
 
 **Study & Exam Prep.** Syllo is a full-stack learning app built with Expo and React Native. Learners browse courses, enroll, watch video lessons chapter by chapter, download lesson files, take timed quizzes, rate courses and follow tutors. It also handles study reminders and a Premium subscription.
 
-It started from notJust.dev's [Full-stack LMS App](https://notjust.notion.site/Full-stack-LMS-App-32cb0ec93c5a801c9e91d5e3d6674d41) tutorial. Part 1 (the learner side) is built; Part 2 (tutors creating courses) is next. The tutorial's stack has been swapped for Clerk, Supabase, TanStack Query, twrnc, RevenueCat and Cloudflare R2. The UI follows a Screensdesign prototype, inverted to a dark theme.
-
-> **For contributors and AI agents:** [`AGENTS.md`](AGENTS.md) is the project's memory. It holds every decision that is still true and the rules for changing code. Each feature has a plan in [`prompts/`](prompts/). Read both before changing anything.
-
 ---
 
 ## What learners can do
