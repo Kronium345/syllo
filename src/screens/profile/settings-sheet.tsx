@@ -55,7 +55,7 @@ export function SettingsSheet({ visible, email, onClose }: { visible: boolean; e
   // 18+ confirmation in the consent sheet before a viva.
   const withdrawAiConsent = () =>
     aiConsent.mutate(false, {
-      onSuccess: () => toast.success("AI feedback turned off.", "We'll ask again before your next viva."),
+      onSuccess: () => toast.success("AI feedback turned off.", "We'll ask again before your next viva or interview."),
       onError: () => toast.error("Couldn't save your choice.", "Check your connection and try again."),
     });
 
@@ -94,11 +94,11 @@ export function SettingsSheet({ visible, email, onClose }: { visible: boolean; e
         {profile.data?.aiConsentAt ? (
           <View style={tw`flex-row items-center gap-4`}>
             <View style={tw`flex-1`}>
-              <AppText style={tw`text-16 font-semibold text-ink`}>AI feedback for vivas</AppText>
-              <AppText variant="caption">Your voice answers are sent to Google Gemini for marking</AppText>
+              <AppText style={tw`text-16 font-semibold text-ink`}>AI feedback for speaking practice</AppText>
+              <AppText variant="caption">Your viva and interview answers are sent to Google Gemini for marking</AppText>
             </View>
             <Switch
-              accessibilityLabel="AI feedback for vivas"
+              accessibilityLabel="AI feedback for speaking practice"
               value={!aiConsent.isPending}
               disabled={aiConsent.isPending}
               onValueChange={(next) => {

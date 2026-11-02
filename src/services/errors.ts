@@ -55,3 +55,19 @@ export class NoAnswerError extends Error {
     this.name = "NoAnswerError";
   }
 }
+
+/** The interview limit is used up (P0002 / 429): free 1 per 7 days, Pro 5 per 24 hours. */
+export class InterviewLimitError extends Error {
+  constructor(message = "You've used this week's free interview.") {
+    super(message);
+    this.name = "InterviewLimitError";
+  }
+}
+
+/** The typed role isn't a plausible job, or uses characters that aren't allowed (interview-start 422/400). */
+export class RoleNotAcceptedError extends Error {
+  constructor(message = "Try a different role.") {
+    super(message);
+    this.name = "RoleNotAcceptedError";
+  }
+}

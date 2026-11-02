@@ -25,14 +25,14 @@ function Check({ checked, label, onToggle }: { checked: boolean; label: string; 
 }
 
 const POINTS = [
-  "Syllo reads each question aloud and records your spoken answer (up to 2 minutes).",
-  "The recording and the question are sent to Google Gemini to transcribe and grade your answer.",
+  "In viva and interview practice, Syllo reads each question aloud and records your spoken answer (up to 3 minutes).",
+  "The recording and the question are sent to Google Gemini to transcribe and grade your answer. For interviews about a role you type, the role is sent too.",
   "Recordings aren't kept. The transcript and feedback are saved to your account and deleted with it.",
   "Feedback is AI-generated study help, not clinical or professional advice.",
 ];
 
 /**
- * One-time consent before the first viva (prompts/17): Apple guideline 5.1.2(i) needs explicit
+ * One-time consent before the first viva or interview (prompts/17, 18): Apple guideline 5.1.2(i) needs explicit
  * permission before sending personal data to third-party AI, and the Gemini API terms need
  * users to be 18+. Sets profiles.ai_consent_at; start_viva_session refuses without it.
  */
@@ -60,7 +60,7 @@ export function AiConsentSheet({ visible, onClose, onAgreed }: { visible: boolea
     <Sheet
       visible={visible}
       onClose={onClose}
-      title="Viva practice uses AI"
+      title="Practice with AI feedback"
       footer={
         <Button title="Continue" disabled={!adult || !agreed} loading={consent.isPending} onPress={accept} />
       }

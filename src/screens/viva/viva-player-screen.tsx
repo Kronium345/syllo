@@ -1,20 +1,15 @@
-import {
-  requestRecordingPermissionsAsync,
-  setAudioModeAsync,
-  useAudioRecorder,
-  useAudioRecorderState,
-} from "expo-audio";
 import { Redirect, router, useLocalSearchParams } from "expo-router";
 import * as Speech from "expo-speech";
-import { Mic, Square, Volume2, X } from "lucide-react-native";
-import { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Linking, Pressable, ScrollView, View } from "react-native";
+import { Mic, Volume2, X } from "lucide-react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { IconButton } from "@/components/ui/icon-button";
+import { canSubmit, RecorderBar } from "@/components/ui/recorder-bar";
 import { StickyFooter } from "@/components/ui/sticky-footer";
 import { AppText } from "@/components/ui/text";
 import { toast } from "@/components/ui/toast";
@@ -27,19 +22,10 @@ import {
   useSubmitVivaAnswer,
   useVivaSession,
 } from "@/lib/queries/viva";
-import {
-  deleteRecording,
-  formatSeconds,
-  MAX_SECONDS,
-  MIN_SECONDS,
-  NO_READING_DB,
-  QUIET_PEAK_DB,
-  readBase64,
-  RECORDING_MIME,
-  VIVA_RECORDING,
-} from "@/lib/viva/recording";
+import { RECORDING_MIME, VIVA_MAX_SECONDS } from "@/lib/speaking/recording";
+import { useAnswerRecorder } from "@/lib/speaking/use-answer-recorder";
 import { AlreadyAnsweredError, NoAnswerError, NotAllowedError } from "@/services/errors";
-import { color, pressScale, tw } from "@/theme";
+import { color, tw } from "@/theme";
 
 import { ReportFeedbackSheet } from "./report-feedback-sheet";
 import { VivaFeedbackCard } from "./viva-feedback-card";
@@ -92,12 +78,6 @@ export function VivaPlayerScreen() {
   return <VivaPlayer session={session.data} onRefetch={() => session.refetch()} />;
 }
 
-type Take =
-  | { phase: "idle" }
-  | { phase: "starting" }
-  | { phase: "recording"; startedAt: number }
-  | { phase: "recorded"; uri: string; durationMs: number; peakDb: number };
-
 function VivaPlayer({ session, onRefetch }: { session: VivaSession; onRefetch: () => void }) {
   const paddingTop = useTopPadding(48);
   const total = session.questions.length;
@@ -108,36 +88,11 @@ function VivaPlayer({ session, onRefetch }: { session: VivaSession; onRefetch: (
   });
   const question = session.questions[index];
   const isLast = index === total - 1;
-  const [take, setTake] = useState<Take>({ phase: "idle" });
   const [reporting, setReporting] = useState<{ sessionId: string; questionId: string } | null>(null);
   const submit = useSubmitVivaAnswer();
   const finish = useFinishViva();
-
-  // The loudest level heard in the current recording (dBFS), for the silence check.
-  const peakRef = useRef(NO_READING_DB);
-  // The recorder stops itself at MAX_SECONDS; its status event then hands over the file.
-  // (A manual stop moves the take out of "recording" first, so this ignores it.)
-  const recorder = useAudioRecorder(VIVA_RECORDING, (status) => {
-    if (!status.isFinished || !status.url) return;
-    const uri = status.url;
-    const now = Date.now();
-    const peakDb = peakRef.current;
-    setTake((current) =>
-      current.phase === "recording" ? { phase: "recorded", uri, durationMs: now - current.startedAt, peakDb } : current,
-    );
-  });
-  // The latest take, for the unmount cleanup below.
-  const takeRef = useRef(take);
-  useEffect(() => {
-    takeRef.current = take;
-  }, [take]);
-  const recorderState = useAudioRecorderState(recorder, 250);
-
-  const metering = recorderState.metering;
-  const recording = take.phase === "recording";
-  useEffect(() => {
-    if (recording && metering !== undefined) peakRef.current = Math.max(peakRef.current, metering);
-  }, [recording, metering]);
+  const recorder = useAnswerRecorder(VIVA_MAX_SECONDS);
+  const { take } = recorder;
 
   // Read each question aloud once; stop speaking when it changes or the screen closes.
   const prompt = question.feedback ? null : question.prompt;
@@ -149,95 +104,25 @@ function VivaPlayer({ session, onRefetch }: { session: VivaSession; onRefetch: (
     };
   }, [prompt]);
 
-  // Leaving: release the mic and throw away anything not sent.
-  useEffect(
-    () => () => {
-      const current = takeRef.current;
-      if (current.phase === "recording") recorder.stop().catch(() => undefined);
-      if (current.phase === "recorded") deleteRecording(current.uri);
-      setAudioModeAsync({ allowsRecording: false }).catch(() => undefined);
-    },
-    [recorder],
-  );
-
-  const discardTake = () => {
-    if (take.phase === "recorded") deleteRecording(take.uri);
-    setTake({ phase: "idle" });
-  };
-
-  const startRecording = async () => {
-    Speech.stop();
-    if (take.phase === "recorded") deleteRecording(take.uri);
-    setTake({ phase: "starting" });
-    try {
-      const permission = await requestRecordingPermissionsAsync();
-      if (!permission.granted) {
-        setTake({ phase: "idle" });
-        toast.info("Microphone is off for Syllo", "Allow it in your phone's settings to answer out loud.");
-        if (!permission.canAskAgain) Linking.openSettings().catch(() => undefined);
-        return;
-      }
-      await setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
-      await recorder.prepareToRecordAsync();
-      peakRef.current = NO_READING_DB;
-      recorder.record({ forDuration: MAX_SECONDS });
-      setTake({ phase: "recording", startedAt: Date.now() });
-    } catch {
-      setTake({ phase: "idle" });
-      toast.error("Couldn't start recording.", "Try again.");
-    }
-  };
-
-  const stopRecording = async () => {
-    if (take.phase !== "recording") return;
-    const durationMs = recorderState.durationMillis || Date.now() - take.startedAt;
-    const peakDb = peakRef.current;
-    // Mark it stopped first so the recorder's own "finished" event doesn't handle it too.
-    setTake({ phase: "starting" });
-    try {
-      await recorder.stop();
-      if (!recorder.uri) throw new Error("No recording");
-      setTake({ phase: "recorded", uri: recorder.uri, durationMs, peakDb });
-    } catch {
-      setTake({ phase: "idle" });
-      toast.error("Couldn't save the recording.", "Try again.");
-    }
-  };
-
   const submitAnswer = async () => {
-    if (take.phase !== "recorded") return;
-    const { uri, durationMs, peakDb } = take;
-    // Never louder than background noise: don't upload (or spend a try on) a silent recording.
-    // NO_READING_DB means the phone gave no level, so the server's check decides.
-    if (peakDb !== NO_READING_DB && peakDb < QUIET_PEAK_DB) {
-      deleteRecording(uri);
-      setTake({ phase: "idle" });
-      toast.info("We couldn't hear you.", "Hold the phone closer and answer out loud.");
-      return;
-    }
-    let audio: string;
-    try {
-      audio = await readBase64(uri);
-    } catch {
-      setTake({ phase: "idle" });
-      toast.error("Couldn't read the recording.", "Record your answer again.");
-      return;
-    }
+    const upload = await recorder.prepareUpload();
+    if (!upload) return;
     submit.mutate(
-      { sessionId: session.id, questionId: question.questionId, audio, mimeType: RECORDING_MIME, durationMs },
       {
-        onSuccess: () => {
-          deleteRecording(uri);
-          setTake({ phase: "idle" });
-        },
+        sessionId: session.id,
+        questionId: question.questionId,
+        audio: upload.audio,
+        mimeType: RECORDING_MIME,
+        durationMs: upload.durationMs,
+      },
+      {
+        onSuccess: () => recorder.clear(upload.uri),
         onError: (error) => {
           if (error instanceof NoAnswerError) {
-            deleteRecording(uri);
-            setTake({ phase: "idle" });
+            recorder.clear(upload.uri);
             toast.info("We couldn't hear an answer.", "Try again.");
           } else if (error instanceof AlreadyAnsweredError) {
-            deleteRecording(uri);
-            setTake({ phase: "idle" });
+            recorder.clear(upload.uri);
             onRefetch();
           } else if (error instanceof NotAllowedError) {
             toast.error("You can't answer this question.", error.message);
@@ -251,12 +136,12 @@ function VivaPlayer({ session, onRefetch }: { session: VivaSession; onRefetch: (
   };
 
   const goNext = () => {
-    discardTake();
+    recorder.discard();
     setIndex((value) => Math.min(value + 1, total - 1));
   };
 
   const finishViva = () => {
-    discardTake();
+    recorder.discard();
     Speech.stop();
     // mutateAsync: finishing refetches the session, whose `finished` redirects this screen
     // before per-call callbacks would run.
@@ -273,9 +158,6 @@ function VivaPlayer({ session, onRefetch }: { session: VivaSession; onRefetch: (
       () => toast.error("Couldn't finish the viva.", "Check your connection and try again."),
     );
   };
-
-  const recordedSeconds = take.phase === "recorded" ? take.durationMs / 1000 : 0;
-  const elapsedMs = take.phase === "recording" ? recorderState.durationMillis : 0;
 
   return (
     <View style={tw`flex-1 bg-surface`}>
@@ -322,61 +204,16 @@ function VivaPlayer({ session, onRefetch }: { session: VivaSession; onRefetch: (
 
       <StickyFooter>
         {/* The recorder lives in the footer so it's on screen however long the question is. */}
-        {question.feedback ? null : submit.isPending ? (
-          <View accessibilityRole="progressbar" style={tw`flex-row items-center gap-4 mb-5`}>
-            <View style={tw`w-16 h-16 rounded-full bg-primary-soft items-center justify-center`}>
-              <ActivityIndicator color={color("primary")} />
-            </View>
-            <AppText variant="callout" style={tw`flex-1`}>
-              Marking your answer…
-            </AppText>
-          </View>
-        ) : (
-          <View style={tw`flex-row items-center gap-4 mb-5`}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={take.phase === "recording" ? "Stop recording" : "Record your answer"}
-              disabled={take.phase === "starting"}
-              onPress={take.phase === "recording" ? stopRecording : startRecording}
-              style={({ pressed }) => [
-                tw.style(
-                  "w-16 h-16 rounded-full items-center justify-center shadow-card",
-                  take.phase === "recording" ? "bg-danger" : "bg-primary",
-                ),
-                pressScale(pressed, 0.95),
-              ]}
-            >
-              {take.phase === "starting" ? (
-                <ActivityIndicator color={color("on-primary")} />
-              ) : (
-                <Icon as={take.phase === "recording" ? Square : Mic} size="xl" color="on-primary" />
-              )}
-            </Pressable>
-            <View style={tw`flex-1 gap-0.5`}>
-              {take.phase === "recording" ? (
-                <>
-                  <AppText accessibilityLiveRegion="polite" style={tw`text-20 font-bold text-ink`}>
-                    {formatSeconds(elapsedMs)} / {formatSeconds(MAX_SECONDS * 1000)}
-                  </AppText>
-                  <AppText variant="caption">Recording… tap to stop</AppText>
-                </>
-              ) : take.phase === "recorded" ? (
-                <>
-                  <AppText style={tw`text-17 font-bold text-ink`}>{formatSeconds(take.durationMs)} recorded</AppText>
-                  <AppText variant="caption">
-                    {recordedSeconds < MIN_SECONDS
-                      ? `Answers need at least ${MIN_SECONDS} seconds. Tap the mic to record again.`
-                      : "Tap the mic to record again"}
-                  </AppText>
-                </>
-              ) : (
-                <>
-                  <AppText style={tw`text-16 font-semibold text-ink`}>Tap to answer out loud</AppText>
-                  <AppText variant="caption">Explain your reasoning, up to 2 minutes</AppText>
-                </>
-              )}
-            </View>
-          </View>
+        {question.feedback ? null : (
+          <RecorderBar
+            take={take}
+            elapsedMs={recorder.elapsedMs}
+            maxSeconds={VIVA_MAX_SECONDS}
+            marking={submit.isPending}
+            hint="Explain your reasoning, up to 2 minutes"
+            onStart={recorder.start}
+            onStop={recorder.stop}
+          />
         )}
         {question.feedback ? (
           <Button
@@ -387,7 +224,7 @@ function VivaPlayer({ session, onRefetch }: { session: VivaSession; onRefetch: (
         ) : take.phase === "recorded" ? (
           <Button
             title="Submit answer"
-            disabled={recordedSeconds < MIN_SECONDS}
+            disabled={!canSubmit(take)}
             loading={submit.isPending}
             onPress={submitAnswer}
           />

@@ -9,6 +9,9 @@ import { useDynamicNotifications } from "../../hooks/use-dynamic-notifications";
 import type { INotificationBody } from "../../interfaces/notification-content.interface";
 
 // The card's contents: avatar, title in the accent, one-line message, optional icon.
+// Without an avatar the banner shows the app icon, like a system notification.
+const APP_ICON = require("@/assets/images/icon.png");
+
 const NotificationBody: React.FC<INotificationBody> = memo<INotificationBody>(({ notification }: INotificationBody) => {
   const context = useDynamicNotifications();
   const accent = notification.accent ?? context.accent;
@@ -16,17 +19,16 @@ const NotificationBody: React.FC<INotificationBody> = memo<INotificationBody>(({
 
   return (
     <View style={tw`flex-1 flex-row items-center gap-3 pl-3 pr-5`}>
-      {notification.avatar ? (
-        <Image
-          source={{ uri: notification.avatar }}
-          style={tw`w-12 h-12 rounded-full bg-subtle`}
-          contentFit="cover"
-          transition={180}
-          cachePolicy="memory-disk"
-        />
-      ) : (
-        <View style={tw`w-12 h-12 rounded-full bg-subtle`} />
-      )}
+      <Image
+        source={
+          typeof notification.avatar === "string" ? { uri: notification.avatar } : (notification.avatar ?? APP_ICON)
+        }
+        accessibilityIgnoresInvertColors
+        style={tw`w-12 h-12 rounded-full bg-subtle`}
+        contentFit="cover"
+        transition={180}
+        cachePolicy="memory-disk"
+      />
 
       <View style={tw`flex-1`}>
         <AppText numberOfLines={1} style={[tw`text-16 font-semibold`, { color: accent }]}>

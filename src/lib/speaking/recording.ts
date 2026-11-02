@@ -1,16 +1,18 @@
 import { type RecordingOptions, RecordingPresets } from "expo-audio";
 import { File } from "expo-file-system";
 
-// Viva practice recordings (prompts/17): m4a/AAC, mono, 16 kHz, 32 kbps (Gemini downsamples to
-// 16 kHz mono anyway), about 0.5 MB for 2 minutes. Recordings are uploaded once and deleted;
-// they are never stored by Syllo.
+// Spoken-answer recordings for viva (prompts/17) and interview practice (prompts/18): m4a/AAC,
+// mono, 16 kHz, 32 kbps (Gemini downsamples to 16 kHz mono anyway), about 0.25 MB a minute.
+// Recordings are uploaded once and deleted; they are never stored by Syllo.
 
 export const MIN_SECONDS = 3;
-export const MAX_SECONDS = 120;
+/** Longest answer per feature (the Edge Functions allow a few seconds more). */
+export const VIVA_MAX_SECONDS = 120;
+export const INTERVIEW_MAX_SECONDS = 180;
 /** Sent with the upload; Gemini lists audio/m4a among its accepted types. */
 export const RECORDING_MIME = "audio/m4a";
 
-export const VIVA_RECORDING: RecordingOptions = {
+export const SPEAKING_RECORDING: RecordingOptions = {
   ...RecordingPresets.HIGH_QUALITY,
   numberOfChannels: 1,
   sampleRate: 16000,

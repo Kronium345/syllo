@@ -27,6 +27,7 @@ import { useMyProfile } from "@/lib/queries/profiles";
 import { type LearningStats, useLearningStats } from "@/lib/queries/progress";
 import { color, type ColorToken, tw } from "@/theme";
 
+import { InterviewCard } from "./interview-card";
 import { RecommendedCard } from "./recommended-card";
 
 /** learning_dashboard: greeting, continue card, recommendations and learning stats. */
@@ -124,6 +125,8 @@ export function HomeScreen() {
                 <RecommendedCard key={course.id} course={course} onPress={() => openCourse(course.id)} />
               ))}
             </ScrollView>
+
+            <InterviewCard />
 
             <View style={tw`px-screen mt-8 flex-row gap-4`}>
               <StatTile icon={Award} tint="info" value={stats.data?.certificates ?? 0} label="Certificates" />

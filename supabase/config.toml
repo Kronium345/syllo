@@ -69,7 +69,7 @@ schema_paths = []
 enabled = true
 # Specifies an ordered list of seed files to load during db reset.
 # Supports glob patterns relative to supabase directory: "./seeds/*.sql"
-sql_paths = ["./seed.sql", "./seeds/exam-prep.sql", "./seeds/lesson-videos.sql"]
+sql_paths = ["./seed.sql", "./seeds/exam-prep.sql", "./seeds/lesson-videos.sql", "./seeds/interview-questions.sql"]
 
 [db.network_restrictions]
 # Enable management of network restrictions.
@@ -405,6 +405,15 @@ verify_jwt = false
 # viva-answer: Clerk-verified like the lesson functions; grades a spoken answer with Gemini and
 # writes the feedback with the service role (prompts/17).
 [functions.viva-answer]
+verify_jwt = false
+
+[functions.interview-start]
+verify_jwt = false
+
+[functions.interview-answer]
+verify_jwt = false
+
+[functions.interview-finish]
 verify_jwt = false
 
 [analytics]

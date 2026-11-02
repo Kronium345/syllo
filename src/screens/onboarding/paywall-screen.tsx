@@ -27,7 +27,7 @@ import { useCompleteOnboarding } from "@/lib/queries/profiles";
 import { color, pressScale, tw } from "@/theme";
 
 // Pro features (the user's list, replacing the prototype's three rows).
-const FEATURES = ["All standard courses", "Unlimited quizzes", "Offline downloads", "Certificates and awards", "Viva practice with AI feedback"];
+const FEATURES = ["All standard courses", "Unlimited quizzes", "Offline downloads", "Certificates and awards", "Viva and interview practice with AI feedback"];
 
 type PlanId = "annual" | "monthly";
 

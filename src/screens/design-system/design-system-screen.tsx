@@ -27,6 +27,8 @@ import { InterestCard } from "@/screens/onboarding/interest-card";
 import { OnboardingHeader } from "@/screens/onboarding/onboarding-header";
 import { ResourceCard } from "@/screens/lesson/resource-card";
 import { AnswerCard } from "@/screens/quiz/answer-card";
+import { RecorderBar } from "@/components/ui/recorder-bar";
+import { InterviewFeedbackCard } from "@/screens/interview/interview-feedback-card";
 import { AiConsentSheet } from "@/screens/viva/ai-consent-sheet";
 import { VerdictBadge, VivaFeedbackCard } from "@/screens/viva/viva-feedback-card";
 import { OptionCard } from "@/components/ui/option-card";
@@ -90,6 +92,19 @@ const SAMPLE_FEEDBACK = {
   improvements: ["Say what to do: monitor INR closely or pick another antibiotic"],
   modelAnswer:
     "Clarithromycin inhibits CYP3A4 and can raise the INR in patients on warfarin, increasing bleeding risk. Monitor the INR closely or choose an alternative antibiotic.",
+};
+
+const SAMPLE_INTERVIEW_FEEDBACK = {
+  transcript: "On placement we had a queue out of the door and a new dispenser was struggling, so I…",
+  verdict: "good" as const,
+  score: 7,
+  structure: 4,
+  relevance: 4,
+  clarity: 3,
+  strengths: ["You gave a real example with a clear situation", "You described your own actions"],
+  improvements: ["Finish with the result and what you learned (the R in STAR)"],
+  modelAnswer:
+    "On my community placement a new dispenser was falling behind during a busy afternoon [situation]. I offered to take over labelling while they focused on bagging [action], and later shared the checklist I use. The queue cleared within 20 minutes and they used the checklist afterwards [result].",
 };
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
@@ -308,6 +323,23 @@ export function DesignSystemScreen() {
           {/* Continue really saves consent for the signed-in account. */}
           <Button title="Open AI consent sheet" variant="outline" onPress={() => setConsentOpen(true)} />
           <AiConsentSheet visible={consentOpen} onClose={() => setConsentOpen(false)} onAgreed={() => setConsentOpen(false)} />
+        </Section>
+
+        <Section title="Speaking practice (prompts/18)">
+          <RecorderBar
+            take={{ phase: "idle" }}
+            elapsedMs={0}
+            maxSeconds={180}
+            marking={false}
+            hint="Use a real example: situation, task, action, result"
+            onStart={() => toast.info("Recorder", "Starts recording in a viva or interview.")}
+            onStop={() => undefined}
+          />
+          <RecorderBar take={{ phase: "idle" }} elapsedMs={0} maxSeconds={180} marking hint="" onStart={() => undefined} onStop={() => undefined} />
+          <InterviewFeedbackCard
+            feedback={SAMPLE_INTERVIEW_FEEDBACK}
+            onReport={() => toast.info("Report this feedback", "Opens the report sheet in an interview.")}
+          />
         </Section>
 
         <Section title="Notifications">

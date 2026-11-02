@@ -7,7 +7,8 @@ interface IDynamicNotification {
   id?: string;
   title: string;
   message?: string;
-  avatar?: string;
+  /** Leading image: a URL or a bundled `require(...)`. Defaults to the Syllo app icon. */
+  avatar?: string | number;
   /** Trailing icon, tinted with the accent. Replaces upstream's iOS-only SF Symbol. */
   icon?: NotificationIcon;
   accent?: string;

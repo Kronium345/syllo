@@ -208,6 +208,266 @@ export type Database = {
           },
         ]
       }
+      interview_answers: {
+        Row: {
+          audio_seconds: number
+          clarity: number
+          created_at: string
+          improvements: string[]
+          input_tokens: number | null
+          model: string
+          model_answer: string
+          output_tokens: number | null
+          position: number
+          relevance: number
+          score: number
+          session_id: string
+          strengths: string[]
+          structure: number
+          transcript: string
+          verdict: string
+        }
+        Insert: {
+          audio_seconds: number
+          clarity: number
+          created_at?: string
+          improvements?: string[]
+          input_tokens?: number | null
+          model: string
+          model_answer: string
+          output_tokens?: number | null
+          position: number
+          relevance: number
+          score: number
+          session_id: string
+          strengths?: string[]
+          structure: number
+          transcript: string
+          verdict: string
+        }
+        Update: {
+          audio_seconds?: number
+          clarity?: number
+          created_at?: string
+          improvements?: string[]
+          input_tokens?: number | null
+          model?: string
+          model_answer?: string
+          output_tokens?: number | null
+          position?: number
+          relevance?: number
+          score?: number
+          session_id?: string
+          strengths?: string[]
+          structure?: number
+          transcript?: string
+          verdict?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_answers_session_id_position_fkey"
+            columns: ["session_id", "position"]
+            isOneToOne: true
+            referencedRelation: "interview_session_questions"
+            referencedColumns: ["session_id", "position"]
+          },
+        ]
+      }
+      interview_feedback_reports: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          position: number | null
+          reason: string
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          position?: number | null
+          reason: string
+          session_id: string
+          user_id?: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          position?: number | null
+          reason?: string
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_feedback_reports_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "interview_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_feedback_reports_session_id_position_fkey"
+            columns: ["session_id", "position"]
+            isOneToOne: false
+            referencedRelation: "interview_answers"
+            referencedColumns: ["session_id", "position"]
+          },
+          {
+            foreignKeyName: "interview_feedback_reports_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interview_questions: {
+        Row: {
+          active: boolean
+          category: string
+          id: string
+          key: string
+          key_points: string[]
+          kind: string
+          prompt: string
+          settings: string[]
+        }
+        Insert: {
+          active?: boolean
+          category: string
+          id?: string
+          key: string
+          key_points: string[]
+          kind: string
+          prompt: string
+          settings?: string[]
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          id?: string
+          key?: string
+          key_points?: string[]
+          kind?: string
+          prompt?: string
+          settings?: string[]
+        }
+        Relationships: []
+      }
+      interview_session_questions: {
+        Row: {
+          category: string | null
+          key_points: string[]
+          kind: string
+          position: number
+          prompt: string
+          question_id: string | null
+          session_id: string
+          tries: number
+        }
+        Insert: {
+          category?: string | null
+          key_points?: string[]
+          kind: string
+          position: number
+          prompt: string
+          question_id?: string | null
+          session_id: string
+          tries?: number
+        }
+        Update: {
+          category?: string | null
+          key_points?: string[]
+          kind?: string
+          position?: number
+          prompt?: string
+          question_id?: string | null
+          session_id?: string
+          tries?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_session_questions_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "interview_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_session_questions_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "interview_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      interview_sessions: {
+        Row: {
+          finished_at: string | null
+          id: string
+          input_tokens: number | null
+          mode: string
+          next_steps: string[]
+          output_tokens: number | null
+          readiness: number | null
+          role: string | null
+          started_at: string
+          summary: string | null
+          summary_model: string | null
+          target: string | null
+          top_strengths: string[]
+          total_questions: number
+          user_id: string
+        }
+        Insert: {
+          finished_at?: string | null
+          id?: string
+          input_tokens?: number | null
+          mode: string
+          next_steps?: string[]
+          output_tokens?: number | null
+          readiness?: number | null
+          role?: string | null
+          started_at?: string
+          summary?: string | null
+          summary_model?: string | null
+          target?: string | null
+          top_strengths?: string[]
+          total_questions: number
+          user_id?: string
+        }
+        Update: {
+          finished_at?: string | null
+          id?: string
+          input_tokens?: number | null
+          mode?: string
+          next_steps?: string[]
+          output_tokens?: number | null
+          readiness?: number | null
+          role?: string | null
+          started_at?: string
+          summary?: string | null
+          summary_model?: string | null
+          target?: string | null
+          top_strengths?: string[]
+          total_questions?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lesson_contents: {
         Row: {
           body: string | null
@@ -969,6 +1229,32 @@ export type Database = {
         }[]
       }
       course_student_count: { Args: { p_course_id: string }; Returns: number }
+      create_general_interview: {
+        Args: { p_questions: Json; p_role: string; p_user_id: string }
+        Returns: {
+          finished_at: string | null
+          id: string
+          input_tokens: number | null
+          mode: string
+          next_steps: string[]
+          output_tokens: number | null
+          readiness: number | null
+          role: string | null
+          started_at: string
+          summary: string | null
+          summary_model: string | null
+          target: string | null
+          top_strengths: string[]
+          total_questions: number
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "interview_sessions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       finish_quiz_attempt: {
         Args: { p_attempt_id: string }
         Returns: {
@@ -1008,7 +1294,34 @@ export type Database = {
         }
       }
       give_ai_consent: { Args: never; Returns: undefined }
+      interview_sessions_left: { Args: never; Returns: number }
       quiz_sessions_left: { Args: never; Returns: number }
+      start_interview_session: {
+        Args: { p_target: string }
+        Returns: {
+          finished_at: string | null
+          id: string
+          input_tokens: number | null
+          mode: string
+          next_steps: string[]
+          output_tokens: number | null
+          readiness: number | null
+          role: string | null
+          started_at: string
+          summary: string | null
+          summary_model: string | null
+          target: string | null
+          top_strengths: string[]
+          total_questions: number
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "interview_sessions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       start_quiz_attempt: {
         Args: {
           p_question_count?: number
