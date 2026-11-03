@@ -1,0 +1,235 @@
+{
+  "generated": "2026-11-03T10:12:19.236Z",
+  "sources": {
+    "rn-docs": {
+      "pin": "7e7996f2c7e60d9de2fceda60eddef5e10ae2d5c",
+      "rev": "7e7996f2c7e60d9de2fceda60eddef5e10ae2d5c",
+      "licenceFile": "LICENSE-docs",
+      "licenceSha256": "a5bdaa63ef9ad2186eb90eba7d2034616b1b85cec88190da6590ac6f65c831db"
+    },
+    "expo-docs": {
+      "pin": "028f70e53b1f199f93b4aeb6611d45e9404b8685",
+      "rev": "028f70e53b1f199f93b4aeb6611d45e9404b8685",
+      "licenceFile": "docs/LICENSE",
+      "licenceSha256": "14cf087041c4b42072fb101d50583e41f15e84e33cc9ca99830a033d4111b44e"
+    },
+    "react-docs": {
+      "pin": "0821e7d9428a6c58c922765b891bbffba9ed6249",
+      "rev": "0821e7d9428a6c58c922765b891bbffba9ed6249",
+      "licenceFile": "LICENSE-DOCS.md",
+      "licenceSha256": "61b098d905d9799fc4f4625b476dac117630a1740a02e032594ff2fccbbb6206"
+    }
+  },
+  "files": {
+    "rn-docs:intro-react-native-components.md": {
+      "url": "https://reactnative.dev/docs/0.88/intro-react-native-components",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/intro-react-native-components.md",
+          "bytes": 5670,
+          "sha256": "e4ea9dfb434033bf03acd2442925bb59b8f931895c304af8d3ddbeb9a376f233"
+        }
+      ]
+    },
+    "expo-docs:get-started/set-up-your-environment.mdx": {
+      "url": "https://docs.expo.dev/get-started/set-up-your-environment",
+      "files": [
+        {
+          "file": "docs/pages/get-started/set-up-your-environment.mdx",
+          "bytes": 1436,
+          "sha256": "d89577906c68b5b012211401c16115f7cf9183ed7b201ffee07364c6a6d6bd46"
+        }
+      ]
+    },
+    "expo-docs:get-started/create-a-project.mdx": {
+      "url": "https://docs.expo.dev/get-started/create-a-project",
+      "files": [
+        {
+          "file": "docs/pages/get-started/create-a-project.mdx",
+          "bytes": 4387,
+          "sha256": "e80f70fb51fe907a0b733525d859f23592dd48c971f2f5768ea16e0440eaa00e"
+        }
+      ]
+    },
+    "expo-docs:get-started/start-developing.mdx": {
+      "url": "https://docs.expo.dev/get-started/start-developing",
+      "files": [
+        {
+          "file": "docs/pages/get-started/start-developing.mdx",
+          "bytes": 4396,
+          "sha256": "a592fdd4f7cebef9b60334be2d6aa3e55c411a06564daf74267f6b0351968a00"
+        }
+      ]
+    },
+    "rn-docs:running-on-device.md": {
+      "url": "https://reactnative.dev/docs/0.88/running-on-device",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/running-on-device.md",
+          "bytes": 20581,
+          "sha256": "08bf135b23031db887ecd96dac3b9eaf25bb0d852451cbb23f2c43f18ca9b370"
+        }
+      ]
+    },
+    "rn-docs:view.md": {
+      "url": "https://reactnative.dev/docs/0.88/view",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/view.md",
+          "bytes": 27856,
+          "sha256": "114e6e72a115830bd0f855e11a43958b2b01429adef3b0725e31e3c73524b339"
+        }
+      ]
+    },
+    "rn-docs:text.md": {
+      "url": "https://reactnative.dev/docs/0.88/text",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/text.md",
+          "bytes": 24084,
+          "sha256": "1b7ffc60b8d582d1a0c5121439757981ed4dd1fd31f2c3132a512a4bdc1a23c7"
+        }
+      ]
+    },
+    "rn-docs:images.md": {
+      "url": "https://reactnative.dev/docs/0.88/images",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/images.md",
+          "bytes": 15554,
+          "sha256": "6a04b4b9cf4b39ecffd0b3bfd025efaaee68aee8046ba92f27d16f5cd678bac5"
+        }
+      ]
+    },
+    "rn-docs:style.md": {
+      "url": "https://reactnative.dev/docs/0.88/style",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/style.md",
+          "bytes": 2104,
+          "sha256": "1e0d6da5a34b3dd6c3be277a24500b96f30e8fc4cef3aecbe5db7684cb2a1af5"
+        }
+      ]
+    },
+    "rn-docs:flexbox.md": {
+      "url": "https://reactnative.dev/docs/0.88/flexbox",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/flexbox.md",
+          "bytes": 76258,
+          "sha256": "0d998f98ad61293b3b5095648dec78e73815cdd26c58cfae7acbc62fa8fbe374"
+        }
+      ]
+    },
+    "rn-docs:height-and-width.md": {
+      "url": "https://reactnative.dev/docs/0.88/height-and-width",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/height-and-width.md",
+          "bytes": 3764,
+          "sha256": "82f3c4b62ee324239a6624e6ba977cf68c18da6ff6c3d22e4f6cdca184bdc97c"
+        }
+      ]
+    },
+    "rn-docs:using-a-listview.md": {
+      "url": "https://reactnative.dev/docs/0.88/using-a-listview",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/using-a-listview.md",
+          "bytes": 3379,
+          "sha256": "3ddda0531eeab2353487f17b981710ca235358773eaa8014a98716061821c439"
+        }
+      ]
+    },
+    "rn-docs:flatlist.md": {
+      "url": "https://reactnative.dev/docs/0.88/flatlist",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/flatlist.md",
+          "bytes": 23339,
+          "sha256": "56924415663d7c498fd2ce63225b73328f0c30912439a461abf954e247e149ec"
+        }
+      ]
+    },
+    "rn-docs:handling-touches.md": {
+      "url": "https://reactnative.dev/docs/0.88/handling-touches",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/handling-touches.md",
+          "bytes": 6537,
+          "sha256": "102da04727b87c4023c059b3bf029b378f13ef60219ee868b3b82f9765dad68c"
+        }
+      ]
+    },
+    "rn-docs:pressable.md": {
+      "url": "https://reactnative.dev/docs/0.88/pressable",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/pressable.md",
+          "bytes": 11006,
+          "sha256": "3de0276cca8afa89c79ffd683f377a78ec43f634ea3eb89b3c212bfeb143a926"
+        }
+      ]
+    },
+    "expo-docs:router/basics/core-concepts.mdx": {
+      "url": "https://docs.expo.dev/router/basics/core-concepts",
+      "files": [
+        {
+          "file": "docs/pages/router/basics/core-concepts.mdx",
+          "bytes": 6285,
+          "sha256": "27b219418b7dc2ca68ea7c638ba6106d555dd289c3999858b81cc5cc5a2830fc"
+        }
+      ]
+    },
+    "expo-docs:router/basics/notation.mdx": {
+      "url": "https://docs.expo.dev/router/basics/notation",
+      "files": [
+        {
+          "file": "docs/pages/router/basics/notation.mdx",
+          "bytes": 5572,
+          "sha256": "72673beb5374b8abed96ae380fcfaeef30608e58ede596ab3cb44dc5e3849204"
+        }
+      ]
+    },
+    "expo-docs:router/basics/navigation-layouts.mdx": {
+      "url": "https://docs.expo.dev/router/basics/navigation-layouts",
+      "files": [
+        {
+          "file": "docs/pages/router/basics/navigation-layouts.mdx",
+          "bytes": 11519,
+          "sha256": "45a3f1b86cc227b0e885c25cd237d5790331776f14e863cd384e61055ac0c12d"
+        }
+      ]
+    },
+    "expo-docs:router/basics/navigation.mdx": {
+      "url": "https://docs.expo.dev/router/basics/navigation",
+      "files": [
+        {
+          "file": "docs/pages/router/basics/navigation.mdx",
+          "bytes": 12386,
+          "sha256": "1e00e7572873ebe12203ee2f3e218aa3639599acb3f3246d33045735c78a041e"
+        }
+      ]
+    },
+    "react-docs:passing-props-to-a-component.md": {
+      "url": "https://react.dev/learn/passing-props-to-a-component",
+      "files": [
+        {
+          "file": "src/content/learn/passing-props-to-a-component.md",
+          "bytes": 26917,
+          "sha256": "7db995bc1d0886f9b1842906a0e46968e2a667cb2736751e6b96cbe343378c5c"
+        }
+      ]
+    },
+    "rn-docs:network.md": {
+      "url": "https://reactnative.dev/docs/0.88/network",
+      "files": [
+        {
+          "file": "website/versioned_docs/version-0.88/network.md",
+          "bytes": 10426,
+          "sha256": "1a48a393c8e4f215b0433eeac375a0d8c2eb0c65d1c493558a5029a1d79a0ca6"
+        }
+      ]
+    }
+  }
+}

@@ -48,3 +48,6 @@ store.config.json
 
 # Argent test credentials (typed into the app via {{secret:NAME}} placeholders): local only.
 .argent/secrets.env
+
+# Course-content pipeline cache and review packs (prompts/19)
+scratchpad/

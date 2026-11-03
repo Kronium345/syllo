@@ -63,3 +63,6 @@ supabase/
 
 # EAS Metadata (App Store listing + App Review contact and demo login): local only, never committed.
 store.config.json
+
+# Course-content pipeline cache and review packs (prompts/19)
+scratchpad/
