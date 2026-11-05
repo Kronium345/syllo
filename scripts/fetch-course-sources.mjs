@@ -201,7 +201,18 @@ for (const ref of refs) {
     writeFileSync(out, text);
     entries.push({ file, bytes: Buffer.byteLength(text), sha256: sha256(text) });
   }
-  files[`${ref.id}:${ref.path}`] = { url: pageUrl(source, ref.path), files: entries };
+  // A Jekyll/Eleventy permalink in the first file's front matter beats the path rule.
+  const firstText = entries.length ? readFileSync(textPath(ref.id, entries[0].file), "utf8") : "";
+  const frontMatter = /^---\r?\n([\s\S]*?)\r?\n---/.exec(firstText)?.[1] ?? "";
+  const permalink = /^permalink:\s*["']?([^"'\r\n]+)["']?\s*$/m.exec(frontMatter)?.[1]?.trim();
+  const origin = /^(https?:\/\/[^/]+)/.exec(source.pageUrl)?.[1];
+  const url = permalink && origin && permalink.startsWith("/") ? `${origin}${permalink}` : pageUrl(source, ref.path);
+  files[`${ref.id}:${ref.path}`] = {
+    url,
+    // The exact licensed text we adapted, always available: used when the live page is gone.
+    repoUrl: `${source.repo}/blob/${repo.rev}/${resolved[0]}`,
+    files: entries,
+  };
   if (flags.inspect) console.log(`  ${ref.id}:${ref.path} → ${resolved.length === 1 ? resolved[0] : `${resolved.length} files`}`);
 }
 
@@ -209,8 +220,19 @@ if (flags["check-urls"]) {
   console.log("Checking public page URLs…");
   for (const [key, entry] of Object.entries(files)) {
     const status = await checkUrl(entry.url);
-    if (status !== 200) problems.push(`${key}: page URL ${entry.url} returned ${status || "no response"}`);
-    else if (flags.inspect) console.log(`  ✓ ${entry.url}`);
+    if (status === 200) {
+      if (flags.inspect) console.log(`  ✓ ${entry.url}`);
+      continue;
+    }
+    // The live page moved or was removed: link the pinned repo file instead (it is the source).
+    const fallback = await checkUrl(entry.repoUrl);
+    if (fallback === 200) {
+      console.log(`  ↪ ${key}: ${entry.url} returned ${status || "no response"}; linking the pinned file instead`);
+      entry.url = entry.repoUrl;
+      entry.urlFallback = true;
+    } else {
+      problems.push(`${key}: ${entry.url} returned ${status || "no response"}, and the repo link returned ${fallback || "no response"}`);
+    }
   }
 }
 

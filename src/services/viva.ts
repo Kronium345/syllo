@@ -38,6 +38,8 @@ export type VivaSession = {
   finished: boolean;
   quizTitle: string;
   courseId: string | null;
+  /** The course's slug, e.g. "pharmacy-exam-prep" (the BNF footnote is pharmacy-only). */
+  courseSlug: string | null;
   questions: VivaQuestion[];
 };
 
@@ -57,7 +59,9 @@ type SessionRow = {
   id: string;
   attempt_id: string;
   finished_at: string | null;
-  quiz_attempts: { quizzes: { title: string; chapters: { course_id: string } | null } | null } | null;
+  quiz_attempts: {
+    quizzes: { title: string; chapters: { course_id: string; courses: { slug: string } | null } | null } | null;
+  } | null;
   viva_session_questions: {
     question_id: string;
     position: number;
@@ -112,7 +116,7 @@ export async function getVivaSession(supabase: AppSupabaseClient, sessionId: str
   const query = supabase
     .from("viva_sessions")
     .select(
-      "id, attempt_id, finished_at, quiz_attempts(quizzes(title, chapters(course_id))), " +
+      "id, attempt_id, finished_at, quiz_attempts(quizzes(title, chapters(course_id, courses(slug)))), " +
         "viva_session_questions(question_id, position, reason, quiz_questions(prompt, reference_url), " +
         "viva_answers(transcript, verdict, score, accuracy, reasoning, clarity, strengths, improvements, model_answer))",
     )
@@ -126,6 +130,7 @@ export async function getVivaSession(supabase: AppSupabaseClient, sessionId: str
     finished: row.finished_at !== null,
     quizTitle: row.quiz_attempts?.quizzes?.title ?? "Quiz",
     courseId: row.quiz_attempts?.quizzes?.chapters?.course_id ?? null,
+    courseSlug: row.quiz_attempts?.quizzes?.chapters?.courses?.slug ?? null,
     questions: [...row.viva_session_questions]
       .sort((a, b) => a.position - b.position)
       .map((question) => {

@@ -93,7 +93,9 @@ export function VivaResultsScreen() {
         </View>
 
         <AppText variant="footnote" style={tw`text-center mt-6`}>
-          AI feedback is for study practice. Check clinical facts in the BNF.
+          {data.courseSlug === "pharmacy-exam-prep"
+            ? "AI feedback is for study practice. Check clinical facts in the BNF."
+            : "AI feedback is for study practice. Check facts in the linked sources."}
         </AppText>
       </ScrollView>
 

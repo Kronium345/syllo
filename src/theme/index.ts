@@ -1,3 +1,4 @@
+import { Platform, type TextStyle } from "react-native";
 import { create } from "twrnc";
 
 // All colour, type, radius, spacing and shadow tokens live in tailwind.config.js
@@ -88,3 +89,16 @@ export const control = {
 export function pressScale(pressed: boolean, amount: 0.9 | 0.95 | 0.98 = 0.98) {
   return pressed ? { transform: [{ scale: amount }] } : null;
 }
+
+/**
+ * The monospace face for code in lesson notes (prompts/19): Menlo on iOS, the system monospace
+ * on Android, and a ui-monospace stack on web. Kept here because fontFamily is only allowed in
+ * src/theme/ (eslint.config.js).
+ */
+export const mono: TextStyle = {
+  fontFamily: Platform.select({
+    ios: "Menlo",
+    android: "monospace",
+    default: 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace',
+  }),
+};

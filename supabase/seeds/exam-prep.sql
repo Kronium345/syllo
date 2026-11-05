@@ -2,9 +2,9 @@
 -- Do not edit by hand: change the source or the script and run it again.
 
 insert into public.tutors (id, name, headline, bio, avatar_url) values
-  (md5('tutor:syllo-pharmacy')::uuid, 'Syllo Pharmacy Team', 'Pharmacy exam practice',
-   'Multiple-choice practice across every clinical topic, with an explanation for most answers.',
-   'https://picsum.photos/seed/syllo-tutor-pharmacy/200/200')
+  (md5('tutor:syllo-pharmacy')::uuid, 'Syllo Team', 'Lessons adapted from official docs and open guides',
+   'Syllo''s courses are written by the Syllo team from openly licensed official documentation and guides, credited in every lesson, and reviewed before publishing.',
+   'https://picsum.photos/seed/syllo-team/200/200')
 on conflict (id) do nothing;
 
 insert into public.courses (id, slug, title, subtitle, description, cover_image_url, category, level, tutor_id, is_published) values

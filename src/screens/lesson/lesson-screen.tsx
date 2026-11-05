@@ -17,6 +17,7 @@ import { usePremium } from "@/lib/queries/purchases";
 import { color, tw } from "@/theme";
 
 import { LessonActions } from "./lesson-actions";
+import { LessonSources } from "./lesson-sources";
 import { leaveLesson, LessonVideo } from "./lesson-video";
 import { Markdown } from "./markdown";
 import { ResourceCard } from "./resource-card";
@@ -175,6 +176,8 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
             ))}
           </View>
         ) : null}
+
+        <LessonSources sources={lesson.sources} />
       </ScrollView>
 
       <LessonActions

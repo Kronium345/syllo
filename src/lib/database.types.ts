@@ -577,6 +577,53 @@ export type Database = {
           },
         ]
       }
+      lesson_sources: {
+        Row: {
+          attribution_note: string | null
+          author: string
+          id: string
+          lesson_id: string
+          licence: string
+          licence_url: string
+          position: number
+          role: string
+          title: string
+          url: string
+        }
+        Insert: {
+          attribution_note?: string | null
+          author: string
+          id?: string
+          lesson_id: string
+          licence: string
+          licence_url: string
+          position: number
+          role?: string
+          title: string
+          url: string
+        }
+        Update: {
+          attribution_note?: string | null
+          author?: string
+          id?: string
+          lesson_id?: string
+          licence?: string
+          licence_url?: string
+          position?: number
+          role?: string
+          title?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_sources_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lessons: {
         Row: {
           chapter_id: string

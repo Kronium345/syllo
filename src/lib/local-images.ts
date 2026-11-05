@@ -15,10 +15,9 @@ const COURSE_COVERS: Record<string, ImageSource> = {
 
 // Keyed by tutor id: md5('tutor:<key>') in the seeds.
 const TUTOR_PHOTOS: Record<string, ImageSource> = {
-  "535b55c8-575d-80cd-b929-7d4fde5390d7": require("@/assets/images/tutors/maya.jpg"),
-  "3a7e5e7c-21c1-3286-ac86-79c3370b6c49": require("@/assets/images/tutors/leo.png"),
-  "aec6a57f-7489-3248-a3da-b958674222a3": require("@/assets/images/tutors/aisha.jpg"),
-  "2c1fbd60-bf36-0585-122a-adc64e67d1f7": require("@/assets/images/tutors/pharmacy.jpg"),
+  // Syllo Team (md5('tutor:syllo-pharmacy')), the one tutor of every course since prompts/19:
+  // the brand mark. The sample tutors' photos (maya, leo, aisha) are no longer used.
+  "2c1fbd60-bf36-0585-122a-adc64e67d1f7": require("@/assets/images/logo-mark.png"),
 };
 
 /** A course's cover: the bundled file, else its database URL, else nothing. */

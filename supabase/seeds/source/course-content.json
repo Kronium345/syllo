@@ -1,0 +1,938 @@
+{
+  "lessons": {
+    "react-native-basics/1/1": {
+      "title": "Welcome to the course",
+      "status": "draft",
+      "body": "In this lesson, you will learn what React Native is, how it renders mobile user interfaces, and how its Core Components map directly to native building blocks on Android and iOS.\n\n## What is React Native?\n\nReact Native is an open source framework for creating Android and iOS applications using React and the native capabilities of mobile platforms. Instead of writing separate applications in platform languages such as Swift or Kotlin, you write JavaScript to describe your user interface and interact with platform APIs.\n\nYour interface is defined using React components: reusable, nestable bundles of code that describe both appearance and behaviour.\n\n## Views and Native Components\n\nIn mobile development for Android and iOS, the basic building block of any user interface is a **view**. A view is a small rectangular element on the screen that displays text, presents images, or responds to user input. Even the smallest visual elements, such as a line of text or a button, are kinds of views. Furthermore, views can be nested inside other views.\n\nOn Android, views are written in Kotlin or Java; on iOS, they are written in Swift or Objective-C. With React Native, you invoke these views through JavaScript using React components. At runtime, React Native creates the corresponding Android and iOS views for those components. Because React Native components are backed by the exact same views used in standard Android and iOS development, your apps maintain the look, feel, and performance of native applications. These platform-backed components are called **Native Components**.\n\n## Core Components\n\nReact Native provides a collection of essential, ready-to-use Native Components known as **Core Components**. When building an interface, you will work frequently with these primary components:\n\n- `<View>`: A non-scrolling container that supports layout with flexbox, style, touch handling, and accessibility controls (corresponding to Android `<ViewGroup>` and iOS `<UIView>`).\n- `<Text>`: Displays, styles, and nests strings of text, and can handle touch events (corresponding to Android `<TextView>` and iOS `<UITextView>`).\n- `<Image>`: Displays different types of images (corresponding to Android `<ImageView>` and iOS `<UIImageView>`).\n- `<ScrollView>`: A generic scrolling container that can contain multiple components and views (corresponding to Android `<ScrollView>` and iOS `<UIScrollView>`).\n- `<TextInput>`: Allows the user to enter text (corresponding to Android `<EditText>` and iOS `<UITextField>`).\n\nHere is a short example demonstrating how Core Components nest together:\n\n```tsx\nimport React from 'react';\nimport { View, Text, Image, TextInput, ScrollView } from 'react-native';\n\nconst WelcomeApp = () => {\n  return (\n    <ScrollView>\n      <Text>Welcome to React Native</Text>\n      <View>\n        <Image\n          source={{ uri: 'https://reactnative.dev/docs/assets/p_cat2.png' }}\n          style={{ width: 200, height: 200 }}\n        />\n      </View>\n      <TextInput\n        defaultValue=\"You can type in me\"\n        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}\n      />\n    </ScrollView>\n  );\n};\n\nexport default WelcomeApp;\n```\n\n### Try it\n\nLook closely at the code example above. Note how `<ScrollView>` wraps the rest of the elements to provide scrolling, while `<View>` acts as a container for `<Image>`. Try identifying which native view would be created on iOS for `<TextInput>` and which would be created on Android for `<Text>`.\n\n### Key points\n\n- React Native is an open source framework that lets you build native Android and iOS apps using JavaScript and React.\n- Mobile user interfaces are built from rectangular building blocks called views, which can be nested inside other views.\n- React Native components map directly to native Android and iOS views at runtime, preserving native look and performance.\n- Common Core Components include `<View>`, `<Text>`, `<Image>`, `<ScrollView>`, and `<TextInput>`.",
+      "keyPoints": [
+        "React Native is an open source framework that lets you build native Android and iOS apps using JavaScript and React.",
+        "Mobile user interfaces are built from rectangular building blocks called views, which can be nested inside other views.",
+        "React Native components map directly to native Android and iOS views at runtime, preserving native look and performance.",
+        "Common Core Components include `<View>`, `<Text>`, `<Image>`, `<ScrollView>`, and `<TextInput>`."
+      ],
+      "sourcesUsed": [
+        "rn-docs:intro-react-native-components.md"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 1986,
+        "output": 1038
+      },
+      "draftedAt": "2026-11-05T10:07:21.042Z",
+      "reviewed": null
+    },
+    "react-native-basics/1/2": {
+      "title": "Setting up Expo",
+      "status": "draft",
+      "body": "In this lesson, you will prepare your machine and initialise a new Expo project for React Native development.\n\n## Checking your system requirements\n\nBefore creating an app, you need to ensure your computer has the necessary prerequisites installed.\n\nExpo requires the LTS release of Node.js. It supports the following operating systems:\n\n- macOS\n- Windows (using PowerShell or WSL 2)\n- Linux\n\nYou can run setup commands with package managers such as `npm` (via `npx`), `yarn`, `pnpm`, or `bun`.\n\n## Creating a default project\n\nExpo is a React Native framework designed to simplify mobile development on Android and iOS. It provides file-based routing and a standard library of native modules.\n\nTo create a new project, Expo recommends starting with the default project created by the `create-expo-app` utility. You can generate a default project targeting SDK 58 by running:\n\n```bash\nnpx create-expo-app@latest --template default@sdk-58\n```\n\nThis default project sets up a ready-to-run structure containing example code to guide you. If you prefer another package manager, you can run an equivalent command, such as:\n\n```bash\nyarn create expo-app --template default@sdk-58\n```\n\nYou can also use `pnpm create expo-app --template default@sdk-58` or `bun create expo --template default@sdk-58`.\n\nIf you prefer to explore specific features instead of the default project, you can pass the `--example` flag to browse available sample applications:\n\n```bash\nnpx create-expo-app@latest --example\n```\n\nYou can also provide an example name directly, such as:\n\n```bash\nnpx create-expo-app@latest --example with-widgets\n```\n\n## Choosing how to develop\n\nWhen setting up your environment, you have two primary options for running your app:\n\n- **Expo Go**: A playground designed for students and learners to try Expo quickly.\n- **Development build**: A build of your own app that includes Expo's developer tools.\n\nExpo recommends developing on a real device so you can see exactly what your users will experience. However, note that during the SDK 58 transition period, if you plan to use Expo Go on a physical device, you must use an SDK 57 project instead. Running `create-expo-app@latest` without the `--template` flag creates an SDK 57 project for this purpose.\n\n### Try it\n\nOpen your terminal and create a new Expo project using the default SDK 58 template:\n\n```bash\nnpx create-expo-app@latest --template default@sdk-58\n```\n\nOnce the command finishes, navigate into your new project directory and inspect the files created for your app.\n\n### Key points\n\n- Expo requires Node.js (LTS) on macOS, Windows (PowerShell or WSL 2), or Linux.\n- You can initialise a project using `npx create-expo-app@latest --template default@sdk-58`.\n- Ready-made example projects demonstrating specific features can be selected using the `--example` flag.\n- Expo Go acts as a playground for quick testing, whereas a development build is a custom build of your app with Expo developer tools.\n- If you plan to use Expo Go on a physical device during the SDK 58 transition period, you must use an SDK 57 project.",
+      "keyPoints": [
+        "Expo requires Node.js (LTS) on macOS, Windows (PowerShell or WSL 2), or Linux.",
+        "You can initialise a project using npx create-expo-app@latest --template default@sdk-58.",
+        "Ready-made example projects demonstrating specific features can be selected using the --example flag.",
+        "Expo Go acts as a playground for quick testing, whereas a development build is a custom build of your app with Expo developer tools.",
+        "If you plan to use Expo Go on a physical device during the SDK 58 transition period, you must use an SDK 57 project."
+      ],
+      "sourcesUsed": [
+        "expo-docs:get-started/set-up-your-environment.mdx",
+        "expo-docs:get-started/create-a-project.mdx"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 2172,
+        "output": 894
+      },
+      "draftedAt": "2026-11-05T10:07:44.709Z",
+      "reviewed": null,
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [error] ## Checking your system requirements: The claim that package tools run 'without needing global installations' is not mentioned or supported by the source text.\n- [error] ## Choosing how to develop: Suggesting that learners download Expo Go on a physical device to get started with an SDK 58 project is misleading; the source explicitly notes that if you plan to use Expo Go on a physical device, you must use an SDK 57 project rather than the SDK 58 template.",
+          "at": "2026-11-05T10:19:16.902Z"
+        }
+      ]
+    },
+    "react-native-basics/1/3": {
+      "title": "Running on your phone",
+      "status": "draft",
+      "body": "In this lesson, you will learn how to run your React Native application on a physical mobile device, establish a connection with your local development server, and view live updates as you edit your code.\n\n## Starting the server and scanning the code\n\nTo view your project on a physical handset, you must first launch the local development server from your terminal. Navigate to your project directory and run:\n\n```bash\nnpx expo start\n```\n\nOnce the command executes, Expo CLI displays a QR code directly in your terminal. Scan this QR code to open the app on your device.\n\nIf you are instead developing on an Android emulator or iOS simulator, you can press `A` or `I` respectively in the terminal to open the application.\n\n## Network configuration and account requirements\n\nFor the development server to communicate with your device, both your computer and your phone must be connected to the same Wi-Fi network.\n\nIf you are using Expo Go on a physical iOS device, Expo Go opens your project only when Expo CLI and Expo Go are signed in to the same Expo account. To log in on your computer, run:\n\n```bash\nnpx expo login\n```\n\nAfter signing in on your computer, open Expo Go on your iOS device, tap the account icon in the top-right corner, and sign in using the identical account.\n\nIf your device still cannot connect, it may be due to router configuration, which is common on public networks. You can work around this by choosing the tunnel connection type when starting the development server:\n\n```bash\nnpx expo start --tunnel\n```\n\nScan the QR code again after starting the server with this flag. Keep in mind that using the tunnel connection type makes app reloads considerably slower than on LAN or Local, so it is best to avoid tunnel when possible.\n\n## Testing changes with Fast Refresh\n\nExpo Go is configured by default to reload the app automatically whenever a file is changed. To see this in action, open `src/app/index.tsx` in your code editor and update the welcome heading:\n\n```tsx\nexport default function HomeScreen() {\n  return (\n    <ThemedView style={styles.heroSection}>\n      <AnimatedIcon />\n      <ThemedText type=\"title\" style={styles.title}>\n        Hello World!\n      </ThemedText>\n    </ThemedView>\n  );\n}\n```\n\nOnce you save the file, the app reloads so that your JavaScript and component changes appear immediately on your device.\n\nIf updates do not appear automatically on your screen, verify that development mode is enabled in Expo CLI. You can also close and reopen the Expo app, then shake your physical device to open the developer menu. If Fast Refresh is enabled, toggle it; if you see Disable Fast Refresh, dismiss the developer menu and make another change to test the connection.\n\n### Try it\n\n1. Run `npx expo start` in your project terminal.\n2. Scan the displayed QR code to open the app on your handset.\n3. Open `src/app/index.tsx`, change the title text to `Hello World!`, and save the file.\n4. Check that the screen automatically reloads with the new text, then shake the device to inspect the developer menu.\n\n### Key points\n\n- Start the local development server with `npx expo start` and scan the terminal QR code to open the app on your device.\n- Ensure your computer and device share the same Wi-Fi network.\n- Physical iOS devices require Expo CLI and Expo Go to be signed in to the same Expo account.\n- Use `npx expo start --tunnel` if router configuration on public networks prevents a direct connection.\n- Shake your physical device to reveal the developer menu and verify Fast Refresh settings.",
+      "keyPoints": [
+        "Start the local development server with npx expo start and scan the terminal QR code to open the app on your device.",
+        "Ensure your computer and device share the same Wi-Fi network.",
+        "Physical iOS devices require Expo CLI and Expo Go to be signed in to the same Expo account.",
+        "Use npx expo start --tunnel if router configuration on public networks prevents a direct connection.",
+        "Shake your physical device to reveal the developer menu and verify Fast Refresh settings."
+      ],
+      "sourcesUsed": [
+        "expo-docs:get-started/start-developing.mdx"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 7275,
+        "output": 991
+      },
+      "draftedAt": "2026-11-05T10:08:12.436Z",
+      "reviewed": null,
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [error] ## Starting the server and scanning the code: The claim that you can open your handset's camera to scan the code is not supported by the sources, which only state to scan the QR code to open the app on your device.\n- [error] ## Network configuration and account requirements: The explanation that tunneling 'routes the connection through an external proxy, allowing your device to reach your computer across network boundaries' is external knowledge not mentioned in the sources.\n- [error] ## Testing changes with Fast Refresh: The statement that the app updates 'without losing your application state' is not supported by the sources, which only mention that the app automatically reloads when files or JavaScript code change.",
+          "at": "2026-11-05T10:19:42.755Z"
+        }
+      ]
+    },
+    "react-native-basics/2/1": {
+      "title": "Views, text and images",
+      "status": "draft",
+      "body": "In this lesson, you will learn how to structure mobile screens using three fundamental React Native components: `View`, `Text`, and `Image`. You will see how these components map to native interfaces and how to configure their properties properly.\n\n## Structuring screens with `View`\nThe `View` component is the most fundamental building block in React Native. It functions as a container that maps directly to native view equivalents, such as `UIView` on iOS or `android.view` on Android.\n\nYou use `View` to organise your user interface into rectangular sections, arrange children, and group items. A `View` can contain zero, one, or many child components of any kind.\n\n```tsx\n<View style={{padding: 16, backgroundColor: '#f0f0f0'}}>\n  <View style={{height: 50, backgroundColor: 'blue'}} />\n  <View style={{height: 50, backgroundColor: 'red'}} />\n</View>\n```\n\n## Rendering text with `Text`\nUnlike web development where text can be placed directly inside any container, React Native is strict: you must always wrap all text strings inside a `<Text>` component. Placing a raw text string directly under a `<View>` will raise an exception.\n\nThe `<Text>` component uses text layout rather than flexbox layout for its children. When you nest `Text` elements inside an outer `Text` component, the nested elements flow inline and wrap together at the end of a line instead of forming separate rectangular boxes. Nested text also inherits styles from its parent text container.\n\nYou can control how long passages overflow by providing the `numberOfLines` prop, which truncates excess content with an ellipsis:\n\n```tsx\n<View>\n  <Text style={{fontSize: 16, color: 'black'}}>\n    Welcome back,{' '}\n    <Text style={{fontWeight: 'bold', color: 'blue'}}>Alex</Text>\n  </Text>\n  <Text numberOfLines={2}>\n    This is a longer paragraph that will automatically truncate if it exceeds two lines of text on the screen.\n  </Text>\n</View>\n```\n\n## Loading images with `Image`\nThe `Image` component displays pictures from local assets or remote URLs. React Native handles each type of source differently:\n\n1. **Static local images**: You reference local files using `require('./path/to/image.png')`. Metro resolves these at build time, and the bundler automatically detects image dimensions. You can provide `@2x` and `@3x` suffixes in your file names, and the bundler will select the correct density variant for the device screen.\n2. **Network images**: Remote images take an object with a `uri` string, such as `source={{uri: 'https://reactjs.org/logo-og.png'}}`. Because remote dimensions are not known before download, you must manually specify `width` and `height` in the style. If you omit these dimensions, the image will not display.\n\nHere is an example combining these three components:\n\n```tsx\nimport {View, Text, Image, StyleSheet} from 'react-native';\n\nexport default function ProfileCard() {\n  return (\n    <View style={styles.card}>\n      <Image\n        source={{uri: 'https://reactjs.org/logo-og.png'}}\n        style={styles.avatar}\n      />\n      <Text style={styles.title}>\n        React Native <Text style={{fontWeight: 'bold'}}>0.88</Text>\n      </Text>\n      <Text numberOfLines={1}>Cross-platform native components</Text>\n    </View>\n  );\n}\n\nconst styles = StyleSheet.create({\n  card: {padding: 16, backgroundColor: '#ffffff'},\n  avatar: {width: 60, height: 60},\n  title: {fontSize: 18},\n});\n```\n\n### Try it\nCreate a card component that renders an outer `View` container with padding. Inside it, render a remote `Image` with an explicit `width` and `height` of 80, followed by a `Text` element showing a title and a nested `Text` element displaying a badge in bold.\n\n### Key points\n- `View` is the core layout container and maps directly to native platform equivalents like `UIView` and `android.view`.\n- All text strings must be wrapped inside a `Text` component; placing raw text directly inside a `View` raises an exception.\n- Nested `Text` components use inline text layout rather than flexbox, and inherit styles from the parent `Text` component.\n- Local images loaded via `require` automatically supply their dimensions, whereas remote images loaded using `{uri: ...}` require explicit `width` and `height` styles.",
+      "keyPoints": [
+        "`View` is the core layout container and maps directly to native platform equivalents like `UIView` and `android.view`.",
+        "All text strings must be wrapped inside a `Text` component; placing raw text directly inside a `View` raises an exception.",
+        "Nested `Text` components use inline text layout rather than flexbox, and inherit styles from the parent `Text` component.",
+        "Local images loaded via `require` automatically supply their dimensions, whereas remote images loaded using `{uri: ...}` require explicit `width` and `height` styles."
+      ],
+      "sourcesUsed": [
+        "rn-docs:view.md",
+        "rn-docs:text.md",
+        "rn-docs:images.md"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 17029,
+        "output": 1323
+      },
+      "draftedAt": "2026-11-05T10:08:38.993Z",
+      "reviewed": null,
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [warning] ### Try it: Grammatical error: 'renders a outer View container' should be 'renders an outer View container'.",
+          "at": "2026-11-05T10:20:42.284Z"
+        },
+        {
+          "round": 2,
+          "fixed": "- [warning] ## Loading images with Image: The `ProfileCard` code sample is 38 lines long, exceeding the rule to keep code samples short (at most about 25 lines).",
+          "at": "2026-11-05T10:21:29.718Z"
+        }
+      ]
+    },
+    "react-native-basics/2/2": {
+      "title": "Styling with flexbox",
+      "status": "draft",
+      "body": "In this lesson, you will learn how to arrange components across different screen sizes using Flexbox. You will master controlling the flow of items, aligning them along axes, and sharing available screen space dynamically.\n\n## React Native Flexbox basics\nReact Native uses JavaScript objects to apply styles to components via the `style` prop, with property names written in camelCase (such as `backgroundColor`). Rather than relying on traditional web layout models, React Native uses Flexbox by default for laying out child components.\n\nWhile Flexbox in React Native functions very similarly to CSS on the web, there are important default differences to remember:\n- `flexDirection` defaults to `column` rather than `row`.\n- `alignContent` defaults to `flex-start` instead of `stretch`.\n- `flexShrink` defaults to `0` instead of `1`.\n- The `flex` property only accepts a single number.\n\n## Controlling layout along axes\nFlexbox positions elements along two axes: the main axis and the cross axis.\n\n- `flexDirection` sets the main axis. The default is `column` (top to bottom), but you can set it to `row` (left to right), `column-reverse` (bottom to top), or `row-reverse` (right to left).\n- `justifyContent` distributes children along the main axis. Options include `flex-start` (the default), `center`, `flex-end`, `space-between`, `space-around`, and `space-evenly`.\n- `alignItems` aligns children along the cross axis (the axis perpendicular to the main axis). Choices include `stretch` (the default), `flex-start`, `center`, `flex-end`, and `baseline`. Note that for `stretch` to work, child components must not have a fixed dimension on that cross axis.\n- `alignSelf` allows an individual child to override the parent container's `alignItems` rule.\n\n## Distributing space with flex\nThe `flex` property determines how much available space an item occupies along the main axis relative to its siblings.\n\nWhen a parent container has a defined size or sets `flex: 1`, its children divide the available space according to their own `flex` values. For example, if three sibling views have `flex: 1`, `flex: 2`, and `flex: 3`, the total sum is 6. The views receive 1/6, 2/6, and 3/6 of the container's space, respectively.\n\nRemember that if a parent view has no fixed `height` or `width`, and no `flex` value, its size will be zero, meaning any flex children inside will not appear.\n\nHere is an example demonstrating these properties in action:\n\n```tsx\nimport React from 'react';\nimport { StyleSheet, View } from 'react-native';\n\nexport default function LayoutScreen() {\n  return (\n    <View style={styles.container}>\n      <View style={[styles.box, { backgroundColor: 'powderblue', flex: 1 }]} />\n      <View style={[styles.box, { backgroundColor: 'skyblue', flex: 2 }]} />\n      <View style={[styles.box, { backgroundColor: 'steelblue', flex: 1, alignSelf: 'center' }]} />\n    </View>\n  );\n}\n\nconst styles = StyleSheet.create({\n  container: {\n    flex: 1,\n    flexDirection: 'column',\n    padding: 20,\n  },\n  box: {\n    width: 60,\n  },\n});\n```\n\n### Try it\nCreate a container `View` with `flex: 1` and `flexDirection: 'row'`. Add three child `View` components with distinct background colours and fixed dimensions (such as `width: 50` and `height: 50`). Set `justifyContent: 'space-around'` and `alignItems: 'center'` on the container to see how items align horizontally and vertically.\n\n### Key points\n- Flexbox in React Native defaults to `flexDirection: 'column'` rather than `row`.\n- `justifyContent` manages positioning along the main axis, while `alignItems` manages alignment along the cross axis.\n- An individual child component can override its parent's `alignItems` setting by using `alignSelf`.\n- The `flex` property takes a single number that divides available space proportionally among siblings.\n- A parent container must have a defined dimension or `flex: 1` for its flex children to be visible.",
+      "keyPoints": [
+        "Flexbox in React Native defaults to flexDirection: 'column' rather than row.",
+        "justifyContent manages positioning along the main axis, while alignItems manages alignment along the cross axis.",
+        "An individual child component can override its parent's alignItems setting by using alignSelf.",
+        "The flex property takes a single number that divides available space proportionally among siblings.",
+        "A parent container must have a defined dimension or flex: 1 for its flex children to be visible."
+      ],
+      "sourcesUsed": [
+        "rn-docs:style.md",
+        "rn-docs:flexbox.md",
+        "rn-docs:height-and-width.md"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 15053,
+        "output": 1211
+      },
+      "draftedAt": "2026-11-05T10:09:04.760Z",
+      "reviewed": null,
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [error] ## React Native Flexbox basics: The notes list 'alignItems defaults to stretch' as a default difference from CSS on the web. The source states that the difference is 'alignContent defaulting to flex-start instead of stretch' (alignItems defaults to stretch in both web CSS and React Native).",
+          "at": "2026-11-05T10:22:10.813Z"
+        },
+        {
+          "round": 2,
+          "fixed": "- [error] LayoutScreen code sample: In `styles.container`, `justifyContent: 'space-between'` has no effect because all child views define positive `flex` values (`flex: 1`, `flex: 2`, `flex: 1`), which expand to absorb all available space along the main axis. Including `justifyContent: 'space-between'` in an example intended to demonstrate these properties in action is misleading for a learner.",
+          "at": "2026-11-05T10:23:48.587Z"
+        }
+      ]
+    },
+    "react-native-basics/2/3": {
+      "title": "Lists that scroll",
+      "status": "draft",
+      "body": "In mobile applications, displaying collections of information is an everyday requirement. You will learn how to render performant scrolling lists using `FlatList` and how to organise grouped items using `SectionList`.\n\n## Why choose FlatList?\n\nWhen building scrollable content, you might consider using a basic `ScrollView`. However, a `ScrollView` renders all its child components simultaneously, even those far off the screen. For long or changing lists, this quickly consumes memory and harms performance.\n\nReact Native provides the `FlatList` component to solve this problem. Instead of rendering everything upfront, `FlatList` only renders the elements currently showing on the screen. It dynamically manages offscreen items to keep memory usage low and scrolling smooth.\n\n## The core props of FlatList\n\nTo display a list, `FlatList` requires two essential props:\n- `data`: an array containing the information you want to present.\n- `renderItem`: a callback function that receives individual items and returns a formatted component.\n\nBy default, `FlatList` checks for a `key` or `id` property on each item to track list items and handle re-ordering. If your data uses a different identifier, provide the `keyExtractor` prop to return a unique string key.\n\n```tsx\nimport { FlatList, StyleSheet, Text, View } from 'react-native';\n\nconst USERS = [\n  { id: 'u1', name: 'Devin' },\n  { id: 'u2', name: 'Dominic' },\n  { id: 'u3', name: 'Jackson' },\n];\n\nexport const UserList = () => {\n  return (\n    <View style={styles.container}>\n      <FlatList\n        data={USERS}\n        renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}\n        keyExtractor={item => item.id}\n      />\n    </View>\n  );\n};\n\nconst styles = StyleSheet.create({\n  container: {\n    flex: 1,\n    paddingTop: 22,\n  },\n  item: {\n    padding: 10,\n    fontSize: 18,\n    height: 44,\n  },\n});\n```\n\n## Grouping data with SectionList\n\nWhen your data is broken into logical groups—such as contacts organised alphabetically—use `SectionList`. Instead of a flat array, `SectionList` takes a `sections` prop where each section object contains its own `data` array along with section-level metadata.\n\nYou then supply `renderSectionHeader` to display a heading above each subsection alongside the standard `renderItem` prop:\n\n```tsx\nimport { SectionList, StyleSheet, Text, View } from 'react-native';\n\nconst SECTIONS = [\n  { title: 'D', data: ['Dan', 'Dominic'] },\n  { title: 'J', data: ['James', 'Joel'] },\n];\n\nexport const GroupedList = () => (\n  <View style={styles.container}>\n    <SectionList\n      sections={SECTIONS}\n      renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}\n      renderSectionHeader={({ section }) => (\n        <Text style={styles.header}>{section.title}</Text>\n      )}\n      keyExtractor={item => item}\n    />\n  </View>\n);\n\nconst styles = StyleSheet.create({\n  container: { flex: 1, paddingTop: 22 },\n  header: { fontSize: 14, fontWeight: 'bold', backgroundColor: '#f0f0f0' },\n  item: { padding: 10, fontSize: 18 },\n});\n```\n\n## Helpful list enhancements\n\n`FlatList` provides several props for common interface patterns:\n- `ItemSeparatorComponent`: renders a component in between each item, excluding the top and bottom.\n- `ListHeaderComponent` and `ListFooterComponent`: attach elements to the top or bottom of all the items.\n- `horizontal`: setting this boolean prop to `true` renders items next to each other horizontally instead of vertically.\n- `extraData`: tells `FlatList` to re-render when external state changes, as `FlatList` avoids re-rendering when props remain shallow-equal.\n\n### Try it\n\nCreate a `FlatList` displaying a list of your favourite books or hobbies. Add an `ItemSeparatorComponent` using a small `<View>` with a border or background colour to place a line between each row.\n\n### Key points\n\n- `FlatList` optimises memory by rendering only the items currently visible in the viewport.\n- Every `FlatList` requires a `data` array and a `renderItem` function.\n- Use `keyExtractor` to supply a unique string key for each item if your data does not already include `key` or `id`.\n- Use `SectionList` when you need to group items under separate section headers.\n- Pass `extraData` to `FlatList` when `renderItem` relies on state or variables outside the `data` array.",
+      "keyPoints": [
+        "FlatList optimises memory by rendering only the items currently visible in the viewport.",
+        "Every FlatList requires a data array and a renderItem function.",
+        "Use keyExtractor to supply a unique string key for each item if your data does not already include key or id.",
+        "Use SectionList when you need to group items under separate section headers.",
+        "Pass extraData to FlatList when renderItem relies on state or variables outside the data array."
+      ],
+      "sourcesUsed": [
+        "rn-docs:using-a-listview.md",
+        "rn-docs:flatlist.md"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 8043,
+        "output": 1352
+      },
+      "draftedAt": "2026-11-05T10:09:32.798Z",
+      "reviewed": null,
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [error] ## Helpful list enhancements: The text claims that 'both list components' (FlatList and SectionList) provide props such as ItemSeparatorComponent, ListHeaderComponent, ListFooterComponent, and horizontal. The provided sources only document these props for FlatList; SectionList's support for them is not covered in the source text.",
+          "at": "2026-11-05T10:24:24.509Z"
+        }
+      ]
+    },
+    "react-native-basics/2/4": {
+      "title": "Handling touches",
+      "status": "draft",
+      "body": "By the end of this lesson, you will be able to capture tap and press interactions in your app using the standard `Button` component, classic `Touchable` wrappers, and the modern `Pressable` component.\n\n## The standard Button component\n\nReact Native provides a basic `Button` component that renders nicely across platforms. On iOS, it displays as coloured label text resembling a standard system button. On Android, it renders as a rounded rectangle with light text.\n\nA minimal `Button` example includes `title` for the button label and `onPress` for the function to execute when tapped. You can also specify an optional `color` prop to change the colour of the button.\n\n```tsx\nimport { Button, StyleSheet, View } from 'react-native';\n\nexport default function App()\n{\n  return (\n    <View style={styles.container}>\n      <Button\n        title=\"Save Changes\"\n        color=\"#841584\"\n        onPress={() => console.log('Button pressed')}\n      />\n    </View>\n  );\n}\n\nconst styles = StyleSheet.create({\n  container: {\n    flex: 1,\n    justifyContent: 'center',\n    padding: 20,\n  },\n});\n```\n\nWhile `Button` is quick to display, it does not provide custom styling options. For bespoke designs, React Native provides dedicated touchable wrappers.\n\n## Classic Touchable components\n\nWhen a basic button does not look right for your app, you can build your own using touchable components. These components do not provide default styling, but they capture tap gestures and display visual feedback:\n\n- `TouchableOpacity`: Reduces the opacity of the button, allowing the background to show through while pressing down.\n- `TouchableHighlight`: Darkens the view's background when pressed down, suitable for use anywhere you would use a button or link on the web.\n- `TouchableNativeFeedback`: Displays ink surface reaction ripples on Android in response to touch. This component is specific to Android.\n- `TouchableWithoutFeedback`: Handles tap gestures without displaying any visual feedback.\n\nAll touchable components accept an `onPress` callback. To detect when someone holds down on an element for a set amount of time, you can pass a function to the `onLongPress` prop.\n\n## Building interactive elements with Pressable\n\nThe `Pressable` component is a core wrapper capable of detecting distinct stages of press interactions on any of its children. When a press begins, `onPressIn` is called when activated. Following `onPressIn`, one of two outcomes occurs:\n\n1. The user removes their finger, triggering `onPressOut` followed by `onPress`.\n2. The user leaves their finger down longer than 500 milliseconds (customisable using `delayLongPress`), which triggers `onLongPress`. When they eventually remove their finger, `onPressOut` still fires.\n\nA powerful feature of `Pressable` is that both its `style` and `children` props can accept a function receiving an object with a `pressed` boolean. This lets you reactively change appearance without managing manual state.\n\n```tsx\nimport { Pressable, StyleSheet, Text } from 'react-native';\n\nexport default function ActionCard()\n{\n  return (\n    <Pressable\n      onPress={() => console.log('Tapped card')}\n      style={({ pressed }) => [\n        styles.card,\n        { backgroundColor: pressed ? '#d2e6ff' : '#ffffff' },\n      ]}\n      hitSlop={10}>\n      {({ pressed }) => (\n        <Text style={styles.text}>{pressed ? 'Pressed!' : 'Tap me'}</Text>\n      )}\n    </Pressable>\n  );\n}\n\nconst styles = StyleSheet.create({\n  card: {\n    padding: 16,\n    borderRadius: 8,\n    borderWidth: 1,\n    borderColor: '#cccccc',\n  },\n  text: { fontSize: 16 },\n});\n```\n\n`Pressable` also supports `hitSlop`, which sets additional distance outside of the element where a press can be detected. Note that touch areas never extend past parent view bounds.\n\n### Try it\n\nCreate a custom button using `Pressable`. Give it a default background colour, and use the `style` function to change that colour whenever `pressed` is true. Add an `onLongPress` prop that logs a message to the console after holding down on the button.\n\n### Key points\n\n- `Button` provides a basic, platform-adapted component using `title`, `color`, and `onPress`.\n- `TouchableOpacity` and `TouchableHighlight` provide ready-made visual feedback effects for custom layouts.\n- `Pressable` tracks touch states including `onPressIn`, `onPressOut`, `onPress`, and `onLongPress`.\n- `Pressable` accepts a function for `style` and `children` that receives a `pressed` status flag.\n- `hitSlop` extends the interactive press detection area beyond the visual bounds of an element.",
+      "keyPoints": [
+        "Button provides a basic, platform-adapted component using title, color, and onPress.",
+        "TouchableOpacity and TouchableHighlight provide ready-made visual feedback effects for custom layouts.",
+        "Pressable tracks touch states including onPressIn, onPressOut, onPress, and onLongPress.",
+        "Pressable accepts a function for style and children that receives a pressed status flag.",
+        "hitSlop extends the interactive press detection area beyond the visual bounds of an element."
+      ],
+      "sourcesUsed": [
+        "rn-docs:handling-touches.md",
+        "rn-docs:pressable.md"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 4862,
+        "output": 1313
+      },
+      "draftedAt": "2026-11-05T10:09:51.929Z",
+      "reviewed": null,
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [error] ## Building interactive elements with Pressable: The numbered list presents `onPressIn`, `onPressOut`, `onPress`, and `onLongPress` as a sequential order of events. According to the source, `onPress` and `onLongPress` are alternative outcomes after `onPressIn`: `onLongPress` fires while the finger is still held down (after 500 ms) before `onPressOut`, whereas `onPress` fires after `onPressOut` only when released without triggering a long press.",
+          "at": "2026-11-05T10:25:07.837Z"
+        },
+        {
+          "round": 2,
+          "fixed": "- [error] ## The standard Button component: The claim that 'title' and 'onPress' are 'required props' is not supported by the source text, which only presents them in a minimal example without stating they are required.\n- [error] ## Classic Touchable components: The explanation that 'underlayColor' defines the tint shown behind the active child is not supported by the source text, which only includes the prop in a code snippet without describing its function.",
+          "at": "2026-11-05T10:26:04.552Z"
+        }
+      ]
+    },
+    "react-native-basics/3/1": {
+      "title": "Screens and routes",
+      "status": "draft",
+      "body": "In this lesson, you will learn how Expo Router maps files to application screens, how layout files structure your navigation tree, and how special route conventions organise your project.\n\n## File-based routing in Expo Router\n\nExpo Router uses a file-based routing system. All screens and routes are defined by files and subdirectories located inside the `src/app` directory. Every file placed in this folder must have a default export that renders the corresponding screen (with the exception of special layout files).\n\nEvery screen also maps directly to a URL path. For example, a file at `src/app/home.tsx` corresponds to the route `/home`. This URL can be accessed directly in the browser address bar on the web, or through deep links on mobile devices.\n\nComponents that are not screens—such as reusable buttons, custom hooks, and utility functions—must live outside the `src/app` directory (for instance, in `src/components` or `src/hooks`). If you place non-route components inside `src/app`, Expo Router will attempt to interpret them as distinct routes.\n\n## Initial routes and route groups\n\nExpo Router uses `index.tsx` files to define the default route of any directory:\n\n- `src/app/index.tsx` represents the root route (`/`) and will appear first when you open the app.\n- `src/app/profile/index.tsx` matches the route `/profile`.\n\nWhen you want to organise files into folders without altering the URL path, you can use **route groups**. A route group is created by wrapping a directory name in parentheses:\n\n```tsx\n// src/app/(home)/feed.tsx -> matches /feed (not /(home)/feed)\n// src/app/(tabs)/index.tsx -> matches /\n```\n\nParentheses tell Expo Router to ignore the directory name in the URL, allowing you to group related screens cleanly or apply shared layout behaviour.\n\n## Layout files and navigators\n\nDirectories inside `src/app` can contain a special `_layout.tsx` file. A layout file defines how child screens in that directory relate to each other, rendering a navigator such as `Stack` or `Tabs` before the child routes are loaded.\n\nThe root layout at `src/app/_layout.tsx` replaces the traditional `App.jsx` entry point. It is rendered before any screen in the app and handles initialisation logic like loading custom fonts, managing the splash screen, or wrapping screens in context providers:\n\n```tsx\nimport { Stack } from 'expo-router';\n\nexport default function RootLayout() {\n  return (\n    <Stack>\n      <Stack.Screen name=\"index\" options={{ title: 'Home' }} />\n      <Stack.Screen name=\"about\" options={{ title: 'About' }} />\n    </Stack>\n  );\n}\n```\n\nIf you need a layout without a navigator—for instance, to wrap child routes in a shared header and footer without stack history—you can use the `Slot` component from `expo-router`:\n\n```tsx\nimport { Slot } from 'expo-router';\nimport { Header } from '@/components/header';\nimport { Footer } from '@/components/footer';\n\nexport default function SimpleLayout() {\n  return (\n    <>\n      <Header />\n      <Slot />\n      <Footer />\n    </>\n  );\n}\n```\n\n### Try it\n\n1. In your project, create a new route group folder named `src/app/(auth)`.\n2. Inside `src/app/(auth)`, create two files: `login.tsx` and `register.tsx`, exporting a basic component from each.\n3. Verify that the routes correspond to `/login` and `/register` rather than `/(auth)/login`.\n\n### Key points\n\n- All screens and routes are defined by files and directories inside `src/app`, while shared components must stay outside this folder.\n- The root `src/app/index.tsx` serves as the initial route matching `/`.\n- Folder names enclosed in parentheses, such as `(home)`, form route groups that organise files without adding segments to the URL path.\n- Special `_layout.tsx` files wrap routes within their directory and configure navigators like `Stack` or `Tabs`, or use `Slot` as a placeholder component for layouts without a navigator.",
+      "keyPoints": [
+        "All screens and routes are defined by files and directories inside src/app, while shared components must stay outside this folder.",
+        "The root src/app/index.tsx serves as the initial route matching /.",
+        "Folder names enclosed in parentheses, such as (home), form route groups that organise files without adding segments to the URL path.",
+        "Special _layout.tsx files wrap routes within their directory and configure navigators like Stack or Tabs, or use Slot as a placeholder component for layouts without a navigator."
+      ],
+      "sourcesUsed": [
+        "expo-docs:router/basics/core-concepts.mdx",
+        "expo-docs:router/basics/notation.mdx",
+        "expo-docs:router/basics/navigation-layouts.mdx"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 6472,
+        "output": 1172
+      },
+      "draftedAt": "2026-11-05T10:10:02.846Z",
+      "reviewed": null,
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [warning] Introduction: US English spelling 'organize' is used instead of UK English 'organise'.\n- [error] ### Key points: The bullet states that layout files configure 'navigators like Stack, Tabs, or Slot'. According to the source, Slot is used when you want a layout without a navigator; Slot is a placeholder component, not a navigator.\n- [warning] ### Key points: US English spelling 'organize' is used instead of UK English 'organise'.",
+          "at": "2026-11-05T10:26:37.833Z"
+        }
+      ]
+    },
+    "react-native-basics/3/2": {
+      "title": "Passing data between screens",
+      "status": "draft",
+      "body": "In this lesson, you will learn how to pass data between screens in Expo Router and retrieve that information on destination screens using route parameters.\n\n## Sending parameters to a screen\n\nExpo Router uses URL patterns to share data across screens. You can send data by building dynamic route paths, appending URL query parameters, or passing an object into the `Link` component or the `router.navigate` function.\n\nWhen using an object, specify the destination `pathname` alongside a `params` object containing key-value pairs:\n\n```tsx\nimport { View, Pressable, Text } from 'react-native';\nimport { Link, useRouter } from 'expo-router';\n\nexport default function HomeScreen() {\n  const router = useRouter();\n\n  return (\n    <View>\n      <Link\n        href={{\n          pathname: '/user/[id]',\n          params: { id: 'bacon' },\n        }}\n      >\n        View user Bacon\n      </Link>\n\n      <Pressable\n        onPress={() =>\n          router.navigate({\n            pathname: '/user/[id]',\n            params: { id: 'bacon' },\n          })\n        }\n      >\n        <Text>Go to user imperatively</Text>\n      </Pressable>\n    </View>\n  );\n}\n```\n\nYou can also supply query parameters directly inside a string URL, such as `href=\"/users?limit=20\"`, or as properties inside the `params` object. Any parameter that does not match a dynamic segment variable name is treated as a query parameter.\n\n## Reading parameters with useLocalSearchParams\n\nTo access parameters inside the destination screen, use the `useLocalSearchParams` hook. This hook returns an object containing all route parameters and query parameters passed to that screen:\n\n```tsx\nimport { View, Text } from 'react-native';\nimport { useLocalSearchParams } from 'expo-router';\n\nexport default function UserScreen() {\n  const { id, limit } = useLocalSearchParams();\n\n  return (\n    <View>\n      <Text>User ID: {id}</Text>\n      <Text>Limit: {limit}</Text>\n    </View>\n  );\n}\n```\n\nThe hook extracts both dynamic route variables (such as an `id` defined by a `[id].tsx` file) and optional query values (such as `limit`).\n\n## Updating parameters without navigating\n\nYou can alter query parameters without leaving the current screen. Expo Router provides the `router.setParams` function to update parameters imperatively:\n\n```tsx\nimport { Pressable, Text } from 'react-native';\nimport { useRouter } from 'expo-router';\n\nexport default function FilterControls() {\n  const router = useRouter();\n\n  return (\n    <Pressable onPress={() => router.setParams({ limit: 50 })}>\n      <Text>Set limit to 50</Text>\n    </Pressable>\n  );\n}\n```\n\nYou can achieve the same behaviour declaratively by rendering a `Link` pointing to the current screen with revised query parameters.\n\n### Try it\n\nCreate a component with a `Link` that navigates to a `/users` path with a query parameter of `?limit=10`. Then, set up the receiving screen to read `limit` using `useLocalSearchParams` and display it in a `Text` element.\n\n### Key points\n\n- Parameters can be passed as query strings or within a `params` object using `Link` or `router.navigate`.\n- Any key in `params` that does not match a dynamic segment name becomes a query parameter.\n- The `useLocalSearchParams` hook reads both dynamic segment variables and query parameters on the target screen.\n- Query parameters on the active screen can be updated in place using `router.setParams`.",
+      "keyPoints": [
+        "Parameters can be passed as query strings or within a params object using Link or router.navigate.",
+        "Any key in params that does not match a dynamic segment name becomes a query parameter.",
+        "The useLocalSearchParams hook reads both dynamic segment variables and query parameters on the target screen.",
+        "Query parameters on the active screen can be updated in place using router.setParams."
+      ],
+      "sourcesUsed": [
+        "expo-docs:router/basics/navigation.mdx"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 11501,
+        "output": 1025
+      },
+      "draftedAt": "2026-11-05T10:10:27.212Z",
+      "reviewed": null
+    },
+    "react-native-basics/3/3": {
+      "title": "Fetching from an API",
+      "status": "draft",
+      "body": "Most mobile applications need to load remote data, whether reading static information from a server or sending updates to an API endpoint. In this lesson, you will learn how to make asynchronous network requests using React Native's built-in `fetch` API, parse JSON data, and manage loading and error states within your components.\n\n## Making requests with fetch\n\nReact Native provides the standard `fetch` API out of the box, meaning you do not need to install additional networking libraries. Because network requests take time, `fetch` returns a JavaScript Promise—an object representing an asynchronous operation that will eventually complete or fail.\n\nTo make a basic GET request, pass the destination URL to `fetch`:\n\n```tsx\nfetch('https://reactnative.dev/movies.json');\n```\n\nWhen you need to send data or configure headers, pass an optional options object as the second argument. You can specify the HTTP method, set request headers, and supply a JSON payload using `JSON.stringify`:\n\n```tsx\nfetch('https://mywebsite.com/endpoint/', {\n  method: 'POST',\n  headers: {\n    Accept: 'application/json',\n    'Content-Type': 'application/json',\n  },\n  body: JSON.stringify({\n    title: 'New Item',\n  }),\n});\n```\n\n## Handling responses and errors\n\nNetworking operations are asynchronous, so modern code uses `async` and `await` with `try...catch` blocks to handle results. The response object returned by `fetch` provides a `.json()` method, which also returns a Promise resolving to the parsed data.\n\nAlways catch potential errors during the call. If you omit the `catch` block, any network failure or JSON parsing exception will be dropped silently:\n\n```tsx\nconst getMovies = async () => {\n  try {\n    const response = await fetch('https://reactnative.dev/movies.json');\n    const json = await response.json();\n    return json.movies;\n  } catch (error) {\n    console.error(error);\n  }\n};\n```\n\n## Fetching inside components\n\nIn a screen component, you typically coordinate your network call with React state. You track the loaded data alongside a boolean flag to indicate whether the request is still in progress. The network call is commonly triggered inside a `useEffect` hook when the screen mounts.\n\n```tsx\nimport React, { useEffect, useState } from 'react';\nimport { ActivityIndicator, FlatList, Text } from 'react-native';\n\nexport const MovieList = () => {\n  const [isLoading, setLoading] = useState(true);\n  const [data, setData] = useState([]);\n\n  useEffect(() => {\n    const loadData = async () => {\n      try {\n        const response = await fetch('https://reactnative.dev/movies.json');\n        const json = await response.json();\n        setData(json.movies);\n      } catch (error) {\n        console.error(error);\n      } finally {\n        setLoading(false);\n      }\n    };\n    loadData();\n  }, []);\n\n  if (isLoading) {\n    return <ActivityIndicator />;\n  }\n\n  return (\n    <FlatList\n      data={data}\n      keyExtractor={({ id }) => id}\n      renderItem={({ item }) => <Text>{item.title}</Text>}\n    />\n  );\n};\n```\n\n## Secure connections by default\n\nBoth major mobile platforms enforce secure connections:\n\n- **iOS**: App Transport Security (ATS) requires requests to use HTTPS. Cleartext `http://` URLs fail unless you configure an ATS exception in `Info.plist`.\n- **Android**: As of API level 28, cleartext traffic is blocked by default. Insecure connections require modifying the `android:usesCleartextTraffic` attribute in the Android manifest.\n\nReact Native also includes built-in support for `XMLHttpRequest` (which underpins libraries like `axios`) and `WebSocket`. Keep in mind that native apps do not share the web browser's concept of CORS restrictions.\n\n### Try it\n\nCreate a component that loads and renders movie data:\n\n1. Set up an `isLoading` boolean state initialised to `true` and a `movies` array state initialised to `[]`.\n2. In a `useEffect` hook, call `fetch('https://reactnative.dev/movies.json')`.\n3. Parse the response with `.json()` and assign `json.movies` to your state.\n4. Ensure `setLoading(false)` runs in a `finally` block so the loader disappears even if the request fails.\n5. Render an `ActivityIndicator` while loading, or a `FlatList` displaying movie titles once complete.\n\n### Key points\n\n- React Native provides the built-in `fetch` API for making asynchronous network calls without third-party dependencies.\n- Always wrap `await fetch(...)` and `await response.json()` in a `try...catch` block to prevent errors from dropping silently.\n- Coordinate network requests with `useState` and `useEffect` to manage loading indicators and update the UI when data arrives.\n- iOS and Android block cleartext HTTP traffic by default, requiring HTTPS endpoints unless platform configurations explicitly allow cleartext.",
+      "keyPoints": [
+        "React Native provides the built-in fetch API for making asynchronous network calls without third-party dependencies.",
+        "Always wrap await fetch(...) and await response.json() in a try...catch block to prevent errors from dropping silently.",
+        "Coordinate network requests with useState and useEffect to manage loading indicators and update the UI when data arrives.",
+        "iOS and Android block cleartext HTTP traffic by default, requiring HTTPS endpoints unless platform configurations explicitly allow cleartext."
+      ],
+      "sourcesUsed": [
+        "rn-docs:network.md"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 3400,
+        "output": 1362
+      },
+      "draftedAt": "2026-11-05T10:10:55.962Z",
+      "reviewed": null,
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [warning] ## Fetching inside components: `View` is imported from `'react-native'` in the code sample but is never used in the component.",
+          "at": "2026-11-05T10:27:18.988Z"
+        }
+      ]
+    }
+  },
+  "quizzes": {
+    "react-native-basics/1": {
+      "title": "Getting started quiz",
+      "status": "draft",
+      "questions": [
+        {
+          "prompt": "In mobile development on Android and iOS, what is a view?",
+          "answers": [
+            "A background script that compiles native code into JavaScript",
+            "A small rectangular UI element that displays content or responds to input",
+            "A network socket that connects the device to the Metro packager",
+            "A database table used to store offline application state"
+          ],
+          "correct": 1,
+          "explanation": "According to the React Native documentation, a view is the basic building block of mobile UI: a small rectangular element on the screen used to display text, images, or respond to user input.",
+          "sourceRef": "rn-docs:intro-react-native-components.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/intro-react-native-components"
+        },
+        {
+          "prompt": "Which native Android view corresponds to React Native's `<View>` Core Component?",
+          "answers": [
+            "`<TextView>`",
+            "`<EditText>`",
+            "`<ViewGroup>`",
+            "`<ImageView>`"
+          ],
+          "correct": 2,
+          "explanation": "In React Native, `<View>` maps directly to `<ViewGroup>` on Android and `<UIView>` on iOS at runtime.",
+          "sourceRef": "rn-docs:intro-react-native-components.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/intro-react-native-components"
+        },
+        {
+          "prompt": "Which native iOS view corresponds to React Native's `<TextInput>` Core Component?",
+          "answers": [
+            "`<UITextField>`",
+            "`<UITextView>`",
+            "`<UIView>`",
+            "`<UIScrollView>`"
+          ],
+          "correct": 0,
+          "explanation": "React Native's `<TextInput>` maps to `<UITextField>` on iOS and `<EditText>` on Android.",
+          "sourceRef": "rn-docs:intro-react-native-components.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/intro-react-native-components"
+        },
+        {
+          "prompt": "According to the React Native documentation, what is the web analog of the `<Text>` Core Component?",
+          "answers": [
+            "`<div>`",
+            "`<input type=\"text\">`",
+            "`<span>`",
+            "`<p>`"
+          ],
+          "correct": 3,
+          "explanation": "The Core Components table lists `<p>` as the web analog for the `<Text>` component, which displays, styles, and nests strings of text.",
+          "sourceRef": "rn-docs:intro-react-native-components.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/intro-react-native-components"
+        },
+        {
+          "prompt": "What does React Native call components that are backed by platform-specific views on Android and iOS?",
+          "answers": [
+            "Hybrid Components",
+            "Native Components",
+            "System Elements",
+            "Compiled Modules"
+          ],
+          "correct": 1,
+          "explanation": "React Native refers to platform-backed components that invoke native Android and iOS views via JavaScript as Native Components.",
+          "sourceRef": "rn-docs:intro-react-native-components.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/intro-react-native-components"
+        },
+        {
+          "prompt": "Which release of Node.js is required by Expo when setting up your development machine?",
+          "answers": [
+            "Node.js (LTS)",
+            "Node.js (Current/Nightly)",
+            "Node.js v14 or older",
+            "Any beta release of Node.js"
+          ],
+          "correct": 0,
+          "explanation": "The Expo system requirements specify Node.js (LTS) for setting up your development environment.",
+          "sourceRef": "expo-docs:get-started/create-a-project.mdx",
+          "referenceUrl": "https://docs.expo.dev/get-started/create-a-project"
+        },
+        {
+          "prompt": "Which of the following operating system environments is supported by Expo for development?",
+          "answers": [
+            "ChromeOS in developer shell only",
+            "FreeBSD and OpenBSD",
+            "macOS, Linux, and Windows (PowerShell and WSL 2)",
+            "Android Termux natively"
+          ],
+          "correct": 2,
+          "explanation": "The Expo documentation explicitly lists macOS, Windows (PowerShell and WSL 2), and Linux as supported operating systems.",
+          "sourceRef": "expo-docs:get-started/create-a-project.mdx",
+          "referenceUrl": "https://docs.expo.dev/get-started/create-a-project"
+        },
+        {
+          "prompt": "Which command creates a default Expo project specifically targeting SDK 58?",
+          "answers": [
+            "`npx expo init --sdk 58`",
+            "`npm install expo@sdk-58 -g`",
+            "`npx expo-cli create default`",
+            "`npx create-expo-app@latest --template default@sdk-58`"
+          ],
+          "correct": 3,
+          "explanation": "The Expo documentation recommends running `npx create-expo-app@latest --template default@sdk-58` to initialise an SDK 58 project.",
+          "sourceRef": "expo-docs:get-started/create-a-project.mdx",
+          "referenceUrl": "https://docs.expo.dev/get-started/create-a-project"
+        },
+        {
+          "prompt": "Which flag can you pass to `create-expo-app` to browse or start from an interactive list of example projects?",
+          "answers": [
+            "`--example`",
+            "`--samples`",
+            "`--demo`",
+            "`--showcase`"
+          ],
+          "correct": 0,
+          "explanation": "Passing the `--example` option with no name to `create-expo-app` allows you to browse the full list of official example projects interactively.",
+          "sourceRef": "expo-docs:get-started/create-a-project.mdx",
+          "referenceUrl": "https://docs.expo.dev/get-started/create-a-project"
+        },
+        {
+          "prompt": "How does the Expo documentation describe Expo Go compared to a development build?",
+          "answers": [
+            "A standalone production compiler for app store submissions",
+            "A playground for students and learners to try Expo quickly",
+            "An exclusive command-line simulator runner for macOS",
+            "A specialised profiling tool for tracking JavaScript memory leaks"
+          ],
+          "correct": 1,
+          "explanation": "Expo documentation defines Expo Go as a playground for students and learners to try Expo quickly, whereas a development build is a custom build of your own app.",
+          "sourceRef": "expo-docs:get-started/set-up-your-environment.mdx",
+          "referenceUrl": "https://docs.expo.dev/get-started/set-up-your-environment"
+        },
+        {
+          "prompt": "Which command starts the local development server in an Expo project?",
+          "answers": [
+            "`npx expo run`",
+            "`expo serve --open`",
+            "`npx expo start`",
+            "`npm run compile`"
+          ],
+          "correct": 2,
+          "explanation": "Running `npx expo start` launches the local development server and prints an interactive QR code to the terminal.",
+          "sourceRef": "expo-docs:get-started/start-developing.mdx",
+          "referenceUrl": "https://docs.expo.dev/get-started/start-developing"
+        },
+        {
+          "prompt": "What account requirement must be met to open a project using Expo Go on a physical iOS device?",
+          "answers": [
+            "A paid Apple Developer account must be configured in your terminal",
+            "Both devices must be linked using an Apple iCloud keychain certificate",
+            "The computer must run an open guest account with no authentication",
+            "Expo CLI and Expo Go must be signed in to the same Expo account"
+          ],
+          "correct": 3,
+          "explanation": "When using Expo Go on a physical iOS handset, Expo Go only opens the project when Expo CLI on your computer and Expo Go on your device share the same Expo account.",
+          "sourceRef": "expo-docs:get-started/start-developing.mdx",
+          "referenceUrl": "https://docs.expo.dev/get-started/start-developing"
+        },
+        {
+          "prompt": "If restrictive router configurations on a network prevent your device from connecting to the server, which flag can you provide to `npx expo start`?",
+          "answers": [
+            "`--proxy`",
+            "`--tunnel`",
+            "`--lan-bypass`",
+            "`--offline`"
+          ],
+          "correct": 1,
+          "explanation": "Running `npx expo start --tunnel` sets up an external tunnel connection, working around local network blocks at the cost of slower reload speeds.",
+          "sourceRef": "expo-docs:get-started/start-developing.mdx",
+          "referenceUrl": "https://docs.expo.dev/get-started/start-developing"
+        },
+        {
+          "prompt": "How can you reveal the in-app developer menu on a physical mobile device running your app?",
+          "answers": [
+            "Shake your physical device",
+            "Double-tap the volume up button",
+            "Hold the home button for three seconds",
+            "Triple-tap the status bar at the top of the screen"
+          ],
+          "correct": 0,
+          "explanation": "Shaking the physical device reveals the in-app developer menu, where you can toggle Fast Refresh or reload the project.",
+          "sourceRef": "expo-docs:get-started/start-developing.mdx",
+          "referenceUrl": "https://docs.expo.dev/get-started/start-developing"
+        },
+        {
+          "prompt": "When running a React Native Android app over USB with adb, which command connects the device port to your development server?",
+          "answers": [
+            "`adb forward tcp:3000 tcp:3000`",
+            "`adb connect 127.0.0.1:8080`",
+            "`adb -s <device name> reverse tcp:8081 tcp:8081`",
+            "`adb push-port 8081`"
+          ],
+          "correct": 2,
+          "explanation": "The React Native documentation instructs running `adb -s <device name> reverse tcp:8081 tcp:8081` to forward connections from the device to your computer's server.",
+          "sourceRef": "rn-docs:running-on-device.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/running-on-device"
+        }
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 12250,
+        "output": 2240
+      },
+      "draftedAt": "2026-11-05T10:11:23.992Z",
+      "reviewed": null
+    },
+    "react-native-basics/2": {
+      "title": "Components and styling quiz",
+      "status": "draft",
+      "questions": [
+        {
+          "prompt": "What happens if you place a raw text string directly inside a `<View>` component without wrapping it in a `<Text>` component?",
+          "answers": [
+            "It renders using the system's default sans-serif font.",
+            "It compiles successfully but remains completely invisible.",
+            "The text is automatically wrapped in an invisible inline span.",
+            "An exception is raised."
+          ],
+          "correct": 3,
+          "explanation": "In React Native, you cannot place a text node directly under a `<View>`. All text nodes must be wrapped inside a `<Text>` component, otherwise an exception is raised.",
+          "sourceRef": "rn-docs:text.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/text"
+        },
+        {
+          "prompt": "When displaying a network image using `<Image source={{uri: 'https://example.com/logo.png'}} />`, which styling rule is required?",
+          "answers": [
+            "You must specify an explicit `aspectRatio`.",
+            "You must set `resizeMode=\"cover\"` on the component.",
+            "You must explicitly specify `width` and `height`.",
+            "You must wrap the image in a `View` with `flex: 1`."
+          ],
+          "correct": 2,
+          "explanation": "Unlike static resources loaded with `require`, remote network images do not have dimensions known before download, so you must manually specify the `width` and `height` in the style.",
+          "sourceRef": "rn-docs:images.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/images"
+        },
+        {
+          "prompt": "How does layout behaviour differ inside a `<Text>` component compared to a `<View>` component?",
+          "answers": [
+            "Children inside `<Text>` use text layout and wrap inline, rather than using flexbox layout.",
+            "Children inside `<Text>` automatically form separate rectangular blocks stacked vertically.",
+            "Children inside `<Text>` follow flexbox layout with `flexDirection: 'row'` forced by default.",
+            "Children inside `<Text>` ignore all styling and use native operating system font defaults."
+          ],
+          "correct": 0,
+          "explanation": "The `<Text>` component does not use flexbox layout for its children; instead, it uses text layout. Elements inside `<Text>` flow inline and wrap when they reach the end of the line.",
+          "sourceRef": "rn-docs:text.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/text"
+        },
+        {
+          "prompt": "How does React Native determine which static image asset to display when you provide `@2x` and `@3x` file suffixes?",
+          "answers": [
+            "You must configure an explicit `pixelDensity` prop on each `<Image>` instance.",
+            "The component downloads all resolutions and switches between them depending on network bandwidth.",
+            "React Native always uses the `@3x` asset and scales it down to preserve sharpness.",
+            "The Metro bundler selects the file matching the device's screen density."
+          ],
+          "correct": 3,
+          "explanation": "Metro resolves static image filenames and bundles the image corresponding to the device's screen density, choosing the closest best option if an exact match is missing.",
+          "sourceRef": "rn-docs:images.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/images"
+        },
+        {
+          "prompt": "When passing an array of style objects to a component's `style` prop, how are conflicting properties resolved?",
+          "answers": [
+            "The first style in the array takes precedence over subsequent styles.",
+            "The last style in the array takes precedence over earlier styles.",
+            "Conflicting properties are combined into an averaged value.",
+            "An error is thrown during development if conflicting keys are detected."
+          ],
+          "correct": 1,
+          "explanation": "When passing an array of styles to the `style` prop, the last style in the array has precedence, allowing styles to be overridden selectively.",
+          "sourceRef": "rn-docs:style.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/style"
+        },
+        {
+          "prompt": "Which of the following is a default Flexbox behaviour in React Native that differs from web CSS?",
+          "answers": [
+            "`alignItems` defaults to `center` instead of `stretch`.",
+            "`flexWrap` defaults to `wrap` instead of `nowrap`.",
+            "`flexDirection` defaults to `column` instead of `row`.",
+            "`justifyContent` defaults to `space-between` instead of `flex-start`."
+          ],
+          "correct": 2,
+          "explanation": "In React Native, `flexDirection` defaults to `column` rather than `row`. Additionally, `alignContent` defaults to `flex-start` and `flexShrink` defaults to `0`.",
+          "sourceRef": "rn-docs:flexbox.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/flexbox"
+        },
+        {
+          "prompt": "Suppose a container has `flex: 1` and contains three sibling views with `flex: 1`, `flex: 2`, and `flex: 3`. What proportion of available space does the second view receive along the main axis?",
+          "answers": [
+            "1/2 of the available space.",
+            "2/6 (or 1/3) of the available space.",
+            "2/5 of the available space.",
+            "1/6 of the available space."
+          ],
+          "correct": 1,
+          "explanation": "The total sum of flex values is 1 + 2 + 3 = 6. The second view has `flex: 2`, so it receives 2/6 (or 1/3) of the available space along the main axis.",
+          "sourceRef": "rn-docs:flexbox.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/flexbox"
+        },
+        {
+          "prompt": "What happens if child components have `flex: 1` but their parent `View` has no defined `width`, `height`, or `flex` property?",
+          "answers": [
+            "The parent expands to match the device's full screen height automatically.",
+            "The children expand to fit the total intrinsic size of their own content.",
+            "React Native throws an unhandled layout dimension exception.",
+            "The parent assumes a size of 0, meaning the flex children will not be visible."
+          ],
+          "correct": 3,
+          "explanation": "A component can only expand to fill available space if its parent has dimensions greater than 0. Without fixed dimensions or flex on the parent, its size is 0 and flex children are not visible.",
+          "sourceRef": "rn-docs:height-and-width.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/height-and-width"
+        },
+        {
+          "prompt": "Why is `FlatList` generally preferred over `ScrollView` for rendering long or changing lists of items?",
+          "answers": [
+            "`FlatList` renders only the elements currently showing on screen, conserving memory.",
+            "`ScrollView` cannot handle vertical scrolling without native bridging plugins.",
+            "`FlatList` automatically animates insertion and deletion of list items.",
+            "`ScrollView` requires all child elements to have identical heights."
+          ],
+          "correct": 0,
+          "explanation": "Unlike `ScrollView`, which renders all elements at once regardless of whether they are on screen, `FlatList` only renders elements currently visible in the viewport to maintain performance.",
+          "sourceRef": "rn-docs:using-a-listview.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/using-a-listview"
+        },
+        {
+          "prompt": "Which two props are required on a `FlatList` component to render basic list data?",
+          "answers": [
+            "`sections` and `renderSectionHeader`",
+            "`items` and `keyExtractor`",
+            "`data` and `renderItem`",
+            "`dataSource` and `renderRow`"
+          ],
+          "correct": 2,
+          "explanation": "The `FlatList` component requires `data` (the source array of items) and `renderItem` (a callback function that formats and returns a component for each item).",
+          "sourceRef": "rn-docs:using-a-listview.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/using-a-listview"
+        },
+        {
+          "prompt": "Why would you pass an `extraData` prop to a `FlatList`?",
+          "answers": [
+            "To tell `FlatList` to re-render when state outside of the `data` array changes.",
+            "To append an additional list of items to the end of the existing `data` prop.",
+            "To pass extra styling rules to the internal `VirtualizedList` container.",
+            "To automatically calculate fixed item heights for offscreen scrolling."
+          ],
+          "correct": 0,
+          "explanation": "Because `FlatList` is a `PureComponent`, it only re-renders when its props change shallowly. Passing external state dependencies into `extraData` ensures the list updates when that external state changes.",
+          "sourceRef": "rn-docs:flatlist.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/flatlist"
+        },
+        {
+          "prompt": "In a `SectionList`, what prop must each section object contain to supply its items?",
+          "answers": [
+            "An array assigned to the `items` key.",
+            "A nested array assigned to the `children` key.",
+            "An array assigned to the `rows` key.",
+            "An array assigned to the `data` key."
+          ],
+          "correct": 3,
+          "explanation": "Each section object in the `sections` array of a `SectionList` must contain its own `data` array containing the items belonging to that section.",
+          "sourceRef": "rn-docs:using-a-listview.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/using-a-listview"
+        },
+        {
+          "prompt": "How does the standard `Button` component visually render on iOS compared to Android?",
+          "answers": [
+            "It renders as a rounded rectangle on iOS and a flat text link on Android.",
+            "It renders as coloured text on iOS and as a rounded rectangle with light text on Android.",
+            "It renders identical material design buttons on both platforms.",
+            "It renders with an ink ripple on iOS and an opacity drop on Android."
+          ],
+          "correct": 1,
+          "explanation": "The basic `Button` renders as coloured text on iOS and as a rounded rectangle with light text on Android, matching native platform conventions.",
+          "sourceRef": "rn-docs:handling-touches.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/handling-touches"
+        },
+        {
+          "prompt": "What visual feedback does `TouchableOpacity` provide when a user presses down on it?",
+          "answers": [
+            "It produces an Android ink surface reaction ripple.",
+            "It darkens the background using an underlay colour.",
+            "It reduces its opacity, allowing the background to be seen through.",
+            "It raises the view's elevation to cast a drop shadow."
+          ],
+          "correct": 2,
+          "explanation": "The `TouchableOpacity` component provides feedback by reducing the opacity of the button, allowing the background to show through while pressed down.",
+          "sourceRef": "rn-docs:handling-touches.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/handling-touches"
+        },
+        {
+          "prompt": "When using `Pressable`, in what order do touch callbacks fire during a standard quick tap?",
+          "answers": [
+            "`onPressIn` -> `onPress` -> `onPressOut`",
+            "`onPress` -> `onPressIn` -> `onPressOut`",
+            "`onPress` -> `onLongPress` -> `onPressOut`",
+            "`onPressIn` -> `onPressOut` -> `onPress`"
+          ],
+          "correct": 3,
+          "explanation": "When a user taps an element wrapped by `Pressable`, `onPressIn` is called first when the touch engages, followed by `onPressOut` when released, and finally `onPress`.",
+          "sourceRef": "rn-docs:pressable.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/pressable"
+        }
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 26138,
+        "output": 2663
+      },
+      "draftedAt": "2026-11-05T10:12:21.962Z",
+      "reviewed": null
+    },
+    "react-native-basics/3": {
+      "title": "Navigation and data quiz",
+      "status": "draft",
+      "questions": [
+        {
+          "prompt": "Where must screen routes be placed when using Expo Router?",
+          "answers": [
+            "Inside the src/app directory",
+            "Inside the src/routes directory",
+            "Inside the src/screens directory",
+            "Inside the src/components directory"
+          ],
+          "correct": 0,
+          "explanation": "All navigation routes in Expo Router are defined by the files and sub-directories inside the src/app directory. Files outside this folder cannot be navigation targets.",
+          "sourceRef": "expo-docs:router/basics/core-concepts.mdx",
+          "referenceUrl": "https://docs.expo.dev/router/basics/core-concepts"
+        },
+        {
+          "prompt": "What does a directory name enclosed in parentheses, such as `src/app/(tabs)`, represent?",
+          "answers": [
+            "A private layout inaccessible to deep links",
+            "A dynamic parameter segment matching numeric IDs",
+            "A route group that groups files without altering the URL",
+            "A modal stack container reserved for system dialogues"
+          ],
+          "correct": 2,
+          "explanation": "Parentheses denote a route group. These directories allow you to organise routes and apply shared layouts without adding a segment to the URL path.",
+          "sourceRef": "expo-docs:router/basics/notation.mdx",
+          "referenceUrl": "https://docs.expo.dev/router/basics/notation"
+        },
+        {
+          "prompt": "Which file serves as the initial route matching the root URL (`/`) in Expo Router?",
+          "answers": [
+            "The first alphabetical screen in src/app",
+            "The root index.tsx file matching the `/` path",
+            "The file explicitly registered in AppRegistry",
+            "The App.jsx file in the project root"
+          ],
+          "correct": 1,
+          "explanation": "Expo Router looks for the first index.tsx file matching the `/` URL, which in standard project layouts is src/app/index.tsx.",
+          "sourceRef": "expo-docs:router/basics/core-concepts.mdx",
+          "referenceUrl": "https://docs.expo.dev/router/basics/core-concepts"
+        },
+        {
+          "prompt": "What is the primary role of the root `src/app/_layout.tsx` file in an Expo Router application?",
+          "answers": [
+            "It acts as a service worker to cache remote images",
+            "It defines build configuration flags for the Metro bundler",
+            "It declares network proxy routes for API requests",
+            "It replaces App.jsx and renders before any screen routes"
+          ],
+          "correct": 3,
+          "explanation": "The root _layout.tsx file replaces App.jsx, rendering before any other route and housing global initialisation code such as font loading, splash screen handling, and navigators.",
+          "sourceRef": "expo-docs:router/basics/navigation-layouts.mdx",
+          "referenceUrl": "https://docs.expo.dev/router/basics/navigation-layouts"
+        },
+        {
+          "prompt": "Which component can you render in a layout file to show child routes without adding a navigator stack or tab bar?",
+          "answers": [
+            "Slot",
+            "Screen",
+            "Outlet",
+            "Portal"
+          ],
+          "correct": 0,
+          "explanation": "The Slot component acts as a placeholder for child routes inside a layout when you want to wrap screens in elements like headers without introducing a navigator.",
+          "sourceRef": "expo-docs:router/basics/navigation-layouts.mdx",
+          "referenceUrl": "https://docs.expo.dev/router/basics/navigation-layouts"
+        },
+        {
+          "prompt": "How do you define a dynamic route segment in the Expo Router file tree?",
+          "answers": [
+            "Prefix the directory name with a colon, such as `:userId`",
+            "Enclose the file or folder name in square brackets, such as `[id]`",
+            "Enclose the file or folder name in parentheses, such as `(id)`",
+            "Append an exclamation mark to the filename, such as `id!.tsx`"
+          ],
+          "correct": 1,
+          "explanation": "Square brackets signify dynamic route segments in Expo Router. The enclosed name denotes the parameter extracted from that segment of the URL.",
+          "sourceRef": "expo-docs:router/basics/notation.mdx",
+          "referenceUrl": "https://docs.expo.dev/router/basics/notation"
+        },
+        {
+          "prompt": "Which hook retrieves route and query parameters on the destination screen in Expo Router?",
+          "answers": [
+            "useRouteQuery",
+            "useURLValues",
+            "useLocalSearchParams",
+            "useNavigationState"
+          ],
+          "correct": 2,
+          "explanation": "The useLocalSearchParams hook extracts both dynamic route variables and query parameters that were passed to the screen.",
+          "sourceRef": "expo-docs:router/basics/navigation.mdx",
+          "referenceUrl": "https://docs.expo.dev/router/basics/navigation"
+        },
+        {
+          "prompt": "How can you pass parameters using an object in Expo Router's `Link` component?",
+          "answers": [
+            "Pass an object with `pathname` and `params` keys to the `href` prop",
+            "Pass the parameter keys directly into a `routeParams` prop",
+            "Supply a custom callback function to the `query` prop",
+            "Attach a JSON string payload to the `payload` prop"
+          ],
+          "correct": 0,
+          "explanation": "The Link component accepts an object for its href prop containing the target pathname alongside a params object with key-value pairs.",
+          "sourceRef": "expo-docs:router/basics/navigation.mdx",
+          "referenceUrl": "https://docs.expo.dev/router/basics/navigation"
+        },
+        {
+          "prompt": "Which method updates query parameters on the active screen imperatively without navigating away?",
+          "answers": [
+            "router.setParams",
+            "router.updateQuery",
+            "router.replaceState",
+            "router.refresh"
+          ],
+          "correct": 0,
+          "explanation": "Expo Router provides router.setParams to update query parameters on the current route without performing a transition to a new screen.",
+          "sourceRef": "expo-docs:router/basics/navigation.mdx",
+          "referenceUrl": "https://docs.expo.dev/router/basics/navigation"
+        },
+        {
+          "prompt": "When passing props to custom child components in React, what is the default value of a prop if it is omitted and has no fallback defined?",
+          "answers": [
+            "null",
+            "false",
+            "undefined",
+            "An empty string"
+          ],
+          "correct": 2,
+          "explanation": "In JavaScript and React, missing component props evaluate to undefined unless a default parameter value has been defined in the component signature.",
+          "sourceRef": "react-docs:passing-props-to-a-component.md",
+          "referenceUrl": "https://react.dev/learn/passing-props-to-a-component"
+        },
+        {
+          "prompt": "What does React Native's built-in `fetch` function return when initiated?",
+          "answers": [
+            "A Promise that resolves with a Response object",
+            "A parsed JSON object representing the endpoint payload",
+            "An XMLHttpRequest instance with an open connection",
+            "A subscription object that emits network lifecycle events"
+          ],
+          "correct": 0,
+          "explanation": "The fetch method returns a JavaScript Promise that resolves to the response of the asynchronous networking operation.",
+          "sourceRef": "rn-docs:network.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/network"
+        },
+        {
+          "prompt": "Why should network calls made with `fetch` and `.json()` always include error handling such as a `try...catch` block?",
+          "answers": [
+            "Network errors will otherwise cause the Metro bundler to terminate",
+            "Errors thrown by fetch will be dropped silently if not caught",
+            "React Native forces the entire operating system network stack to reset",
+            "Uncaught network errors convert GET requests into POST retries"
+          ],
+          "correct": 1,
+          "explanation": "React Native documentation notes that any errors thrown by fetch will be dropped silently unless explicitly caught with a catch handler or try...catch block.",
+          "sourceRef": "rn-docs:network.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/network"
+        },
+        {
+          "prompt": "How do you specify a POST request with a JSON payload using `fetch`?",
+          "answers": [
+            "Supply a JSON object to fetch's third argument labelled `data`",
+            "Set `method: 'POST'` and assign a stringified payload to `body` in the options object",
+            "Invoke `fetch.post(url, payload)` using the built-in HTTP helper",
+            "Configure `mode: 'upload'` and pass a FormData object to the URL path"
+          ],
+          "correct": 1,
+          "explanation": "To send a POST request with fetch, pass an options object as the second argument containing method: 'POST' and a body property holding the JSON.stringify payload.",
+          "sourceRef": "rn-docs:network.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/network"
+        },
+        {
+          "prompt": "What network security restriction applies by default on iOS in React Native applications?",
+          "answers": [
+            "App Transport Security requires network requests to use HTTPS",
+            "Connections are restricted to IPv6 addresses only",
+            "All requests must include a valid CORS Access-Control-Allow-Origin header",
+            "Requests must explicitly define ephemeral custom SSL certificates"
+          ],
+          "correct": 0,
+          "explanation": "iOS enforces App Transport Security (ATS) by default, requiring network connections to use HTTPS rather than insecure cleartext HTTP.",
+          "sourceRef": "rn-docs:network.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/network"
+        },
+        {
+          "prompt": "On Android (API level 28 and above), how is cleartext HTTP traffic treated by default in React Native?",
+          "answers": [
+            "It is permitted only when connecting over cellular data",
+            "It is automatically rerouted through a local WebSocket proxy",
+            "It is blocked by default unless enabled in the application manifest",
+            "It succeeds only if the request payload contains fewer than 1024 bytes"
+          ],
+          "correct": 2,
+          "explanation": "As of Android API level 28, cleartext traffic is blocked by default and requires setting android:usesCleartextTraffic in the manifest to allow insecure connections.",
+          "sourceRef": "rn-docs:network.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/network"
+        }
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 22809,
+        "output": 2275
+      },
+      "draftedAt": "2026-11-05T10:12:43.719Z",
+      "reviewed": null
+    }
+  }
+}

@@ -18,6 +18,8 @@ export type Lesson = {
   courseId: string;
   /** Downloadable files (prompts/16), in order. Empty when there are none or the lesson is locked. */
   resources: LessonResource[];
+  /** What the notes were adapted from, and further reading (prompts/19), in order. */
+  sources: LessonSource[];
   /**
    * Null when the lesson is locked (not a preview, not enrolled). `videoKey` is set when the
    * video is in the private R2 bucket (prompts/15): get a playable link with getLessonVideoUrl.
@@ -34,6 +36,30 @@ export type LessonResource = {
   mimeType: string;
   /** Attribution for openly licensed files ("Video/File: … by …, CC BY …"). */
   credit: string | null;
+};
+
+export type LessonSource = {
+  id: string;
+  title: string;
+  author: string;
+  url: string;
+  licence: string;
+  licenceUrl: string;
+  /** A statement the licence requires, e.g. the OGL v3.0 attribution statement. */
+  attributionNote: string | null;
+  role: "adapted" | "further_reading";
+};
+
+type SourceRow = {
+  id: string;
+  position: number;
+  title: string;
+  author: string;
+  url: string;
+  licence: string;
+  licence_url: string;
+  attribution_note: string | null;
+  role: "adapted" | "further_reading";
 };
 
 type ResourceRow = {
@@ -55,6 +81,7 @@ type LessonRow = {
   chapters: { position: number; course_id: string } | null;
   lesson_contents: { video_url: string | null; video_key: string | null; body: string | null } | null;
   lesson_resources: ResourceRow[];
+  lesson_sources: SourceRow[];
 };
 
 /** One lesson with its place in the course and, when unlocked, its video and notes. */
@@ -62,7 +89,8 @@ export async function getLesson(supabase: AppSupabaseClient, lessonId: string, s
   const query = supabase
     .from("lessons")
     .select("id, title, position, duration_seconds, is_preview, chapters(position, course_id), lesson_contents(video_url, video_key, body), " +
-        "lesson_resources(id, position, title, file_name, size_bytes, mime_type, credit)")
+        "lesson_resources(id, position, title, file_name, size_bytes, mime_type, credit), " +
+        "lesson_sources(id, position, title, author, url, licence, licence_url, attribution_note, role)")
     .eq("id", lessonId);
   const { data } = await (signal ? query.abortSignal(signal) : query).maybeSingle().throwOnError();
   if (!data) return null;
@@ -85,6 +113,18 @@ export async function getLesson(supabase: AppSupabaseClient, lessonId: string, s
         sizeBytes: Number(resource.size_bytes),
         mimeType: resource.mime_type,
         credit: resource.credit,
+      })),
+    sources: [...(row.lesson_sources ?? [])]
+      .sort((a, b) => a.position - b.position)
+      .map((source) => ({
+        id: source.id,
+        title: source.title,
+        author: source.author,
+        url: source.url,
+        licence: source.licence,
+        licenceUrl: source.licence_url,
+        attributionNote: source.attribution_note,
+        role: source.role,
       })),
     content: row.lesson_contents
       ? { videoUrl: row.lesson_contents.video_url, videoKey: row.lesson_contents.video_key, body: row.lesson_contents.body }

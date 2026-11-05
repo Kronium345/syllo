@@ -75,6 +75,7 @@ export default function AppLayout() {
           <Stack.Screen name="interview/index" />
           <Stack.Screen name="interview/[id]/index" />
           <Stack.Screen name="interview/[id]/results" />
+          <Stack.Screen name="credits" />
           <Stack.Screen name="premium" />
         </Stack.Protected>
       </Stack>

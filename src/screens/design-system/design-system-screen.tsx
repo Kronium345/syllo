@@ -29,6 +29,8 @@ import { ResourceCard } from "@/screens/lesson/resource-card";
 import { AnswerCard } from "@/screens/quiz/answer-card";
 import { RecorderBar } from "@/components/ui/recorder-bar";
 import { InterviewFeedbackCard } from "@/screens/interview/interview-feedback-card";
+import { SourceRow } from "@/screens/lesson/lesson-sources";
+import { Markdown } from "@/screens/lesson/markdown";
 import { AiConsentSheet } from "@/screens/viva/ai-consent-sheet";
 import { VerdictBadge, VivaFeedbackCard } from "@/screens/viva/viva-feedback-card";
 import { OptionCard } from "@/components/ui/option-card";
@@ -93,6 +95,20 @@ const SAMPLE_FEEDBACK = {
   modelAnswer:
     "Clarithromycin inhibits CYP3A4 and can raise the INR in patients on warfarin, increasing bleeding risk. Monitor the INR closely or choose an alternative antibiotic.",
 };
+
+const SAMPLE_NOTES = [
+  "Use `flexDirection` to choose the main axis:",
+  "",
+  "```tsx",
+  "export function Row() {",
+  "  return (",
+  "    <View style={{ flexDirection: \"row\", gap: 8 }}>",
+  "      <View style={{ width: 40, height: 40, backgroundColor: \"#3B82F6\" }} />",
+  "    </View>",
+  "  );",
+  "}",
+  "```",
+].join("\n");
 
 const SAMPLE_INTERVIEW_FEEDBACK = {
   transcript: "On placement we had a queue out of the door and a new dispenser was struggling, so I…",
@@ -323,6 +339,22 @@ export function DesignSystemScreen() {
           {/* Continue really saves consent for the signed-in account. */}
           <Button title="Open AI consent sheet" variant="outline" onPress={() => setConsentOpen(true)} />
           <AiConsentSheet visible={consentOpen} onClose={() => setConsentOpen(false)} onAgreed={() => setConsentOpen(false)} />
+        </Section>
+
+        <Section title="Lesson notes and sources (prompts/19)">
+          <Markdown source={SAMPLE_NOTES} />
+          <SourceRow
+            source={{
+              id: "sample",
+              title: "Layout with Flexbox",
+              author: "Meta Platforms, Inc. and affiliates",
+              url: "https://reactnative.dev/docs/0.88/flexbox",
+              licence: "CC BY 4.0",
+              licenceUrl: "https://creativecommons.org/licenses/by/4.0/",
+              attributionNote: null,
+              role: "adapted",
+            }}
+          />
         </Section>
 
         <Section title="Speaking practice (prompts/18)">

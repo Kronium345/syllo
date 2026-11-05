@@ -1,5 +1,401 @@
 {
   "about": "Pinned, licence-checked sources for the six sample courses' lessons and quizzes (prompts/19). Only these sources may be adapted. scripts/fetch-course-sources.mjs verifies each licence fragment at the pin before reading any file. Paths are relative to basePath; a folder path resolves to its index file; 'openstax:chapter:N' resolves through the book's collection XML.",
+  "courses": {
+    "ui-design-fundamentals": {
+      "title": "UI Design Fundamentals",
+      "level": "beginner",
+      "access": "free",
+      "subtitle": "Layout, type and colour that just work",
+      "chapters": [
+        {
+          "position": 1,
+          "title": "Seeing like a designer",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "What makes a good interface"
+            },
+            {
+              "position": 2,
+              "title": "Hierarchy and focus"
+            },
+            {
+              "position": 3,
+              "title": "Learning from great apps"
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "title": "Typography and colour",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Choosing a typeface"
+            },
+            {
+              "position": 2,
+              "title": "A simple type scale"
+            },
+            {
+              "position": 3,
+              "title": "Colour with purpose"
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "title": "Layout and spacing",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Grids without the pain"
+            },
+            {
+              "position": 2,
+              "title": "Spacing systems"
+            },
+            {
+              "position": 3,
+              "title": "Designing a real screen"
+            }
+          ]
+        }
+      ]
+    },
+    "data-analysis-pandas": {
+      "title": "Data Analysis with pandas",
+      "level": "intermediate",
+      "access": "premium",
+      "subtitle": "Clean, explore and chart real datasets",
+      "chapters": [
+        {
+          "position": 1,
+          "title": "Loading data",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Meet pandas"
+            },
+            {
+              "position": 2,
+              "title": "Reading CSV files"
+            },
+            {
+              "position": 3,
+              "title": "Exploring a DataFrame"
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "title": "Cleaning and shaping",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Missing values"
+            },
+            {
+              "position": 2,
+              "title": "Fixing types and dates"
+            },
+            {
+              "position": 3,
+              "title": "Reshaping data"
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "title": "Asking questions",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Filtering and sorting"
+            },
+            {
+              "position": 2,
+              "title": "Grouping and aggregating"
+            },
+            {
+              "position": 3,
+              "title": "Joining datasets"
+            }
+          ]
+        },
+        {
+          "position": 4,
+          "title": "Telling the story",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Charts that explain"
+            },
+            {
+              "position": 2,
+              "title": "Project: city bike trips"
+            }
+          ]
+        }
+      ]
+    },
+    "advanced-animations": {
+      "title": "Advanced Mobile Animations",
+      "level": "advanced",
+      "access": "premium",
+      "subtitle": "Gestures and motion with Reanimated",
+      "chapters": [
+        {
+          "position": 1,
+          "title": "Motion principles",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Why motion matters"
+            },
+            {
+              "position": 2,
+              "title": "Springs vs timing"
+            },
+            {
+              "position": 3,
+              "title": "The UI thread"
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "title": "Gestures",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Pan and fling"
+            },
+            {
+              "position": 2,
+              "title": "Bottom sheets from scratch"
+            },
+            {
+              "position": 3,
+              "title": "Shared element transitions"
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "title": "Performance",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Measuring frame drops"
+            },
+            {
+              "position": 2,
+              "title": "Avoiding re-renders"
+            },
+            {
+              "position": 3,
+              "title": "Testing on real devices"
+            }
+          ]
+        }
+      ]
+    },
+    "design-systems": {
+      "title": "Design Systems in Practice",
+      "level": "intermediate",
+      "access": "premium",
+      "subtitle": "Tokens, components and documentation",
+      "chapters": [
+        {
+          "position": 1,
+          "title": "Foundations",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "What a design system is"
+            },
+            {
+              "position": 2,
+              "title": "Design tokens"
+            },
+            {
+              "position": 3,
+              "title": "Naming things"
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "title": "Components",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Buttons, the hard way"
+            },
+            {
+              "position": 2,
+              "title": "Inputs and states"
+            },
+            {
+              "position": 3,
+              "title": "Composing components"
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "title": "Running the system",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Documentation people read"
+            },
+            {
+              "position": 2,
+              "title": "Versioning and change"
+            },
+            {
+              "position": 3,
+              "title": "Measuring adoption"
+            }
+          ]
+        }
+      ]
+    },
+    "react-native-basics": {
+      "title": "React Native Basics",
+      "level": "beginner",
+      "access": "free",
+      "subtitle": "Build your first mobile app with Expo",
+      "chapters": [
+        {
+          "position": 1,
+          "title": "Getting started",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Welcome to the course"
+            },
+            {
+              "position": 2,
+              "title": "Setting up Expo"
+            },
+            {
+              "position": 3,
+              "title": "Running on your phone"
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "title": "Components and styling",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Views, text and images"
+            },
+            {
+              "position": 2,
+              "title": "Styling with flexbox"
+            },
+            {
+              "position": 3,
+              "title": "Lists that scroll"
+            },
+            {
+              "position": 4,
+              "title": "Handling touches"
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "title": "Navigation and data",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Screens and routes"
+            },
+            {
+              "position": 2,
+              "title": "Passing data between screens"
+            },
+            {
+              "position": 3,
+              "title": "Fetching from an API"
+            }
+          ]
+        }
+      ]
+    },
+    "python-for-everyone": {
+      "title": "Python for Everyone",
+      "level": "beginner",
+      "access": "free",
+      "subtitle": "Programming from zero, one idea at a time",
+      "chapters": [
+        {
+          "position": 1,
+          "title": "Your first program",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Why Python?"
+            },
+            {
+              "position": 2,
+              "title": "Installing Python"
+            },
+            {
+              "position": 3,
+              "title": "Hello, world"
+            },
+            {
+              "position": 4,
+              "title": "Variables and types"
+            }
+          ]
+        },
+        {
+          "position": 2,
+          "title": "Making decisions",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "If, elif and else"
+            },
+            {
+              "position": 2,
+              "title": "Loops"
+            },
+            {
+              "position": 3,
+              "title": "Lists and dictionaries"
+            }
+          ]
+        },
+        {
+          "position": 3,
+          "title": "Functions and files",
+          "lessons": [
+            {
+              "position": 1,
+              "title": "Writing functions"
+            },
+            {
+              "position": 2,
+              "title": "Reading and writing files"
+            },
+            {
+              "position": 3,
+              "title": "Project: a tiny journal"
+            }
+          ]
+        }
+      ]
+    }
+  },
   "sources": {
     "rn-docs": {
       "title": "React Native documentation (0.88)",
@@ -87,14 +483,16 @@
       "repo": "https://github.com/alphagov/govuk-design-system",
       "pin": "1403d1bc19cc023452bf77b78444defa6d4cb734",
       "basePath": "src",
-      "licence": "OGL v3.0",
-      "licenceUrl": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
-      "licenceFile": "README.md",
-      "licenceFragment": "Open Government Licence",
-      "copyright": "© Crown copyright",
+      "licence": "MIT (repository) and OGL v3.0 (site content)",
+      "licenceUrl": "https://opensource.org/license/mit",
+      "licenceFile": "LICENSE",
+      "licenceFragment": "Permission is hereby granted, free of charge",
+      "copyright": "© Crown copyright (Government Digital Service)",
       "attributionNote": "Contains public sector information licensed under the Open Government Licence v3.0.",
       "pageUrl": "https://design-system.service.gov.uk/{path}/",
-      "role": "adapt"
+      "role": "adapt",
+      "licenceNote": "The repository's LICENSE (MIT) covers the software and associated documentation files; the published site states its content is available under the Open Government Licence v3.0. Both are honoured: MIT notice on /credits, OGL statement on each credit.",
+      "fullLicenceText": true
     },
     "nhs-manual": {
       "title": "NHS digital service manual",
@@ -104,7 +502,7 @@
       "licence": "OGL v3.0",
       "licenceUrl": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
       "licenceFile": "README.md",
-      "licenceFragment": "Open Government Licence",
+      "licenceFragment": "Open Government 3.0 licence",
       "copyright": "© Crown copyright",
       "attributionNote": "Contains public sector information licensed under the Open Government Licence v3.0.",
       "pageUrl": "https://service-manual.nhs.uk/{path}",
@@ -173,10 +571,11 @@
       "licence": "CC BY 4.0",
       "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
       "licenceFile": "LICENSE.md",
-      "licenceFragment": "Creative Commons Attribution 4.0",
-      "copyright": "The Turing Way Community",
+      "licenceFragment": "CC BY 4.0 license",
+      "copyright": "Copyright © The Turing Way Community",
       "pageUrl": "https://book.the-turing-way.org/{path}",
-      "role": "adapt"
+      "role": "adapt",
+      "attributionNote": "Derived from work that is Copyright © The Turing Way Community (https://github.com/the-turing-way/the-turing-way)."
     },
     "mdn": {
       "title": "MDN Web Docs",
@@ -201,77 +600,1001 @@
     "santandercycles.co.uk"
   ],
   "lessons": [
-    { "course": "react-native-basics", "chapter": 1, "position": 1, "sources": [{ "id": "rn-docs", "path": "intro-react-native-components.md" }] },
-    { "course": "react-native-basics", "chapter": 1, "position": 2, "sources": [{ "id": "expo-docs", "path": "get-started/set-up-your-environment.mdx" }, { "id": "expo-docs", "path": "get-started/create-a-project.mdx" }] },
-    { "course": "react-native-basics", "chapter": 1, "position": 3, "sources": [{ "id": "expo-docs", "path": "get-started/start-developing.mdx" }, { "id": "rn-docs", "path": "running-on-device.md" }] },
-    { "course": "react-native-basics", "chapter": 2, "position": 1, "sources": [{ "id": "rn-docs", "path": "view.md" }, { "id": "rn-docs", "path": "text.md" }, { "id": "rn-docs", "path": "images.md" }] },
-    { "course": "react-native-basics", "chapter": 2, "position": 2, "sources": [{ "id": "rn-docs", "path": "style.md" }, { "id": "rn-docs", "path": "flexbox.md" }, { "id": "rn-docs", "path": "height-and-width.md" }] },
-    { "course": "react-native-basics", "chapter": 2, "position": 3, "sources": [{ "id": "rn-docs", "path": "using-a-listview.md" }, { "id": "rn-docs", "path": "flatlist.md" }] },
-    { "course": "react-native-basics", "chapter": 2, "position": 4, "sources": [{ "id": "rn-docs", "path": "handling-touches.md" }, { "id": "rn-docs", "path": "pressable.md" }] },
-    { "course": "react-native-basics", "chapter": 3, "position": 1, "sources": [{ "id": "expo-docs", "path": "router/basics/core-concepts.mdx" }, { "id": "expo-docs", "path": "router/basics/notation.mdx" }, { "id": "expo-docs", "path": "router/basics/navigation-layouts.mdx" }] },
-    { "course": "react-native-basics", "chapter": 3, "position": 2, "sources": [{ "id": "expo-docs", "path": "router/basics/navigation.mdx" }, { "id": "react-docs", "path": "passing-props-to-a-component.md" }] },
-    { "course": "react-native-basics", "chapter": 3, "position": 3, "sources": [{ "id": "rn-docs", "path": "network.md" }] },
-
-    { "course": "ui-design-fundamentals", "chapter": 1, "position": 1, "sources": [{ "id": "nhs-manual", "path": "design-system/design-principles.njk" }, { "id": "uswds", "path": "pages/design-principles/overview.md" }] },
-    { "course": "ui-design-fundamentals", "chapter": 1, "position": 2, "sources": [{ "id": "webdev-learn", "path": "accessibility/structure" }, { "id": "webdev-learn", "path": "accessibility/focus" }, { "id": "govuk-ds", "path": "get-started/focus-states" }] },
-    { "course": "ui-design-fundamentals", "chapter": 1, "position": 3, "sources": [{ "id": "webdev-learn", "path": "design/ui-patterns" }, { "id": "webdev-learn", "path": "design/interaction" }] },
-    { "course": "ui-design-fundamentals", "chapter": 2, "position": 1, "sources": [{ "id": "webdev-learn", "path": "design/typography" }, { "id": "govuk-ds", "path": "styles/typeface" }] },
-    { "course": "ui-design-fundamentals", "chapter": 2, "position": 2, "sources": [{ "id": "govuk-ds", "path": "styles/type-scale" }, { "id": "govuk-ds", "path": "get-started/new-type-scale" }] },
-    { "course": "ui-design-fundamentals", "chapter": 2, "position": 3, "sources": [{ "id": "webdev-learn", "path": "design/theming" }, { "id": "webdev-learn", "path": "accessibility/color-contrast" }, { "id": "govuk-ds", "path": "styles/colour" }] },
-    { "course": "ui-design-fundamentals", "chapter": 3, "position": 1, "sources": [{ "id": "webdev-learn", "path": "design/macro-layouts" }, { "id": "govuk-ds", "path": "styles/layout" }] },
-    { "course": "ui-design-fundamentals", "chapter": 3, "position": 2, "sources": [{ "id": "govuk-ds", "path": "styles/spacing" }, { "id": "uswds", "path": "pages/design-tokens/spacing-units.md" }, { "id": "nhs-manual", "path": "design-system/styles/spacing" }] },
-    { "course": "ui-design-fundamentals", "chapter": 3, "position": 3, "sources": [{ "id": "govuk-ds", "path": "styles/page-template" }, { "id": "webdev-learn", "path": "design/micro-layouts" }] },
-
-    { "course": "python-for-everyone", "chapter": 1, "position": 1, "sources": [{ "id": "python-docs", "path": "tutorial/appetite.rst" }] },
-    { "course": "python-for-everyone", "chapter": 1, "position": 2, "sources": [{ "id": "python-docs", "path": "using/windows.rst" }, { "id": "python-docs", "path": "using/mac.rst" }] },
-    { "course": "python-for-everyone", "chapter": 1, "position": 3, "sources": [{ "id": "python-docs", "path": "tutorial/interpreter.rst" }, { "id": "python-docs", "path": "tutorial/introduction.rst" }] },
-    { "course": "python-for-everyone", "chapter": 1, "position": 4, "sources": [{ "id": "python-docs", "path": "tutorial/introduction.rst" }, { "id": "openstax-python", "path": "chapter:1" }, { "id": "openstax-python", "path": "chapter:2" }] },
-    { "course": "python-for-everyone", "chapter": 2, "position": 1, "sources": [{ "id": "python-docs", "path": "tutorial/controlflow.rst", "section": "if Statements" }] },
-    { "course": "python-for-everyone", "chapter": 2, "position": 2, "sources": [{ "id": "python-docs", "path": "tutorial/controlflow.rst", "section": "for Statements; The range() Function; break and continue Statements; while loops" }] },
-    { "course": "python-for-everyone", "chapter": 2, "position": 3, "sources": [{ "id": "python-docs", "path": "tutorial/datastructures.rst" }, { "id": "openstax-python", "path": "chapter:9" }, { "id": "openstax-python", "path": "chapter:10" }] },
-    { "course": "python-for-everyone", "chapter": 3, "position": 1, "sources": [{ "id": "python-docs", "path": "tutorial/controlflow.rst", "section": "Defining Functions; More on Defining Functions" }, { "id": "openstax-python", "path": "chapter:6" }] },
-    { "course": "python-for-everyone", "chapter": 3, "position": 2, "sources": [{ "id": "python-docs", "path": "tutorial/inputoutput.rst", "section": "Reading and Writing Files" }, { "id": "openstax-python", "path": "chapter:14" }] },
-    { "course": "python-for-everyone", "chapter": 3, "position": 3, "project": true, "sources": [{ "id": "python-docs", "path": "tutorial/controlflow.rst", "section": "Defining Functions" }, { "id": "python-docs", "path": "tutorial/inputoutput.rst", "section": "Reading and Writing Files" }] },
-
-    { "course": "data-analysis-pandas", "chapter": 1, "position": 1, "sources": [{ "id": "pandas-docs", "path": "getting_started/intro_tutorials/01_table_oriented.rst" }, { "id": "pandas-docs", "path": "user_guide/dsintro.rst" }] },
-    { "course": "data-analysis-pandas", "chapter": 1, "position": 2, "sources": [{ "id": "pandas-docs", "path": "getting_started/intro_tutorials/02_read_write.rst" }, { "id": "pandas-docs", "path": "user_guide/io.rst", "section": "CSV & text files" }] },
-    { "course": "data-analysis-pandas", "chapter": 1, "position": 3, "sources": [{ "id": "pandas-docs", "path": "getting_started/intro_tutorials/03_subset_data.rst" }, { "id": "pandas-docs", "path": "user_guide/basics.rst", "section": "Head and tail; Attributes and underlying data; Descriptive statistics" }] },
-    { "course": "data-analysis-pandas", "chapter": 2, "position": 1, "sources": [{ "id": "pandas-docs", "path": "user_guide/missing_data.rst" }] },
-    { "course": "data-analysis-pandas", "chapter": 2, "position": 2, "sources": [{ "id": "pandas-docs", "path": "getting_started/intro_tutorials/09_timeseries.rst" }, { "id": "pandas-docs", "path": "user_guide/basics.rst", "section": "dtypes; astype" }, { "id": "pandas-docs", "path": "user_guide/timeseries.rst", "section": "Converting to timestamps" }] },
-    { "course": "data-analysis-pandas", "chapter": 2, "position": 3, "sources": [{ "id": "pandas-docs", "path": "getting_started/intro_tutorials/07_reshape_table_layout.rst" }, { "id": "pandas-docs", "path": "user_guide/reshaping.rst" }] },
-    { "course": "data-analysis-pandas", "chapter": 3, "position": 1, "sources": [{ "id": "pandas-docs", "path": "getting_started/intro_tutorials/03_subset_data.rst" }, { "id": "pandas-docs", "path": "user_guide/indexing.rst", "section": "Boolean indexing" }, { "id": "pandas-docs", "path": "user_guide/basics.rst", "section": "Sorting" }] },
-    { "course": "data-analysis-pandas", "chapter": 3, "position": 2, "sources": [{ "id": "pandas-docs", "path": "getting_started/intro_tutorials/06_calculate_statistics.rst" }, { "id": "pandas-docs", "path": "user_guide/groupby.rst" }] },
-    { "course": "data-analysis-pandas", "chapter": 3, "position": 3, "sources": [{ "id": "pandas-docs", "path": "getting_started/intro_tutorials/08_combine_dataframes.rst" }, { "id": "pandas-docs", "path": "user_guide/merging.rst" }] },
-    { "course": "data-analysis-pandas", "chapter": 4, "position": 1, "sources": [{ "id": "pandas-docs", "path": "getting_started/intro_tutorials/04_plotting.rst" }, { "id": "pandas-docs", "path": "user_guide/visualization.rst" }, { "id": "turing-way", "path": "communication" }, { "id": "openstax-python", "path": "chapter:15" }] },
-    { "course": "data-analysis-pandas", "chapter": 4, "position": 2, "project": true, "sources": [{ "id": "pandas-docs", "path": "getting_started/intro_tutorials/02_read_write.rst" }, { "id": "pandas-docs", "path": "getting_started/intro_tutorials/06_calculate_statistics.rst" }, { "id": "pandas-docs", "path": "getting_started/intro_tutorials/09_timeseries.rst" }, { "id": "pandas-docs", "path": "getting_started/intro_tutorials/04_plotting.rst" }] },
-
-    { "course": "advanced-animations", "chapter": 1, "position": 1, "sources": [{ "id": "rn-docs", "path": "animations.md", "section": "introduction" }, { "id": "webdev-learn", "path": "accessibility/motion" }] },
-    { "course": "advanced-animations", "chapter": 1, "position": 2, "sources": [{ "id": "reanimated-docs", "path": "animations/withSpring.mdx" }, { "id": "reanimated-docs", "path": "animations/withTiming.mdx" }] },
-    { "course": "advanced-animations", "chapter": 1, "position": 3, "sources": [{ "id": "reanimated-docs", "path": "guides/worklets.mdx" }, { "id": "reanimated-docs", "path": "fundamentals/glossary.mdx" }] },
-    { "course": "advanced-animations", "chapter": 2, "position": 1, "sources": [{ "id": "rngh-docs", "path": "gestures/use-pan-gesture.mdx" }, { "id": "rngh-docs", "path": "gestures/use-fling-gesture.mdx" }, { "id": "reanimated-docs", "path": "fundamentals/handling-gestures.mdx" }] },
-    { "course": "advanced-animations", "chapter": 2, "position": 2, "sources": [{ "id": "rngh-docs", "path": "fundamentals/gesture-animation/" }] },
-    { "course": "advanced-animations", "chapter": 2, "position": 3, "sources": [{ "id": "reanimated-docs", "path": "shared-element-transitions/overview.mdx" }], "fallback": { "title": "Layout animations", "sources": [{ "id": "reanimated-docs", "path": "layout-animations/entering-exiting-animations.mdx" }] } },
-    { "course": "advanced-animations", "chapter": 3, "position": 1, "sources": [{ "id": "rn-docs", "path": "performance.md" }, { "id": "rn-docs", "path": "profiling.md" }] },
-    { "course": "advanced-animations", "chapter": 3, "position": 2, "sources": [{ "id": "react-docs", "path": "render-and-commit.md" }, { "id": "react-docs", "path": "you-might-not-need-an-effect.md" }, { "id": "rn-docs", "path": "optimizing-flatlist-configuration.md" }] },
-    { "course": "advanced-animations", "chapter": 3, "position": 3, "sources": [{ "id": "rn-docs", "path": "running-on-device.md" }, { "id": "reanimated-docs", "path": "guides/performance.md" }] },
-
-    { "course": "design-systems", "chapter": 1, "position": 1, "sources": [{ "id": "govuk-ds", "path": "get-started/index.md" }, { "id": "uswds", "path": "pages/documentation/overview.md" }] },
-    { "course": "design-systems", "chapter": 1, "position": 2, "sources": [{ "id": "uswds", "path": "pages/design-tokens/overview.md" }, { "id": "uswds", "path": "pages/design-tokens/color/theme-tokens.md" }] },
-    { "course": "design-systems", "chapter": 1, "position": 3, "sources": [{ "id": "uswds", "path": "pages/design-tokens/color/system-tokens.md" }, { "id": "uswds", "path": "pages/design-tokens/color/theme-tokens.md" }, { "id": "govuk-ds", "path": "community/component-lifecycle-statuses" }] },
-    { "course": "design-systems", "chapter": 2, "position": 1, "sources": [{ "id": "govuk-ds", "path": "components/button" }, { "id": "uswds", "path": "_components/button/" }] },
-    { "course": "design-systems", "chapter": 2, "position": 2, "sources": [{ "id": "govuk-ds", "path": "components/text-input" }, { "id": "govuk-ds", "path": "components/error-message" }, { "id": "govuk-ds", "path": "components/error-summary" }, { "id": "nhs-manual", "path": "design-system/styles/focus-state" }] },
-    { "course": "design-systems", "chapter": 2, "position": 3, "sources": [{ "id": "govuk-ds", "path": "components/fieldset" }, { "id": "govuk-ds", "path": "components/radios" }, { "id": "govuk-ds", "path": "get-started/extending-and-modifying-components" }] },
-    { "course": "design-systems", "chapter": 3, "position": 1, "sources": [{ "id": "nhs-manual", "path": "content/how-we-write.njk" }, { "id": "govuk-ds", "path": "community/contribution-criteria" }] },
-    { "course": "design-systems", "chapter": 3, "position": 2, "sources": [{ "id": "govuk-ds", "path": "get-started/updating-your-code" }, { "id": "uswds", "path": "pages/documentation/migration-V3.md" }] },
-    { "course": "design-systems", "chapter": 3, "position": 3, "sources": [{ "id": "uswds", "path": "pages/documentation/maturity-model.md" }] }
+    {
+      "course": "react-native-basics",
+      "chapter": 1,
+      "position": 1,
+      "sources": [
+        {
+          "id": "rn-docs",
+          "path": "intro-react-native-components.md"
+        }
+      ]
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 1,
+      "position": 2,
+      "sources": [
+        {
+          "id": "expo-docs",
+          "path": "get-started/set-up-your-environment.mdx"
+        },
+        {
+          "id": "expo-docs",
+          "path": "get-started/create-a-project.mdx"
+        }
+      ]
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 1,
+      "position": 3,
+      "sources": [
+        {
+          "id": "expo-docs",
+          "path": "get-started/start-developing.mdx"
+        },
+        {
+          "id": "rn-docs",
+          "path": "running-on-device.md"
+        }
+      ]
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 2,
+      "position": 1,
+      "sources": [
+        {
+          "id": "rn-docs",
+          "path": "view.md"
+        },
+        {
+          "id": "rn-docs",
+          "path": "text.md"
+        },
+        {
+          "id": "rn-docs",
+          "path": "images.md"
+        }
+      ]
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 2,
+      "position": 2,
+      "sources": [
+        {
+          "id": "rn-docs",
+          "path": "style.md"
+        },
+        {
+          "id": "rn-docs",
+          "path": "flexbox.md"
+        },
+        {
+          "id": "rn-docs",
+          "path": "height-and-width.md"
+        }
+      ]
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 2,
+      "position": 3,
+      "sources": [
+        {
+          "id": "rn-docs",
+          "path": "using-a-listview.md"
+        },
+        {
+          "id": "rn-docs",
+          "path": "flatlist.md"
+        }
+      ]
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 2,
+      "position": 4,
+      "sources": [
+        {
+          "id": "rn-docs",
+          "path": "handling-touches.md"
+        },
+        {
+          "id": "rn-docs",
+          "path": "pressable.md"
+        }
+      ]
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 3,
+      "position": 1,
+      "sources": [
+        {
+          "id": "expo-docs",
+          "path": "router/basics/core-concepts.mdx"
+        },
+        {
+          "id": "expo-docs",
+          "path": "router/basics/notation.mdx"
+        },
+        {
+          "id": "expo-docs",
+          "path": "router/basics/navigation-layouts.mdx"
+        }
+      ]
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 3,
+      "position": 2,
+      "sources": [
+        {
+          "id": "expo-docs",
+          "path": "router/basics/navigation.mdx"
+        },
+        {
+          "id": "react-docs",
+          "path": "passing-props-to-a-component.md"
+        }
+      ]
+    },
+    {
+      "course": "react-native-basics",
+      "chapter": 3,
+      "position": 3,
+      "sources": [
+        {
+          "id": "rn-docs",
+          "path": "network.md"
+        }
+      ]
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 1,
+      "position": 1,
+      "sources": [
+        {
+          "id": "nhs-manual",
+          "path": "design-system/design-principles.njk"
+        },
+        {
+          "id": "uswds",
+          "path": "pages/design-principles/overview.md"
+        }
+      ]
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 1,
+      "position": 2,
+      "sources": [
+        {
+          "id": "webdev-learn",
+          "path": "accessibility/structure"
+        },
+        {
+          "id": "webdev-learn",
+          "path": "accessibility/focus"
+        },
+        {
+          "id": "govuk-ds",
+          "path": "get-started/focus-states"
+        }
+      ]
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 1,
+      "position": 3,
+      "sources": [
+        {
+          "id": "webdev-learn",
+          "path": "design/ui-patterns"
+        },
+        {
+          "id": "webdev-learn",
+          "path": "design/interaction"
+        }
+      ]
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 2,
+      "position": 1,
+      "sources": [
+        {
+          "id": "webdev-learn",
+          "path": "design/typography"
+        },
+        {
+          "id": "govuk-ds",
+          "path": "styles/typeface"
+        }
+      ]
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 2,
+      "position": 2,
+      "sources": [
+        {
+          "id": "govuk-ds",
+          "path": "styles/type-scale"
+        },
+        {
+          "id": "govuk-ds",
+          "path": "get-started/new-type-scale"
+        }
+      ]
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 2,
+      "position": 3,
+      "sources": [
+        {
+          "id": "webdev-learn",
+          "path": "design/theming"
+        },
+        {
+          "id": "webdev-learn",
+          "path": "accessibility/color-contrast"
+        },
+        {
+          "id": "govuk-ds",
+          "path": "styles/colour"
+        }
+      ]
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 3,
+      "position": 1,
+      "sources": [
+        {
+          "id": "webdev-learn",
+          "path": "design/macro-layouts"
+        },
+        {
+          "id": "govuk-ds",
+          "path": "styles/layout"
+        }
+      ]
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 3,
+      "position": 2,
+      "sources": [
+        {
+          "id": "govuk-ds",
+          "path": "styles/spacing"
+        },
+        {
+          "id": "uswds",
+          "path": "pages/design-tokens/spacing-units.md"
+        },
+        {
+          "id": "nhs-manual",
+          "path": "design-system/styles/spacing"
+        }
+      ]
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapter": 3,
+      "position": 3,
+      "sources": [
+        {
+          "id": "govuk-ds",
+          "path": "styles/page-template"
+        },
+        {
+          "id": "webdev-learn",
+          "path": "design/micro-layouts"
+        }
+      ]
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 1,
+      "position": 1,
+      "sources": [
+        {
+          "id": "python-docs",
+          "path": "tutorial/appetite.rst"
+        }
+      ]
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 1,
+      "position": 2,
+      "sources": [
+        {
+          "id": "python-docs",
+          "path": "using/windows.rst"
+        },
+        {
+          "id": "python-docs",
+          "path": "using/mac.rst"
+        }
+      ]
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 1,
+      "position": 3,
+      "sources": [
+        {
+          "id": "python-docs",
+          "path": "tutorial/interpreter.rst"
+        },
+        {
+          "id": "python-docs",
+          "path": "tutorial/introduction.rst"
+        }
+      ]
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 1,
+      "position": 4,
+      "sources": [
+        {
+          "id": "python-docs",
+          "path": "tutorial/introduction.rst"
+        },
+        {
+          "id": "openstax-python",
+          "path": "chapter:1"
+        },
+        {
+          "id": "openstax-python",
+          "path": "chapter:2"
+        }
+      ]
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 2,
+      "position": 1,
+      "sources": [
+        {
+          "id": "python-docs",
+          "path": "tutorial/controlflow.rst",
+          "section": "if Statements"
+        }
+      ]
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 2,
+      "position": 2,
+      "sources": [
+        {
+          "id": "python-docs",
+          "path": "tutorial/controlflow.rst",
+          "section": "for Statements; The range() Function; break and continue Statements; while loops"
+        }
+      ]
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 2,
+      "position": 3,
+      "sources": [
+        {
+          "id": "python-docs",
+          "path": "tutorial/datastructures.rst"
+        },
+        {
+          "id": "openstax-python",
+          "path": "chapter:9"
+        },
+        {
+          "id": "openstax-python",
+          "path": "chapter:10"
+        }
+      ]
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 3,
+      "position": 1,
+      "sources": [
+        {
+          "id": "python-docs",
+          "path": "tutorial/controlflow.rst",
+          "section": "Defining Functions; More on Defining Functions"
+        },
+        {
+          "id": "openstax-python",
+          "path": "chapter:6"
+        }
+      ]
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 3,
+      "position": 2,
+      "sources": [
+        {
+          "id": "python-docs",
+          "path": "tutorial/inputoutput.rst",
+          "section": "Reading and Writing Files"
+        },
+        {
+          "id": "openstax-python",
+          "path": "chapter:14"
+        }
+      ]
+    },
+    {
+      "course": "python-for-everyone",
+      "chapter": 3,
+      "position": 3,
+      "project": true,
+      "sources": [
+        {
+          "id": "python-docs",
+          "path": "tutorial/controlflow.rst",
+          "section": "Defining Functions"
+        },
+        {
+          "id": "python-docs",
+          "path": "tutorial/inputoutput.rst",
+          "section": "Reading and Writing Files"
+        }
+      ]
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 1,
+      "position": 1,
+      "sources": [
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/01_table_oriented.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/dsintro.rst"
+        }
+      ]
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 1,
+      "position": 2,
+      "sources": [
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/02_read_write.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/io.rst",
+          "section": "CSV & text files"
+        }
+      ]
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 1,
+      "position": 3,
+      "sources": [
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/03_subset_data.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/basics.rst",
+          "section": "Head and tail; Attributes and underlying data; Descriptive statistics"
+        }
+      ]
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 2,
+      "position": 1,
+      "sources": [
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/missing_data.rst"
+        }
+      ]
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 2,
+      "position": 2,
+      "sources": [
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/09_timeseries.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/basics.rst",
+          "section": "dtypes; astype"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/timeseries.rst",
+          "section": "Converting to timestamps"
+        }
+      ]
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 2,
+      "position": 3,
+      "sources": [
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/07_reshape_table_layout.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/reshaping.rst"
+        }
+      ]
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 3,
+      "position": 1,
+      "sources": [
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/03_subset_data.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/indexing.rst",
+          "section": "Boolean indexing"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/basics.rst",
+          "section": "Sorting"
+        }
+      ]
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 3,
+      "position": 2,
+      "sources": [
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/06_calculate_statistics.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/groupby.rst"
+        }
+      ]
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 3,
+      "position": 3,
+      "sources": [
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/08_combine_dataframes.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/merging.rst"
+        }
+      ]
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 4,
+      "position": 1,
+      "sources": [
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/04_plotting.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "user_guide/visualization.rst"
+        },
+        {
+          "id": "turing-way",
+          "path": "communication/comms-overview.md"
+        },
+        {
+          "id": "openstax-python",
+          "path": "chapter:15"
+        }
+      ]
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapter": 4,
+      "position": 2,
+      "project": true,
+      "sources": [
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/02_read_write.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/06_calculate_statistics.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/09_timeseries.rst"
+        },
+        {
+          "id": "pandas-docs",
+          "path": "getting_started/intro_tutorials/04_plotting.rst"
+        }
+      ]
+    },
+    {
+      "course": "advanced-animations",
+      "chapter": 1,
+      "position": 1,
+      "sources": [
+        {
+          "id": "rn-docs",
+          "path": "animations.md",
+          "section": "introduction"
+        },
+        {
+          "id": "webdev-learn",
+          "path": "accessibility/motion"
+        }
+      ]
+    },
+    {
+      "course": "advanced-animations",
+      "chapter": 1,
+      "position": 2,
+      "sources": [
+        {
+          "id": "reanimated-docs",
+          "path": "animations/withSpring.mdx"
+        },
+        {
+          "id": "reanimated-docs",
+          "path": "animations/withTiming.mdx"
+        }
+      ]
+    },
+    {
+      "course": "advanced-animations",
+      "chapter": 1,
+      "position": 3,
+      "sources": [
+        {
+          "id": "reanimated-docs",
+          "path": "guides/worklets.mdx"
+        },
+        {
+          "id": "reanimated-docs",
+          "path": "fundamentals/glossary.mdx"
+        }
+      ]
+    },
+    {
+      "course": "advanced-animations",
+      "chapter": 2,
+      "position": 1,
+      "sources": [
+        {
+          "id": "rngh-docs",
+          "path": "gestures/use-pan-gesture.mdx"
+        },
+        {
+          "id": "rngh-docs",
+          "path": "gestures/use-fling-gesture.mdx"
+        },
+        {
+          "id": "reanimated-docs",
+          "path": "fundamentals/handling-gestures.mdx"
+        }
+      ]
+    },
+    {
+      "course": "advanced-animations",
+      "chapter": 2,
+      "position": 2,
+      "sources": [
+        {
+          "id": "rngh-docs",
+          "path": "fundamentals/gesture-animation/"
+        }
+      ]
+    },
+    {
+      "course": "advanced-animations",
+      "chapter": 2,
+      "position": 3,
+      "sources": [
+        {
+          "id": "reanimated-docs",
+          "path": "shared-element-transitions/overview.mdx"
+        }
+      ],
+      "fallback": {
+        "title": "Layout animations",
+        "sources": [
+          {
+            "id": "reanimated-docs",
+            "path": "layout-animations/entering-exiting-animations.mdx"
+          }
+        ]
+      }
+    },
+    {
+      "course": "advanced-animations",
+      "chapter": 3,
+      "position": 1,
+      "sources": [
+        {
+          "id": "rn-docs",
+          "path": "performance.md"
+        },
+        {
+          "id": "rn-docs",
+          "path": "profiling.md"
+        }
+      ]
+    },
+    {
+      "course": "advanced-animations",
+      "chapter": 3,
+      "position": 2,
+      "sources": [
+        {
+          "id": "react-docs",
+          "path": "render-and-commit.md"
+        },
+        {
+          "id": "react-docs",
+          "path": "you-might-not-need-an-effect.md"
+        },
+        {
+          "id": "rn-docs",
+          "path": "optimizing-flatlist-configuration.md"
+        }
+      ]
+    },
+    {
+      "course": "advanced-animations",
+      "chapter": 3,
+      "position": 3,
+      "sources": [
+        {
+          "id": "rn-docs",
+          "path": "running-on-device.md"
+        },
+        {
+          "id": "reanimated-docs",
+          "path": "guides/performance.md"
+        }
+      ]
+    },
+    {
+      "course": "design-systems",
+      "chapter": 1,
+      "position": 1,
+      "sources": [
+        {
+          "id": "govuk-ds",
+          "path": "get-started/index.md"
+        },
+        {
+          "id": "uswds",
+          "path": "pages/documentation/overview.md"
+        }
+      ]
+    },
+    {
+      "course": "design-systems",
+      "chapter": 1,
+      "position": 2,
+      "sources": [
+        {
+          "id": "uswds",
+          "path": "pages/design-tokens/overview.md"
+        },
+        {
+          "id": "uswds",
+          "path": "pages/design-tokens/color/theme-tokens.md"
+        }
+      ]
+    },
+    {
+      "course": "design-systems",
+      "chapter": 1,
+      "position": 3,
+      "sources": [
+        {
+          "id": "uswds",
+          "path": "pages/design-tokens/color/system-tokens.md"
+        },
+        {
+          "id": "uswds",
+          "path": "pages/design-tokens/color/theme-tokens.md"
+        },
+        {
+          "id": "govuk-ds",
+          "path": "community/component-lifecycle-statuses"
+        }
+      ]
+    },
+    {
+      "course": "design-systems",
+      "chapter": 2,
+      "position": 1,
+      "sources": [
+        {
+          "id": "govuk-ds",
+          "path": "components/button"
+        },
+        {
+          "id": "uswds",
+          "path": "_components/button/"
+        }
+      ]
+    },
+    {
+      "course": "design-systems",
+      "chapter": 2,
+      "position": 2,
+      "sources": [
+        {
+          "id": "govuk-ds",
+          "path": "components/text-input"
+        },
+        {
+          "id": "govuk-ds",
+          "path": "components/error-message"
+        },
+        {
+          "id": "govuk-ds",
+          "path": "components/error-summary"
+        },
+        {
+          "id": "nhs-manual",
+          "path": "design-system/styles/focus-state"
+        }
+      ]
+    },
+    {
+      "course": "design-systems",
+      "chapter": 2,
+      "position": 3,
+      "sources": [
+        {
+          "id": "govuk-ds",
+          "path": "components/fieldset"
+        },
+        {
+          "id": "govuk-ds",
+          "path": "components/radios"
+        },
+        {
+          "id": "govuk-ds",
+          "path": "get-started/extending-and-modifying-components"
+        }
+      ]
+    },
+    {
+      "course": "design-systems",
+      "chapter": 3,
+      "position": 1,
+      "sources": [
+        {
+          "id": "nhs-manual",
+          "path": "content/how-we-write.njk"
+        },
+        {
+          "id": "govuk-ds",
+          "path": "community/contribution-criteria"
+        }
+      ]
+    },
+    {
+      "course": "design-systems",
+      "chapter": 3,
+      "position": 2,
+      "sources": [
+        {
+          "id": "govuk-ds",
+          "path": "get-started/updating-your-code"
+        },
+        {
+          "id": "uswds",
+          "path": "pages/documentation/migration-V3.md"
+        }
+      ]
+    },
+    {
+      "course": "design-systems",
+      "chapter": 3,
+      "position": 3,
+      "sources": [
+        {
+          "id": "uswds",
+          "path": "pages/documentation/maturity-model.md"
+        }
+      ]
+    }
   ],
   "quizzes": [
-    { "course": "react-native-basics", "chapters": [1, 2, 3], "count": 15 },
-    { "course": "ui-design-fundamentals", "chapters": [1, 2, 3], "count": 15 },
-    { "course": "python-for-everyone", "chapters": [1, 2, 3], "count": 15 },
-    { "course": "data-analysis-pandas", "chapters": [1, 2, 3, 4], "count": 15 },
-    { "course": "advanced-animations", "chapters": [1, 2, 3], "count": 15 },
-    { "course": "design-systems", "chapters": [1, 2, 3], "count": 15 }
+    {
+      "course": "react-native-basics",
+      "chapters": [
+        1,
+        2,
+        3
+      ],
+      "count": 15
+    },
+    {
+      "course": "ui-design-fundamentals",
+      "chapters": [
+        1,
+        2,
+        3
+      ],
+      "count": 15
+    },
+    {
+      "course": "python-for-everyone",
+      "chapters": [
+        1,
+        2,
+        3
+      ],
+      "count": 15
+    },
+    {
+      "course": "data-analysis-pandas",
+      "chapters": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "count": 15
+    },
+    {
+      "course": "advanced-animations",
+      "chapters": [
+        1,
+        2,
+        3
+      ],
+      "count": 15
+    },
+    {
+      "course": "design-systems",
+      "chapters": [
+        1,
+        2,
+        3
+      ],
+      "count": 15
+    }
   ],
   "datasets": {
     "tfl-cycles": {
@@ -280,8 +1603,22 @@
       "licence": "TfL Transport Data Service terms (based on OGL v2.0)",
       "licenceUrl": "https://tfl.gov.uk/corporate/terms-and-conditions/transport-data-service",
       "credit": "Powered by TfL Open Data. Contains OS data © Crown copyright and database rights 2016 and Geomni UK Map data © and database rights [2019]",
-      "file": null,
-      "dateRange": null
+      "file": "usage-stats/444JourneyDataExtract17May2026-31May2026.csv",
+      "dateRange": "2026-05-17 to 2026-05-31",
+      "rows": 436202,
+      "columns": [
+        "Number",
+        "Start date",
+        "Start station number",
+        "Start station",
+        "End date",
+        "End station number",
+        "End station",
+        "Bike number",
+        "Bike model",
+        "Total duration",
+        "Total duration (ms)"
+      ]
     }
   }
 }

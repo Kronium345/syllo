@@ -1,17 +1,19 @@
 import { Fragment, type ReactNode } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 import { AppText } from "@/components/ui/text";
-import { tw } from "@/theme";
+import { mono, tw } from "@/theme";
 
 // A small markdown renderer for lesson notes (prompts/08): `#`–`###` headings, paragraphs,
-// `-`/`*` and `1.` lists, and **bold** / *italic*, in the player's text styles
-// (body 15 muted relaxed, headings ink). Anything else shows as plain text.
+// `-`/`*` and `1.` lists, **bold** / *italic*, and (prompts/19) fenced code blocks and
+// `inline code`, in the player's text styles (body 15 muted relaxed, headings ink). Anything
+// else shows as plain text.
 
 type Block =
   | { kind: "heading"; level: 1 | 2 | 3; text: string }
   | { kind: "paragraph"; text: string }
-  | { kind: "list"; ordered: boolean; items: string[] };
+  | { kind: "list"; ordered: boolean; items: string[] }
+  | { kind: "code"; language: string | null; text: string };
 
 function parse(source: string): Block[] {
   const blocks: Block[] = [];
@@ -20,7 +22,25 @@ function parse(source: string): Block[] {
     if (paragraph.length) blocks.push({ kind: "paragraph", text: paragraph.join(" ") });
     paragraph = [];
   };
+  // A fenced code block keeps its lines exactly (indentation matters), so it's collected
+  // before the per-line trim below.
+  let code: { language: string | null; lines: string[] } | null = null;
   for (const raw of source.split(/\r?\n/)) {
+    const fence = /^\s*```\s*([\w+-]*)\s*$/.exec(raw);
+    if (code) {
+      if (fence && !fence[1]) {
+        blocks.push({ kind: "code", language: code.language, text: code.lines.join("\n").replace(/\s+$/, "") });
+        code = null;
+      } else {
+        code.lines.push(raw.replace(/\t/g, "  "));
+      }
+      continue;
+    }
+    if (fence) {
+      flush();
+      code = { language: fence[1] || null, lines: [] };
+      continue;
+    }
     const line = raw.trim();
     const heading = /^(#{1,3})\s+(.*)$/.exec(line);
     const bullet = /^[-*]\s+(.*)$/.exec(line);
@@ -42,12 +62,21 @@ function parse(source: string): Block[] {
     }
   }
   flush();
+  // An unclosed fence still shows its code rather than losing it.
+  if (code) blocks.push({ kind: "code", language: code.language, text: code.lines.join("\n") });
   return blocks;
 }
 
-/** **bold** and *italic* spans inside a line. */
+/** **bold**, *italic* and `code` spans inside a line. */
 function inline(text: string): ReactNode[] {
-  return text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).map((part, index) => {
+  return text.split(/(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)/g).map((part, index) => {
+    if (part.startsWith("`") && part.endsWith("`") && part.length > 2) {
+      return (
+        <AppText key={index} style={[tw`text-14 text-ink bg-subtle`, mono]}>
+          {part.slice(1, -1)}
+        </AppText>
+      );
+    }
     if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
       return (
         <AppText key={index} style={tw`font-bold text-ink`}>
@@ -86,6 +115,27 @@ export function Markdown({ source, skipTitle }: { source: string; skipTitle?: st
             >
               {inline(block.text)}
             </AppText>
+          );
+        }
+        if (block.kind === "code") {
+          return (
+            <View
+              key={index}
+              accessible
+              accessibilityLabel={`Code${block.language ? ` (${block.language})` : ""}: ${block.text}`}
+              style={tw`mb-4 rounded-card bg-surface border border-border overflow-hidden`}
+            >
+              {block.language ? (
+                <AppText variant="badge" style={tw`px-4 pt-3 text-muted`}>
+                  {block.language}
+                </AppText>
+              ) : null}
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={tw`p-4`}>
+                <AppText selectable style={[tw`text-13 leading-relaxed text-ink`, mono]}>
+                  {block.text}
+                </AppText>
+              </ScrollView>
+            </View>
           );
         }
         if (block.kind === "list") {

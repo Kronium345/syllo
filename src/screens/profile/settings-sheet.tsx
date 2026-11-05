@@ -1,8 +1,11 @@
 import { useClerk } from "@clerk/expo";
+import { router } from "expo-router";
+import { ChevronRight } from "lucide-react-native";
 import { useState } from "react";
-import { Linking, Platform, Switch, View } from "react-native";
+import { Linking, Platform, Pressable, Switch, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import { Sheet } from "@/components/ui/sheet";
 import { AppText } from "@/components/ui/text";
 import { toast } from "@/components/ui/toast";
@@ -91,6 +94,20 @@ export function SettingsSheet({ visible, email, onClose }: { visible: boolean; e
             />
           </View>
         ) : null}
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => {
+            onClose();
+            router.push("/credits");
+          }}
+          style={tw`flex-row items-center gap-4`}
+        >
+          <View style={tw`flex-1`}>
+            <AppText style={tw`text-16 font-semibold text-ink`}>Content credits and licences</AppText>
+            <AppText variant="caption">Where the course lessons and quizzes come from</AppText>
+          </View>
+          <Icon as={ChevronRight} size="md" color="muted" />
+        </Pressable>
         {profile.data?.aiConsentAt ? (
           <View style={tw`flex-row items-center gap-4`}>
             <View style={tw`flex-1`}>
