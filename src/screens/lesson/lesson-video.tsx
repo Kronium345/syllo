@@ -42,7 +42,8 @@ export function LessonVideo({
   poster: ImageSource | null;
   /** The lesson's length from the outline, until the video reports its own. */
   fallbackDuration: number;
-  onBack: () => void;
+  /** Draws the glass back button over the video; omit it where a native header has Back. */
+  onBack?: () => void;
 }) {
   const backTop = useTopPadding(48);
   const view = useRef<VideoView>(null);
@@ -213,13 +214,15 @@ export function LessonVideo({
         )}
       </View>
 
-      <IconButton
-        icon={ChevronLeft}
-        variant="glass-dark"
-        accessibilityLabel="Back"
-        onPress={onBack}
-        style={[tw`absolute left-6`, { top: backTop }]}
-      />
+      {onBack ? (
+        <IconButton
+          icon={ChevronLeft}
+          variant="glass-dark"
+          accessibilityLabel="Back"
+          onPress={onBack}
+          style={[tw`absolute left-6`, { top: backTop }]}
+        />
+      ) : null}
     </View>
   );
 }

@@ -33,7 +33,7 @@ inside it.
 - 350 to 800 words.
 - Allowed markdown ONLY: `##` and `###` headings, paragraphs, `-` bullet lists, `1.` numbered
   lists, **bold**, *italic*, fenced code blocks with a language (```tsx, ```ts, ```python, ```bash,
-  ```css, ```html) and `inline code`. No links, images, tables, HTML, block quotes or nested lists.
+  ```css, ```scss (Sass), ```html, ```xml, ```json) and `inline code`. No links, images, tables, HTML, block quotes or nested lists.
 - Don't start with a heading that repeats the lesson title (the app shows the title).
 - Structure: a short opening that says what the learner will be able to do, two to four sections
   that teach it with at least one short example, a "### Try it" section with one small exercise

@@ -81,9 +81,6 @@ function RootStack() {
     if (isLoaded || clerkTimedOut) SplashScreen.hideAsync();
   }, [isLoaded, clerkTimedOut]);
 
-  // isSignedIn is undefined until Clerk restores the session, so (app) stays closed
-  // while loading and the index route waits before redirecting. Signing in or out
-  // flips these guards; no router call is needed.
   return (
     <Stack screenOptions={{ headerShown: false, contentStyle: tw`bg-canvas` }}>
       <Stack.Screen name="index" />

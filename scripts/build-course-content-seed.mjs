@@ -142,6 +142,24 @@ if (errors.length) {
 
 const VIDEO_CREDIT = String.raw`E'\n\n\\*Video: [^\n]*\\*$'`;
 
+/**
+ * The first reStructuredText section title: a text line underlined by a run of one punctuation
+ * character (=, -, *, ~, ^, #), with an optional overline. Directive (`.. x::`, `.. _label:`)
+ * and template (`{{ header }}`) lines are skipped; roles such as :keyword:`!if` become `if`.
+ */
+function rstTitle(text) {
+  const lines = text.split(/\r?\n/);
+  const rule = /^([=\-*~^#"'`+])\1{2,}\s*$/;
+  for (let i = 0; i < lines.length - 1; i++) {
+    const line = lines[i].trim();
+    if (!line || rule.test(line) || line.startsWith("..") || line.startsWith("{{") || line.startsWith(":")) continue;
+    if (rule.test(lines[i + 1].trim()) && lines[i + 1].trim().length >= Math.min(line.length, 3)) {
+      return line.replace(/:[a-z]+:`!?([^`]+)`/g, "$1").replace(/`+/g, "");
+    }
+  }
+  return null;
+}
+
 /** A source page's own title (front matter `title:` or first heading), else the source's title. */
 function pageTitle(ref) {
   const [sourceId] = ref.split(":");
@@ -149,10 +167,13 @@ function pageTitle(ref) {
   const file = entry?.files?.[0]?.file;
   const text = file && existsSync(textPath(sourceId, file)) ? readFileSync(textPath(sourceId, file), "utf8") : "";
   const front = /^---\r?\n([\s\S]*?)\r?\n---/.exec(text)?.[1] ?? "";
+  const chapter = /:chapter:(\d+)$/.exec(ref)?.[1];
   const title =
+    (chapter ? `Chapter ${chapter}` : null) ??
     /^title:\s*["']?(.+?)["']?\s*$/m.exec(front)?.[1] ??
+    /\{%\s*set\s+pageTitle\s*=\s*["']([^"']+)["']\s*%\}/.exec(text)?.[1] ??
     /^#\s+(.+)$/m.exec(text)?.[1] ??
-    /^(.+)\r?\n[=*]{3,}\s*$/m.exec(text)?.[1] ??
+    rstTitle(text) ??
     null;
   const source = registry.sources[sourceId];
   return title ? `${title.replace(/[`*_]/g, "").trim()} (${source.title})` : source.title;

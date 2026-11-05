@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-05T15:18:18.425Z",
+  "generated": "2026-11-05T16:19:53.889Z",
   "sources": {
     "rn-docs": {
       "pin": "7e7996f2c7e60d9de2fceda60eddef5e10ae2d5c",
@@ -1609,7 +1609,7 @@
       ]
     },
     "govuk-ds:get-started/updating-your-code": {
-      "url": "https://github.com/alphagov/govuk-design-system/blob/1403d1bc19cc023452bf77b78444defa6d4cb734/src/get-started/updating-your-code/index.md",
+      "url": "https://design-system.service.gov.uk/get-started/updating-your-code/",
       "repoUrl": "https://github.com/alphagov/govuk-design-system/blob/1403d1bc19cc023452bf77b78444defa6d4cb734/src/get-started/updating-your-code/index.md",
       "files": [
         {
@@ -1617,8 +1617,7 @@
           "bytes": 236,
           "sha256": "775c0ef6d44b38255e11509949d4d86988b1f872605689626f7160c6ad8dd92f"
         }
-      ],
-      "urlFallback": true
+      ]
     },
     "uswds:pages/documentation/migration-V3.md": {
       "url": "https://designsystem.digital.gov/documentation/migration/",

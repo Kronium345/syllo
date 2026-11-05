@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import { FileText, Lock, Users } from "lucide-react-native";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -21,6 +21,9 @@ import { LessonSources } from "./lesson-sources";
 import { leaveLesson, LessonVideo } from "./lesson-video";
 import { Markdown } from "./markdown";
 import { ResourceCard } from "./resource-card";
+
+/** iOS/Android show a native header with the lesson title (large title on iOS); web keeps the design's glass Back. */
+const nativeHeader = process.env.EXPO_OS !== "web";
 
 /** Height of the native bottom toolbar above the safe area (measured on Android: about 80dp). */
 const TOOLBAR_HEIGHT = 80;
@@ -96,6 +99,22 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
 
   return (
     <View style={tw`flex-1 bg-surface`}>
+      {nativeHeader ? (
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            title: lesson.title,
+            headerLargeTitle: true,
+            headerBackButtonDisplayMode: "minimal",
+            headerTintColor: color("ink"),
+            headerTitleStyle: { color: color("ink") },
+            headerLargeTitleStyle: { color: color("ink") },
+            headerStyle: { backgroundColor: color("surface") },
+            headerLargeTitleShadowVisible: false,
+            headerShadowVisible: false,
+          }}
+        />
+      ) : null}
       <LessonVideo
         key={lesson.id}
         videoUrl={videoUrl}
@@ -104,7 +123,7 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
         onSourceError={videoKey ? () => hosted.refetch() : undefined}
         poster={courseCover(course)}
         fallbackDuration={lesson.durationSeconds}
-        onBack={() => leaveLesson(course.id)}
+        onBack={nativeHeader ? undefined : () => leaveLesson(course.id)}
       />
 
       <ScrollView
@@ -120,9 +139,12 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
               Lesson {twoDigits(lesson.position)}
             </AppText>
           </View>
-          <AppText variant="title-lg" accessibilityRole="header" style={tw`mb-4`}>
-            {lesson.title}
-          </AppText>
+          {/* The native header already shows the title on iOS/Android. */}
+          {nativeHeader ? null : (
+            <AppText variant="title-lg" accessibilityRole="header" style={tw`mb-4`}>
+              {lesson.title}
+            </AppText>
+          )}
           <View style={tw`flex-row items-center gap-6 py-4 border-t border-b border-border`}>
             <View style={tw`flex-row items-center gap-2`}>
               <Icon as={Users} size="md" color="muted" />

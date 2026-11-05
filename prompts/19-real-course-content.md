@@ -1,6 +1,6 @@
 # 19 · Real course content: lessons and quizzes adapted from open sources
 
-Status: approved
+Status: done
 
 ## Goal
 The six sample courses get real lesson notes and one **15-question quiz per chapter** (19 quizzes, 285 questions), adapted from openly licensed official docs and guides. The quizzes use the existing quiz system, exactly as Pharmacy Exam Prep does. Every lesson lists and links its sources.
@@ -293,3 +293,14 @@ Paths are relative to each source's base path. The fetch script stops if a path 
 - **Commands:** `fetch-course-sources.mjs`, `draft-course-content.mjs [--course …]`, `build-course-content-seed.mjs [--allow-draft]`.
 - **Rules (Content licensing):** only registry sources that pass the licence check (CC0/PD, CC BY, OGL v3, MIT, BSD-3, PSF); never NC, ND, unlicensed, scraped pages, logos or typefaces; CC BY-SA (MDN) is links only; every lesson lists its sources; everything generated is human-reviewed before seeding.
 - **Flow:** Sources on lessons, `/credits` from Settings, code blocks in notes, and the course-aware viva footnote.
+
+## Result
+- **Published (2026-11-05):** all six courses have real notes (58 lessons), 19 chapter quizzes (285 questions) and 139 `lesson_sources` rows; every lesson has at least one `adapted` source; all 46 clip credits are still the last line; all seven courses belong to **Syllo Team** (Maya, Leo and Aisha removed; Jane Doe linked, so it can delete any course).
+- **Review:** every item is stamped `Daniel Awolowo 2026-11-05 (…)`. React Native Basics and UI Design Fundamentals were reviewed on the phone. Python and pandas were approved by delegation and checked on the phone. Advanced Animations and Design Systems were approved by delegation and checked in the database and on the phone. Flags kept on purpose are in `overriddenFlags` with reasons (Python quiz 2 Q2–Q4; Animations 2.2's 38-line block, one complete component instead of hook fragments).
+- **App:** fenced code blocks and inline code (`mono` token), `inlineMarkdown` in the quiz and viva screens, the Sources section with the AI caption, `/credits` with the generated `content-licences.ts`, the Syllo Team tutor photo, and a course-aware viva footnote (BNF only for pharmacy). Player controls (±10 s, seek, speed) were added in the same period.
+- **Pipeline changes found while building:** retries and back-off for GitHub fetches; front-matter permalinks; a repo-file fallback for GOV.UK pages that return 410; a `--revise` loop and 16k output tokens for drafting; course `context` for the dataset lesson; source titles from RST, NHS and OpenStax ("Chapter N"); allowed code labels now include `xml`, `scss` and `json`.
+- **Dataset:** `london-bike-trips-18-24-may-2026.csv` (41,253 journeys, a 1-in-5 sample of the week, no bike or station ids, 4.3 MB) is in R2 as a resource of pandas 4.2, and the signed download was verified.
+- **Follow-ups:**
+  - A locked lesson's player says "Couldn't play this video." It should show a lock or the cover instead.
+  - Clean up the test account's quiz attempts (ask first).
+  - The pandas project code wasn't run locally (pandas isn't installed).

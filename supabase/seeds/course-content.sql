@@ -959,7 +959,7 @@ Open a public or everyday service you use regularly, such as a health appointmen
 - Earn trust by offering reliable performance, clear language, and predictable continuity across tasks.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:ui-design-fundamentals:1:1')::uuid;
 delete from public.lesson_sources where lesson_id = md5('lesson:ui-design-fundamentals:1:1')::uuid;
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
-  (md5('lesson:ui-design-fundamentals:1:1')::uuid, 1, 'NHS digital service manual', '© Crown copyright', 'https://service-manual.nhs.uk/design-system/design-principles', 'OGL v3.0', 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
+  (md5('lesson:ui-design-fundamentals:1:1')::uuid, 1, 'Design principles (NHS digital service manual)', '© Crown copyright', 'https://service-manual.nhs.uk/design-system/design-principles', 'OGL v3.0', 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
   (md5('lesson:ui-design-fundamentals:1:1')::uuid, 2, 'Design principles (U.S. Web Design System)', 'U.S. General Services Administration (public domain)', 'https://designsystem.digital.gov/design-principles/', 'CC0 1.0 (US public domain)', 'https://creativecommons.org/publicdomain/zero/1.0/', null, 'adapted');
 
 -- Lesson ui-design-fundamentals/1/2: Hierarchy and focus
@@ -1456,7 +1456,7 @@ delete from public.lesson_sources where lesson_id = md5('lesson:ui-design-fundam
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
   (md5('lesson:ui-design-fundamentals:3:2')::uuid, 1, 'Spacing (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/styles/spacing/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
   (md5('lesson:ui-design-fundamentals:3:2')::uuid, 2, 'Spacing units (U.S. Web Design System)', 'U.S. General Services Administration (public domain)', 'https://designsystem.digital.gov/design-tokens/spacing-units/', 'CC0 1.0 (US public domain)', 'https://creativecommons.org/publicdomain/zero/1.0/', null, 'adapted'),
-  (md5('lesson:ui-design-fundamentals:3:2')::uuid, 3, 'NHS digital service manual', '© Crown copyright', 'https://service-manual.nhs.uk/design-system/styles/spacing', 'OGL v3.0', 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted');
+  (md5('lesson:ui-design-fundamentals:3:2')::uuid, 3, 'Spacing (NHS digital service manual)', '© Crown copyright', 'https://service-manual.nhs.uk/design-system/styles/spacing', 'OGL v3.0', 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted');
 
 -- Lesson ui-design-fundamentals/3/3: Designing a real screen
 update public.lesson_contents set body = 'When you build a real screen, you bring together macro page structures and micro component layouts. In this lesson, you will learn how to structure a full page from top to bottom and arrange self-contained components within it.
@@ -1833,7 +1833,7 @@ Open your Python interpreter and define two variables: assign an integer to `qua
 delete from public.lesson_sources where lesson_id = md5('lesson:python-for-everyone:1:4')::uuid;
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
   (md5('lesson:python-for-everyone:1:4')::uuid, 1, 'An Informal Introduction to Python (Python 3.15 documentation)', 'Python Software Foundation', 'https://docs.python.org/3.15/tutorial/introduction.html', 'PSF License v2', 'https://docs.python.org/3/license.html', null, 'adapted'),
-  (md5('lesson:python-for-everyone:1:4')::uuid, 2, 'Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
+  (md5('lesson:python-for-everyone:1:4')::uuid, 2, 'Chapter 1 (Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition)', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
 
 -- Lesson python-for-everyone/2/1: If, elif and else
 update public.lesson_contents set body = 'In this lesson, you will learn how to make decisions in your code using Python''s `if`, `elif`, and `else` statements. By testing conditions, you can control which blocks of code execute based on the data your program receives.
@@ -2065,8 +2065,8 @@ for fruit, count in stock.items():
 delete from public.lesson_sources where lesson_id = md5('lesson:python-for-everyone:2:3')::uuid;
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
   (md5('lesson:python-for-everyone:2:3')::uuid, 1, 'Data Structures (Python 3.15 documentation)', 'Python Software Foundation', 'https://docs.python.org/3.15/tutorial/datastructures.html', 'PSF License v2', 'https://docs.python.org/3/license.html', null, 'adapted'),
-  (md5('lesson:python-for-everyone:2:3')::uuid, 2, 'Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted'),
-  (md5('lesson:python-for-everyone:2:3')::uuid, 3, 'Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
+  (md5('lesson:python-for-everyone:2:3')::uuid, 2, 'Chapter 9 (Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition)', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted'),
+  (md5('lesson:python-for-everyone:2:3')::uuid, 3, 'Chapter 10 (Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition)', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
 
 -- Lesson python-for-everyone/3/1: Writing functions
 update public.lesson_contents set body = 'In this lesson, you will learn how to create your own reusable blocks of code in Python. You will be able to define functions that accept parameters, return results, provide default values, and use docstrings to document your code.
@@ -2154,7 +2154,7 @@ Write a function called `calculate_total` that accepts a required `price` and an
 delete from public.lesson_sources where lesson_id = md5('lesson:python-for-everyone:3:1')::uuid;
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
   (md5('lesson:python-for-everyone:3:1')::uuid, 1, 'More Control Flow Tools (Python 3.15 documentation)', 'Python Software Foundation', 'https://docs.python.org/3.15/tutorial/controlflow.html', 'PSF License v2', 'https://docs.python.org/3/license.html', null, 'adapted'),
-  (md5('lesson:python-for-everyone:3:1')::uuid, 2, 'Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
+  (md5('lesson:python-for-everyone:3:1')::uuid, 2, 'Chapter 6 (Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition)', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
 
 -- Lesson python-for-everyone/3/2: Reading and writing files
 update public.lesson_contents set body = 'In this lesson, you will learn how to open files on your computer, read text from them in different ways, and write or append new data safely.
@@ -2217,7 +2217,7 @@ Write a short Python script that opens a file called `todo.txt` in append mode (
 delete from public.lesson_sources where lesson_id = md5('lesson:python-for-everyone:3:2')::uuid;
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
   (md5('lesson:python-for-everyone:3:2')::uuid, 1, 'Input and output (Python 3.15 documentation)', 'Python Software Foundation', 'https://docs.python.org/3.15/tutorial/inputoutput.html', 'PSF License v2', 'https://docs.python.org/3/license.html', null, 'adapted'),
-  (md5('lesson:python-for-everyone:3:2')::uuid, 2, 'Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
+  (md5('lesson:python-for-everyone:3:2')::uuid, 2, 'Chapter 14 (Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition)', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
 
 -- Lesson python-for-everyone/3/3: Project: a tiny journal
 update public.lesson_contents set body = 'In this project, you will combine functions, file input and output, and user input to build a small command-line journal application. By the end, you will have a working program that appends new thoughts to a persistent file and prints previous entries back to your screen.
@@ -2742,7 +2742,7 @@ Create a DataFrame with three messy string dates (including one invalid string s
 - Subtracting timestamps yields a `Timedelta` duration object, and slicing a `DatetimeIndex` includes both endpoints.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:2:2')::uuid;
 delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:2:2')::uuid;
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
-  (md5('lesson:data-analysis-pandas:2:2')::uuid, 1, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:2:2')::uuid, 1, 'How to handle time series data with ease (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
   (md5('lesson:data-analysis-pandas:2:2')::uuid, 2, 'Time series / date functionality (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/timeseries.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
 
 -- Lesson data-analysis-pandas/2/3: Reshaping data
@@ -2843,7 +2843,7 @@ Create a small DataFrame containing columns `"product"`, `"store"`, and `"sales"
 - `DataFrame.explode` unpacks list-like values in a column into separate rows.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:2:3')::uuid;
 delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:2:3')::uuid;
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
-  (md5('lesson:data-analysis-pandas:2:3')::uuid, 1, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/07_reshape_table_layout.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:2:3')::uuid, 1, 'How to reshape the layout of tables (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/07_reshape_table_layout.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
   (md5('lesson:data-analysis-pandas:2:3')::uuid, 2, 'Reshaping and pivot tables (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/reshaping.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
 
 -- Lesson data-analysis-pandas/3/1: Filtering and sorting
@@ -3022,7 +3022,7 @@ Create a DataFrame of product sales with columns for `category` (`"Books"`, `"El
 - The `.agg()` method allows computing multiple statistics at once and supports named aggregation tuples `("column", "aggfunc")` for readable column headers.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:3:2')::uuid;
 delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:3:2')::uuid;
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
-  (md5('lesson:data-analysis-pandas:3:2')::uuid, 1, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:3:2')::uuid, 1, 'How to calculate summary statistics (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
   (md5('lesson:data-analysis-pandas:3:2')::uuid, 2, 'Group by: split-apply-combine (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/groupby.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
 
 -- Lesson data-analysis-pandas/3/3: Joining datasets
@@ -3101,7 +3101,7 @@ Create two small DataFrames: `sales` with columns `"item_id"` and `"units"`, and
 - Customise overlapping column names by providing a tuple of labels to `suffixes`.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:3:3')::uuid;
 delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:3:3')::uuid;
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
-  (md5('lesson:data-analysis-pandas:3:3')::uuid, 1, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/08_combine_dataframes.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:3:3')::uuid, 1, 'How to combine data from multiple tables (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/08_combine_dataframes.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
   (md5('lesson:data-analysis-pandas:3:3')::uuid, 2, 'Merge, join, concatenate and compare (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/merging.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
 
 -- Lesson data-analysis-pandas/4/1: Charts that explain
@@ -3176,9 +3176,9 @@ Create a DataFrame containing four quarters of revenue and expense figures. Gene
 - Pandas handles missing values differently across plot types, such as leaving gaps in line plots and filling zeros in bar plots.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:4:1')::uuid;
 delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:4:1')::uuid;
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
-  (md5('lesson:data-analysis-pandas:4:1')::uuid, 1, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:4:1')::uuid, 1, 'How do I create plots in pandas? (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
   (md5('lesson:data-analysis-pandas:4:1')::uuid, 2, 'Chart visualization (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/visualization.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
-  (md5('lesson:data-analysis-pandas:4:1')::uuid, 3, 'Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
+  (md5('lesson:data-analysis-pandas:4:1')::uuid, 3, 'Chapter 15 (Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition)', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
 
 -- Lesson data-analysis-pandas/4/2: Project: city bike trips
 update public.lesson_contents set body = 'In this project, you will analyse real hire journeys from London''s Santander Cycles scheme to uncover travel patterns across the city. By the end of this project, you will be able to parse date fields, compute summary statistics, group by temporal properties, and visualise hourly hire trends.
@@ -3258,9 +3258,1326 @@ Compare weekday and weekend hire habits. Use `trips["Start date"].dt.day_of_week
 delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:4:2')::uuid;
 insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
   (md5('lesson:data-analysis-pandas:4:2')::uuid, 1, 'How do I read and write tabular data? (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/02_read_write.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
-  (md5('lesson:data-analysis-pandas:4:2')::uuid, 2, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
-  (md5('lesson:data-analysis-pandas:4:2')::uuid, 3, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
-  (md5('lesson:data-analysis-pandas:4:2')::uuid, 4, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+  (md5('lesson:data-analysis-pandas:4:2')::uuid, 2, 'How to calculate summary statistics (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:4:2')::uuid, 3, 'How to handle time series data with ease (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:4:2')::uuid, 4, 'How do I create plots in pandas? (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+
+-- Lesson advanced-animations/1/1: Why motion matters
+update public.lesson_contents set body = 'Understanding why motion matters is the foundation of high-quality mobile interface engineering. By the end of this lesson, you will be able to explain the physical principles that make interface motion believable, describe how React Native declaratively models these transitions, and assess motion choices to avoid triggering adverse vestibular and cognitive reactions.
+
+## Physical believability and interface motion
+
+In the physical world, stationary objects must overcome inertia before they start moving. Similarly, moving objects possess momentum and rarely come to an immediate, abrupt halt. When an interface element jumps instantaneously between states or stops dead with no deceleration, it feels unnatural to the human eye.
+
+Animations allow you to convey physically believable motion within your interface. Easing curves and spring models simulate the natural laws of acceleration and deceleration. React Native provides two complementary animation systems to handle this:
+
+- `Animated` for granular, interactive control of specific values over time or gestures.
+- `LayoutAnimation` for animated global layout transactions across render cycles.
+
+`Animated` focuses on declarative relationships between inputs and outputs, rather than manually re-rendering components frame by frame. You define the target value, the easing curve, and the duration, allowing the runtime to drive updates smoothly.
+
+```tsx
+import React, { useEffect, useRef } from ''react'';
+import { Animated, StyleSheet, View } from ''react-native'';
+
+export const FadeInCard = (): React.JSX.Element => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim]);
+
+  return (
+    <Animated.View style={[styles.card, { opacity: fadeAnim }]}>
+      <View style={styles.inner} />
+    </Animated.View>
+  );
+};
+
+const styles = StyleSheet.create({
+  card: { width: 200, height: 100, backgroundColor: ''powderblue'' },
+  inner: { flex: 1 },
+});
+```
+
+By default, `Animated.timing()` relies on an `easeInOut` curve that reflects real-world physics: an element gradually accelerates up to full speed and concludes by gradually decelerating to a stop.
+
+## Motion sensitivity and accessibility
+
+While well-crafted motion provides context and polish, excessive or unconstrained movement can severely harm usability. Motion sensitivity is common: over 35% of adults experience vestibular dysfunction by age 40. For these individuals, unwarranted movement across a screen can trigger dizziness, migraine-induced vertigo, or severe nausea.
+
+Motion can also disrupt cognitive processing. People with ADHD and attention deficit disorders can find moving, blinking, or scrolling elements intensely distracting, pulling their attention away from the core task. Furthermore, extreme motion and rapid flickering can trigger seizures in people with photosensitive epilepsy. Web Content Accessibility Guidelines (WCAG) specifically advise against content that flashes more than three times in any one second.
+
+To ensure your animations enhance rather than detract from the user experience, follow these design principles:
+
+1. Question necessity: Determine whether an animation is essential to understanding content or an interaction. If it is purely decorative and non-essential, consider reducing or removing it.
+2. Respect duration limits: Any non-essential moving, blinking, or scrolling element that starts automatically must provide mechanisms to pause, stop, or hide the motion if it lasts longer than five seconds.
+3. Honour system preferences: Operating systems provide explicit accessibility toggles, such as Reduce Motion on macOS or Remove Animations on Android. Designing your animations to respect these preferences ensures your app remains accessible to everyone.
+
+### Try it
+
+Review an existing transition or entrance animation in your app. Check whether its timing mimics physical momentum with gradual acceleration and deceleration. Then verify how long the animation runs: if it lasts longer than five seconds or loops continuously, plan how you will give users a mechanism to pause or disable it.
+
+### Key points
+
+- Animations convey physically believable motion by accounting for inertia and momentum.
+- React Native uses declarative relationships in the `Animated` API to map animated values to styles without regular re-rendering.
+- Vestibular disorders affect more than 35% of adults by age 40, meaning excessive movement can cause dizziness or illness.
+- Elements must avoid flashing more than three times per second to prevent triggering seizures in photosensitive users.
+- Non-essential animations that start automatically and last over five seconds require an option to pause, stop, or hide them.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:advanced-animations:1:1')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:advanced-animations:1:1')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:advanced-animations:1:1')::uuid, 1, 'Animations (React Native documentation (0.88))', 'Meta Platforms, Inc. and affiliates', 'https://reactnative.dev/docs/0.88/animations', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted'),
+  (md5('lesson:advanced-animations:1:1')::uuid, 2, 'Animation and motion (web.dev Learn Design and Learn Accessibility)', 'Google LLC and web.dev contributors', 'https://web.dev/learn/accessibility/motion', 'CC BY 3.0', 'https://creativecommons.org/licenses/by/3.0/', null, 'adapted');
+
+-- Lesson advanced-animations/1/2: Springs vs timing
+update public.lesson_contents set body = 'In this lesson, you will learn how to choose between spring-driven and timing-driven animations in React Native Reanimated, and how to configure their properties to achieve the exact motion behaviour you need.
+
+## Time-based transitions with withTiming
+
+When you need an animation to complete within an exact period, `withTiming` is the appropriate tool. It creates transitions determined by a specified duration in milliseconds alongside an easing curve.
+
+By default, `withTiming` runs for 300 milliseconds with an easing of `Easing.inOut(Easing.quad)`. Reanimated includes built-in easings such as `linear`, `cubic`, `bounce`, `circle`, `bezier`, and `exp`, as well as modifier helpers like `in`, `out`, and `inOut`.
+
+```tsx
+import { useSharedValue, withTiming, Easing } from ''react-native-reanimated'';
+
+export function FadeExample() {
+  const opacity = useSharedValue<number>(0);
+
+  const fadeIn = () => {
+    opacity.value = withTiming(1, {
+      duration: 450,
+      easing: Easing.out(Easing.cubic),
+    });
+  };
+
+  return null;
+}
+```
+
+Timing animations are deterministic: regardless of the distance between the starting value and target value, the transition will always consume the exact duration specified.
+
+## Physics-based motion with withSpring
+
+`withSpring` simulates real-world physical motion rather than sticking to a rigid timeline. Reanimated provides two ways to configure springs: physics-based and duration-based.
+
+### Physics-based springs
+
+A physics-based spring calculates its trajectory using mechanical properties:
+
+- `stiffness`: Defines how bouncy the spring is (defaults to 900).
+- `damping`: Determines how quickly the spring slows down and comes to rest (defaults to 120).
+- `mass`: The weight of the spring (defaults to 4). Reducing this value makes the animation faster.
+- `velocity`: Initial velocity applied to the spring equation (defaults to 0).
+- `overshootClamping`: A boolean (defaults to `false`) specifying whether the spring can bounce over the target value.
+
+### Duration-based springs
+
+If you prefer to configure springs using perceptual time while retaining a natural bounce, you can supply `duration` and `dampingRatio` instead. In this mode:
+
+- `duration`: The perceptual duration in milliseconds (defaults to 550). The actual duration is 1.5 times this value.
+- `dampingRatio`: How damped the spring is (defaults to 1). A value of 1 represents critical damping (no bounce), values below 1 produce underdamped bouncy movement, and values above 1 yield overdamped motion.
+
+Note that `stiffness` and `damping` cannot be used alongside `duration` and `dampingRatio`. If both are provided, `duration` and `dampingRatio` will override `stiffness` and `damping`.
+
+```tsx
+import { useSharedValue, withSpring } from ''react-native-reanimated'';
+
+export function SpringExample() {
+  const position = useSharedValue<number>(0);
+
+  const animateWithPhysics = () => {
+    position.value = withSpring(100, {
+      stiffness: 800,
+      damping: 90,
+      mass: 2,
+    });
+  };
+
+  const animateWithDuration = () => {
+    position.value = withSpring(100, {
+      duration: 400,
+      dampingRatio: 0.8,
+    });
+  };
+
+  return null;
+}
+```
+
+## Callbacks and execution
+
+Both `withSpring` and `withTiming` accept an optional callback as their third argument. This callback receives a `finished` boolean (`false` if cancelled, `true` upon completion) and an optional `current` animatable value. Reanimated automatically workletises this callback so that it runs directly on the UI thread.
+
+### Try it
+
+Create a component with a shared value initialised to 0. Trigger a `withSpring` animation to 200 using a `dampingRatio` of 0.6 and a perceptual duration of 500 ms. Add a completion callback that inspects the `finished` boolean.
+
+### Key points
+
+- `withTiming` moves between values across a predetermined millisecond duration shaped by an easing function.
+- `withSpring` models physical movement using either classic physics parameters (`stiffness`, `damping`, `mass`) or perceptual parameters (`duration`, `dampingRatio`).
+- Duration-based spring parameters (`duration` and `dampingRatio`) override physics-based parameters (`stiffness` and `damping`) when provided together.
+- Both functions support an optional completion callback that is automatically workletised and runs on the UI thread.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:advanced-animations:1:2')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:advanced-animations:1:2')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:advanced-animations:1:2')::uuid, 1, 'withSpring (React Native Reanimated documentation)', 'Software Mansion', 'https://docs.swmansion.com/react-native-reanimated/docs/animations/withSpring', 'MIT', 'https://opensource.org/license/mit', null, 'adapted'),
+  (md5('lesson:advanced-animations:1:2')::uuid, 2, 'withTiming (React Native Reanimated documentation)', 'Software Mansion', 'https://docs.swmansion.com/react-native-reanimated/docs/animations/withTiming', 'MIT', 'https://opensource.org/license/mit', null, 'adapted');
+
+-- Lesson advanced-animations/1/3: The UI thread
+update public.lesson_contents set body = 'In this lesson, you will learn how React Native Reanimated uses the UI thread for animations and gestures, how worklets execute code across runtimes, and how data moves between the JavaScript thread and the UI thread.
+
+## The JavaScript thread versus the UI thread
+
+The JavaScript thread (also referred to as the JS thread or RN runtime) is responsible for handling JavaScript code execution in your application. This is the primary environment where your standard React Native application code runs, including state updates and component logic.
+
+The UI thread (also known as the main thread or UI runtime) is responsible for handling user interface updates. Reanimated takes advantage of the UI thread by executing worklets there to calculate view styles and react immediately to events.
+
+## What is a worklet?
+
+A worklet is a short-running JavaScript function that can be copied and executed across different JavaScript runtimes, including the UI runtime. Reanimated uses worklets to calculate view styles and react to events on the UI thread.
+
+You create a worklet by placing the `''worklet''` directive at the top of a function body:
+
+```ts
+function logMessage(text: string): void {
+  ''worklet'';
+  console.log(''UI message:'', text);
+}
+```
+
+The Worklets Babel plugin inspects your code for this directive and workletises the function, converting it into a serialisable object that can be passed to and run on the UI thread. Functions marked with `''worklet''` are not hoisted. Most Reanimated callbacks, such as functions passed to `useAnimatedStyle`, are workletised automatically.
+
+## Scheduling execution across threads
+
+To run a worklet on the UI runtime manually from the JavaScript thread, use `scheduleOnUI`:
+
+```tsx
+import React from ''react'';
+import { Button, View } from ''react-native'';
+import { scheduleOnUI } from ''react-native-worklets'';
+
+function notifyUI(message: string): void {
+  ''worklet'';
+  console.log(`${message} on the UI thread`);
+}
+
+export default function App(): React.JSX.Element {
+  const handlePress = (): void => {
+    scheduleOnUI(notifyUI, ''Hello'');
+  };
+
+  return (
+    <View>
+      <Button title="Run on UI" onPress={handlePress} />
+    </View>
+  );
+}
+```
+
+Conversely, when your code is running inside a worklet on the UI thread and needs to trigger code on the JavaScript thread—such as setting React state or calling a third-party library—you use `scheduleOnRN`. Functions passed to `scheduleOnRN` must be declared in the JavaScript thread scope (in the component body or global scope), not created dynamically inside the worklet.
+
+## Closures and shared values
+
+Worklets are closures that capture variables from their outer scope. However, only variables explicitly referenced in the worklet body are captured. Capturing large objects can lead to performance issues, so extract properties into dedicated variables first:
+
+```ts
+type Config = { primaryColour: string; data: number[] };
+const config: Config = { primaryColour: ''#007aff'', data: new Array(1000).fill(0) };
+
+// Bad: capturing the whole object
+function badWorklet(): void {
+  ''worklet'';
+  console.log(config.primaryColour);
+}
+
+// Good: extract the property first
+const colour = config.primaryColour;
+function goodWorklet(): void {
+  ''worklet'';
+  console.log(colour);
+}
+```
+
+To pass dynamic values between the JavaScript thread and the UI thread, use shared values created with `useSharedValue`. Their data synchronises automatically across both runtimes.
+
+### Try it
+
+Write a custom worklet function that accepts an offset value (`number`) and logs twice that value to the console. Trigger your worklet from a button press handler using `scheduleOnUI`, and verify in your logs that the message runs on the UI thread.
+
+### Key points
+
+- The UI thread handles user interface updates, whilst the JavaScript thread handles general JavaScript execution in the app.
+- Worklets are small JavaScript functions marked with `''worklet''` that are converted into serialisable objects by the Babel plugin.
+- Use `scheduleOnUI` to invoke worklets on the UI thread, and `scheduleOnRN` from the UI thread to call functions defined in the JavaScript thread scope.
+- Worklets capture referenced variables via closures, so extract individual properties from large objects to avoid copying unnecessary data.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:advanced-animations:1:3')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:advanced-animations:1:3')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:advanced-animations:1:3')::uuid, 1, 'Worklets (React Native Reanimated documentation)', 'Software Mansion', 'https://docs.swmansion.com/react-native-reanimated/docs/guides/worklets', 'MIT', 'https://opensource.org/license/mit', null, 'adapted'),
+  (md5('lesson:advanced-animations:1:3')::uuid, 2, 'Glossary of terms (React Native Reanimated documentation)', 'Software Mansion', 'https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/glossary', 'MIT', 'https://opensource.org/license/mit', null, 'adapted');
+
+-- Lesson advanced-animations/2/1: Pan and fling
+update public.lesson_contents set body = 'In this lesson, you will learn how to recognise dragging interactions using pan gestures, detect directional swipes with fling gestures, and smoothly animate views using gesture event data alongside Reanimated.
+
+## Tracking movement with pan gestures
+
+A pan gesture recognises continuous dragging across the screen. It activates once a pointer touches the screen and moves beyond an initial threshold. During the gesture, callbacks supply event data such as accumulated displacement (`translationX`, `translationY`), incremental movement since the last frame (`changeX`, `changeY`), and instantaneous velocity (`velocityX`, `velocityY`).
+
+In this course, examples use TypeScript. You attach a pan gesture to an animated element by passing the gesture configuration to a `GestureDetector` component:
+
+```tsx
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from ''react-native-reanimated'';
+import { GestureDetector, usePanGesture } from ''react-native-gesture-handler'';
+
+export function DraggableBox() {
+  const translationX = useSharedValue<number>(0);
+
+  const panGesture = usePanGesture({
+    onUpdate: (event) => {
+      translationX.value = event.translationX;
+    },
+    onDeactivate: () => {
+      translationX.value = withTiming(0, { duration: 150 });
+    },
+  });
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translationX.value }],
+  }));
+
+  return (
+    <GestureDetector gesture={panGesture}>
+      <Animated.View style={[{ width: 120, height: 120, backgroundColor: ''#b58df1'' }, animatedStyle]} />
+    </GestureDetector>
+  );
+}
+```
+
+Because gesture callbacks are automatically workletised, you can safely mutate shared values directly inside them.
+
+## Handling gesture momentum with withDecay
+
+When releasing a dragged element, you can preserve gesture momentum instead of resetting it abruptly. The `withDecay` animation decelerates a value based on its instantaneous release velocity.
+
+You read `velocityX` or `velocityY` when the gesture completes—such as in `onFinalize`—and pass it to the `velocity` property of the `withDecay` configuration object. This allows the dragged component to glide naturally to a stop.
+
+## Detecting directional swipes with fling gestures
+
+While a pan tracks continuous movement frame by frame, a fling gesture detects a rapid movement in a specific direction. The fling activates when the gesture is sufficiently long and fast, and it ends when the finger is released. If the touch is lifted before fulfilling the movement requirement, the gesture fails.
+
+You specify acceptable movement paths with the `Directions` object:
+
+```tsx
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from ''react-native-reanimated'';
+import { GestureDetector, Directions, useFlingGesture } from ''react-native-gesture-handler'';
+
+export function FlingCard() {
+  const position = useSharedValue<number>(0);
+
+  const flingGesture = useFlingGesture({
+    direction: Directions.RIGHT | Directions.LEFT,
+    onActivate: () => {
+      position.value = withTiming(position.value + 50, { duration: 150 });
+    },
+  });
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: position.value }],
+  }));
+
+  return (
+    <GestureDetector gesture={flingGesture}>
+      <Animated.View style={[{ width: 120, height: 120, backgroundColor: ''#b58df1'' }, animatedStyle]} />
+    </GestureDetector>
+  );
+}
+```
+
+Directions can be combined using the bitwise OR (`|`) operator. You can also configure `numberOfPointers` if a fling should require more than one touch.
+
+## Fine-tuning pan activation
+
+Pan gestures provide extensive configuration options to prevent accidental triggers or resolve conflicts:
+
+- `minDistance`: The travel distance in points required before activation.
+- `minVelocity`: The speed threshold in points per second required to activate.
+- `activeOffsetX` and `activeOffsetY`: Boundaries along the X or Y axis where fingers can travel without activating the gesture. Moving outside this range triggers activation.
+- `failOffsetX` and `failOffsetY`: Boundaries outside of which the gesture fails if it has not yet activated.
+- `minPointers` and `maxPointers`: The minimum and maximum number of touches allowed.
+
+For multi-touch interactions on Android, the default behaviour tracks the latest placed finger. You can enable `averageTouches` to average pointer positions into a centre of mass, matching iOS behaviour.
+
+### Try it
+
+Create a draggable box using `usePanGesture`. Set `activeOffsetX` to `[-20, 20]` so horizontal movement must exceed 20 points before triggering, and update `translationX` only while panning.
+
+### Key points
+
+- Pan gestures track continuous dragging, providing `translationX`, `translationY`, and instantaneous velocities.
+- Fling gestures detect rapid, directed swipes defined with `Directions` constants such as `Directions.RIGHT` or `Directions.UP`.
+- Gesture callbacks are automatically workletised, enabling direct updates to Reanimated shared values without bridging overhead.
+- Velocity from pan gestures can feed into the `velocity` property of `withDecay` to create natural decelerating release animations.
+- Threshold properties like `minDistance`, `activeOffsetX`, and `failOffsetY` let you fine-tune exactly when a pan activates or fails.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:advanced-animations:2:1')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:advanced-animations:2:1')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:advanced-animations:2:1')::uuid, 1, 'Pan gesture (React Native Gesture Handler documentation)', 'Software Mansion', 'https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-pan-gesture', 'MIT', 'https://opensource.org/license/mit', null, 'adapted'),
+  (md5('lesson:advanced-animations:2:1')::uuid, 2, 'Fling gesture (React Native Gesture Handler documentation)', 'Software Mansion', 'https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-fling-gesture', 'MIT', 'https://opensource.org/license/mit', null, 'adapted'),
+  (md5('lesson:advanced-animations:2:1')::uuid, 3, 'Handling gestures (React Native Reanimated documentation)', 'Software Mansion', 'https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/handling-gestures', 'MIT', 'https://opensource.org/license/mit', null, 'adapted');
+
+-- Lesson advanced-animations/2/2: Bottom sheets from scratch
+update public.lesson_contents set body = 'Dragging interactive elements across the screen requires combining touch gesture handling with animations. By using `react-native-gesture-handler` to handle gestures and `react-native-reanimated` to handle animations, you will be able to create an interactive component that tracks pan gestures and animates its position on screen.
+
+## Tracking position with shared values
+
+To move a component interactively, you track its position and interaction state with shared values from `react-native-reanimated`. Like every hook, `useSharedValue` is called inside your component. Here `offset` stores the `x` and `y` coordinates and `isPressed` is a boolean flag for the active interaction.
+
+## Capturing pan gestures
+
+You define the pan gesture with the `usePanGesture` hook from `react-native-gesture-handler`, also inside the component. It takes an object of callbacks:
+
+- `onBegin`: set `isPressed.value = true`.
+- `onUpdate`: receives an event `e` with `e.changeX` and `e.changeY`; add them to the current coordinates in `offset.value`.
+- `onFinalize`: reset `isPressed.value = false`.
+
+## Connecting styles and gesture detectors
+
+`useAnimatedStyle` turns the shared values into styles: `translateX` and `translateY` follow `offset.value`, `scale` uses `withSpring(isPressed.value ? 1.2 : 1)`, and `backgroundColor` switches between `''yellow''` and `''blue''`. Wrap the animated view in a `GestureDetector` that receives the gesture through its `gesture` prop, inside a `GestureHandlerRootView`. The whole component:
+
+```tsx
+import { GestureDetector, GestureHandlerRootView, usePanGesture } from ''react-native-gesture-handler'';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from ''react-native-reanimated'';
+
+type Offset = { x: number; y: number };
+
+export function Ball(): React.JSX.Element {
+  const isPressed = useSharedValue<boolean>(false);
+  const offset = useSharedValue<Offset>({ x: 0, y: 0 });
+
+  const gesture = usePanGesture({
+    onBegin: () => {
+      isPressed.value = true;
+    },
+    onUpdate: (e) => {
+      offset.value = { x: offset.value.x + e.changeX, y: offset.value.y + e.changeY };
+    },
+    onFinalize: () => {
+      isPressed.value = false;
+    },
+  });
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: offset.value.x },
+      { translateY: offset.value.y },
+      { scale: withSpring(isPressed.value ? 1.2 : 1) },
+    ],
+    backgroundColor: isPressed.value ? ''yellow'' : ''blue'',
+  }));
+
+  return (
+    <GestureHandlerRootView>
+      <GestureDetector gesture={gesture}>
+        <Animated.View style={[{ width: 100, height: 100, borderRadius: 100, alignSelf: ''center'' }, animatedStyles]} />
+      </GestureDetector>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+### Try it
+
+Modify the `onUpdate` callback in `usePanGesture` so that only `offset.value.y` updates using `e.changeY`, leaving `offset.value.x` at `0`. In `useAnimatedStyle`, remove `{ translateX: offset.value.x }` from the `transform` array. Drag the ball to verify that it now moves only along the vertical axis.
+
+### Key points
+
+- Track coordinates and interaction state using `useSharedValue` from `react-native-reanimated`.
+- Define pan gesture behaviour with `usePanGesture`, updating values in `onBegin`, `onUpdate`, and `onFinalize`.
+- Read `e.changeX` and `e.changeY` inside `onUpdate` to update positional shared values.
+- Map shared values to transforms and colours using `useAnimatedStyle` and `withSpring`.
+- Attach gestures to animated views by wrapping them in a `GestureDetector` inside a `GestureHandlerRootView`.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:advanced-animations:2:2')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:advanced-animations:2:2')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:advanced-animations:2:2')::uuid, 1, '}); (React Native Gesture Handler documentation)', 'Software Mansion', 'https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/gesture-animation', 'MIT', 'https://opensource.org/license/mit', null, 'adapted');
+
+-- Lesson advanced-animations/2/3: Layout animations
+update public.lessons set title = 'Layout animations' where id = md5('lesson:advanced-animations:2:3')::uuid;
+update public.lesson_contents set body = 'You will learn how to configure entering and exiting layout animations in React Native Reanimated to animate elements automatically as they enter or leave the view hierarchy.
+
+## Entering and exiting presets
+
+Reanimated provides predefined animation presets that run when a component mounts or unmounts from the view tree. Rather than driving shared values manually, you attach animation builders directly to an `Animated.View` using the `entering` and `exiting` props.
+
+Preset families include `Fade`, `Bounce`, `Flip`, `Slide`, `Zoom`, `Roll`, `Stretch`, and `LightSpeed`. For example, `FadeInUp` animates opacity and vertical position into view, whilst `SlideOutLeft` translates an element off-screen upon removal.
+
+## Modifying animation behaviour
+
+You can chain modifier methods onto any preset builder to tailor its duration, curve, or physical behaviour:
+
+- **Time-based**: Set length in milliseconds with `.duration(ms)` and shape movement with `.easing(fn)`. Timing defaults to 300 ms.
+- **Spring-based**: Calling `.springify()` converts the animation to a physics-based spring. You can further chain `.damping()`, `.mass()`, `.stiffness()`, `.overshootClamping()`, and `.energyThreshold()`. Applying `.springify()` causes time-based modifiers such as `.easing()` to have no effect.
+- **Common settings**: Add delays using `.delay(ms)` or `.randomDelay()`, handle accessibility with `.reduceMotion()`, and attach completion handlers with `.withCallback()`.
+- **Custom values**: Override default start and end values using `.withInitialValues()` and `.withTargetValues()`. Prefer flat top-level transform properties, such as `{ translateY: 40 }`, over deprecated transform tuple arrays.
+
+Here is an example building customised entering and exiting transitions in TypeScript:
+
+```tsx
+import React, { useState } from ''react'';
+import { View, Button, StyleSheet } from ''react-native'';
+import Animated, { FadeInDown, FadeOutDown } from ''react-native-reanimated'';
+
+const enteringAnimation = FadeInDown.springify()
+  .damping(20)
+  .mass(2)
+  .withInitialValues({ translateY: 40 });
+
+const exitingAnimation = FadeOutDown.duration(200);
+
+export function Banner(): React.JSX.Element {
+  const [visible, setVisible] = useState<boolean>(true);
+
+  return (
+    <View style={styles.container}>
+      <Button title="Toggle Banner" onPress={() => setVisible((prev) => !prev)} />
+      {visible && (
+        <Animated.View
+          entering={enteringAnimation}
+          exiting={exitingAnimation}
+          style={styles.banner}
+        />
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 16 },
+  banner: { height: 60, backgroundColor: ''cornflowerblue'', borderRadius: 8 },
+});
+```
+
+## Performance and New Architecture considerations
+
+To ensure optimal rendering performance, define your layout animation builders outside of components or wrap them in `useMemo`. Creating builder instances inline inside render methods forces Reanimated to re-initialise configurations on every render pass.
+
+On the New Architecture, keep two specific behaviours in mind:
+
+1. Reanimated relies on `nativeID` internally to configure entering animations. If a parent component or third-party wrapper overrides `nativeID`, the entering animation will not trigger. Wrapping the animated element in a plain `View` resolves this collision.
+2. When removing an un-animated parent container, view flattening can cause the parent to vanish immediately without waiting for its animated children to finish their exiting transitions. You can prevent this by setting `collapsable={false}` on the parent container.
+
+### Try it
+
+Take the banner example and adapt `enteringAnimation` into a `SlideInRight` preset. Chain `.springify()` and `.withInitialValues({ originX: 200 })`, then add an `exiting` transition using `SlideOutLeft.duration(400)`.
+
+### Key points
+
+- Attach predefined builders to the `entering` and `exiting` props of an `Animated.View` to animate mounting and unmounting.
+- Chain `.springify()` to enable spring physics; note that time-based modifiers such as `.easing()` have no effect once spring mode is active.
+- Define animation builders outside component render cycles or memoise them with `useMemo` for optimal performance.
+- Use flat top-level transform properties in `.withInitialValues()` and `.withTargetValues()`, avoiding deprecated tuple arrays.
+- Mitigate view flattening on the New Architecture by applying `collapsable={false}` to parents whose children have exiting animations.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:advanced-animations:2:3')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:advanced-animations:2:3')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:advanced-animations:2:3')::uuid, 1, 'Entering/Exiting animations (React Native Reanimated documentation)', 'Software Mansion', 'https://docs.swmansion.com/react-native-reanimated/docs/layout-animations/entering-exiting-animations', 'MIT', 'https://opensource.org/license/mit', null, 'adapted');
+
+-- Lesson advanced-animations/3/1: Measuring frame drops
+update public.lesson_contents set body = 'In this lesson, you will learn how to measure frame drops in React Native, distinguish between JavaScript thread and native UI thread bottlenecks, and inspect system traces to identify what causes animation hitches.
+
+## The 16.67 ms frame budget
+
+To achieve smooth motion, mobile devices render displays at a target of at least 60 frames per second (FPS). This leaves your application at most 16.67 ms to complete all the work needed to produce each frame. If layout, rendering, or script execution takes longer than this window, the device drops a frame, causing visible stutter (often called jank) or unresponsive interactions.
+
+React Native divides this workload across separate threads:
+
+- **JavaScript thread (`mqt_js`)**: Runs your application business logic, processes touch events, executes API callbacks, and triggers state updates. If an expensive computation takes 200 ms, the JavaScript thread locks up and drops around 12 frames, freezing any animation managed by JavaScript.
+- **UI thread**: Handles native Android or iOS view measurement, layout, and drawing. Even if the JavaScript thread is locked up, native components like `ScrollView` or native stack transitions can often continue running at 60 FPS on the UI thread.
+- **Render thread**: On Android 5.0 and newer, this thread converts view hierarchies into OpenGL commands through operations like `DrawFrame` and queues them for the GPU.
+
+## Observing frame rates with Perf Monitor
+
+A quick way to observe frame performance during development is through the in-app developer menu. Toggling **Show Perf Monitor** displays an overlay showing live figures for both UI FPS and JS FPS.
+
+When testing, keep in mind that running in development mode (`dev=true`) imposes substantial overhead due to runtime warnings and error checks. While the Perf Monitor helps you spot immediate problems during daily development, you must always verify frame rates on release or profileable builds to obtain realistic measurements.
+
+When a touch handler triggers heavy component re-renders, it can starve the JavaScript thread immediately. Deferring non-essential state changes using `requestAnimationFrame` allows touch feedback to complete before running heavy calculations:
+
+```tsx
+import React, { useState } from ''react'';
+import { View, Button, Text, StyleSheet } from ''react-native'';
+
+type TaskState = { isProcessing: boolean };
+
+export function HeavyActionView(): React.JSX.Element {
+  const [status, setStatus] = useState<TaskState>({ isProcessing: false });
+
+  const handlePress = (): void => {
+    requestAnimationFrame(() => {
+      setStatus({ isProcessing: true });
+    });
+  };
+
+  return (
+    <View style={styles.container}>
+      <Button title="Execute" onPress={handlePress} />
+      <Text>{status.isProcessing ? ''Processing'' : ''Idle''}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({ container: { padding: 16 } });
+```
+
+## Tracing frame boundaries with Android Studio Profiler
+
+When an animation stutters and you need to find the root cause, recording a system trace gives you detailed thread timings. Connect a physical Android device via USB, open the project in Android Studio, and run the app as profileable.
+
+In the Android Studio Profiler, start the **Capture System Activities** task, perform the animation you want to investigate, and stop the recording. You can inspect the resulting trace directly in Android Studio or export it to tools such as Perfetto.
+
+Inside the trace:
+
+1. Enable the **VSync highlighting** checkbox to display vertical zebra stripes marking each 16 ms frame boundary.
+2. Locate your app''s process rows to inspect `UI Thread`, `mqt_js`, and `RenderThread`.
+3. Identify which thread breaches the boundary. If `mqt_js` is continuously active across the zebra stripes (executing repeated `JSCall` or event emitter events), the bottleneck is in your JavaScript code. If `RenderThread` spends long periods inside `DrawFrame` crossing boundaries, the GPU is overloaded by complex layouts, excessive alpha compositing, or unoptimised view updates.
+
+### Try it
+
+Enable **Show Perf Monitor** from the developer menu in your local build. Trigger a navigation transition or animate a view while dispatching an expensive state update, and check whether the UI frame rate, the JS frame rate, or both drop below 60 FPS.
+
+### Key points
+
+- Maintaining 60 FPS requires all frame work to finish within a 16.67 ms window.
+- React Native separates execution into the JavaScript thread, the native UI thread, and the Render thread.
+- The Dev Menu''s Perf Monitor provides real-time readouts of both UI and JS frame rates.
+- System tracing in Android Studio with VSync highlighting reveals whether frame boundary overruns originate in JavaScript or native rendering.
+- Accurate performance measurements must be taken on release or profileable builds, as development mode degrades JavaScript performance.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:advanced-animations:3:1')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:advanced-animations:3:1')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:advanced-animations:3:1')::uuid, 1, 'Performance Overview (React Native documentation (0.88))', 'Meta Platforms, Inc. and affiliates', 'https://reactnative.dev/docs/0.88/performance', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted'),
+  (md5('lesson:advanced-animations:3:1')::uuid, 2, 'Profiling (React Native documentation (0.88))', 'Meta Platforms, Inc. and affiliates', 'https://reactnative.dev/docs/0.88/profiling', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
+
+-- Lesson advanced-animations/3/2: Avoiding re-renders
+update public.lesson_contents set body = 'In high-performance mobile applications, unnecessary render passes can block the JavaScript thread and trigger dropped frames. You will learn how to identify the causes of redundant renders, memoise components and callbacks, and eliminate cascading updates caused by misplaced state and effects.
+
+## The render and commit cycle
+
+Every screen update in React follows three steps:
+
+1. **Triggering** a render (due to the initial render or a state update in the component or an ancestor).
+2. **Rendering** the component (React calls your component functions to determine what needs to be displayed).
+3. **Committing** the changes (React applies the minimal necessary updates to the native view hierarchy or DOM).
+
+Rendering is recursive. When an ancestor component''s state updates, React by default calls every component nested inside it. If rendering calculations take too long or trigger subsequent state updates, you risk stalling event processing and degrading responsiveness.
+
+## Memoising components and handlers
+
+When a parent component re-renders, you can prevent unchanged children from re-rendering by wrapping them in `memo` (or `React.memo`). A memoised component only re-renders when its props change.
+
+You can also supply a custom comparison function as the second argument to `memo`. If the comparison function returns `true`, the component will skip re-rendering.
+
+```tsx
+import React, { memo, useCallback } from ''react'';
+import { FlatList, Text, View } from ''react-native'';
+
+type Item = { id: string; title: string };
+
+const ListItem = memo(
+  ({ title }: { title: string }) => (
+    <View>
+      <Text>{title}</Text>
+    </View>
+  ),
+  (prevProps, nextProps) => prevProps.title === nextProps.title
+);
+
+export function ItemList({ items }: { items: Item[] }) {
+  const renderItem = useCallback(
+    ({ item }: { item: Item }) => <ListItem title={item.title} />,
+    []
+  );
+
+  return <FlatList data={items} renderItem={renderItem} />;
+}
+```
+
+Notice the use of `useCallback` for `renderItem`. If you pass an anonymous inline function directly to `renderItem`, a new function instance is created on every render of the parent list, invalidating prop equality and triggering avoidable re-renders.
+
+## Eliminating cascading updates
+
+A frequent source of redundant renders is updating state inside a `useEffect` hook to transform data. When state updates inside an effect:
+
+1. React calls your components to calculate the initial UI.
+2. React commits those changes to the screen.
+3. React runs your effect, which immediately updates state with `setState`.
+4. This state update restarts the entire render and commit process from scratch.
+
+If a value can be computed from existing props or state, do not store it in state or update it inside an effect. Calculate it directly during rendering:
+
+```tsx
+import React, { useMemo, useState } from ''react'';
+
+type Todo = { id: number; text: string; completed: boolean };
+
+export function TodoList({ todos, filter }: { todos: Todo[]; filter: string }) {
+  const [newTodo, setNewTodo] = useState<string>('''');
+
+  // Calculated during rendering; memoised if computation is expensive
+  const visibleTodos = useMemo(() => {
+    return todos.filter((todo) => todo.text.includes(filter));
+  }, [todos, filter]);
+
+  return null;
+}
+```
+
+Wrapping the calculation in `useMemo` caches the result and skips recalculating it during subsequent renders unless `todos` or `filter` change. If the calculation is not expensive, running it directly without `useMemo` is sufficient.
+
+Similarly, avoid chaining effects where one effect updates state that triggers another effect. Update all related states in the initiating event handler so that React can batch the updates into a single render pass.
+
+### Try it
+
+Review an existing list component in your application. Wrap the list item component in `memo` and extract its `renderItem` callback into a `useCallback` hook outside of the JSX. Check whether any values passed to the list item can be calculated during the render pass rather than stored in a separate `useState` variable.
+
+### Key points
+
+- React re-renders components recursively whenever their state or an ancestor''s state updates.
+- Wrap child components in `memo` to skip rendering when their props remain unchanged.
+- Use `useCallback` to avoid passing freshly instantiated anonymous functions as props on each render.
+- Calculate derived values during rendering rather than updating secondary state inside `useEffect`.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:advanced-animations:3:2')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:advanced-animations:3:2')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:advanced-animations:3:2')::uuid, 1, 'Render and Commit (React documentation (react.dev))', 'Meta Platforms, Inc. and affiliates', 'https://react.dev/learn/render-and-commit', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted'),
+  (md5('lesson:advanced-animations:3:2')::uuid, 2, 'You Might Not Need an Effect (React documentation (react.dev))', 'Meta Platforms, Inc. and affiliates', 'https://react.dev/learn/you-might-not-need-an-effect', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted'),
+  (md5('lesson:advanced-animations:3:2')::uuid, 3, 'Optimizing FlatList Configuration (React Native documentation (0.88))', 'Meta Platforms, Inc. and affiliates', 'https://reactnative.dev/docs/0.88/optimizing-flatlist-configuration', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
+
+-- Lesson advanced-animations/3/3: Testing on real devices
+update public.lesson_contents set body = 'In this lesson, you will learn how to configure and deploy your animated React Native application onto physical Android and iOS devices, run builds in release mode for accurate performance benchmarking, and check hardware display settings such as high refresh rates.
+
+## Setting up physical devices
+
+Testing your application on an actual physical device is essential before releasing it to your users. Running the app directly on real hardware gives you an accurate view of touch responsiveness and frame delivery.
+
+### Android configuration
+
+To prepare an Android phone for development:
+1. Enable developer mode by navigating to **Settings** → **About phone** → **Software information** and tapping **Build number** seven times.
+2. Return to **Settings** → **Developer options** and enable **USB debugging**.
+3. Connect the phone via USB and check that the Android Debug Bridge (ADB) detects it:
+
+```bash
+adb devices
+```
+
+Ensure only one device is connected and listed with the `device` status. If using Android 5.0 (Lollipop) or newer, forward port 8081 from your phone to your host machine over USB using `adb reverse`:
+
+```bash
+adb reverse tcp:8081 tcp:8081
+```
+
+You can then install and launch the app using `yarn android` or `npm run android`.
+
+### iOS configuration
+
+To run on an iOS device (which requires a Mac):
+1. Connect your device to your Mac using a USB cable.
+2. Open the project workspace in Xcode (`.xcworkspace` or `.xcodeproj` inside the `ios` directory).
+3. Open the **Product** menu, navigate to **Destination**, and select your device from the list to register it for development.
+4. Select your project in the Project Navigator, select your main target, look for the **General** tab, go to **Signing**, and assign your Apple Developer team. Repeat this step for the tests target.
+5. Press **Cmd ⌘** + **R** or choose **Run** from the **Product** menu to build and install the application.
+
+## Testing in release mode
+
+Performance regressions and animation frame drops are often noticeable only in the development build of your app. In release mode, both React Native and Reanimated are compiled with full compiler optimisations, which yields significantly better performance compared to debug mode.
+
+To generate and run a release build directly onto your connected device with the React Native CLI, execute:
+
+```bash
+yarn android --mode release
+```
+
+For Android development iterations, you can also consider the `debugOptimized` build variant (available from React Native 0.82) to improve performance while testing.
+
+## Hardware thresholds and high refresh rates
+
+When testing on actual hardware, keep component limits in mind. As a rule of thumb, Reanimated performs best when animating no more than 100 components simultaneously on low-end Android devices, and no more than 500 components on iOS. Animating beyond these thresholds can affect performance.
+
+To support high-refresh displays at 120 fps on iOS, verify that the `CADisableMinimumFrameDurationOnPhone` key is enabled in your `Info.plist` (enabled by default in project templates starting from React Native 0.82):
+
+```xml
+<key>CADisableMinimumFrameDurationOnPhone</key>
+<true/>
+```
+
+This configuration flag allows animations to take advantage of 120 fps displays on supported iOS hardware.
+
+### Try it
+
+Connect an Android device with USB debugging enabled. Run `adb devices` in your terminal to confirm it is recognised with the `device` status, run `adb reverse tcp:8081 tcp:8081`, and launch a release build using `yarn android --mode release`. Observe whether your animation frame rate improves compared to the debug build.
+
+### Key points
+
+- Testing on physical hardware ensures you evaluate actual runtime performance before releasing to users.
+- Android devices require USB debugging and port forwarding using `adb reverse tcp:8081 tcp:8081` to connect to the development server.
+- iOS devices require configuring Apple Developer code signing on both the main application target and the tests target in Xcode.
+- Always test animation performance in release mode using `yarn android --mode release`, as compiler optimisations significantly improve frame delivery over debug mode.
+- Keep simultaneous animated components under roughly 100 on low-end Android and 500 on iOS, and enable `CADisableMinimumFrameDurationOnPhone` in `Info.plist` for 120 fps support on iOS.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:advanced-animations:3:3')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:advanced-animations:3:3')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:advanced-animations:3:3')::uuid, 1, 'Running On Device (React Native documentation (0.88))', 'Meta Platforms, Inc. and affiliates', 'https://reactnative.dev/docs/0.88/running-on-device', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted'),
+  (md5('lesson:advanced-animations:3:3')::uuid, 2, 'Performance (React Native Reanimated documentation)', 'Software Mansion', 'https://docs.swmansion.com/react-native-reanimated/docs/guides/performance', 'MIT', 'https://opensource.org/license/mit', null, 'adapted');
+
+-- Lesson design-systems/1/1: What a design system is
+update public.lesson_contents set body = 'By understanding what a design system provides, you will be able to evaluate its core layers—principles, guidance, and code—and explain how teams use these shared resources to build consistent digital services.
+
+## Beyond a collection of assets
+A design system is more than a simple library of interface widgets or a UI kit in Figma or Sketch. Complete design systems, such as the U.S. Web Design System (USWDS) and the GOV.UK Design System, act as comprehensive toolkits that unite designers and developers around a shared workflow.
+
+A mature system provides three interconnected layers:
+1. **Principles**: High-level rules and values that support policy or organisational goals and steer design decisions.
+2. **Guidance**: User experience (UX) documentation and best practices that explain how to ensure components behave as users expect.
+3. **Code**: Tested, mobile-friendly, and accessible implementations that developers can download as files or install via package managers like npm.
+
+## Tokens, components, and utilities
+Design systems organise their technical solutions into distinct structural layers:
+- **Design tokens**: These are predefined units of colour, spacing, typography, and opacity. Tokens serve as the foundational building blocks of the design system itself.
+- **Components**: Built on top of tokens, components offer simple, consistent answers to everyday interface needs—such as form fields, buttons, and icons. While tokens form the system''s foundation, components serve as the building blocks for an application or website.
+- **Utilities**: Single-purpose classes mapped directly to design tokens. They allow developers to prototype quickly without writing custom CSS or Sass.
+- **Styles and patterns**: Systems also provide reusable styles and repeatable interaction patterns to solve broader tasks across a digital service.
+
+Here is an example showing utility classes applied directly to an element to prototype quickly without writing Sass or CSS:
+
+```html
+<a href="/documentation/getting-started-for-developers/" class="text-no-underline text-primary hover:text-underline block-link">
+  Developers
+</a>
+```
+
+## Incremental adoption and user research
+Teams do not need to install every component at once. Design systems support incremental adoption. A team can start by adopting core design principles and reviewing UX guidance before writing any system code. From there, you might introduce design tokens into existing stylesheets, and later adopt full components or platform implementations (such as Drupal integrations).
+
+Crucially, design systems are grounded in evidence. When systems publish styles, components, or patterns, they provide details on how and when those elements were evaluated in user research. This evidence helps you determine whether a pattern suits your specific service. Community spaces and GitHub discussions allow teams to share research findings, propose adaptations, and contribute improvements back to the core system.
+
+### Try it
+Examine an interface element in your current work, such as a confirmation button or input field. Break it down into its design system layers: identify which design tokens it relies on (such as colour and spacing), what UX guidance governs its behaviour, and how its markup should be structured.
+
+### Key points
+- A complete design system unites design principles, UX guidance, and accessible code into a shared toolkit.
+- Design tokens define foundational units like colour and spacing, while components form the building blocks of an application.
+- Teams can adopt systems incrementally, beginning with principles and guidance before incorporating code.
+- Robust design systems document user research to demonstrate that components and patterns meet user needs.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:design-systems:1:1')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:design-systems:1:1')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:design-systems:1:1')::uuid, 1, 'Get started (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/get-started/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
+  (md5('lesson:design-systems:1:1')::uuid, 2, 'How to use USWDS (U.S. Web Design System)', 'U.S. General Services Administration (public domain)', 'https://designsystem.digital.gov/how-to-use-uswds/', 'CC0 1.0 (US public domain)', 'https://creativecommons.org/publicdomain/zero/1.0/', null, 'adapted');
+
+-- Lesson design-systems/1/2: Design tokens
+update public.lesson_contents set body = 'By the end of this lesson, you will be able to explain how design tokens replace arbitrary visual values with curated palettes, and apply them using configuration settings, helper functions, mixins, and utility classes.
+
+## Curated options instead of arbitrary values
+
+Visual styling offers a nearly endless continuum of values. For example, digital interfaces can display over 16 million colours in the RGB colour space, while line heights, spacing increments, and container widths accept a continuous spectrum of numbers and units. Relying on continuous scales slows down decisions and creates fragmented, inconsistent implementations between design and development.
+
+Design tokens solve this by introducing discrete palettes of decisions. Instead of choosing any possible frequency, a design system selects a restricted set of options, much like a scale of musical notes or preset stations on a car radio. For example, rather than permitting arbitrary `max-width` lengths, a system might provide a curated scale of seven measure tokens (such as `1` for `44ex`, up to `6` for `88ex`, and `''none''`). Every layout then restricts itself to these predefined choices.
+
+## Tokens as keys
+
+A design token behaves like a key that unlocks a concrete value. In practice, tokens are usually formatted as quoted strings (such as `''primary''`, `''sans''`, or `''card-lg''`) or unitless numbers (such as `1` or `4`), with rare exceptions such as `1px` or `2px`. 
+
+You do not insert the raw token or its underlying value directly into stylesheet rules. For instance, writing `max-width: 1` directly in CSS or Sass will not work. Instead, the design system provides mechanisms—functions, mixins, or utility classes—to translate that token into a final calculated rule.
+
+## Applying tokens in code
+
+A design system typically offers three ways to unlock token values in project code:
+
+1. **Functions**: You pass the token into a helper function inside a standard property rule.
+2. **Mixins**: You include a mixin that generates the required properties and rules automatically.
+3. **Utility classes**: You apply predefined class names directly within HTML markup.
+
+Here is how you might access the `''primary''` colour token and a spacing unit token using Sass and HTML:
+
+```css
+/* Using a helper function */
+.card {
+  background-color: color(''primary'');
+  max-width: units(''card-lg'');
+}
+
+/* Using a helper mixin */
+.card-accent {
+  @include u-bg(''primary'');
+  @include u-padding-x(2);
+}
+```
+
+```html
+<!-- Using a utility class -->
+<div class="bg-primary padding-x-2">
+  Token-styled container
+</div>
+```
+
+### Theme roles and settings
+
+Tokens also assign semantic roles to visual decisions. For colours, a design system can group choices into role-based families such as `base` (the neutral text tone), `primary`, `secondary`, and accents (`accent-warm` and `accent-cool`). A common starting point balances these roles with a 60/30/10 proportional rule: roughly 60% primary, 30% secondary, and 10% accent colours across non-neutral surfaces.
+
+Tokens can also be assigned directly to theme settings variables, allowing you to configure global container widths, responsive margins, and site-wide colours in a single configuration file:
+
+```css
+@use "uswds-core" with (
+  $theme-site-margins-width: 4,
+  $theme-site-margins-mobile-width: 2,
+  $theme-link-color: ''primary-vivid''
+);
+```
+
+### Try it
+
+Consider an alert box that needs a white background, a vivid primary border colour, and an inner horizontal spacing token of `2`. Write three CSS or Sass declarations using helper mixins (`u-bg`, `u-border`, and `u-padding-x`) to construct the component styles using only design tokens.
+
+### Key points
+
+- Design tokens convert an infinite continuum of design values into a curated, discrete scale of options.
+- Tokens are structured as keys—typically strings or unitless numbers—rather than hard-coded values.
+- You extract token values in stylesheets and markup using functions, mixins, utility classes, or settings variables.
+- Role-based token palettes (such as `base`, `primary`, and `accent`) help structure colour hierarchies across an interface.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:design-systems:1:2')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:design-systems:1:2')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:design-systems:1:2')::uuid, 1, 'Design tokens (U.S. Web Design System)', 'U.S. General Services Administration (public domain)', 'https://designsystem.digital.gov/design-tokens/', 'CC0 1.0 (US public domain)', 'https://creativecommons.org/publicdomain/zero/1.0/', null, 'adapted'),
+  (md5('lesson:design-systems:1:2')::uuid, 2, 'Theme color tokens (U.S. Web Design System)', 'U.S. General Services Administration (public domain)', 'https://designsystem.digital.gov/design-tokens/color/theme-tokens/', 'CC0 1.0 (US public domain)', 'https://creativecommons.org/publicdomain/zero/1.0/', null, 'adapted');
+
+-- Lesson design-systems/1/3: Naming things
+update public.lesson_contents set body = 'In this lesson, you will learn how to structure names for design system tokens and components. Clear naming conventions create a shared vocabulary between designers and developers, establishing whether an item represents an underlying value, a contextual role, or a lifecycle stage.
+
+## System tokens: family, grade, and variant
+
+In the U.S. Web Design System (USWDS), system color tokens describe specific colours across the design palette. The system tables organise these tokens under columns for Family, Grade, and Variant alongside the token name and hex value. Examples of system tokens include `gray-30` and `blue-warm-50v`. Each theme token in USWDS is drawn from a system color token.
+
+Developers can access system color tokens across multiple contexts in code depending on coding style and requirements:
+
+- **Functions**: retrieving a colour directly, such as `color(''gray-30'')`.
+- **Mixins**: applying styles with Sass mixins, such as `@include u-bg(''gray-30'')`, `@include u-text(''gray-30'')`, `@include u-border(''gray-30'')`, or `@include u-underline(''gray-30'')`.
+- **Settings variables**: configuring theme variables with a system token, such as `$theme-color-disabled: ''gray-30''`.
+- **Utility classes**: adding pre-built classes to markup, such as `.bg-gray-30`, `.border-gray-30`, `.text-gray-30`, `.outline-gray-30`, or `.underline-gray-30`.
+
+## Theme tokens: role-based naming
+
+While system tokens provide the underlying colour palette, theme tokens organise colours into five role-based families:
+
+- `base`: The neutral colour for a project, typically a tint of grey, usually used as text colour throughout.
+- `primary`: The predominant non-base brand colour, accounting for about 60% of non-base colours.
+- `secondary`: A supporting colour family, accounting for about 30% of non-base colours.
+- `accent-warm` and `accent-cool`: Accent colour families that make up the remaining 10% of non-base colours.
+
+Within these families, USWDS provides seven possible lightness grades, ranging from `lightest` to `darkest`. In addition, the `primary` and `secondary` families offer a `vivid` grade, producing tokens like `primary-vivid`.
+
+Theme tokens can be configured using theme settings variables. For example, a settings variable can assign a theme token to a specific role, such as `$theme-link-color: ''primary-vivid''`. In turn, each theme token is drawn from a system color token; for instance, `''primary-vivid''` has a default value of `''blue-warm-50v''`.
+
+Theme tokens can also be accessed in code using functions, mixins, or utility classes:
+
+```css
+div {
+  background-color: color("primary");
+}
+```
+
+Using utilities such as `.bg-base-lighter` or `.text-primary`, or mixins like `@include u-bg(''primary'')`, ensures developers reference functional roles rather than literal colour values.
+
+## Naming component lifecycle statuses
+
+Naming conventions also communicate component maturity. The GOV.UK Design System uses explicit lifecycle statuses to signal confidence that a component is ready for use across public-facing services:
+
+- **Trial**: These components display a trial status tag. The status is used for components or component variants that are new, have significantly changed, are potentially valuable but need further testing in services, or are actively being worked on. Releasing them on trial allows services to test them with users and provide community feedback. Components in trial status for six months move to stable status if no negative feedback is received.
+- **Stable**: These components do not have a tag, indicating they have passed the trial stage.
+
+Using clear status tags ensures teams understand which components might change substantially or become deprecated, whilst providing transparency about active design system work.
+
+### Try it
+
+Review a component in your project and practise applying these naming patterns. Identify a role-based theme token (such as `primary-vivid`), note its underlying default system token (`blue-warm-50v`), and decide whether a newly created component variant should carry a `Trial` tag or be considered `Stable`.
+
+### Key points
+
+- System tokens represent concrete palette colours and are organised by family, grade, and variant.
+- Theme tokens organise colours into functional roles across five families: base, primary, secondary, accent-warm, and accent-cool.
+- Tokens can be applied across codebases using functions, mixins, settings variables, or utility classes.
+- Lifecycle statuses like Trial and Stable signal component maturity and stability to adopting teams.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:design-systems:1:3')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:design-systems:1:3')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:design-systems:1:3')::uuid, 1, 'System color tokens (U.S. Web Design System)', 'U.S. General Services Administration (public domain)', 'https://designsystem.digital.gov/design-tokens/color/system-tokens/', 'CC0 1.0 (US public domain)', 'https://creativecommons.org/publicdomain/zero/1.0/', null, 'adapted'),
+  (md5('lesson:design-systems:1:3')::uuid, 2, 'Theme color tokens (U.S. Web Design System)', 'U.S. General Services Administration (public domain)', 'https://designsystem.digital.gov/design-tokens/color/theme-tokens/', 'CC0 1.0 (US public domain)', 'https://creativecommons.org/publicdomain/zero/1.0/', null, 'adapted'),
+  (md5('lesson:design-systems:1:3')::uuid, 3, 'Component lifecycle statuses (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/community/component-lifecycle-statuses/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted');
+
+-- Lesson design-systems/2/1: Buttons, the hard way
+update public.lesson_contents set body = 'In this lesson, you will learn how to build robust button components by implementing semantic markup, handling keyboard navigation, managing disabled states, and establishing clear visual hierarchy.
+
+## Semantic markup and button types
+
+A common mistake in component development is using non-interactive elements like `<div>` or `<img>` to construct buttons. Assistive technologies such as screen readers cannot interpret these elements as interactive controls without extensive custom scripting.
+
+Native buttons and links serve distinct purposes:
+
+- **Buttons** (`<button>`): Perform an action, submit data, or trigger a script on the current page. Pressing the Space key triggers a button.
+- **Links** (`<a>`): Navigate to a new document or section. A link styled to look like a button (such as a GOV.UK "Start now" button) does not usually submit form data, and pressing the Enter key triggers a link rather than Space.
+
+Always define the `type` attribute on `<button>` elements. A button without an explicit `type` defaults to `type="submit"`, which can unintentionally submit surrounding forms. Set `type="button"` for non-submitting actions, `type="submit"` for submitting forms, or `type="reset"`.
+
+```html
+<!-- Submits the form, guarded against double clicks -->
+<button type="submit" data-prevent-double-click="true">
+  Save and continue
+</button>
+
+<!-- Navigation: a link, even when styled as a button -->
+<a href="/start">
+  Start now
+</a>
+```
+
+## Visual hierarchy and copy
+
+A page should generally feature only one default primary action button, aligned to the left edge of a form. Adding multiple default buttons dilutes their impact and makes it harder for users to understand what to do next.
+
+Design systems typically define several distinct variants:
+
+- **Default (Primary)**: The primary call to action on the page.
+- **Secondary**: For lower-priority actions, often paired with a primary button in a button group.
+- **Warning**: Reserved for irreversible, destructive consequences (such as permanently deleting an account). Never rely solely on red colour to communicate danger; provide descriptive copy and a confirmation step.
+- **Inverse**: White buttons on dark backgrounds that meet a minimum contrast ratio of 4.5:1 against the background to satisfy WCAG 2.2 Level AA requirements.
+
+When writing labels, use sentence case, keep button text short, and lead with a strong action verb (for example, "Sign in", "Pay", or "File a complaint").
+
+## Managing disabled states and repeat submissions
+
+Disabled buttons present usability challenges: they have poor contrast and can confuse users, so avoid them where possible. When an action is unavailable, explain why it is unavailable and how to make it available.
+
+There are two primary approaches to disabling a button:
+
+1. **Native `disabled` attribute**: Prevents activation of a `<button>`, but removes the button from the tab order. Note that the `disabled` attribute does not disable an `<a>` element.
+2. **`aria-disabled="true"` attribute**: Keeps the button in the keyboard tab order and communicates the state, but does not prevent activation by itself. You must write application logic to prevent activation by mouse, keyboard, and other input methods.
+
+To prevent users on slow connections or with tremors from submitting information twice, configure buttons to ignore rapid consecutive clicks—such as setting the `data-prevent-double-click` attribute to `true`—alongside server-side protections.
+
+### Try it
+
+Create an HTML snippet containing a button group: a primary submit button with `data-prevent-double-click="true"` and a secondary button styled with `type="button"`. Test navigating between both elements using the Tab key, then trigger the primary button using the Space bar.
+
+### Key points
+
+- Always specify the `type` attribute on `<button>` elements to avoid unexpected form submission.
+- Differentiate between buttons (triggered by the Space key) and links styled as buttons (triggered by the Enter key).
+- Avoid using multiple primary default buttons on a single page, and ensure text starts with an action verb in sentence case.
+- Prefer accessible patterns over native `disabled` attributes where possible, remembering that `aria-disabled="true"` requires custom application logic to prevent activation.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:design-systems:2:1')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:design-systems:2:1')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:design-systems:2:1')::uuid, 1, 'Button (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/components/button/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
+  (md5('lesson:design-systems:2:1')::uuid, 2, 'Button accessibility tests (U.S. Web Design System)', 'U.S. General Services Administration (public domain)', 'https://designsystem.digital.gov/components/button/accessibility-tests/', 'CC0 1.0 (US public domain)', 'https://creativecommons.org/publicdomain/zero/1.0/', null, 'adapted');
+
+-- Lesson design-systems/2/2: Inputs and states
+update public.lesson_contents set body = 'In this lesson, you will learn how to design accessible text inputs by pairing clear labels and hints with distinct focus and validation error states.
+
+## Structuring labels and hints
+
+All text inputs must have labels, and in most cases the label should be visible. Align labels directly above the text input they refer to. Labels should be short, direct, and written in sentence case without a colon at the end.
+
+Do not use placeholder text in place of a label, hint, or example. Placeholder text vanishes when someone starts typing, causing problems for users reviewing answers or living with memory conditions. In addition, some screen readers do not read it out, and default browser placeholder colours often fail colour contrast requirements under WCAG 2.2.
+
+When users need guidance relevant to the majority of people, provide hint text:
+
+- Keep hint text to a single short sentence without a full stop at the end.
+- Do not use links in hint text, because screen readers read out the text without indicating to users that a link is present.
+- Avoid using hint text for long explanations, as screen readers read out the entire text when users interact with the field.
+
+Help users understand what they should enter by sizing text inputs appropriately. For inputs with a known length, such as postcodes or phone numbers, use fixed width inputs. For other fields, use fluid widths that adapt to the container or resize with the viewport.
+
+## Accessible focus states
+
+Keyboard users navigate by jumping from one interactive element to the next, requiring a prominent focus state so they know which element they are currently on. To meet WCAG 2.2 Level AA non-text contrast on any background colour, the NHS digital service manual and GOV.UK design system pair yellow with black. Yellow provides high contrast against dark backgrounds, while a thick black border provides contrast against light backgrounds.
+
+When form inputs receive focus, they display a yellow outline and a thick black border. If the element already has a border, that border becomes thicker. Ensure that user interface elements such as sticky headers or overlaid cookie banners never obscure focused elements, satisfying WCAG 2.2 Criterion 2.4.11 (Focus Not Obscured).
+
+If you are extending or modifying focusable text components, you can include the provided mixin in Sass:
+
+```scss
+.app-component:focus {
+  @include nhsuk-focused-text;
+}
+```
+
+For focusable elements with a background colour or border, such as text inputs or checkboxes, NHS frontend provides three Sass variables to replace numeric values: `$nhsuk-focus-colour` for the yellow background, `$nhsuk-focus-text-colour` for black text, and `$nhsuk-focus-width` for consistent width.
+
+## Managing validation and error states
+
+When a validation error occurs, show an error message next to the field and summarise all errors at the top of the page using an error summary. Never clear form fields when displaying errors; keeping both passing and failing answers lets users see what went wrong, edit their answers, and avoid re-entering information.
+
+Presenting an error requires three elements:
+
+1. A red border that visually connects the message with the question it belongs to (and, when the error is about one field within the question, a red border on that field).
+2. An error message in red placed after the question and hint text, prefixed with a visually hidden "Error: " to alert screen reader users.
+3. An error summary at the top of the page with the heading "There is a problem", which links to each answer containing an error and moves keyboard focus to the error summary itself.
+
+Make error messages specific, clear, and concise. Directly include language from the label so the message matches the input. For empty fields, use an instruction like "Enter your first name". For entries that exceed character limits, use a description such as "Address line 1 must be 35 characters or less". Avoid technical jargon, apologies, or generic wording like "This field is required".
+
+### Try it
+
+Write Sass rules for a modified text input''s `:focus` state using NHS frontend variables. Use `$nhsuk-focus-colour` to set the yellow background, `$nhsuk-focus-text-colour` for black text, and `$nhsuk-focus-width` to establish consistent width, avoiding hard-coded numeric values.
+
+### Key points
+
+- All text inputs must have labels, which in most cases should be visible and aligned above the input, avoiding placeholder text.
+- Hint text should be a single short sentence without a full stop, avoiding links and lengthy explanations.
+- Form input focus states use a yellow outline and a thick black border to provide high contrast on any background colour.
+- Show validation errors using a red border, clear message copy prefixed with a hidden "Error: ", and an error summary that receives keyboard focus.
+- Never clear form fields on validation errors so users can review and edit their answers.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:design-systems:2:2')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:design-systems:2:2')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:design-systems:2:2')::uuid, 1, 'Text input (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/components/text-input/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
+  (md5('lesson:design-systems:2:2')::uuid, 2, 'Error message (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/components/error-message/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
+  (md5('lesson:design-systems:2:2')::uuid, 3, 'Error summary (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/components/error-summary/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
+  (md5('lesson:design-systems:2:2')::uuid, 4, 'Focus state (NHS digital service manual)', '© Crown copyright', 'https://service-manual.nhs.uk/design-system/styles/focus-state', 'OGL v3.0', 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted');
+
+-- Lesson design-systems/2/3: Composing components
+update public.lesson_contents set body = 'In a design system, individual controls rarely live in complete isolation. You will often compose lower-level elements—such as inputs, labels, and error messages—into unified groups that preserve semantic meaning and accessibility across complex user journeys. In this lesson you will learn to group related controls with a fieldset and legend, and to extend design system components without breaking upstream updates.
+
+## Grouping related controls with fieldsets
+
+When multiple inputs share a relationship, use the fieldset component to group them together. For example, you may need to group a set of text inputs when asking for an address in your service. When you use components like radios, checkboxes, or date inputs, the fieldset is already included.
+
+The first element inside a `<fieldset>` must always be a `<legend>` that describes the group of inputs. This description can be a question, such as ''What is your current address?'', or a statement, such as ''Personal details''. You can also include general help text inside the legend if it helps the user complete the form and cannot be provided as hint text, keeping it as short as possible.
+
+If you ask only one question on a page, set the contents of the `<legend>` as the page heading. Doing so ensures that users of screen readers hear the question announced only once rather than hearing duplicate text. If you ask more than one question on a page, do not set the contents of the legend as the page heading.
+
+## Composing composite controls and conditional reveals
+
+Radio groups provide another core example of composition. You must always position radios to the left of their labels, making them easier to locate for users of screen magnifiers. Group radios together in a `<fieldset>` with a descriptive `<legend>`.
+
+Do not pre-select radio options, as this makes it more likely that users will fail to notice the question or submit the wrong answer. By default, order radio options alphabetically, though you may order them from most-to-least common options if done with extreme caution to avoid reinforcing bias.
+
+When an option requires follow-up information, you can conditionally reveal a related question so the user only sees it when relevant:
+
+- Reveal simple questions only; if a related question has multiple parts or is complicated, present it on the next page instead.
+- Conditionally reveal questions only, and never reveal content that is not a question.
+- Do not attach conditional reveals to inline radios, such as side-by-side ''yes'' and ''no'' choices.
+- If a user does not answer a conditionally revealed question, provide an error message that is clearly related to the initial question.
+
+## Safe extension and customisation
+
+When you compose and adapt design system components in your service, avoid overwriting the design system''s CSS selectors directly. Modifying library rules can cause your service to break when you install upstream updates.
+
+To safeguard your code, follow these practices:
+
+1. Use a unique prefix, such as `app-` (or departmental initials like `hmcts-` or `dvla-`), while the core library retains `govuk-`.
+2. Apply modifier classes using the BEM `--` suffix alongside your namespace, such as `app-button--inverse`.
+3. Rely on established override classes for font sizes, spacing, and widths before writing bespoke styles.
+
+```html
+<div class="app-interruption-card">
+  <button class="govuk-button app-button--inverse">
+    Inverse button
+  </button>
+</div>
+```
+
+```scss
+.app-button--inverse {
+  color: govuk-colour("blue");
+  background-color: govuk-colour("white");
+}
+```
+
+If you must introduce large modifications to a component''s markup or behaviour, fork the component entirely by copying the source code rather than stacking modifiers.
+
+### Try it
+
+Draft the layout for a single-question form asking users: ''How would you like to be contacted?''. Group the options in a `<fieldset>`, set the contents of the `<legend>` as the page heading, and position two stacked radio options for ''Email'' and ''Phone'' to the left of their respective labels without pre-selecting either option.
+
+### Key points
+
+- Use a `<fieldset>` with a `<legend>` as its first child to associate related inputs semantically.
+- When asking one question on a page, set the contents of the `<legend>` as the page heading so screen reader users hear it once.
+- Always place radios to the left of their labels and avoid pre-selecting options.
+- Keep conditionally revealed questions simple, reveal only questions, and never attach them to inline radios.
+- Namespace custom styles using a unique prefix like `app-` and use BEM modifiers for small changes to avoid breaking updates.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:design-systems:2:3')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:design-systems:2:3')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:design-systems:2:3')::uuid, 1, 'Fieldset (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/components/fieldset/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
+  (md5('lesson:design-systems:2:3')::uuid, 2, 'Radios (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/components/radios/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
+  (md5('lesson:design-systems:2:3')::uuid, 3, 'Extending and modifying components in production (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/get-started/extending-and-modifying-components/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted');
+
+-- Lesson design-systems/3/1: Documentation people read
+update public.lesson_contents set body = 'Good design system documentation must be read and understood by busy designers, developers, and product teams.
+
+In this lesson, you will learn how to write design system documentation that is clear, accurate, and concise, ensuring your guidance is easy to follow across different teams.
+
+## Be accurate and objective
+
+Content in documentation should be factual, neutral, and unambiguous. Avoid metaphors and subjective statements. Words like "good", "bad", or "easy" should be used with extreme care unless there is a clear evidence base to support them.
+
+State facts and measurements directly rather than using subjective descriptions:
+
+- Instead of "it can take a long time to get an appointment for X", state "it takes X weeks to get an appointment".
+- Instead of "you have a good chance of recovery", specify "4 out of 5 people recover fully in a week".
+- Instead of "a large glass of wine", specify "a 250ml glass of red wine".
+
+When writing about system behaviours, provide concrete facts and figures rather than vague qualitative assessments.
+
+## Write clearly for all audiences
+
+Clarity requires using plain language that readers can digest quickly. Target a reading age of 9 to 11 years old. Software tools such as the Hemingway Editor can help you assess your text and keep reading levels accessible.
+
+Research demonstrates that even specialist audiences prefer plain English over dense technical jargon. When you must introduce a technical term, explain it first in plain English. State the simple term before the technical term, and avoid unnecessary jargon where everyday words work.
+
+## Keep guidance concise and structured
+
+Subheadings and bulleted lists help readers find what they need. To keep documentation focused:
+
+- Use short sentences with a limit of 20 words.
+- Keep paragraphs short, with no more than 3 sentences each.
+- Use subheadings and bulleted lists to break up information.
+- Choose short, direct words (for instance, prefer "have" or "get" over "experience").
+- Use the active voice to make instructions direct (for example, write "find a pharmacy" rather than "a pharmacy can be found").
+
+## Document support, versions, and contribution
+
+Documentation must cover how to use, contribute to, and maintain shared resources over time. For example, before linking to a community resource or tool, documentation should explicitly detail:
+
+1. Who owns the tool and how users can get support.
+2. Which version of GOV.UK Frontend it supports.
+3. Clear instructions outlining how other team members can contribute to the resource.
+4. Clear notices making sure the tool cannot be mistaken for an official part of the core Design System.
+
+### Try it
+
+Review the following piece of component documentation:
+
+"Users will experience an easy and quick checkout if designers ensure that the address lookup component can be found on the form."
+
+Rewrite this sentence applying the principles of plain English: remove subjective claims ("easy and quick"), switch the passive phrasing to the active voice, replace "experience" with simpler phrasing, and keep the sentence under 20 words.
+
+### Key points
+
+- Write factual, neutral, and unambiguous guidance without metaphors or subjective terms like "easy" or "good".
+- Aim for a reading age of 9 to 11 years old, using plain English before introducing specialised technical terms.
+- Keep sentences under 20 words and paragraphs to 3 sentences or fewer, using the active voice and bulleted lists.
+- Explicitly document ownership, contribution processes, version compatibility and how to get support.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:design-systems:3:1')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:design-systems:3:1')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:design-systems:3:1')::uuid, 1, 'How we write (NHS digital service manual)', '© Crown copyright', 'https://service-manual.nhs.uk/content/how-we-write', 'OGL v3.0', 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
+  (md5('lesson:design-systems:3:1')::uuid, 2, 'Contribution criteria (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/community/contribution-criteria/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted');
+
+-- Lesson design-systems/3/2: Versioning and change
+update public.lesson_contents set body = 'When a design system evolves, updates can range from small token adjustments to major architectural overhauls. For example, a major release might retire legacy framework support entirely—as seen when GOV.UK Frontend v5.x ceased supporting legacy frameworks—or transition source code to modern module systems. You will learn how to audit version differences, manage breaking changes across code and settings, and unbundle monolithic systems into modular component packages.
+
+## Auditing versions and breaking changes
+
+Before applying upgrades, you must audit both your code and configuration versions:
+1. Check your project dependency manifest (such as `package.json`) to confirm the installed package release.
+2. Inspect your theme and settings files, which may track a different version than the library bundle itself.
+
+Breaking changes introduced across releases generally fall into three categories:
+- **Markup updates**: Accessible markup patterns or asset strategies may change. For instance, replacing an `h3` heading tag with a semantic paragraph tag in a footer logo, or replacing inline text placeholders with explicit SVG icon images.
+- **Settings replacements**: Variables may be deprecated or renamed. A system might replace a blanket flag like `$output-all-utilities: false` with an explicit list variable like `$output-these-utilities: ("display", "font")`, or rename `$theme-site-max-width` to `$theme-grid-container-max-width`.
+- **Changed defaults**: Default colours, sizes, or borders may change value between versions, requiring you to remove redundant overrides or explicitly declare previous values.
+
+## Migrating configuration and build paths
+
+Major version jumps often modernise underlying tooling, such as transitioning from global Sass `@import` statements to isolated module syntax with `@use` and `@forward`.
+
+Under modern module architectures, variables and mixins are no longer globally exposed. Instead, you load and configure the system core directly. In USWDS 3, for instance, custom theme settings are isolated and passed directly into the core module:
+
+```scss
+@use "uswds-core" with (
+  $theme-image-path: "../uswds/img",
+  $theme-font-path: "../uswds/fonts",
+  $theme-show-compile-warnings: false,
+  $theme-focus-color: "blue-50v",
+  $theme-global-paragraph-styles: true
+);
+```
+
+Notice that within `@use ... with`, configuration settings are structured as a comma-separated list of variable overrides rather than standalone semicolon-terminated statements. Build tools like Gulp or Webpack also need their load paths updated to point to the library''s package directory (such as `./node_modules/@uswds/uswds/packages`), enabling compilers to resolve modular source files.
+
+## Unbundling monolithic releases
+
+Design systems frequently begin by distributing an omnibus package containing every component. Over time, systems evolve towards a component-centred architecture where styles, templates, tests, and scripts live in discrete directories.
+
+Consuming applications do not always need the entire library. A system with modular packages allows you to unbundle your imports, publishing and compiling only what you use:
+
+```scss
+@forward "uswds-theme";
+@forward "usa-accordion";
+@forward "usa-banner";
+@forward "usa-button";
+@forward "uswds-utilities";
+```
+
+Selective forwarding significantly reduces compiled CSS size and speeds up build compilation times. Each individual package automatically includes its necessary dependencies (such as icons, grid, or fonts), keeping individual components functional without requiring the full monolithic bundle.
+
+### Try it
+
+Review a project stylesheet or entry point. If you load an entire design system bundle, identify the specific components your application actually renders. Draft an updated entry file that replaces the omnibus package with three individual component packages (such as an accordion, button, and banner) alongside your theme configuration.
+
+### Key points
+
+- Major releases often modernise architecture, drop legacy frameworks, or adopt modular syntax that requires updating build paths.
+- Breaking changes can occur across markup semantics, renamed configuration settings, or altered default token values.
+- Moving configuration from global imports to scoped statements (such as `@use ... with`) ensures settings are encapsulated.
+- Unbundling an omnibus design system import into individual component packages reduces compiled CSS output and build times.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:design-systems:3:2')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:design-systems:3:2')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:design-systems:3:2')::uuid, 1, 'Replace variables, functions and mixins from our old frameworks (GOV.UK Design System)', '© Crown copyright (Government Digital Service)', 'https://design-system.service.gov.uk/get-started/updating-your-code/', 'MIT (repository) and OGL v3.0 (site content)', 'https://opensource.org/license/mit', 'Contains public sector information licensed under the Open Government Licence v3.0.', 'adapted'),
+  (md5('lesson:design-systems:3:2')::uuid, 2, 'Migrating to USWDS 3.0 (U.S. Web Design System)', 'U.S. General Services Administration (public domain)', 'https://designsystem.digital.gov/documentation/migration/', 'CC0 1.0 (US public domain)', 'https://creativecommons.org/publicdomain/zero/1.0/', null, 'adapted');
+
+-- Lesson design-systems/3/3: Measuring adoption
+update public.lesson_contents set body = 'Adopting a design system is rarely an all-or-nothing effort. In this lesson, you will learn how to evaluate and measure your digital service''s design system adoption using a three-level maturity model, assessing progress across core principles, user experience guidance, and production code.
+
+## The three levels of adoption
+
+The maturity model visualises adoption as concentric circles, progressing inwards from Principles on the outside, through Guidance in the middle, to Code in the innermost circle. Teams can advance both by reaching higher maturity levels and by achieving deeper coverage within each level.
+
+1. **Level 1: Integrate design principles.** The outermost circle aligns teams on shared values that serve as an evaluative lens for design decisions: starting with real user needs, earning trust, embracing accessibility, promoting continuity, and listening through ongoing customer feedback and analytics.
+2. **Level 2: Follow user experience guidance.** The middle circle focuses on component behaviours and interaction patterns. Teams adhere to researched usability and accessibility guidance, even if they have not yet installed the system''s code library.
+3. **Level 3: Use design system code.** The innermost circle implements shared design tokens and pre-built components directly in application templates and stylesheets.
+
+## Auditing user experience guidance (Level 2)
+
+User experience guidance helps assure that components do what users expect them to do, based on UX research and best practices. You can follow and measure this guidance before writing or compiling any system code.
+
+To conduct a Level 2 audit across an application, follow three key steps:
+
+1. **Inventory site components:** Compile an inventory of every UI element currently running on the site, such as buttons, form fields, and navigation bars, and map each one to any equivalent system component.
+2. **Read component UX guidance:** Review the current usability, accessibility, and line-length guidance documented for each corresponding component, alongside agency design and style guidelines.
+3. **Assure components follow guidance:** Compare your live implementation with the recommendations, and update any elements that fall outside the documented guidance.
+
+## Tracking code adoption (Level 3)
+
+Level 3 adoption measures the technical implementation of design system code, which comprises design tokens and pre-built components. For example, the banner component provides an easy way to show that a site is an official government website and explain the benefits of secure connections.
+
+Teams typically progress through code integration in sequential stages:
+
+1. **Add code and compile:** Install the package, compile Sass stylesheets, load necessary JavaScript, and adjust system settings.
+2. **Apply design tokens:** Use tokens for consistent colour, spacing, and typography across all project stylesheets, relying on Sass functions, mixins, or utility classes.
+3. **Replace components:** Swap custom markup for standard component markup featuring `usa-` prefixed class selectors in templates.
+4. **Contribute back:** Share new research, bug reports, and component proposals with the community.
+
+When measuring Level 3 progress, remember that detecting `usa-` classes or a compiled stylesheet confirms code integration, but it does not prove that an implementation is usable or accessible. You must evaluate the implementation in context against current component guidance.
+
+### Try it
+
+Select a single live page from your project and conduct a Level 2 audit. List every user interface component on that page, find its equivalent in the design system documentation, and check your implementation against the official usability and line-length guidance to identify any discrepancies.
+
+### Key points
+
+- The maturity model organises adoption into three concentric circles: Principles (outermost), Guidance (middle), and Code (innermost).
+- You can adopt and measure Level 2 UX guidance even if your project does not use design system code.
+- Level 3 code adoption involves compiling assets, using design tokens for typography, colour, and spacing, and replacing custom markup with `usa-` classed components.
+- The presence of `usa-` classes confirms code usage, but contextual review is still required to verify usability and accessibility.
+- Teams can advance both by reaching higher levels and by deepening maturity within each level.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:design-systems:3:3')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:design-systems:3:3')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:design-systems:3:3')::uuid, 1, 'USWDS maturity model (U.S. Web Design System)', 'U.S. General Services Administration (public domain)', 'https://designsystem.digital.gov/maturity-model/', 'CC0 1.0 (US public domain)', 'https://creativecommons.org/publicdomain/zero/1.0/', null, 'adapted');
 
 -- Quiz react-native-basics/1: Getting started quiz (15 questions)
 insert into public.quizzes (id, chapter_id, title, position, is_preview) values
@@ -4365,4 +5682,514 @@ insert into public.quiz_answers (id, question_id, position, text, is_correct) va
   (md5('course-answer:data-analysis-pandas:4:15:2')::uuid, md5('course-question:data-analysis-pandas:4:15')::uuid, 2, 'trips["Start date"].time.hour', false),
   (md5('course-answer:data-analysis-pandas:4:15:3')::uuid, md5('course-question:data-analysis-pandas:4:15')::uuid, 3, 'trips["Start date"].to_hour()', false),
   (md5('course-answer:data-analysis-pandas:4:15:4')::uuid, md5('course-question:data-analysis-pandas:4:15')::uuid, 4, 'trips["Start date"].dt.hour', true)
+on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;
+
+-- Quiz advanced-animations/1: Motion principles quiz (15 questions)
+insert into public.quizzes (id, chapter_id, title, position, is_preview) values
+  (md5('course-quiz:advanced-animations:1')::uuid, md5('chapter:advanced-animations:1')::uuid, 'Motion principles quiz', 1, true)
+on conflict (id) do update set title = excluded.title, is_preview = excluded.is_preview;
+insert into public.quiz_questions (id, quiz_id, position, prompt, explanation, reference_url) values
+  (md5('course-question:advanced-animations:1:1')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 1, 'According to the React Native documentation, what easing curve does Animated.timing() use by default?', 'In React Native''s Animated API, Animated.timing() defaults to an easeInOut curve, conveying gradual acceleration to full speed followed by gradual deceleration to a stop.', 'https://reactnative.dev/docs/0.88/animations'),
+  (md5('course-question:advanced-animations:1:2')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 2, 'According to research on motion sensitivity, what proportion of adults experience some form of vestibular dysfunction by age 40?', 'By age 40, over 35% of adults will have experienced some form of vestibular dysfunction, which can lead to dizziness or vertigo when viewing moving interface elements.', 'https://web.dev/learn/accessibility/motion'),
+  (md5('course-question:advanced-animations:1:3')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 3, 'To minimise the risk of triggering seizures in users with photosensitive epilepsy, what flashing threshold does WCAG recommend against?', 'WCAG guidelines explicitly recommend against content that flashes more than three times in any one second, as rapid flickering can induce seizures in photosensitive individuals.', 'https://web.dev/learn/accessibility/motion'),
+  (md5('course-question:advanced-animations:1:4')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 4, 'According to WCAG guidelines on motion, under what condition must an interface provide a mechanism to pause, stop, or hide movement?', 'WCAG requires a pause, stop, or hide control for non-essential moving, blinking, or scrolling elements that start automatically, last more than five seconds, and accompany other page content.', 'https://web.dev/learn/accessibility/motion'),
+  (md5('course-question:advanced-animations:1:5')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 5, 'In React Native, how do the roles of Animated and LayoutAnimation differ?', 'React Native provides Animated for granular and interactive control of specific animated values, while LayoutAnimation is intended for animated global layout transactions across renders.', 'https://reactnative.dev/docs/0.88/animations'),
+  (md5('course-question:advanced-animations:1:6')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 6, 'In React Native Reanimated, what are the default duration and easing settings for withTiming when config is omitted?', 'By default, withTiming executes for 300 milliseconds using an easing curve of Easing.inOut(Easing.quad).', 'https://docs.swmansion.com/react-native-reanimated/docs/animations/withTiming'),
+  (md5('course-question:advanced-animations:1:7')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 7, 'What are the default values for damping and stiffness in a physics-based withSpring animation in Reanimated?', 'In Reanimated''s withSpring, the default physics-based values are 120 for damping and 900 for stiffness.', 'https://docs.swmansion.com/react-native-reanimated/docs/animations/withSpring'),
+  (md5('course-question:advanced-animations:1:8')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 8, 'What occurs if both physics-based properties (stiffness, damping) and duration-based properties (duration, dampingRatio) are passed to withSpring?', 'According to the withSpring documentation, when both parameter types are provided, duration and dampingRatio override stiffness and damping.', 'https://docs.swmansion.com/react-native-reanimated/docs/animations/withSpring'),
+  (md5('course-question:advanced-animations:1:9')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 9, 'In duration-based withSpring animations, what physical behaviour does a dampingRatio value of 1 produce?', 'A dampingRatio of 1 signifies critical damping, meaning the spring settles without oscillating past its target. Values below 1 bounce, whereas values above 1 are overdamped.', 'https://docs.swmansion.com/react-native-reanimated/docs/animations/withSpring'),
+  (md5('course-question:advanced-animations:1:10')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 10, 'In duration-based withSpring configurations, how does the actual animation duration compare to the duration property passed in config?', 'The duration property sets the perceptual duration in milliseconds, while the actual animation duration is 1.5 times that value.', 'https://docs.swmansion.com/react-native-reanimated/docs/animations/withSpring'),
+  (md5('course-question:advanced-animations:1:11')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 11, 'When supplying a completion callback to withTiming or withSpring, what argument does the callback receive if the animation is cancelled?', 'The completion callback receives a finished boolean: true if the animation ran to completion, or false if it was cancelled or interrupted.', 'https://docs.swmansion.com/react-native-reanimated/docs/animations/withTiming'),
+  (md5('course-question:advanced-animations:1:12')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 12, 'How does marking a function with the ''worklet'' directive affect standard JavaScript hoisting?', 'Reanimated documentation notes that functions marked with the ''worklet'' directive are not hoisted.', 'https://docs.swmansion.com/react-native-reanimated/docs/guides/worklets'),
+  (md5('course-question:advanced-animations:1:13')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 13, 'Which function is used to manually schedule the execution of a worklet on the UI thread from the JavaScript thread?', 'In React Native Worklets, scheduleOnUI is used to dispatch worklet execution to the UI runtime from the JavaScript thread.', 'https://docs.swmansion.com/react-native-reanimated/docs/guides/worklets'),
+  (md5('course-question:advanced-animations:1:14')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 14, 'Where must a function passed to scheduleOnRN be defined when called from a UI thread worklet?', 'Functions passed to scheduleOnRN must be defined in the JavaScript thread scope (in the component body or global scope). They cannot be created dynamically inside UI thread worklets.', 'https://docs.swmansion.com/react-native-reanimated/docs/guides/worklets'),
+  (md5('course-question:advanced-animations:1:15')::uuid, md5('course-quiz:advanced-animations:1')::uuid, 15, 'When reading an object property inside a worklet closure, why is extracting the property into a separate variable recommended?', 'Worklets capture outer variables referenced in their body. Reading a single property of a large object causes the entire object to be copied into the worklet closure.', 'https://docs.swmansion.com/react-native-reanimated/docs/guides/worklets')
+on conflict (id) do update set prompt = excluded.prompt, explanation = excluded.explanation, reference_url = excluded.reference_url;
+update public.quiz_answers set is_correct = false where question_id in (select id from public.quiz_questions where quiz_id = md5('course-quiz:advanced-animations:1')::uuid);
+insert into public.quiz_answers (id, question_id, position, text, is_correct) values
+  (md5('course-answer:advanced-animations:1:1:1')::uuid, md5('course-question:advanced-animations:1:1')::uuid, 1, 'A linear curve that maintains constant speed throughout the transition', false),
+  (md5('course-answer:advanced-animations:1:1:2')::uuid, md5('course-question:advanced-animations:1:1')::uuid, 2, 'An ease-in curve that accelerates gradually until the final position', false),
+  (md5('course-answer:advanced-animations:1:1:3')::uuid, md5('course-question:advanced-animations:1:1')::uuid, 3, 'An ease-in-out curve that accelerates gradually and decelerates to a stop', true),
+  (md5('course-answer:advanced-animations:1:1:4')::uuid, md5('course-question:advanced-animations:1:1')::uuid, 4, 'An ease-out curve that begins at full speed and slowly halts', false),
+  (md5('course-answer:advanced-animations:1:2:1')::uuid, md5('course-question:advanced-animations:1:2')::uuid, 1, 'Over 35%', true),
+  (md5('course-answer:advanced-animations:1:2:2')::uuid, md5('course-question:advanced-animations:1:2')::uuid, 2, 'Around 10%', false),
+  (md5('course-answer:advanced-animations:1:2:3')::uuid, md5('course-question:advanced-animations:1:2')::uuid, 3, 'Under 5%', false),
+  (md5('course-answer:advanced-animations:1:2:4')::uuid, md5('course-question:advanced-animations:1:2')::uuid, 4, 'Exactly 50%', false),
+  (md5('course-answer:advanced-animations:1:3:1')::uuid, md5('course-question:advanced-animations:1:3')::uuid, 1, 'Flashing more than five times in any two seconds', false),
+  (md5('course-answer:advanced-animations:1:3:2')::uuid, md5('course-question:advanced-animations:1:3')::uuid, 2, 'Flashing more than three times in any one second', true),
+  (md5('course-answer:advanced-animations:1:3:3')::uuid, md5('course-question:advanced-animations:1:3')::uuid, 3, 'Any contrast transition occurring within 500 milliseconds', false),
+  (md5('course-answer:advanced-animations:1:3:4')::uuid, md5('course-question:advanced-animations:1:3')::uuid, 4, 'Flashing that exceeds 80% screen luminance', false),
+  (md5('course-answer:advanced-animations:1:4:1')::uuid, md5('course-question:advanced-animations:1:4')::uuid, 1, 'Any transition that runs across multiple navigation routes', false),
+  (md5('course-answer:advanced-animations:1:4:2')::uuid, md5('course-question:advanced-animations:1:4')::uuid, 2, 'Decorative motion that exceeds 60 frames per second', false),
+  (md5('course-answer:advanced-animations:1:4:3')::uuid, md5('course-question:advanced-animations:1:4')::uuid, 3, 'Non-essential movement that starts automatically and lasts over five seconds', true),
+  (md5('course-answer:advanced-animations:1:4:4')::uuid, md5('course-question:advanced-animations:1:4')::uuid, 4, 'Interactive gestures that animate layout dimensions', false),
+  (md5('course-answer:advanced-animations:1:5:1')::uuid, md5('course-question:advanced-animations:1:5')::uuid, 1, 'Animated is limited to Android, whereas LayoutAnimation is exclusive to iOS.', false),
+  (md5('course-answer:advanced-animations:1:5:2')::uuid, md5('course-question:advanced-animations:1:5')::uuid, 2, 'Animated controls layout changes globally, whereas LayoutAnimation tracks interactive values.', false),
+  (md5('course-answer:advanced-animations:1:5:3')::uuid, md5('course-question:advanced-animations:1:5')::uuid, 3, 'Animated requires manual state re-renders, whereas LayoutAnimation is fully declarative.', false),
+  (md5('course-answer:advanced-animations:1:5:4')::uuid, md5('course-question:advanced-animations:1:5')::uuid, 4, 'Animated provides granular control of specific values, whereas LayoutAnimation handles global layout transactions.', true),
+  (md5('course-answer:advanced-animations:1:6:1')::uuid, md5('course-question:advanced-animations:1:6')::uuid, 1, '500 ms and Easing.linear', false),
+  (md5('course-answer:advanced-animations:1:6:2')::uuid, md5('course-question:advanced-animations:1:6')::uuid, 2, '250 ms and Easing.in(Easing.quad)', false),
+  (md5('course-answer:advanced-animations:1:6:3')::uuid, md5('course-question:advanced-animations:1:6')::uuid, 3, '400 ms and Easing.out(Easing.cubic)', false),
+  (md5('course-answer:advanced-animations:1:6:4')::uuid, md5('course-question:advanced-animations:1:6')::uuid, 4, '300 ms and Easing.inOut(Easing.quad)', true),
+  (md5('course-answer:advanced-animations:1:7:1')::uuid, md5('course-question:advanced-animations:1:7')::uuid, 1, 'damping: 120 and stiffness: 900', true),
+  (md5('course-answer:advanced-animations:1:7:2')::uuid, md5('course-question:advanced-animations:1:7')::uuid, 2, 'damping: 50 and stiffness: 500', false),
+  (md5('course-answer:advanced-animations:1:7:3')::uuid, md5('course-question:advanced-animations:1:7')::uuid, 3, 'damping: 900 and stiffness: 120', false),
+  (md5('course-answer:advanced-animations:1:7:4')::uuid, md5('course-question:advanced-animations:1:7')::uuid, 4, 'damping: 10 and stiffness: 100', false),
+  (md5('course-answer:advanced-animations:1:8:1')::uuid, md5('course-question:advanced-animations:1:8')::uuid, 1, 'Reanimated throws a runtime exception during worklet execution.', false),
+  (md5('course-answer:advanced-animations:1:8:2')::uuid, md5('course-question:advanced-animations:1:8')::uuid, 2, 'duration and dampingRatio override stiffness and damping.', true),
+  (md5('course-answer:advanced-animations:1:8:3')::uuid, md5('course-question:advanced-animations:1:8')::uuid, 3, 'stiffness and damping override duration and dampingRatio.', false),
+  (md5('course-answer:advanced-animations:1:8:4')::uuid, md5('course-question:advanced-animations:1:8')::uuid, 4, 'Reanimated computes an arithmetic average of both parameter sets.', false),
+  (md5('course-answer:advanced-animations:1:9:1')::uuid, md5('course-question:advanced-animations:1:9')::uuid, 1, 'An underdamped motion with multiple pronounced oscillations', false),
+  (md5('course-answer:advanced-animations:1:9:2')::uuid, md5('course-question:advanced-animations:1:9')::uuid, 2, 'An overdamped motion that approaches the target very slowly', false),
+  (md5('course-answer:advanced-animations:1:9:3')::uuid, md5('course-question:advanced-animations:1:9')::uuid, 3, 'A critically damped motion that comes to rest without bouncing', true),
+  (md5('course-answer:advanced-animations:1:9:4')::uuid, md5('course-question:advanced-animations:1:9')::uuid, 4, 'An undamped oscillation that continues indefinitely', false),
+  (md5('course-answer:advanced-animations:1:10:1')::uuid, md5('course-question:advanced-animations:1:10')::uuid, 1, 'The actual duration equals the specified duration exactly.', false),
+  (md5('course-answer:advanced-animations:1:10:2')::uuid, md5('course-question:advanced-animations:1:10')::uuid, 2, 'The actual duration is 1.5 times the specified perceptual duration.', true),
+  (md5('course-answer:advanced-animations:1:10:3')::uuid, md5('course-question:advanced-animations:1:10')::uuid, 3, 'The actual duration is half the specified perceptual duration.', false),
+  (md5('course-answer:advanced-animations:1:10:4')::uuid, md5('course-question:advanced-animations:1:10')::uuid, 4, 'The actual duration is twice the specified perceptual duration.', false),
+  (md5('course-answer:advanced-animations:1:11:1')::uuid, md5('course-question:advanced-animations:1:11')::uuid, 1, 'undefined', false),
+  (md5('course-answer:advanced-animations:1:11:2')::uuid, md5('course-question:advanced-animations:1:11')::uuid, 2, '0', false),
+  (md5('course-answer:advanced-animations:1:11:3')::uuid, md5('course-question:advanced-animations:1:11')::uuid, 3, 'null', false),
+  (md5('course-answer:advanced-animations:1:11:4')::uuid, md5('course-question:advanced-animations:1:11')::uuid, 4, 'false', true),
+  (md5('course-answer:advanced-animations:1:12:1')::uuid, md5('course-question:advanced-animations:1:12')::uuid, 1, 'The function is hoisted to the top of the enclosing block scope.', false),
+  (md5('course-answer:advanced-animations:1:12:2')::uuid, md5('course-question:advanced-animations:1:12')::uuid, 2, 'The function is not hoisted.', true),
+  (md5('course-answer:advanced-animations:1:12:3')::uuid, md5('course-question:advanced-animations:1:12')::uuid, 3, 'The function is hoisted only when executed on the UI runtime.', false),
+  (md5('course-answer:advanced-animations:1:12:4')::uuid, md5('course-question:advanced-animations:1:12')::uuid, 4, 'The function is hoisted directly to global runtime scope.', false),
+  (md5('course-answer:advanced-animations:1:13:1')::uuid, md5('course-question:advanced-animations:1:13')::uuid, 1, 'scheduleOnUI', true),
+  (md5('course-answer:advanced-animations:1:13:2')::uuid, md5('course-question:advanced-animations:1:13')::uuid, 2, 'requestAnimationFrame', false),
+  (md5('course-answer:advanced-animations:1:13:3')::uuid, md5('course-question:advanced-animations:1:13')::uuid, 3, 'scheduleOnRN', false),
+  (md5('course-answer:advanced-animations:1:13:4')::uuid, md5('course-question:advanced-animations:1:13')::uuid, 4, 'runOnJS', false),
+  (md5('course-answer:advanced-animations:1:14:1')::uuid, md5('course-question:advanced-animations:1:14')::uuid, 1, 'Directly inside the callback passed to withTiming or withSpring', false),
+  (md5('course-answer:advanced-animations:1:14:2')::uuid, md5('course-question:advanced-animations:1:14')::uuid, 2, 'Inside an anonymous inner closure defined within the worklet', false),
+  (md5('course-answer:advanced-animations:1:14:3')::uuid, md5('course-question:advanced-animations:1:14')::uuid, 3, 'In the JavaScript thread scope, such as the component body or global scope', true),
+  (md5('course-answer:advanced-animations:1:14:4')::uuid, md5('course-question:advanced-animations:1:14')::uuid, 4, 'Inside the native UI view manager registry', false),
+  (md5('course-answer:advanced-animations:1:15:1')::uuid, md5('course-question:advanced-animations:1:15')::uuid, 1, 'Referencing a property directly captures the entire object, which can cause performance issues.', true),
+  (md5('course-answer:advanced-animations:1:15:2')::uuid, md5('course-question:advanced-animations:1:15')::uuid, 2, 'Worklets cannot read object keys formatted as strings.', false),
+  (md5('course-answer:advanced-animations:1:15:3')::uuid, md5('course-question:advanced-animations:1:15')::uuid, 3, 'The Worklets Babel plugin cannot parse dot notation syntax.', false),
+  (md5('course-answer:advanced-animations:1:15:4')::uuid, md5('course-question:advanced-animations:1:15')::uuid, 4, 'Worklets freeze referenced objects, preventing further modification on the JavaScript thread.', false)
+on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;
+
+-- Quiz advanced-animations/2: Gestures quiz (15 questions)
+insert into public.quizzes (id, chapter_id, title, position, is_preview) values
+  (md5('course-quiz:advanced-animations:2')::uuid, md5('chapter:advanced-animations:2')::uuid, 'Gestures quiz', 1, false)
+on conflict (id) do update set title = excluded.title, is_preview = excluded.is_preview;
+insert into public.quiz_questions (id, quiz_id, position, prompt, explanation, reference_url) values
+  (md5('course-question:advanced-animations:2:1')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 1, 'In React Native Gesture Handler, how do you configure a fling gesture to recognise movement in both the left and right directions?', 'Directions for fling gestures are exported as constants in the Directions object and can be combined using the bitwise OR (|) operator.', 'https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-fling-gesture'),
+  (md5('course-question:advanced-animations:2:2')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 2, 'When handling a pan gesture callback, what is the difference between `changeX` and `translationX` in the event data?', 'In pan gesture event data, changeX represents the immediate incremental change in the X axis since the last event frame, whilst translationX represents the total displacement accumulated over time.', 'https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-pan-gesture'),
+  (md5('course-question:advanced-animations:2:3')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 3, 'How does multi-touch pan gesture translation calculation differ by default between iOS and Android?', 'On iOS, translation calculations default to treating touches as a single pointer at the centre of mass. On Android, the gesture defaults to tracking the latest placed finger unless averageTouches is enabled.', 'https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-pan-gesture'),
+  (md5('course-question:advanced-animations:2:4')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 4, 'Why is it safe to modify Reanimated shared values directly inside Gesture Handler callbacks such as `onUpdate` or `onChange`?', 'Reanimated and Gesture Handler automatically workletise callbacks passed to gestures, allowing them to run on the UI thread and safely read or mutate shared values directly without extra boilerplate.', 'https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/handling-gestures'),
+  (md5('course-question:advanced-animations:2:5')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 5, 'How does setting `activeOffsetX` affect the behaviour of a pan gesture?', 'activeOffsetX defines a range along the X axis where fingers can travel without activating the pan gesture. Moving outside of this range triggers gesture activation.', 'https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-pan-gesture'),
+  (md5('course-question:advanced-animations:2:6')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 6, 'When implementing momentum-based release animations with `withDecay`, which gesture lifecycle method is typically used to capture final velocity and initiate deceleration?', 'withDecay uses the instantaneous velocity of a gesture to decelerate to a stop. This final velocity is retrieved and supplied to withDecay inside the onFinalize callback when the gesture completes.', 'https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/handling-gestures'),
+  (md5('course-question:advanced-animations:2:7')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 7, 'When tracking drag movement for a custom draggable sheet, why is `e.changeY` added to `offset.value.y` inside `onUpdate`?', 'changeY supplies the vertical distance moved since the previous event frame. Adding changeY to the current offset value allows the sheet to track drag interactions incrementally on each frame.', 'https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/gesture-animation'),
+  (md5('course-question:advanced-animations:2:8')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 8, 'Under what condition will a fling gesture fail to activate?', 'A fling gesture activates only when the pointer movement is fast and long enough. If the finger is lifted before satisfying these activation requirements, the gesture fails.', 'https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-fling-gesture'),
+  (md5('course-question:advanced-animations:2:9')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 9, 'According to the React Native Gesture Handler documentation, when is it recommended to use `absoluteX` instead of `x`?', 'The documentation recommends absoluteX and absoluteY instead of x and y when the target view can be transformed as an effect of the gesture, as absolute coordinates measure relative to the window.', 'https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-pan-gesture'),
+  (md5('course-question:advanced-animations:2:10')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 10, 'What happens if you chain `.easing()` onto a layout animation preset after calling `.springify()`?', 'The documentation explicitly notes that time-based modifiers such as .easing() have no effect when .springify() is used, because spring physics govern the animation curve instead.', 'https://docs.swmansion.com/react-native-reanimated/docs/layout-animations/entering-exiting-animations'),
+  (md5('course-question:advanced-animations:2:11')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 11, 'What is the recommended format for transform overrides when configuring layout animation values in Reanimated?', 'Reanimated recommends flat top-level transform properties such as { translateY: 50 } in withInitialValues and withTargetValues. The tuple array syntax transform: [{ ... }] is deprecated.', 'https://docs.swmansion.com/react-native-reanimated/docs/layout-animations/entering-exiting-animations'),
+  (md5('course-question:advanced-animations:2:12')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 12, 'On the New Architecture, what can happen when removing an un-animated parent view containing animated children, and how is it resolved?', 'Because of view flattening on the New Architecture, removing a non-animated parent view can cause it to vanish immediately without waiting for child exit animations. Applying collapsable={false} prevents this.', 'https://docs.swmansion.com/react-native-reanimated/docs/layout-animations/entering-exiting-animations'),
+  (md5('course-question:advanced-animations:2:13')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 13, 'Where should layout animation preset builders (such as `FadeIn.duration(300)`) ideally be defined for optimal performance?', 'Reanimated recommends defining layout animation builders outside components or memoising them with useMemo to avoid re-creating builder configurations on every render pass, ensuring optimal performance.', 'https://docs.swmansion.com/react-native-reanimated/docs/layout-animations/entering-exiting-animations'),
+  (md5('course-question:advanced-animations:2:14')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 14, 'On the New Architecture, why might an entering layout animation fail if an animated child is wrapped by certain components like `TouchableWithoutFeedback`?', 'Reanimated uses nativeID internally to configure entering animations on the New Architecture. When a parent wrapper like TouchableWithoutFeedback overwrites nativeID, entering animations fail to run unless wrapped in a plain View.', 'https://docs.swmansion.com/react-native-reanimated/docs/layout-animations/entering-exiting-animations'),
+  (md5('course-question:advanced-animations:2:15')::uuid, md5('course-quiz:advanced-animations:2')::uuid, 15, 'What is the behaviour of the `activateAfterLongPress` property on a pan gesture?', 'activateAfterLongPress sets the duration in milliseconds required before Pan can activate. If the finger moves during that waiting period, the gesture will fail.', 'https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-pan-gesture')
+on conflict (id) do update set prompt = excluded.prompt, explanation = excluded.explanation, reference_url = excluded.reference_url;
+update public.quiz_answers set is_correct = false where question_id in (select id from public.quiz_questions where quiz_id = md5('course-quiz:advanced-animations:2')::uuid);
+insert into public.quiz_answers (id, question_id, position, text, is_correct) values
+  (md5('course-answer:advanced-animations:2:1:1')::uuid, md5('course-question:advanced-animations:2:1')::uuid, 1, 'Pass an array of direction constants: `[Directions.LEFT, Directions.RIGHT]`', false),
+  (md5('course-answer:advanced-animations:2:1:2')::uuid, md5('course-question:advanced-animations:2:1')::uuid, 2, 'Combine the constants using the bitwise OR operator: `Directions.RIGHT | Directions.LEFT`', true),
+  (md5('course-answer:advanced-animations:2:1:3')::uuid, md5('course-question:advanced-animations:2:1')::uuid, 3, 'Chain separate direction calls: `fling.direction(''left'').direction(''right'')`', false),
+  (md5('course-answer:advanced-animations:2:1:4')::uuid, md5('course-question:advanced-animations:2:1')::uuid, 4, 'Pass a comma-separated string: `''left, right''`', false),
+  (md5('course-answer:advanced-animations:2:2:1')::uuid, md5('course-question:advanced-animations:2:2')::uuid, 1, '`changeX` reports the raw touch position on the screen, whereas `translationX` reports position relative to the root view.', false),
+  (md5('course-answer:advanced-animations:2:2:2')::uuid, md5('course-question:advanced-animations:2:2')::uuid, 2, '`changeX` measures velocity in points per second, whereas `translationX` measures displacement in density-independent pixels.', false),
+  (md5('course-answer:advanced-animations:2:2:3')::uuid, md5('course-question:advanced-animations:2:2')::uuid, 3, '`changeX` provides the incremental distance moved since the last frame, whereas `translationX` is the accumulated displacement from the start.', true),
+  (md5('course-answer:advanced-animations:2:2:4')::uuid, md5('course-question:advanced-animations:2:2')::uuid, 4, '`changeX` is used exclusively during pointer release, whereas `translationX` updates during continuous movement.', false),
+  (md5('course-answer:advanced-animations:2:3:1')::uuid, md5('course-question:advanced-animations:2:3')::uuid, 1, 'Android averages all pointer coordinates into a centre of mass, whilst iOS tracks the initial pointer only.', false),
+  (md5('course-answer:advanced-animations:2:3:2')::uuid, md5('course-question:advanced-animations:2:3')::uuid, 2, 'iOS tracks the latest placed finger, whilst Android rejects multi-touch gestures unless configured otherwise.', false),
+  (md5('course-answer:advanced-animations:2:3:3')::uuid, md5('course-question:advanced-animations:2:3')::uuid, 3, 'Both platforms calculate translation strictly from the first finger placed on the screen.', false),
+  (md5('course-answer:advanced-animations:2:3:4')::uuid, md5('course-question:advanced-animations:2:3')::uuid, 4, 'iOS calculates translation from the averaged centre of mass of all touches, whilst Android tracks the latest placed finger.', true),
+  (md5('course-answer:advanced-animations:2:4:1')::uuid, md5('course-question:advanced-animations:2:4')::uuid, 1, 'Reanimated proxies all shared value writes through an asynchronous bridge callback.', false),
+  (md5('course-answer:advanced-animations:2:4:2')::uuid, md5('course-question:advanced-animations:2:4')::uuid, 2, 'Gesture callbacks are automatically workletised by Gesture Handler and Reanimated.', true),
+  (md5('course-answer:advanced-animations:2:4:3')::uuid, md5('course-question:advanced-animations:2:4')::uuid, 3, 'Shared values automatically re-render the hosting React functional component.', false),
+  (md5('course-answer:advanced-animations:2:4:4')::uuid, md5('course-question:advanced-animations:2:4')::uuid, 4, 'React Native bundles a special Babel plugin that converts all gestures into synchronous layout effects.', false),
+  (md5('course-answer:advanced-animations:2:5:1')::uuid, md5('course-question:advanced-animations:2:5')::uuid, 1, 'It defines a range along the X axis where the pointer can move without activating the gesture.', true),
+  (md5('course-answer:advanced-animations:2:5:2')::uuid, md5('course-question:advanced-animations:2:5')::uuid, 2, 'It defines an offset added to the animated view''s transform property after activation.', false),
+  (md5('course-answer:advanced-animations:2:5:3')::uuid, md5('course-question:advanced-animations:2:5')::uuid, 3, 'It forces the gesture to fail immediately if horizontal movement exceeds the specified boundaries.', false),
+  (md5('course-answer:advanced-animations:2:5:4')::uuid, md5('course-question:advanced-animations:2:5')::uuid, 4, 'It sets the exact horizontal position where the pointer must first touch down.', false),
+  (md5('course-answer:advanced-animations:2:6:1')::uuid, md5('course-question:advanced-animations:2:6')::uuid, 1, '`onBegin`', false),
+  (md5('course-answer:advanced-animations:2:6:2')::uuid, md5('course-question:advanced-animations:2:6')::uuid, 2, '`onTouchesDown`', false),
+  (md5('course-answer:advanced-animations:2:6:3')::uuid, md5('course-question:advanced-animations:2:6')::uuid, 3, '`onFinalize`', true),
+  (md5('course-answer:advanced-animations:2:6:4')::uuid, md5('course-question:advanced-animations:2:6')::uuid, 4, '`onStart`', false),
+  (md5('course-answer:advanced-animations:2:7:1')::uuid, md5('course-question:advanced-animations:2:7')::uuid, 1, 'It resets the sheet to its original layout coordinates on each render pass.', false),
+  (md5('course-answer:advanced-animations:2:7:2')::uuid, md5('course-question:advanced-animations:2:7')::uuid, 2, 'It applies the immediate frame-to-frame vertical displacement to update the sheet''s current offset continuously.', true),
+  (md5('course-answer:advanced-animations:2:7:3')::uuid, md5('course-question:advanced-animations:2:7')::uuid, 3, 'It normalises the touch coordinates to match the absolute screen height.', false),
+  (md5('course-answer:advanced-animations:2:7:4')::uuid, md5('course-question:advanced-animations:2:7')::uuid, 4, 'It computes the instantaneous acceleration needed to trigger a decay animation.', false),
+  (md5('course-answer:advanced-animations:2:8:1')::uuid, md5('course-question:advanced-animations:2:8')::uuid, 1, 'If the finger moves faster than the configured maximum velocity threshold.', false),
+  (md5('course-answer:advanced-animations:2:8:2')::uuid, md5('course-question:advanced-animations:2:8')::uuid, 2, 'If the pointer travels outside the view bounds before the touch ends.', false),
+  (md5('course-answer:advanced-animations:2:8:3')::uuid, md5('course-question:advanced-animations:2:8')::uuid, 3, 'If more than one pointer makes contact with the screen simultaneously.', false),
+  (md5('course-answer:advanced-animations:2:8:4')::uuid, md5('course-question:advanced-animations:2:8')::uuid, 4, 'If the finger is lifted before the quick, sufficiently long movement requirement is fulfilled.', true),
+  (md5('course-answer:advanced-animations:2:9:1')::uuid, md5('course-question:advanced-animations:2:9')::uuid, 1, 'When multi-finger touch averaging is explicitly disabled on Android.', false),
+  (md5('course-answer:advanced-animations:2:9:2')::uuid, md5('course-question:advanced-animations:2:9')::uuid, 2, 'When measuring velocity instead of spatial displacement.', false),
+  (md5('course-answer:advanced-animations:2:9:3')::uuid, md5('course-question:advanced-animations:2:9')::uuid, 3, 'When tracking gestures inside nested web modals.', false),
+  (md5('course-answer:advanced-animations:2:9:4')::uuid, md5('course-question:advanced-animations:2:9')::uuid, 4, 'When the view attached to the gesture detector can be transformed as an effect of the gesture.', true),
+  (md5('course-answer:advanced-animations:2:10:1')::uuid, md5('course-question:advanced-animations:2:10')::uuid, 1, 'The easing curve replaces the spring''s damping parameter.', false),
+  (md5('course-answer:advanced-animations:2:10:2')::uuid, md5('course-question:advanced-animations:2:10')::uuid, 2, 'Reanimated throws a runtime configuration error when the view mounts.', false),
+  (md5('course-answer:advanced-animations:2:10:3')::uuid, md5('course-question:advanced-animations:2:10')::uuid, 3, 'Time-based modifiers have no effect once `.springify()` is used.', true),
+  (md5('course-answer:advanced-animations:2:10:4')::uuid, md5('course-question:advanced-animations:2:10')::uuid, 4, 'The spring physics are blended equally with the timing curve.', false),
+  (md5('course-answer:advanced-animations:2:11:1')::uuid, md5('course-question:advanced-animations:2:11')::uuid, 1, 'Flat top-level props such as `{ translateY: 50 }`, rather than deprecated tuple arrays like `transform: [{ translateY: 50 }]`.', true),
+  (md5('course-answer:advanced-animations:2:11:2')::uuid, md5('course-question:advanced-animations:2:11')::uuid, 2, 'An array of string tuples such as `transform: [[''translateY'', 50]]`.', false),
+  (md5('course-answer:advanced-animations:2:11:3')::uuid, md5('course-question:advanced-animations:2:11')::uuid, 3, 'Nested transform style objects wrapped inside an inline function callback.', false),
+  (md5('course-answer:advanced-animations:2:11:4')::uuid, md5('course-question:advanced-animations:2:11')::uuid, 4, 'String interpolation syntax formatted as CSS transform expressions such as `transform: ''translateY(50px)''`.', false),
+  (md5('course-answer:advanced-animations:2:12:1')::uuid, md5('course-question:advanced-animations:2:12')::uuid, 1, 'The children trigger a duplicate entering animation; resolve it by memoising child keys.', false),
+  (md5('course-answer:advanced-animations:2:12:2')::uuid, md5('course-question:advanced-animations:2:12')::uuid, 2, 'View flattening causes the parent to vanish without waiting for child exit transitions; resolve it with `collapsable={false}`.', true),
+  (md5('course-answer:advanced-animations:2:12:3')::uuid, md5('course-question:advanced-animations:2:12')::uuid, 3, 'The JavaScript thread deadlocks during unmounting; resolve it by replacing the parent with `GestureDetector`.', false),
+  (md5('course-answer:advanced-animations:2:12:4')::uuid, md5('course-question:advanced-animations:2:12')::uuid, 4, 'Exiting animations ignore duration modifiers; resolve it by wrapping children in `Animated.ScrollView`.', false),
+  (md5('course-answer:advanced-animations:2:13:1')::uuid, md5('course-question:advanced-animations:2:13')::uuid, 1, 'Inside the inline JSX prop of `Animated.View`, to ensure access to current React state.', false),
+  (md5('course-answer:advanced-animations:2:13:2')::uuid, md5('course-question:advanced-animations:2:13')::uuid, 2, 'Directly inside the `onLayout` callback of the parent container component.', false),
+  (md5('course-answer:advanced-animations:2:13:3')::uuid, md5('course-question:advanced-animations:2:13')::uuid, 3, 'Outside components or memoised with `useMemo`, to avoid re-initialising configurations on every render.', true),
+  (md5('course-answer:advanced-animations:2:13:4')::uuid, md5('course-question:advanced-animations:2:13')::uuid, 4, 'Inside a separate worklet function executed on the UI thread via `runOnUI`.', false),
+  (md5('course-answer:advanced-animations:2:14:1')::uuid, md5('course-question:advanced-animations:2:14')::uuid, 1, '`TouchableWithoutFeedback` blocks all layout measurement events emitted by the native Fabric renderer.', false),
+  (md5('course-answer:advanced-animations:2:14:2')::uuid, md5('course-question:advanced-animations:2:14')::uuid, 2, 'Entering animations require active touch responders to calculate initial mounting positions.', false),
+  (md5('course-answer:advanced-animations:2:14:3')::uuid, md5('course-question:advanced-animations:2:14')::uuid, 3, 'Wrapper components un-workletise layout builder callbacks during component tree reconciliation.', false),
+  (md5('course-answer:advanced-animations:2:14:4')::uuid, md5('course-question:advanced-animations:2:14')::uuid, 4, 'Reanimated relies internally on `nativeID` to configure entering animations, which can be overwritten by wrapper components.', true),
+  (md5('course-answer:advanced-animations:2:15:1')::uuid, md5('course-question:advanced-animations:2:15')::uuid, 1, 'It specifies the duration of a long press required before pan activation, failing the gesture if the finger moves during that period.', true),
+  (md5('course-answer:advanced-animations:2:15:2')::uuid, md5('course-question:advanced-animations:2:15')::uuid, 2, 'It automatically switches the pan gesture into a fling gesture if the touch lasts longer than the set period.', false),
+  (md5('course-answer:advanced-animations:2:15:3')::uuid, md5('course-question:advanced-animations:2:15')::uuid, 3, 'It delays the gesture callback by a fixed duration while continuing to record coordinate displacement.', false),
+  (md5('course-answer:advanced-animations:2:15:4')::uuid, md5('course-question:advanced-animations:2:15')::uuid, 4, 'It forces the gesture to deactivate and reset shared values if a press exceeds the specified time limit.', false)
+on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;
+
+-- Quiz advanced-animations/3: Performance quiz (15 questions)
+insert into public.quizzes (id, chapter_id, title, position, is_preview) values
+  (md5('course-quiz:advanced-animations:3')::uuid, md5('chapter:advanced-animations:3')::uuid, 'Performance quiz', 1, false)
+on conflict (id) do update set title = excluded.title, is_preview = excluded.is_preview;
+insert into public.quiz_questions (id, quiz_id, position, prompt, explanation, reference_url) values
+  (md5('course-question:advanced-animations:3:1')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 1, 'What is the maximum time available to the UI system and your application to generate a single frame when targeting 60 frames per second on mobile devices?', 'Mobile devices target at least 60 frames per second, which provides a frame budget of at most 16.67 ms to complete all rendering work. If work takes longer, the device drops a frame.', 'https://reactnative.dev/docs/0.88/performance'),
+  (md5('course-question:advanced-animations:3:2')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 2, 'Why can a native `ScrollView` or native stack transition remain smooth at 60 FPS even when the JavaScript thread is locked by heavy computations?', 'Native stack navigators and `ScrollView` run their animations directly on the native main UI thread. Even when the JavaScript thread is blocked and unable to receive events, the native thread continues scrolling without interruption.', 'https://reactnative.dev/docs/0.88/performance'),
+  (md5('course-question:advanced-animations:3:3')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 3, 'In the Android Studio Profiler system trace, what visual indicator appears when enabling the VSync highlighting setting?', 'Checking the VSync highlighting box displays vertical zebra stripes across the trace timeline. These stripes delineate the 16 ms boundaries to help identify whether threads overrun the frame deadline.', 'https://reactnative.dev/docs/0.88/profiling'),
+  (md5('course-question:advanced-animations:3:4')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 4, 'When inspecting a system trace in Android Studio, what does a long period spent in `DrawFrame` that crosses frame boundaries on the `RenderThread` indicate?', 'Long durations inside `DrawFrame` crossing frame boundaries show that the application is spending time waiting for the GPU to drain its command buffer from the previous frame, indicating an overloaded GPU.', 'https://reactnative.dev/docs/0.88/profiling'),
+  (md5('course-question:advanced-animations:3:5')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 5, 'If tapping a touchable component causes immediate dropped frames because `onPress` sets state that triggers a heavy re-render, what workaround does the React Native documentation recommend?', 'Wrapping the action inside `requestAnimationFrame` allows the touchable component to complete its opacity or highlight feedback before the JavaScript thread begins the heavy state re-render.', 'https://reactnative.dev/docs/0.88/performance'),
+  (md5('course-question:advanced-animations:3:6')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 6, 'According to React documentation, what are the three sequential steps that occur every time the screen updates?', 'Any screen update in React follows three steps: triggering a render (due to initial render or state update), rendering the component (calling component functions), and committing changes to the native tree or DOM.', 'https://react.dev/learn/render-and-commit'),
+  (md5('course-question:advanced-animations:3:7')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 7, 'When supplying a custom comparison function as the second argument to `React.memo(Component, arePropsEqual)`, how does React interpret the boolean return value?', 'If the custom comparison function passed to `React.memo` returns `true`, React treats the props as equivalent and skips re-rendering the component.', 'https://reactnative.dev/docs/0.88/optimizing-flatlist-configuration'),
+  (md5('course-question:advanced-animations:3:8')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 8, 'Why should you avoid updating state inside a `useEffect` hook simply to transform or filter data received from props?', 'When state is updated inside an effect, React completes an initial render and commit pass, runs the effect, updates state, and restarts the entire render pass from scratch, creating unnecessary cascading renders.', 'https://react.dev/learn/you-might-not-need-an-effect'),
+  (md5('course-question:advanced-animations:3:9')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 9, 'According to React documentation, what is the recommended way to reset all state inside a component when a prop such as `userId` changes?', 'Passing the identifier as a `key` tells React that two instances with different keys are distinct components. When the key changes, React recreates the view tree and automatically resets all state without effects.', 'https://react.dev/learn/you-might-not-need-an-effect'),
+  (md5('course-question:advanced-animations:3:10')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 10, 'Why should you avoid defining an anonymous inline function directly on the `renderItem` prop of a `FlatList`?', 'Defining `renderItem` inline creates a fresh function reference on every parent render pass. Wrapping the callback in `useCallback` ensures function identity remains stable across renders.', 'https://reactnative.dev/docs/0.88/optimizing-flatlist-configuration'),
+  (md5('course-question:advanced-animations:3:11')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 11, 'What performance advantage does providing the `getItemLayout` prop to a `FlatList` offer when all items have identical fixed dimensions?', 'When all items have a known fixed size, providing `getItemLayout` allows `FlatList` to skip dynamic measurement of rendered elements, improving rendering speed and scroll efficiency.', 'https://reactnative.dev/docs/0.88/optimizing-flatlist-configuration'),
+  (md5('course-question:advanced-animations:3:12')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 12, 'When debugging a React Native app on an Android 5.0+ device connected via USB, which ADB command forwards the Metro bundler port from the phone to your development host?', 'Running `adb reverse tcp:8081 tcp:8081` forwards port 8081 from the connected Android device back to your local development machine over USB.', 'https://reactnative.dev/docs/0.88/running-on-device'),
+  (md5('course-question:advanced-animations:3:13')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 13, 'Which command does the React Native CLI provide to build and run an application directly in release mode on a connected device?', 'The React Native CLI allows generating and running a release build directly onto a connected device by passing the `--mode release` flag, for example with `yarn android --mode release`.', 'https://reactnative.dev/docs/0.88/running-on-device'),
+  (md5('course-question:advanced-animations:3:14')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 14, 'According to the React Native Reanimated performance guide, what is the rule of thumb limit for simultaneously animated components on low-end Android devices?', 'As a rule of thumb, Reanimated recommends animating no more than 100 components simultaneously on low-end Android devices, and no more than 500 components on iOS.', 'https://docs.swmansion.com/react-native-reanimated/docs/guides/performance'),
+  (md5('course-question:advanced-animations:3:15')::uuid, md5('course-quiz:advanced-animations:3')::uuid, 15, 'Which `Info.plist` key must be enabled to allow animations to achieve 120 fps on supported iOS devices?', 'To support 120 fps display refresh rates on iOS, the `CADisableMinimumFrameDurationOnPhone` key must be set to `true` in `Info.plist`.', 'https://docs.swmansion.com/react-native-reanimated/docs/guides/performance')
+on conflict (id) do update set prompt = excluded.prompt, explanation = excluded.explanation, reference_url = excluded.reference_url;
+update public.quiz_answers set is_correct = false where question_id in (select id from public.quiz_questions where quiz_id = md5('course-quiz:advanced-animations:3')::uuid);
+insert into public.quiz_answers (id, question_id, position, text, is_correct) values
+  (md5('course-answer:advanced-animations:3:1:1')::uuid, md5('course-question:advanced-animations:3:1')::uuid, 1, '8.33 ms', false),
+  (md5('course-answer:advanced-animations:3:1:2')::uuid, md5('course-question:advanced-animations:3:1')::uuid, 2, '16.67 ms', true),
+  (md5('course-answer:advanced-animations:3:1:3')::uuid, md5('course-question:advanced-animations:3:1')::uuid, 3, '33.33 ms', false),
+  (md5('course-answer:advanced-animations:3:1:4')::uuid, md5('course-question:advanced-animations:3:1')::uuid, 4, '50.00 ms', false),
+  (md5('course-answer:advanced-animations:3:2:1')::uuid, md5('course-question:advanced-animations:3:2')::uuid, 1, 'The JavaScript thread automatically yields control whenever scroll touches occur.', false),
+  (md5('course-answer:advanced-animations:3:2:2')::uuid, md5('course-question:advanced-animations:3:2')::uuid, 2, 'React Native pauses all background network calls during native gesture execution.', false),
+  (md5('course-answer:advanced-animations:3:2:3')::uuid, md5('course-question:advanced-animations:3:2')::uuid, 3, 'Transition animations and scrolling live on the native main UI thread.', true),
+  (md5('course-answer:advanced-animations:3:2:4')::uuid, md5('course-question:advanced-animations:3:2')::uuid, 4, 'The render thread recompiles JavaScript tasks into background OpenGL shaders.', false),
+  (md5('course-answer:advanced-animations:3:3:1')::uuid, md5('course-question:advanced-animations:3:3')::uuid, 1, 'Vertical zebra stripes that mark the 16 ms frame boundaries', true),
+  (md5('course-answer:advanced-animations:3:3:2')::uuid, md5('course-question:advanced-animations:3:3')::uuid, 2, 'Red warning badges above threads exceeding 100% CPU utilisation', false),
+  (md5('course-answer:advanced-animations:3:3:3')::uuid, md5('course-question:advanced-animations:3:3')::uuid, 3, 'Flashing markers flagging uncollected native garbage allocations', false),
+  (md5('course-answer:advanced-animations:3:3:4')::uuid, md5('course-question:advanced-animations:3:3')::uuid, 4, 'Horizontal dividers separating Java method calls from C++ routines', false),
+  (md5('course-answer:advanced-animations:3:4:1')::uuid, md5('course-question:advanced-animations:3:4')::uuid, 1, 'The JavaScript thread is blocked by an unmemoised inline callback.', false),
+  (md5('course-answer:advanced-animations:3:4:2')::uuid, md5('course-question:advanced-animations:3:4')::uuid, 2, 'The Hermes engine is stalled while compiling bytecode in development mode.', false),
+  (md5('course-answer:advanced-animations:3:4:3')::uuid, md5('course-question:advanced-animations:3:4')::uuid, 3, 'The native modules bridge is waiting for pending network socket responses.', false),
+  (md5('course-answer:advanced-animations:3:4:4')::uuid, md5('course-question:advanced-animations:3:4')::uuid, 4, 'The GPU is overloaded and waiting to drain its command buffer.', true),
+  (md5('course-answer:advanced-animations:3:5:1')::uuid, md5('course-question:advanced-animations:3:5')::uuid, 1, 'Disabling native touch propagation using `pointerEvents="none"`.', false),
+  (md5('course-answer:advanced-animations:3:5:2')::uuid, md5('course-question:advanced-animations:3:5')::uuid, 2, 'Wrapping the expensive state update inside `requestAnimationFrame`.', true),
+  (md5('course-answer:advanced-animations:3:5:3')::uuid, md5('course-question:advanced-animations:3:5')::uuid, 3, 'Delegating the click handler to an asynchronous web worker script.', false),
+  (md5('course-answer:advanced-animations:3:5:4')::uuid, md5('course-question:advanced-animations:3:5')::uuid, 4, 'Forcing a synchronous native layout measurement before invoking the callback.', false),
+  (md5('course-answer:advanced-animations:3:6:1')::uuid, md5('course-question:advanced-animations:3:6')::uuid, 1, 'Binding, calculating, and painting', false),
+  (md5('course-answer:advanced-animations:3:6:2')::uuid, md5('course-question:advanced-animations:3:6')::uuid, 2, 'Compiling, diffing, and mounting', false),
+  (md5('course-answer:advanced-animations:3:6:3')::uuid, md5('course-question:advanced-animations:3:6')::uuid, 3, 'Triggering, rendering, and committing', true),
+  (md5('course-answer:advanced-animations:3:6:4')::uuid, md5('course-question:advanced-animations:3:6')::uuid, 4, 'Scheduling, memoising, and rendering', false),
+  (md5('course-answer:advanced-animations:3:7:1')::uuid, md5('course-question:advanced-animations:3:7')::uuid, 1, 'Returning `true` skips re-rendering the component.', true),
+  (md5('course-answer:advanced-animations:3:7:2')::uuid, md5('course-question:advanced-animations:3:7')::uuid, 2, 'Returning `true` forces the component and its children to re-render.', false),
+  (md5('course-answer:advanced-animations:3:7:3')::uuid, md5('course-question:advanced-animations:3:7')::uuid, 3, 'Returning `false` preserves the previously committed native views.', false),
+  (md5('course-answer:advanced-animations:3:7:4')::uuid, md5('course-question:advanced-animations:3:7')::uuid, 4, 'Returning `false` caches the component props for subsequent renders.', false),
+  (md5('course-answer:advanced-animations:3:8:1')::uuid, md5('course-question:advanced-animations:3:8')::uuid, 1, 'Effects are strictly restricted to updating native layout parameters.', false),
+  (md5('course-answer:advanced-animations:3:8:2')::uuid, md5('course-question:advanced-animations:3:8')::uuid, 2, 'The JavaScript engine suspends rendering whenever an effect modifies an array.', false),
+  (md5('course-answer:advanced-animations:3:8:3')::uuid, md5('course-question:advanced-animations:3:8')::uuid, 3, 'Updating state inside an effect permanently prevents props from updating.', false),
+  (md5('course-answer:advanced-animations:3:8:4')::uuid, md5('course-question:advanced-animations:3:8')::uuid, 4, 'It causes an initial render with stale data followed by an immediate redundant re-render.', true),
+  (md5('course-answer:advanced-animations:3:9:1')::uuid, md5('course-question:advanced-animations:3:9')::uuid, 1, 'Call `setState` for every state variable inside an empty `useCallback` hook.', false),
+  (md5('course-answer:advanced-animations:3:9:2')::uuid, md5('course-question:advanced-animations:3:9')::uuid, 2, 'Pass `userId` as the `key` prop to the component so React remounts it.', true),
+  (md5('course-answer:advanced-animations:3:9:3')::uuid, md5('course-question:advanced-animations:3:9')::uuid, 3, 'Mutate the previous state ref directly during the component render phase.', false),
+  (md5('course-answer:advanced-animations:3:9:4')::uuid, md5('course-question:advanced-animations:3:9')::uuid, 4, 'Clear the component state inside an asynchronous cleanup function in `useEffect`.', false),
+  (md5('course-answer:advanced-animations:3:10:1')::uuid, md5('course-question:advanced-animations:3:10')::uuid, 1, 'A new function instance is created on each render, invalidating prop equality.', true),
+  (md5('course-answer:advanced-animations:3:10:2')::uuid, md5('course-question:advanced-animations:3:10')::uuid, 2, 'Inline functions cannot receive the `item` and `index` arguments from the list.', false),
+  (md5('course-answer:advanced-animations:3:10:3')::uuid, md5('course-question:advanced-animations:3:10')::uuid, 3, 'Anonymous functions bypass React Native''s virtualised clipping optimisations.', false),
+  (md5('course-answer:advanced-animations:3:10:4')::uuid, md5('course-question:advanced-animations:3:10')::uuid, 4, 'The Hermes engine cannot compile closures passed to native virtualised lists.', false),
+  (md5('course-answer:advanced-animations:3:11:1')::uuid, md5('course-question:advanced-animations:3:11')::uuid, 1, 'It decouples the list from the native UI thread layout pipeline.', false),
+  (md5('course-answer:advanced-animations:3:11:2')::uuid, md5('course-question:advanced-animations:3:11')::uuid, 2, 'It forces items to load and execute asynchronously inside a background worker.', false),
+  (md5('course-answer:advanced-animations:3:11:3')::uuid, md5('course-question:advanced-animations:3:11')::uuid, 3, 'It skips asynchronous layout measurements by providing predefined item offsets.', true),
+  (md5('course-answer:advanced-animations:3:11:4')::uuid, md5('course-question:advanced-animations:3:11')::uuid, 4, 'It caches rendered bitmap textures on the GPU to prevent layout recalculations.', false),
+  (md5('course-answer:advanced-animations:3:12:1')::uuid, md5('course-question:advanced-animations:3:12')::uuid, 1, '`adb forward tcp:8081 local:8081`', false),
+  (md5('course-answer:advanced-animations:3:12:2')::uuid, md5('course-question:advanced-animations:3:12')::uuid, 2, '`adb connect 127.0.0.1:8081`', false),
+  (md5('course-answer:advanced-animations:3:12:3')::uuid, md5('course-question:advanced-animations:3:12')::uuid, 3, '`adb push --port 8081 tcp:8081`', false),
+  (md5('course-answer:advanced-animations:3:12:4')::uuid, md5('course-question:advanced-animations:3:12')::uuid, 4, '`adb reverse tcp:8081 tcp:8081`', true),
+  (md5('course-answer:advanced-animations:3:13:1')::uuid, md5('course-question:advanced-animations:3:13')::uuid, 1, '`yarn run android:prod`', false),
+  (md5('course-answer:advanced-animations:3:13:2')::uuid, md5('course-question:advanced-animations:3:13')::uuid, 2, '`yarn android --mode release`', true),
+  (md5('course-answer:advanced-animations:3:13:3')::uuid, md5('course-question:advanced-animations:3:13')::uuid, 3, '`npx react-native start --release`', false),
+  (md5('course-answer:advanced-animations:3:13:4')::uuid, md5('course-question:advanced-animations:3:13')::uuid, 4, '`adb install --release-mode`', false),
+  (md5('course-answer:advanced-animations:3:14:1')::uuid, md5('course-question:advanced-animations:3:14')::uuid, 1, 'No more than 100 components', true),
+  (md5('course-answer:advanced-animations:3:14:2')::uuid, md5('course-question:advanced-animations:3:14')::uuid, 2, 'No more than 25 components', false),
+  (md5('course-answer:advanced-animations:3:14:3')::uuid, md5('course-question:advanced-animations:3:14')::uuid, 3, 'No more than 250 components', false),
+  (md5('course-answer:advanced-animations:3:14:4')::uuid, md5('course-question:advanced-animations:3:14')::uuid, 4, 'No more than 500 components', false),
+  (md5('course-answer:advanced-animations:3:15:1')::uuid, md5('course-question:advanced-animations:3:15')::uuid, 1, '`UIHighFrequencyAnimationEnabled`', false),
+  (md5('course-answer:advanced-animations:3:15:2')::uuid, md5('course-question:advanced-animations:3:15')::uuid, 2, '`EnableProMotionDisplayRefreshRate`', false),
+  (md5('course-answer:advanced-animations:3:15:3')::uuid, md5('course-question:advanced-animations:3:15')::uuid, 3, '`CADisableMinimumFrameDurationOnPhone`', true),
+  (md5('course-answer:advanced-animations:3:15:4')::uuid, md5('course-question:advanced-animations:3:15')::uuid, 4, '`UIScreenMaximumFramesPerSecond`', false)
+on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;
+
+-- Quiz design-systems/1: Foundations quiz (15 questions)
+insert into public.quizzes (id, chapter_id, title, position, is_preview) values
+  (md5('course-quiz:design-systems:1')::uuid, md5('chapter:design-systems:1')::uuid, 'Foundations quiz', 1, true)
+on conflict (id) do update set title = excluded.title, is_preview = excluded.is_preview;
+insert into public.quiz_questions (id, quiz_id, position, prompt, explanation, reference_url) values
+  (md5('course-question:design-systems:1:1')::uuid, md5('course-quiz:design-systems:1')::uuid, 1, 'According to the USWDS maturity model, in what sequence can teams incrementally adopt the design system before implementing code?', 'USWDS recommends adopting the system incrementally by starting with design principles, moving to UX guidance (even before adding USWDS code), and then incorporating design tokens and code.', 'https://designsystem.digital.gov/how-to-use-uswds/'),
+  (md5('course-question:design-systems:1:2')::uuid, md5('course-quiz:design-systems:1')::uuid, 2, 'How does USWDS distinguish the role of design tokens from the role of components?', 'USWDS defines tokens as predefined units of colour, spacing, and typography that form the building blocks of the design system, while components serve as the building blocks of a site or service.', 'https://designsystem.digital.gov/how-to-use-uswds/'),
+  (md5('course-question:design-systems:1:3')::uuid, md5('course-quiz:design-systems:1')::uuid, 3, 'When the GOV.UK Design System publishes new styles, components, or patterns, what information is included to help teams decide to use them?', 'GOV.UK includes details of how and when a style, component, or pattern has been tested in user research, allowing teams to judge whether to use or adapt it.', 'https://design-system.service.gov.uk/get-started/'),
+  (md5('course-question:design-systems:1:4')::uuid, md5('course-quiz:design-systems:1')::uuid, 4, 'What purpose do utilities serve within the technical architecture of USWDS?', 'In USWDS, utilities are single-purpose classes mapped directly to design tokens, allowing developers to prototype quickly with system styles without writing custom Sass or CSS.', 'https://designsystem.digital.gov/how-to-use-uswds/'),
+  (md5('course-question:design-systems:1:5')::uuid, md5('course-quiz:design-systems:1')::uuid, 5, 'What should teams keep in mind regarding ideas discussed in GOV.UK Design System GitHub discussions?', 'GOV.UK notes that ideas on GitHub are open to anyone and may not have been tested. Teams can use them as starting points but must carry out user research to verify them.', 'https://design-system.service.gov.uk/get-started/'),
+  (md5('course-question:design-systems:1:6')::uuid, md5('course-quiz:design-systems:1')::uuid, 6, 'Why does USWDS use design tokens instead of continuous scales of visual CSS properties?', 'CSS values like colours and spacing exist across a broad continuum. USWDS introduces design tokens as discrete palettes of curated values to maximise design efficiency and eliminate granular decision-making.', 'https://designsystem.digital.gov/design-tokens/'),
+  (md5('course-question:design-systems:1:7')::uuid, md5('course-quiz:design-systems:1')::uuid, 7, 'In the USWDS measure (line length) token system, which token represents a value of `44ex`?', 'USWDS provides seven measure tokens: `1` (`44ex`), `2` (`60ex`), `3` (`64ex`), `4` (`68ex`), `5` (`72ex`), `6` (`88ex`), and `''none''`.', 'https://designsystem.digital.gov/design-tokens/'),
+  (md5('course-question:design-systems:1:8')::uuid, md5('course-quiz:design-systems:1')::uuid, 8, 'How are design tokens formatted in USWDS, and what are the only unit exceptions?', 'In USWDS, each token is formatted as a quoted string or a unitless number, with `1px` and `2px` being the only exceptions.', 'https://designsystem.digital.gov/design-tokens/'),
+  (md5('course-question:design-systems:1:9')::uuid, md5('course-quiz:design-systems:1')::uuid, 9, 'How should USWDS design tokens be applied within component Sass files?', 'USWDS does not include raw tokens or calculated values directly in Sass declarations. Instead, tokens are assigned to settings variables and unlocked using helper functions or mixins.', 'https://designsystem.digital.gov/design-tokens/'),
+  (md5('course-question:design-systems:1:10')::uuid, md5('course-quiz:design-systems:1')::uuid, 10, 'Which mixin and utility class correctly apply the `''sans''` family at the `''3xs''` size token together in USWDS?', 'USWDS provides the `u-font(family, size)` mixin and `.font-[family]-[size]` utility class (for example, `@include u-font(''sans'', ''3xs'')` and `.font-sans-3xs`) to apply family and size together.', 'https://designsystem.digital.gov/design-tokens/'),
+  (md5('course-question:design-systems:1:11')::uuid, md5('course-quiz:design-systems:1')::uuid, 11, 'In USWDS, what proportional rule of thumb is recommended for non-base theme colours?', 'USWDS recommends a proportional 60/30/10 relationship for non-base colours: roughly 60% primary, 30% secondary, and 10% accent families (`accent-warm` and `accent-cool`).', 'https://designsystem.digital.gov/design-tokens/color/theme-tokens/'),
+  (md5('course-question:design-systems:1:12')::uuid, md5('course-quiz:design-systems:1')::uuid, 12, 'What are the five high-level role-based colour families defined in USWDS theme color tokens?', 'USWDS theme color tokens are structured into five high-level role-based families: `base`, `primary`, `secondary`, `accent-warm`, and `accent-cool`.', 'https://designsystem.digital.gov/design-tokens/color/theme-tokens/'),
+  (md5('course-question:design-systems:1:13')::uuid, md5('course-quiz:design-systems:1')::uuid, 13, 'What three constituent parts form the naming structure of USWDS system colour tokens?', 'USWDS system color tokens are structured into three parts: family (e.g. `blue-warm`), grade (lightness step, e.g. `50`), and an optional variant (such as `vivid` or `v`).', 'https://designsystem.digital.gov/design-tokens/color/system-tokens/'),
+  (md5('course-question:design-systems:1:14')::uuid, md5('course-quiz:design-systems:1')::uuid, 14, 'How does USWDS describe lightness steps within theme colour token families?', 'Each USWDS theme colour family has seven possible lightness grades ranging from `lightest` to `darkest`, with `primary` and `secondary` also offering a `vivid` grade.', 'https://designsystem.digital.gov/design-tokens/color/theme-tokens/'),
+  (md5('course-question:design-systems:1:15')::uuid, md5('course-quiz:design-systems:1')::uuid, 15, 'Under what circumstance does a trial component in the GOV.UK Design System move to stable status?', 'According to the GOV.UK Design System lifecycle, components that have been in trial status for 6 months will move to stable status if no negative feedback is received.', 'https://design-system.service.gov.uk/community/component-lifecycle-statuses/')
+on conflict (id) do update set prompt = excluded.prompt, explanation = excluded.explanation, reference_url = excluded.reference_url;
+update public.quiz_answers set is_correct = false where question_id in (select id from public.quiz_questions where quiz_id = md5('course-quiz:design-systems:1')::uuid);
+insert into public.quiz_answers (id, question_id, position, text, is_correct) values
+  (md5('course-answer:design-systems:1:1:1')::uuid, md5('course-question:design-systems:1:1')::uuid, 1, 'Adopt design principles first, then user experience guidance, before introducing code', true),
+  (md5('course-answer:design-systems:1:1:2')::uuid, md5('course-question:design-systems:1:1')::uuid, 2, 'Adopt production code first, then configure tokens, and finally review principles', false),
+  (md5('course-answer:design-systems:1:1:3')::uuid, md5('course-question:design-systems:1:1')::uuid, 3, 'Adopt utility classes first, followed by design tokens, before evaluating guidance', false),
+  (md5('course-answer:design-systems:1:1:4')::uuid, md5('course-question:design-systems:1:1')::uuid, 4, 'Adopt component markup first, then platform implementations, and finally principles', false),
+  (md5('course-answer:design-systems:1:2:1')::uuid, md5('course-question:design-systems:1:2')::uuid, 1, 'Tokens provide accessible markup templates, whereas components define colour palettes', false),
+  (md5('course-answer:design-systems:1:2:2')::uuid, md5('course-question:design-systems:1:2')::uuid, 2, 'Tokens configure server-side frameworks, whereas components format client-side stylesheets', false),
+  (md5('course-answer:design-systems:1:2:3')::uuid, md5('course-question:design-systems:1:2')::uuid, 3, 'Tokens are the building blocks of the design system, whereas components are the building blocks of a site or service', true),
+  (md5('course-answer:design-systems:1:2:4')::uuid, md5('course-question:design-systems:1:2')::uuid, 4, 'Tokens represent completed page layouts, whereas components represent individual design values', false),
+  (md5('course-answer:design-systems:1:3:1')::uuid, md5('course-question:design-systems:1:3')::uuid, 1, 'A mandatory compliance checklist required by government digital service standards', false),
+  (md5('course-answer:design-systems:1:3:2')::uuid, md5('course-question:design-systems:1:3')::uuid, 2, 'Details of how and when the element has been tested in user research', true),
+  (md5('course-answer:design-systems:1:3:3')::uuid, md5('course-question:design-systems:1:3')::uuid, 3, 'A performance audit rating rendering speed across various web browsers', false),
+  (md5('course-answer:design-systems:1:3:4')::uuid, md5('course-question:design-systems:1:3')::uuid, 4, 'A fixed deprecation schedule detailing when the element will be retired', false),
+  (md5('course-answer:design-systems:1:4:1')::uuid, md5('course-question:design-systems:1:4')::uuid, 1, 'They automate unit tests for JavaScript component interactions in web browsers', false),
+  (md5('course-answer:design-systems:1:4:2')::uuid, md5('course-question:design-systems:1:4')::uuid, 2, 'They override third-party framework styles using high-specificity stylesheet selectors', false),
+  (md5('course-answer:design-systems:1:4:3')::uuid, md5('course-question:design-systems:1:4')::uuid, 3, 'They convert Sketch and Figma vector components directly into production HTML', false),
+  (md5('course-answer:design-systems:1:4:4')::uuid, md5('course-question:design-systems:1:4')::uuid, 4, 'They provide single-purpose classes mapped to tokens so developers can prototype without Sass or CSS', true),
+  (md5('course-answer:design-systems:1:5:1')::uuid, md5('course-question:design-systems:1:5')::uuid, 1, 'Discussions may contain untested ideas, so teams must carry out their own user research', true),
+  (md5('course-answer:design-systems:1:5:2')::uuid, md5('course-question:design-systems:1:5')::uuid, 2, 'Discussion contributions automatically become part of official guidance after 30 days', false),
+  (md5('course-answer:design-systems:1:5:3')::uuid, md5('course-question:design-systems:1:5')::uuid, 3, 'Discussions are restricted strictly to registered civil servants and system maintainers', false),
+  (md5('course-answer:design-systems:1:5:4')::uuid, md5('course-question:design-systems:1:5')::uuid, 4, 'Discussion proposals cannot be implemented in live services until code is packaged', false),
+  (md5('course-answer:design-systems:1:6:1')::uuid, md5('course-question:design-systems:1:6')::uuid, 1, 'Continuous scales require server-side rendering, whereas tokens compile directly to pure CSS', false),
+  (md5('course-answer:design-systems:1:6:2')::uuid, md5('course-question:design-systems:1:6')::uuid, 2, 'Tokens prevent browsers from applying default accessibility contrast adjustments', false),
+  (md5('course-answer:design-systems:1:6:3')::uuid, md5('course-question:design-systems:1:6')::uuid, 3, 'Tokens replace an infinite continuum of values with discrete, curated palettes to improve efficiency and consistency', true),
+  (md5('course-answer:design-systems:1:6:4')::uuid, md5('course-question:design-systems:1:6')::uuid, 4, 'Continuous values cannot be rendered accurately on modern high-density mobile displays', false),
+  (md5('course-answer:design-systems:1:7:1')::uuid, md5('course-question:design-systems:1:7')::uuid, 1, '`''none''`', false),
+  (md5('course-answer:design-systems:1:7:2')::uuid, md5('course-question:design-systems:1:7')::uuid, 2, '`6`', false),
+  (md5('course-answer:design-systems:1:7:3')::uuid, md5('course-question:design-systems:1:7')::uuid, 3, '`0.5`', false),
+  (md5('course-answer:design-systems:1:7:4')::uuid, md5('course-question:design-systems:1:7')::uuid, 4, '`1`', true),
+  (md5('course-answer:design-systems:1:8:1')::uuid, md5('course-question:design-systems:1:8')::uuid, 1, 'They are formatted as raw pixel measurements, with the only exceptions being percentages', false),
+  (md5('course-answer:design-systems:1:8:2')::uuid, md5('course-question:design-systems:1:8')::uuid, 2, 'They are formatted as quoted strings or unitless numbers, with the only exceptions being `1px` and `2px`', true),
+  (md5('course-answer:design-systems:1:8:3')::uuid, md5('course-question:design-systems:1:8')::uuid, 3, 'They are formatted as hexadecimal codes, with the only exceptions being named CSS colours', false),
+  (md5('course-answer:design-systems:1:8:4')::uuid, md5('course-question:design-systems:1:8')::uuid, 4, 'They are formatted as rem strings, with the only exceptions being `0.5rem` and `1rem`', false),
+  (md5('course-answer:design-systems:1:9:1')::uuid, md5('course-question:design-systems:1:9')::uuid, 1, 'By passing tokens or token variables into helper functions and mixins', true),
+  (md5('course-answer:design-systems:1:9:2')::uuid, md5('course-question:design-systems:1:9')::uuid, 2, 'By writing raw token names directly as CSS property values, such as `max-width: 1`', false),
+  (md5('course-answer:design-systems:1:9:3')::uuid, md5('course-question:design-systems:1:9')::uuid, 3, 'By hardcoding the calculated display values directly into local stylesheet rules', false),
+  (md5('course-answer:design-systems:1:9:4')::uuid, md5('course-question:design-systems:1:9')::uuid, 4, 'By importing compiled utility classes into Sass selectors using `@extend`', false),
+  (md5('course-answer:design-systems:1:10:1')::uuid, md5('course-question:design-systems:1:10')::uuid, 1, '`@include u-typeset(''sans'', ''3xs'')` and `.typeset-sans-3xs`', false),
+  (md5('course-answer:design-systems:1:10:2')::uuid, md5('course-question:design-systems:1:10')::uuid, 2, '`@include font-family-size(''sans'', ''3xs'')` and `.font-family-size-sans-3xs`', false),
+  (md5('course-answer:design-systems:1:10:3')::uuid, md5('course-question:design-systems:1:10')::uuid, 3, '`@include u-size(''sans'', ''3xs'')` and `.text-sans-3xs`', false),
+  (md5('course-answer:design-systems:1:10:4')::uuid, md5('course-question:design-systems:1:10')::uuid, 4, '`@include u-font(''sans'', ''3xs'')` and `.font-sans-3xs`', true),
+  (md5('course-answer:design-systems:1:11:1')::uuid, md5('course-question:design-systems:1:11')::uuid, 1, '50% primary, 30% secondary, and 20% accent colours', false),
+  (md5('course-answer:design-systems:1:11:2')::uuid, md5('course-question:design-systems:1:11')::uuid, 2, '60% primary, 30% secondary, and 10% accent colours', true),
+  (md5('course-answer:design-systems:1:11:3')::uuid, md5('course-question:design-systems:1:11')::uuid, 3, '70% primary, 20% secondary, and 10% accent colours', false),
+  (md5('course-answer:design-systems:1:11:4')::uuid, md5('course-question:design-systems:1:11')::uuid, 4, '40% primary, 40% secondary, and 20% accent colours', false),
+  (md5('course-answer:design-systems:1:12:1')::uuid, md5('course-question:design-systems:1:12')::uuid, 1, '`light`, `dark`, `neutral`, `brand`, and `highlight`', false),
+  (md5('course-answer:design-systems:1:12:2')::uuid, md5('course-question:design-systems:1:12')::uuid, 2, '`text`, `surface`, `border`, `interactive`, and `focus`', false),
+  (md5('course-answer:design-systems:1:12:3')::uuid, md5('course-question:design-systems:1:12')::uuid, 3, '`base`, `primary`, `secondary`, `accent-warm`, and `accent-cool`', true),
+  (md5('course-answer:design-systems:1:12:4')::uuid, md5('course-question:design-systems:1:12')::uuid, 4, '`gray`, `blue`, `red`, `yellow`, and `green`', false),
+  (md5('course-answer:design-systems:1:13:1')::uuid, md5('course-question:design-systems:1:13')::uuid, 1, 'Family, grade, and variant', true),
+  (md5('course-answer:design-systems:1:13:2')::uuid, md5('course-question:design-systems:1:13')::uuid, 2, 'Category, luminance, and state', false),
+  (md5('course-answer:design-systems:1:13:3')::uuid, md5('course-question:design-systems:1:13')::uuid, 3, 'Hue, saturation, and contrast', false),
+  (md5('course-answer:design-systems:1:13:4')::uuid, md5('course-question:design-systems:1:13')::uuid, 4, 'Theme, weight, and opacity', false),
+  (md5('course-answer:design-systems:1:14:1')::uuid, md5('course-question:design-systems:1:14')::uuid, 1, 'Using numeric stops numbered from 100 to 900', false),
+  (md5('course-answer:design-systems:1:14:2')::uuid, md5('course-question:design-systems:1:14')::uuid, 2, 'Using percentage values ranging from 0% to 100%', false),
+  (md5('course-answer:design-systems:1:14:3')::uuid, md5('course-question:design-systems:1:14')::uuid, 3, 'Using seven descriptive grades from `lightest` to `darkest`', true),
+  (md5('course-answer:design-systems:1:14:4')::uuid, md5('course-question:design-systems:1:14')::uuid, 4, 'Using semantic stops named `min`, `mid`, `max`, and `subtle`', false),
+  (md5('course-answer:design-systems:1:15:1')::uuid, md5('course-question:design-systems:1:15')::uuid, 1, 'When its markup is rewritten as a web component and approved by maintainers', false),
+  (md5('course-answer:design-systems:1:15:2')::uuid, md5('course-question:design-systems:1:15')::uuid, 2, 'After remaining in trial status for 6 months without receiving negative feedback', true),
+  (md5('course-answer:design-systems:1:15:3')::uuid, md5('course-question:design-systems:1:15')::uuid, 3, 'As soon as three distinct public sector organisations deploy it to production', false),
+  (md5('course-answer:design-systems:1:15:4')::uuid, md5('course-question:design-systems:1:15')::uuid, 4, 'When all open issues in its related GitHub discussion thread are closed', false)
+on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;
+
+-- Quiz design-systems/2: Components quiz (15 questions)
+insert into public.quizzes (id, chapter_id, title, position, is_preview) values
+  (md5('course-quiz:design-systems:2')::uuid, md5('chapter:design-systems:2')::uuid, 'Components quiz', 1, false)
+on conflict (id) do update set title = excluded.title, is_preview = excluded.is_preview;
+insert into public.quiz_questions (id, quiz_id, position, prompt, explanation, reference_url) values
+  (md5('course-question:design-systems:2:1')::uuid, md5('course-quiz:design-systems:2')::uuid, 1, 'Why does the GOV.UK Design System recommend using an <a> tag rather than a <button> tag for a start button?', 'Start buttons are intended for the main call to action on a service''s start page. Because they do not usually submit form data, a link tag is used instead of a button tag.', 'https://design-system.service.gov.uk/components/button/'),
+  (md5('course-question:design-systems:2:2')::uuid, md5('course-quiz:design-systems:2')::uuid, 2, 'What accessibility trade-off occurs when applying the native `disabled` attribute to an HTML `<button>` instead of `aria-disabled="true"`?', 'A native disabled button is removed from the tab order. In contrast, an aria-disabled="true" button stays in the tab order, though application logic must manually prevent activation.', 'https://designsystem.digital.gov/components/button/accessibility-tests/'),
+  (md5('course-question:design-systems:2:3')::uuid, md5('course-quiz:design-systems:2')::uuid, 3, 'According to the GOV.UK Design System, what is the purpose of the `data-prevent-double-click="true"` attribute on a submit button?', 'Setting data-prevent-double-click to true configures the button to ignore rapid second clicks. This protects users with tremors or slow connections who may inadvertently submit data more than once.', 'https://design-system.service.gov.uk/components/button/'),
+  (md5('course-question:design-systems:2:4')::uuid, md5('course-quiz:design-systems:2')::uuid, 4, 'What minimum contrast ratio must be met between the white button and dark background when using the `govuk-button--inverse` modifier class?', 'To meet WCAG 2.2 success criterion 1.4.3 Contrast (minimum) Level AA, the white inverse button and the dark background colour must maintain a contrast ratio of at least 4.5:1.', 'https://design-system.service.gov.uk/components/button/'),
+  (md5('course-question:design-systems:2:5')::uuid, md5('course-quiz:design-systems:2')::uuid, 5, 'What is the default browser behaviour of a native `<button>` element if its `type` attribute is omitted?', 'If no type attribute is defined on a native button, it automatically behaves as a submit button, which can unintentionally submit surrounding form data.', 'https://designsystem.digital.gov/components/button/accessibility-tests/'),
+  (md5('course-question:design-systems:2:6')::uuid, md5('course-quiz:design-systems:2')::uuid, 6, 'Why does the GOV.UK Design System advise against using placeholder text in text inputs?', 'Placeholder text vanishes as soon as the user starts typing, is not read aloud by all screen readers, and frequently fails WCAG 2.2 colour contrast minimums in browser defaults.', 'https://design-system.service.gov.uk/components/text-input/'),
+  (md5('course-question:design-systems:2:7')::uuid, md5('course-quiz:design-systems:2')::uuid, 7, 'Which rule must you follow when adding hint text to a text input component?', 'Hint text should be kept to a single short sentence without any full stops. Links must be avoided because screen readers will not tell users that the text is an interactive link.', 'https://design-system.service.gov.uk/components/text-input/'),
+  (md5('course-question:design-systems:2:8')::uuid, md5('course-quiz:design-systems:2')::uuid, 8, 'When a form validation error occurs, how should the error state and user input be handled?', 'Form fields must never be cleared on error, allowing users to see and correct their entries. A visually hidden ''Error:'' prefix ensures screen readers announce the state clearly.', 'https://design-system.service.gov.uk/components/error-message/'),
+  (md5('course-question:design-systems:2:9')::uuid, md5('course-quiz:design-systems:2')::uuid, 9, 'When an error summary appears after a validation error on a multi-field input (such as day, month, and year), where should the summary link point?', 'When an answer spans multiple fields, link from the error summary to the first field that contains an error. If that cannot be determined, link to the first field in the group.', 'https://design-system.service.gov.uk/components/error-summary/'),
+  (md5('course-question:design-systems:2:10')::uuid, md5('course-quiz:design-systems:2')::uuid, 10, 'How does the NHS digital service manual style form input focus states to satisfy WCAG 2.2 Level AA non-text contrast?', 'Focused inputs feature a yellow outline alongside a thick black border. The yellow creates high contrast against dark backgrounds, while the black border ensures high contrast against light backgrounds.', 'https://service-manual.nhs.uk/design-system/styles/focus-state'),
+  (md5('course-question:design-systems:2:11')::uuid, md5('course-quiz:design-systems:2')::uuid, 11, 'When designing a question page with a single fieldset and inputs, what is considered good practice for the `<legend>` element?', 'When asking one question per page, setting the legend content as the page heading prevents screen reader users from having to hear the same question announced twice.', 'https://design-system.service.gov.uk/components/fieldset/'),
+  (md5('course-question:design-systems:2:12')::uuid, md5('course-quiz:design-systems:2')::uuid, 12, 'Why does the GOV.UK Design System require radio buttons to be positioned to the left of their labels?', 'Radios must always be placed to the left of their labels. This consistent positioning makes them significantly easier to find for users relying on screen magnifiers.', 'https://design-system.service.gov.uk/components/radios/'),
+  (md5('course-question:design-systems:2:13')::uuid, md5('course-quiz:design-systems:2')::uuid, 13, 'Which rule applies when implementing conditionally revealed questions within a radio group?', 'Do not attach conditional reveals to inline radios (such as side-by-side ''yes'' and ''no'' options). Additionally, conditionally revealed questions should remain simple and must only show questions, not generic content.', 'https://design-system.service.gov.uk/components/radios/'),
+  (md5('course-question:design-systems:2:14')::uuid, md5('course-quiz:design-systems:2')::uuid, 14, 'Why should you avoid targeting core design system CSS selectors directly (such as `.app-card .govuk-button`) to change component styling?', 'Overwriting core library selectors directly may work temporarily, but future updates to the design system''s underlying markup or behaviour can easily break your service''s styles.', 'https://design-system.service.gov.uk/get-started/extending-and-modifying-components/'),
+  (md5('course-question:design-systems:2:15')::uuid, md5('course-quiz:design-systems:2')::uuid, 15, 'According to the GOV.UK Design System modification guide, when should you fork a component instead of using a modifier class?', 'Fork a component entirely by copying its source code when you need to make substantial modifications to its markup or behaviour, or when it no longer meets the original user need.', 'https://design-system.service.gov.uk/get-started/extending-and-modifying-components/')
+on conflict (id) do update set prompt = excluded.prompt, explanation = excluded.explanation, reference_url = excluded.reference_url;
+update public.quiz_answers set is_correct = false where question_id in (select id from public.quiz_questions where quiz_id = md5('course-quiz:design-systems:2')::uuid);
+insert into public.quiz_answers (id, question_id, position, text, is_correct) values
+  (md5('course-answer:design-systems:2:1:1')::uuid, md5('course-question:design-systems:2:1')::uuid, 1, 'Start buttons open in a new browser tab automatically.', false),
+  (md5('course-answer:design-systems:2:1:2')::uuid, md5('course-question:design-systems:2:1')::uuid, 2, 'Start buttons normally navigate users to a journey rather than submitting form data.', true),
+  (md5('course-answer:design-systems:2:1:3')::uuid, md5('course-question:design-systems:2:1')::uuid, 3, 'Anchor tags provide default double-click prevention that buttons lack.', false),
+  (md5('course-answer:design-systems:2:1:4')::uuid, md5('course-question:design-systems:2:1')::uuid, 4, 'Screen readers cannot announce button elements on introductory pages.', false),
+  (md5('course-answer:design-systems:2:2:1')::uuid, md5('course-question:design-systems:2:2')::uuid, 1, 'The button remains operable by mouse clicks while blocking keyboard events.', false),
+  (md5('course-answer:design-systems:2:2:2')::uuid, md5('course-question:design-systems:2:2')::uuid, 2, 'The button changes its role from button to static presentation text.', false),
+  (md5('course-answer:design-systems:2:2:3')::uuid, md5('course-question:design-systems:2:2')::uuid, 3, 'The button is completely removed from the keyboard tab order.', true),
+  (md5('course-answer:design-systems:2:2:4')::uuid, md5('course-question:design-systems:2:2')::uuid, 4, 'Screen readers announce the button repeatedly on page load.', false),
+  (md5('course-answer:design-systems:2:3:1')::uuid, md5('course-question:design-systems:2:3')::uuid, 1, 'It stops users with tremors or slow connections from inadvertently submitting information twice.', true),
+  (md5('course-answer:design-systems:2:3:2')::uuid, md5('course-question:design-systems:2:3')::uuid, 2, 'It automatically disables the button on the client side after the page first loads.', false),
+  (md5('course-answer:design-systems:2:3:3')::uuid, md5('course-question:design-systems:2:3')::uuid, 3, 'It replaces the need for server-side deduplication and security protections.', false),
+  (md5('course-answer:design-systems:2:3:4')::uuid, md5('course-question:design-systems:2:3')::uuid, 4, 'It introduces an enforced five-second visual delay before sending any form data.', false),
+  (md5('course-answer:design-systems:2:4:1')::uuid, md5('course-question:design-systems:2:4')::uuid, 1, '3:1', false),
+  (md5('course-answer:design-systems:2:4:2')::uuid, md5('course-question:design-systems:2:4')::uuid, 2, '7:1', false),
+  (md5('course-answer:design-systems:2:4:3')::uuid, md5('course-question:design-systems:2:4')::uuid, 3, '5:1', false),
+  (md5('course-answer:design-systems:2:4:4')::uuid, md5('course-question:design-systems:2:4')::uuid, 4, '4.5:1', true),
+  (md5('course-answer:design-systems:2:5:1')::uuid, md5('course-question:design-systems:2:5')::uuid, 1, 'It behaves as type="button".', false),
+  (md5('course-answer:design-systems:2:5:2')::uuid, md5('course-question:design-systems:2:5')::uuid, 2, 'It behaves as type="reset".', false),
+  (md5('course-answer:design-systems:2:5:3')::uuid, md5('course-question:design-systems:2:5')::uuid, 3, 'It behaves as type="submit".', true),
+  (md5('course-answer:design-systems:2:5:4')::uuid, md5('course-question:design-systems:2:5')::uuid, 4, 'It triggers no action unless explicitly bound to a JavaScript event.', false),
+  (md5('course-answer:design-systems:2:6:1')::uuid, md5('course-question:design-systems:2:6')::uuid, 1, 'Placeholders cannot be localised or translated by modern web browsers.', false),
+  (md5('course-answer:design-systems:2:6:2')::uuid, md5('course-question:design-systems:2:6')::uuid, 2, 'Placeholders disappear when typing begins and often fail colour contrast requirements.', true),
+  (md5('course-answer:design-systems:2:6:3')::uuid, md5('course-question:design-systems:2:6')::uuid, 3, 'Screen readers read placeholder text after the entire form is submitted.', false),
+  (md5('course-answer:design-systems:2:6:4')::uuid, md5('course-question:design-systems:2:6')::uuid, 4, 'Placeholders prevent browsers from autofilling address and contact details.', false),
+  (md5('course-answer:design-systems:2:7:1')::uuid, md5('course-question:design-systems:2:7')::uuid, 1, 'Always end the hint text with a full stop to ensure clear punctuation.', false),
+  (md5('course-answer:design-systems:2:7:2')::uuid, md5('course-question:design-systems:2:7')::uuid, 2, 'Embed interactive links inside the hint text to offer supplementary guidance.', false),
+  (md5('course-answer:design-systems:2:7:3')::uuid, md5('course-question:design-systems:2:7')::uuid, 3, 'Position the hint text below the input element rather than above it.', false),
+  (md5('course-answer:design-systems:2:7:4')::uuid, md5('course-question:design-systems:2:7')::uuid, 4, 'Keep hint text to a single short sentence and avoid including links.', true),
+  (md5('course-answer:design-systems:2:8:1')::uuid, md5('course-question:design-systems:2:8')::uuid, 1, 'Clear the failing field immediately so the user can re-enter their data from scratch.', false),
+  (md5('course-answer:design-systems:2:8:2')::uuid, md5('course-question:design-systems:2:8')::uuid, 2, 'Display a generic ''Invalid entry'' label beneath the input without altering the border.', false),
+  (md5('course-answer:design-systems:2:8:3')::uuid, md5('course-question:design-systems:2:8')::uuid, 3, 'Retain both passing and failing inputs and include a visually hidden ''Error:'' prefix in the message.', true),
+  (md5('course-answer:design-systems:2:8:4')::uuid, md5('course-question:design-systems:2:8')::uuid, 4, 'Replace the original label text entirely with the error instruction.', false),
+  (md5('course-answer:design-systems:2:9:1')::uuid, md5('course-question:design-systems:2:9')::uuid, 1, 'To the fieldset container wrapping the entire date question.', false),
+  (md5('course-answer:design-systems:2:9:2')::uuid, md5('course-question:design-systems:2:9')::uuid, 2, 'To the submit button at the bottom of the form.', false),
+  (md5('course-answer:design-systems:2:9:3')::uuid, md5('course-question:design-systems:2:9')::uuid, 3, 'To the first field that contains an error.', true),
+  (md5('course-answer:design-systems:2:9:4')::uuid, md5('course-question:design-systems:2:9')::uuid, 4, 'To the page''s top-level heading.', false),
+  (md5('course-answer:design-systems:2:10:1')::uuid, md5('course-question:design-systems:2:10')::uuid, 1, 'By animating an expanding blue halo around the element.', false),
+  (md5('course-answer:design-systems:2:10:2')::uuid, md5('course-question:design-systems:2:10')::uuid, 2, 'By applying a high-contrast red dashed border.', false),
+  (md5('course-answer:design-systems:2:10:3')::uuid, md5('course-question:design-systems:2:10')::uuid, 3, 'By changing the background colour to solid black with white text.', false),
+  (md5('course-answer:design-systems:2:10:4')::uuid, md5('course-question:design-systems:2:10')::uuid, 4, 'By pairing a yellow outline with a thick black border.', true),
+  (md5('course-answer:design-systems:2:11:1')::uuid, md5('course-question:design-systems:2:11')::uuid, 1, 'Set the contents of the `<legend>` as the page heading (`<h1>`).', true),
+  (md5('course-answer:design-systems:2:11:2')::uuid, md5('course-question:design-systems:2:11')::uuid, 2, 'Hide the legend using CSS and supply an `aria-label` on the fieldset.', false),
+  (md5('course-answer:design-systems:2:11:3')::uuid, md5('course-question:design-systems:2:11')::uuid, 3, 'Place the `<legend>` after the last input in the fieldset.', false),
+  (md5('course-answer:design-systems:2:11:4')::uuid, md5('course-question:design-systems:2:11')::uuid, 4, 'Omit the `<legend>` if the inputs already have visible labels.', false),
+  (md5('course-answer:design-systems:2:12:1')::uuid, md5('course-question:design-systems:2:12')::uuid, 1, 'To allow right-aligned inline validation icons to render cleanly.', false),
+  (md5('course-answer:design-systems:2:12:2')::uuid, md5('course-question:design-systems:2:12')::uuid, 2, 'To comply with default HTML horizontal flexbox rendering rules.', false),
+  (md5('course-answer:design-systems:2:12:3')::uuid, md5('course-question:design-systems:2:12')::uuid, 3, 'To ensure native touch targets match mobile operating system defaults.', false),
+  (md5('course-answer:design-systems:2:12:4')::uuid, md5('course-question:design-systems:2:12')::uuid, 4, 'To make the controls easier to locate, especially for users of screen magnifiers.', true),
+  (md5('course-answer:design-systems:2:13:1')::uuid, md5('course-question:design-systems:2:13')::uuid, 1, 'Never conditionally reveal questions when using inline radios.', true),
+  (md5('course-answer:design-systems:2:13:2')::uuid, md5('course-question:design-systems:2:13')::uuid, 2, 'Only reveal complex multi-part questions within a conditional reveal.', false),
+  (md5('course-answer:design-systems:2:13:3')::uuid, md5('course-question:design-systems:2:13')::uuid, 3, 'Always pre-select the radio option that triggers the conditionally revealed question.', false),
+  (md5('course-answer:design-systems:2:13:4')::uuid, md5('course-question:design-systems:2:13')::uuid, 4, 'Use conditional reveals to toggle informational text rather than questions.', false),
+  (md5('course-answer:design-systems:2:14:1')::uuid, md5('course-question:design-systems:2:14')::uuid, 1, 'Future updates to the design system component may break your service styles.', true),
+  (md5('course-answer:design-systems:2:14:2')::uuid, md5('course-question:design-systems:2:14')::uuid, 2, 'Modern browsers reject specificity overrides on vendor-prefixed classes.', false),
+  (md5('course-answer:design-systems:2:14:3')::uuid, md5('course-question:design-systems:2:14')::uuid, 3, 'Core class overrides are blocked automatically by the GOV.UK Prototype Kit.', false),
+  (md5('course-answer:design-systems:2:14:4')::uuid, md5('course-question:design-systems:2:14')::uuid, 4, 'BEM architecture prohibits the use of child combinator selectors in CSS.', false),
+  (md5('course-answer:design-systems:2:15:1')::uuid, md5('course-question:design-systems:2:15')::uuid, 1, 'When changing only the background colour or typography size.', false),
+  (md5('course-answer:design-systems:2:15:2')::uuid, md5('course-question:design-systems:2:15')::uuid, 2, 'When you make large modifications to the component markup or behaviour.', true),
+  (md5('course-answer:design-systems:2:15:3')::uuid, md5('course-question:design-systems:2:15')::uuid, 3, 'When you need to make custom spacing adjustments using override classes.', false),
+  (md5('course-answer:design-systems:2:15:4')::uuid, md5('course-question:design-systems:2:15')::uuid, 4, 'Whenever you deploy a component into production rather than a prototype.', false)
+on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;
+
+-- Quiz design-systems/3: Running the system quiz (15 questions)
+insert into public.quizzes (id, chapter_id, title, position, is_preview) values
+  (md5('course-quiz:design-systems:3')::uuid, md5('chapter:design-systems:3')::uuid, 'Running the system quiz', 1, false)
+on conflict (id) do update set title = excluded.title, is_preview = excluded.is_preview;
+insert into public.quiz_questions (id, quiz_id, position, prompt, explanation, reference_url) values
+  (md5('course-question:design-systems:3:1')::uuid, md5('course-quiz:design-systems:3')::uuid, 1, 'According to the NHS digital service manual, what target reading age should content aim for under general circumstances?', 'The NHS content guide specifies aiming for a reading age of 9 to 11 years old. For complex medical information where that is difficult, content should be understandable to an 11 to 14-year-old.', 'https://service-manual.nhs.uk/content/how-we-write'),
+  (md5('course-question:design-systems:3:2')::uuid, md5('course-quiz:design-systems:3')::uuid, 2, 'When writing concise guidance according to the NHS digital service manual, what limits are recommended for sentence and paragraph length?', 'The NHS content guide advises using short sentences of up to 20 words and short paragraphs of up to 3 sentences to keep guidance direct and scannable.', 'https://service-manual.nhs.uk/content/how-we-write'),
+  (md5('course-question:design-systems:3:3')::uuid, md5('course-quiz:design-systems:3')::uuid, 3, 'When introducing specialised terms alongside plain language, how does the NHS digital service manual recommend structuring the text?', 'The NHS style guide instructs writers to use the plain English term first, then the medical term, giving the example ''piles (haemorrhoids)''. Research shows specialist audiences also prefer plain English.', 'https://service-manual.nhs.uk/content/how-we-write'),
+  (md5('course-question:design-systems:3:4')::uuid, md5('course-quiz:design-systems:3')::uuid, 4, 'What two criteria must a new component or pattern proposal satisfy according to the GOV.UK Design System?', 'Proposals must demonstrate that a component or pattern is useful (needed across many teams or services with supporting evidence) and unique (not replicating an existing entry unless proven to be better).', 'https://design-system.service.gov.uk/community/contribution-criteria/'),
+  (md5('course-question:design-systems:3:5')::uuid, md5('course-quiz:design-systems:3')::uuid, 5, 'Under the GOV.UK Design System publication criteria, what is required to prove that a component or pattern is ''usable''?', 'To meet the ''usable'' criterion, a component or pattern must be tested in user research and shown to work with a representative sample of users, including those with disabilities.', 'https://design-system.service.gov.uk/community/contribution-criteria/'),
+  (md5('course-question:design-systems:3:6')::uuid, md5('course-quiz:design-systems:3')::uuid, 6, 'What maintenance standard does the GOV.UK Design System require for community resources regarding response times and version lag?', 'Community tools and resources must have support tickets answered within 1 month and stay no more than 3 months behind the latest version of GOV.UK Frontend.', 'https://design-system.service.gov.uk/community/contribution-criteria/'),
+  (md5('course-question:design-systems:3:7')::uuid, md5('course-quiz:design-systems:3')::uuid, 7, 'What disclaimer must be included in the README of a community resource linked from the GOV.UK Design System?', 'Community resources must include an inset text notice clarifying that the Design System team is not responsible for the resource, cannot provide support, and that users must contact the contributor directly.', 'https://design-system.service.gov.uk/community/contribution-criteria/'),
+  (md5('course-question:design-systems:3:8')::uuid, md5('course-quiz:design-systems:3')::uuid, 8, 'Why was the ''Updating your code'' page on the GOV.UK Design System site archived in December 2023?', 'The page was archived in December 2023 because GOV.UK Frontend v5.x no longer supports legacy frameworks.', 'https://design-system.service.gov.uk/get-started/updating-your-code/'),
+  (md5('course-question:design-systems:3:9')::uuid, md5('course-quiz:design-systems:3')::uuid, 9, 'What primary tooling driver led to the requirement for Sass module syntax in USWDS 3.0?', 'USWDS 3.0 introduced modern Sass module syntax because the old Sass syntax was deprecated and scheduled to lose official support starting in October 2022.', 'https://designsystem.digital.gov/documentation/migration/'),
+  (md5('course-question:design-systems:3:10')::uuid, md5('course-quiz:design-systems:3')::uuid, 10, 'Where does the majority of USWDS 3.0 source code reside within the `@uswds/uswds` package?', 'USWDS 3.0 uses a component-centred architecture where most source code lives in `/@uswds/uswds/packages`, while compiled assets and backward-compatible helper files live in `/dist`.', 'https://designsystem.digital.gov/documentation/migration/'),
+  (md5('course-question:design-systems:3:11')::uuid, md5('course-quiz:design-systems:3')::uuid, 11, 'During a USWDS 3 migration, what action should you take if your existing settings file contains `$output-all-utilities: true`?', 'USWDS 3 replaces `$output-all-utilities` with `$output-these-utilities`. If your settings previously specified `$output-all-utilities: true`, you should remove the setting entirely.', 'https://designsystem.digital.gov/documentation/migration/'),
+  (md5('course-question:design-systems:3:12')::uuid, md5('course-quiz:design-systems:3')::uuid, 12, 'How are variable overrides formatted when configuring `uswds-core` using the `@use ... with` statement in USWDS 3?', 'When using `@use ''uswds-core'' with (...)`, configuration settings are passed as a list of variables inside parentheses, where each variable line ends with a comma rather than a semicolon.', 'https://designsystem.digital.gov/documentation/migration/'),
+  (md5('course-question:design-systems:3:13')::uuid, md5('course-quiz:design-systems:3')::uuid, 13, 'In the USWDS maturity model diagram, which sequence represents the concentric circles progressing from outermost to innermost?', 'The USWDS maturity model visualises adoption as concentric circles starting with Principles on the outside, progressing through Guidance in the middle, and Code in the innermost circle.', 'https://designsystem.digital.gov/maturity-model/'),
+  (md5('course-question:design-systems:3:14')::uuid, md5('course-quiz:design-systems:3')::uuid, 14, 'According to the USWDS maturity model, what is required to achieve Level 2 adoption (''Follow user experience guidance'')?', 'Level 2 focuses on adhering to component UX, accessibility, and line-length guidance. Teams should follow this guidance even if they have not installed USWDS code.', 'https://designsystem.digital.gov/maturity-model/'),
+  (md5('course-question:design-systems:3:15')::uuid, md5('course-quiz:design-systems:3')::uuid, 15, 'Under Level 3 of the USWDS maturity model, what does the presence of `usa-` classes in project markup confirm?', 'The USWDS maturity model notes that while `usa-` classes help identify an implementation, they do not establish that the implementation is usable or accessible in context.', 'https://designsystem.digital.gov/maturity-model/')
+on conflict (id) do update set prompt = excluded.prompt, explanation = excluded.explanation, reference_url = excluded.reference_url;
+update public.quiz_answers set is_correct = false where question_id in (select id from public.quiz_questions where quiz_id = md5('course-quiz:design-systems:3')::uuid);
+insert into public.quiz_answers (id, question_id, position, text, is_correct) values
+  (md5('course-answer:design-systems:3:1:1')::uuid, md5('course-question:design-systems:3:1')::uuid, 1, '5 to 7 years old', false),
+  (md5('course-answer:design-systems:3:1:2')::uuid, md5('course-question:design-systems:3:1')::uuid, 2, '9 to 11 years old', true),
+  (md5('course-answer:design-systems:3:1:3')::uuid, md5('course-question:design-systems:3:1')::uuid, 3, '14 to 16 years old', false),
+  (md5('course-answer:design-systems:3:1:4')::uuid, md5('course-question:design-systems:3:1')::uuid, 4, '16 to 18 years old', false),
+  (md5('course-answer:design-systems:3:2:1')::uuid, md5('course-question:design-systems:3:2')::uuid, 1, 'Up to 20 words per sentence and up to 3 sentences per paragraph', true),
+  (md5('course-answer:design-systems:3:2:2')::uuid, md5('course-question:design-systems:3:2')::uuid, 2, 'Up to 15 words per sentence and up to 5 sentences per paragraph', false),
+  (md5('course-answer:design-systems:3:2:3')::uuid, md5('course-question:design-systems:3:2')::uuid, 3, 'Up to 25 words per sentence and up to 2 sentences per paragraph', false),
+  (md5('course-answer:design-systems:3:2:4')::uuid, md5('course-question:design-systems:3:2')::uuid, 4, 'Up to 30 words per sentence and up to 4 sentences per paragraph', false),
+  (md5('course-answer:design-systems:3:3:1')::uuid, md5('course-question:design-systems:3:3')::uuid, 1, 'Give the medical or technical term first, followed by a glossary citation', false),
+  (md5('course-answer:design-systems:3:3:2')::uuid, md5('course-question:design-systems:3:3')::uuid, 2, 'Use only technical terms to avoid ambiguity for health professionals', false),
+  (md5('course-answer:design-systems:3:3:3')::uuid, md5('course-question:design-systems:3:3')::uuid, 3, 'Provide the plain English term first, followed by the technical term in brackets', true),
+  (md5('course-answer:design-systems:3:3:4')::uuid, md5('course-question:design-systems:3:3')::uuid, 4, 'Replace all technical terms entirely with everyday colloquial descriptions', false),
+  (md5('course-answer:design-systems:3:4:1')::uuid, md5('course-question:design-systems:3:4')::uuid, 1, 'Responsive and Accessible', false),
+  (md5('course-answer:design-systems:3:4:2')::uuid, md5('course-question:design-systems:3:4')::uuid, 2, 'Minimal and Modular', false),
+  (md5('course-answer:design-systems:3:4:3')::uuid, md5('course-question:design-systems:3:4')::uuid, 3, 'Semantic and Complete', false),
+  (md5('course-answer:design-systems:3:4:4')::uuid, md5('course-question:design-systems:3:4')::uuid, 4, 'Useful and Unique', true),
+  (md5('course-answer:design-systems:3:5:1')::uuid, md5('course-question:design-systems:3:5')::uuid, 1, 'Passing automated accessibility test suites without any warnings', false),
+  (md5('course-answer:design-systems:3:5:2')::uuid, md5('course-question:design-systems:3:5')::uuid, 2, 'User research testing with a representative sample, including people with disabilities', true),
+  (md5('course-answer:design-systems:3:5:3')::uuid, md5('course-question:design-systems:3:5')::uuid, 3, 'Adoption across at least ten central government department websites', false),
+  (md5('course-answer:design-systems:3:5:4')::uuid, md5('course-question:design-systems:3:5')::uuid, 4, 'A full review and written sign-off by external accessibility auditors', false),
+  (md5('course-answer:design-systems:3:6:1')::uuid, md5('course-question:design-systems:3:6')::uuid, 1, 'Tickets answered within 1 month, no more than 3 months behind the latest GOV.UK Frontend release', true),
+  (md5('course-answer:design-systems:3:6:2')::uuid, md5('course-question:design-systems:3:6')::uuid, 2, 'Tickets answered within 2 weeks, no more than 6 months behind the latest GOV.UK Frontend release', false),
+  (md5('course-answer:design-systems:3:6:3')::uuid, md5('course-question:design-systems:3:6')::uuid, 3, 'Tickets answered within 48 hours, tracking the latest major release branch exactly', false),
+  (md5('course-answer:design-systems:3:6:4')::uuid, md5('course-question:design-systems:3:6')::uuid, 4, 'Tickets answered within 3 months, no more than 1 month behind the latest GOV.UK Frontend release', false),
+  (md5('course-answer:design-systems:3:7:1')::uuid, md5('course-question:design-systems:3:7')::uuid, 1, 'A statement certifying that the code has been audited and approved by the core team', false),
+  (md5('course-answer:design-systems:3:7:2')::uuid, md5('course-question:design-systems:3:7')::uuid, 2, 'A guarantee that bug reports will be resolved in the next scheduled release cycle', false),
+  (md5('course-answer:design-systems:3:7:3')::uuid, md5('course-question:design-systems:3:7')::uuid, 3, 'A statement that the Design System team is not responsible for it and cannot support it', true),
+  (md5('course-answer:design-systems:3:7:4')::uuid, md5('course-question:design-systems:3:7')::uuid, 4, 'A notice requiring users to obtain an enterprise licence before production deployment', false),
+  (md5('course-answer:design-systems:3:8:1')::uuid, md5('course-question:design-systems:3:8')::uuid, 1, 'The design system switched exclusively to Web Components', false),
+  (md5('course-answer:design-systems:3:8:2')::uuid, md5('course-question:design-systems:3:8')::uuid, 2, 'The documentation moved to an external third-party wiki', false),
+  (md5('course-answer:design-systems:3:8:3')::uuid, md5('course-question:design-systems:3:8')::uuid, 3, 'GOV.UK Frontend v5.x stopped supporting legacy frameworks', true),
+  (md5('course-answer:design-systems:3:8:4')::uuid, md5('course-question:design-systems:3:8')::uuid, 4, 'Automated package managers rendered migration guides obsolete', false),
+  (md5('course-answer:design-systems:3:9:1')::uuid, md5('course-question:design-systems:3:9')::uuid, 1, 'Sass announced that the old syntax would lose official support after October 2022', true),
+  (md5('course-answer:design-systems:3:9:2')::uuid, md5('course-question:design-systems:3:9')::uuid, 2, 'Node.js removed native support for C++ Sass compiler bindings', false),
+  (md5('course-answer:design-systems:3:9:3')::uuid, md5('course-question:design-systems:3:9')::uuid, 3, 'Browser CSS specifications mandated the removal of `@import` rules', false),
+  (md5('course-answer:design-systems:3:9:4')::uuid, md5('course-question:design-systems:3:9')::uuid, 4, 'Gulp deprecated streaming file transformations for legacy preprocessors', false),
+  (md5('course-answer:design-systems:3:10:1')::uuid, md5('course-question:design-systems:3:10')::uuid, 1, 'Inside the `/dist/scss` directory', false),
+  (md5('course-answer:design-systems:3:10:2')::uuid, md5('course-question:design-systems:3:10')::uuid, 2, 'Inside the `/packages` directory', true),
+  (md5('course-answer:design-systems:3:10:3')::uuid, md5('course-question:design-systems:3:10')::uuid, 3, 'Inside the `/src/bundles` directory', false),
+  (md5('course-answer:design-systems:3:10:4')::uuid, md5('course-question:design-systems:3:10')::uuid, 4, 'Inside the `/lib/components` directory', false),
+  (md5('course-answer:design-systems:3:11:1')::uuid, md5('course-question:design-systems:3:11')::uuid, 1, 'Change the value to `$output-these-utilities: ''all''`', false),
+  (md5('course-answer:design-systems:3:11:2')::uuid, md5('course-question:design-systems:3:11')::uuid, 2, 'Add an override flag `$output-all-utilities: false`', false),
+  (md5('course-answer:design-systems:3:11:3')::uuid, md5('course-question:design-systems:3:11')::uuid, 3, 'Move the variable into your custom `@use` load paths', false),
+  (md5('course-answer:design-systems:3:11:4')::uuid, md5('course-question:design-systems:3:11')::uuid, 4, 'Remove the `$output-all-utilities` setting completely', true),
+  (md5('course-answer:design-systems:3:12:1')::uuid, md5('course-question:design-systems:3:12')::uuid, 1, 'As a semicolon-separated list of declarations enclosed in curly braces', false),
+  (md5('course-answer:design-systems:3:12:2')::uuid, md5('course-question:design-systems:3:12')::uuid, 2, 'As a comma-separated list of variable assignments inside parentheses', true),
+  (md5('course-answer:design-systems:3:12:3')::uuid, md5('course-question:design-systems:3:12')::uuid, 3, 'As a JSON object mapping keys to values without Sass variable sigils', false),
+  (md5('course-answer:design-systems:3:12:4')::uuid, md5('course-question:design-systems:3:12')::uuid, 4, 'As multiple isolated `@forward` directives linking individual variables', false),
+  (md5('course-answer:design-systems:3:13:1')::uuid, md5('course-question:design-systems:3:13')::uuid, 1, 'Principles on the outside, Guidance in the middle, Code on the inside', true),
+  (md5('course-answer:design-systems:3:13:2')::uuid, md5('course-question:design-systems:3:13')::uuid, 2, 'Code on the outside, Guidance in the middle, Principles on the inside', false),
+  (md5('course-answer:design-systems:3:13:3')::uuid, md5('course-question:design-systems:3:13')::uuid, 3, 'Guidance on the outside, Principles in the middle, Code on the inside', false),
+  (md5('course-answer:design-systems:3:13:4')::uuid, md5('course-question:design-systems:3:13')::uuid, 4, 'Principles on the outside, Code in the middle, Guidance on the inside', false),
+  (md5('course-answer:design-systems:3:14:1')::uuid, md5('course-question:design-systems:3:14')::uuid, 1, 'Installing the `@uswds/uswds` package and compiling all stylesheets', false),
+  (md5('course-answer:design-systems:3:14:2')::uuid, md5('course-question:design-systems:3:14')::uuid, 2, 'Replacing all custom CSS classes with `usa-` prefixed utility classes', false),
+  (md5('course-answer:design-systems:3:14:3')::uuid, md5('course-question:design-systems:3:14')::uuid, 3, 'Submitting research and bug reports directly to USWDS GitHub Discussions', false),
+  (md5('course-answer:design-systems:3:14:4')::uuid, md5('course-question:design-systems:3:14')::uuid, 4, 'Following researched UX guidance for components, even without using design system code', true),
+  (md5('course-answer:design-systems:3:15:1')::uuid, md5('course-question:design-systems:3:15')::uuid, 1, 'It guarantees that all components are fully accessible and compliant', false),
+  (md5('course-answer:design-systems:3:15:2')::uuid, md5('course-question:design-systems:3:15')::uuid, 2, 'It proves that the team has achieved full Level 1 and Level 2 maturity', false),
+  (md5('course-answer:design-systems:3:15:3')::uuid, md5('course-question:design-systems:3:15')::uuid, 3, 'It identifies an implementation, but does not prove it is usable or accessible', true),
+  (md5('course-answer:design-systems:3:15:4')::uuid, md5('course-question:design-systems:3:15')::uuid, 4, 'It certifies that the project has removed all legacy framework overrides', false)
 on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;
