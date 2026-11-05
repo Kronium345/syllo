@@ -12,6 +12,7 @@ import { ProgressBar } from "@/components/ui/progress-bar";
 import { Sheet } from "@/components/ui/sheet";
 import { StickyFooter } from "@/components/ui/sticky-footer";
 import { AppText } from "@/components/ui/text";
+import { inlineMarkdown } from "@/components/ui/inline-markdown";
 import { toast } from "@/components/ui/toast";
 import { useTopPadding } from "@/components/ui/use-top-padding";
 import {
@@ -185,7 +186,7 @@ function Player({ attempt }: { attempt: Attempt }) {
 
       <ScrollView style={tw`flex-1`} contentContainerStyle={tw`px-screen pb-6`}>
         <AppText accessibilityRole="header" style={tw`text-20 font-bold text-ink leading-snug mb-6`}>
-          {question.prompt}
+          {inlineMarkdown(question.prompt)}
         </AppText>
         <View style={tw`gap-3`}>
           {answers.map((option, answerIndex) => (
@@ -210,7 +211,7 @@ function Player({ attempt }: { attempt: Attempt }) {
                 <View style={tw`flex-row gap-3`}>
                   <Icon as={Lightbulb} size="lg" color="primary" />
                   <AppText variant="body" style={tw`flex-1 text-ink`}>
-                    {question.explanation}
+                    {inlineMarkdown(question.explanation)}
                   </AppText>
                 </View>
                 {question.referenceUrl ? (

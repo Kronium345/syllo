@@ -45,7 +45,7 @@ const totals = { input: 0, output: 0, calls: 0 };
 
 // --- Gemini ------------------------------------------------------------------------------------
 
-async function gemini(system, text, schema, maxOutputTokens = 8192) {
+async function gemini(system, text, schema, maxOutputTokens = 16384) {
   for (let attempt = 1; ; attempt++) {
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(MODEL)}:generateContent`, {
       method: "POST",
@@ -189,6 +189,7 @@ async function draftLesson(lesson) {
     `Lesson ${lesson.chapter}.${lesson.position}: "${title}".`,
     `Other lessons in this chapter: ${chapter.lessons.map((l) => l.title).join("; ")}. Stay within this lesson's topic.`,
     lesson.project ? "This is a small project lesson: guide the learner through building something with what the chapter taught, step by step." : "",
+    lesson.context ? `Course-provided facts (true, use them; they are not in the sources): ${lesson.context}` : "",
     `Write the lesson notes following the rules. "sourcesUsed" lists the SOURCE keys (e.g. "${refs[0].id}:${refs[0].path}") you actually drew on. "keyPoints" repeats the Key points bullets.`,
     "",
     sourceBundle(refs),
@@ -264,7 +265,8 @@ async function checkLesson(lesson) {
   const key = lessonKey(lesson);
   const item = content.lessons[key];
   if (!item) return;
-  const prompt = `Check these lesson notes for "${item.title}" against the sources.\n\n=== LESSON NOTES ===\n${item.body}\n=== END LESSON NOTES ===\n\n${sourceBundle(lesson.sources)}`;
+  const facts = lesson.context ? `\n\nCourse-provided facts (true; don't flag claims that rest on them): ${lesson.context}` : "";
+  const prompt = `Check these lesson notes for "${item.title}" against the sources.${facts}\n\n=== LESSON NOTES ===\n${item.body}\n=== END LESSON NOTES ===\n\n${sourceBundle(lesson.sources)}`;
   const result = await gemini(`${CHECK_SYSTEM}\n\nThe writing rules the notes had to follow:\n${RULES}`, prompt, CHECK_SCHEMA);
   item.flags = result.json.flags ?? [];
   save();
@@ -315,7 +317,8 @@ async function reviseLesson(lesson, rounds = 2) {
   if (item.reviewed && !flags.force) return console.log(`  · ${key} is reviewed; not revising (use --force)`);
   for (let round = 1; round <= rounds && item.flags.length; round++) {
     const issues = item.flags.map((f) => `- [${f.severity}] ${f.where}: ${f.issue}`).join("\n");
-    const prompt = `Lesson "${item.title}". Problems to fix:\n${issues}\n\n=== CURRENT NOTES ===\n${item.body}\n=== END CURRENT NOTES ===\n\n${sourceBundle(lesson.sources)}`;
+    const facts = lesson.context ? `\nCourse-provided facts (true; keep using them): ${lesson.context}\n` : "";
+    const prompt = `Lesson "${item.title}". Problems to fix:\n${issues}\n${facts}\n=== CURRENT NOTES ===\n${item.body}\n=== END CURRENT NOTES ===\n\n${sourceBundle(lesson.sources)}`;
     const result = await gemini(REVISE_SYSTEM, prompt, LESSON_SCHEMA);
     const before = item.flags.length;
     item.body = String(result.json.body ?? item.body).trim();

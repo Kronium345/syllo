@@ -192,7 +192,7 @@ export const CONTENT_SOURCES: ContentSource[] = [
     "copyright": "Transport for London",
     "licence": "TfL Transport Data Service terms (based on OGL v2.0)",
     "licenceUrl": "https://tfl.gov.uk/corporate/terms-and-conditions/transport-data-service",
-    "attributionNote": "Powered by TfL Open Data. Contains OS data © Crown copyright and database rights 2016 and Geomni UK Map data © and database rights [2019]",
+    "attributionNote": "Powered by TfL Open Data. Contains OS data © Crown copyright and database rights 2016 and Geomni UK Map data © and database rights [2019]. A 1-in-5 sample of Santander Cycles journeys, 18–24 May 2026.",
     "role": "adapted",
     "repo": "https://cycling.data.tfl.gov.uk/",
     "pin": "2026-05-17 to 2026-05-31",

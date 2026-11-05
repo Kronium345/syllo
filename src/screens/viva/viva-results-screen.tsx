@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { StickyFooter } from "@/components/ui/sticky-footer";
 import { AppText } from "@/components/ui/text";
+import { inlineMarkdown } from "@/components/ui/inline-markdown";
 import { useTopPadding } from "@/components/ui/use-top-padding";
 import { type VivaQuestion, type VivaVerdict, useVivaSession } from "@/lib/queries/viva";
 import { color, tw } from "@/theme";
@@ -164,7 +165,7 @@ function ResultRow({
             ) : null}
           </View>
           <AppText numberOfLines={open ? undefined : 2} style={tw`text-15 text-ink`}>
-            {question.prompt}
+            {inlineMarkdown(question.prompt)}
           </AppText>
           <AppText variant="footnote">{REASON_LABELS[question.reason]}</AppText>
         </Card>

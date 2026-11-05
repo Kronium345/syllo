@@ -1,6 +1,6 @@
-import { Fragment, type ReactNode } from "react";
 import { ScrollView, View } from "react-native";
 
+import { inlineMarkdown } from "@/components/ui/inline-markdown";
 import { AppText } from "@/components/ui/text";
 import { mono, tw } from "@/theme";
 
@@ -67,33 +67,7 @@ function parse(source: string): Block[] {
   return blocks;
 }
 
-/** **bold**, *italic* and `code` spans inside a line. */
-function inline(text: string): ReactNode[] {
-  return text.split(/(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)/g).map((part, index) => {
-    if (part.startsWith("`") && part.endsWith("`") && part.length > 2) {
-      return (
-        <AppText key={index} style={[tw`text-14 text-ink bg-subtle`, mono]}>
-          {part.slice(1, -1)}
-        </AppText>
-      );
-    }
-    if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
-      return (
-        <AppText key={index} style={tw`font-bold text-ink`}>
-          {part.slice(2, -2)}
-        </AppText>
-      );
-    }
-    if (part.startsWith("*") && part.endsWith("*") && part.length > 2) {
-      return (
-        <AppText key={index} style={tw`italic`}>
-          {part.slice(1, -1)}
-        </AppText>
-      );
-    }
-    return <Fragment key={index}>{part}</Fragment>;
-  });
-}
+const inline = inlineMarkdown;
 
 const headingStyle = { 1: "text-20", 2: "text-18", 3: "text-16" } as const;
 

@@ -12,6 +12,7 @@ import { IconButton } from "@/components/ui/icon-button";
 import { canSubmit, RecorderBar } from "@/components/ui/recorder-bar";
 import { StickyFooter } from "@/components/ui/sticky-footer";
 import { AppText } from "@/components/ui/text";
+import { inlineMarkdown, plainText } from "@/components/ui/inline-markdown";
 import { toast } from "@/components/ui/toast";
 import { useTopPadding } from "@/components/ui/use-top-padding";
 import { showBanner } from "@/lib/notifications/banner";
@@ -95,7 +96,7 @@ function VivaPlayer({ session, onRefetch }: { session: VivaSession; onRefetch: (
   const { take } = recorder;
 
   // Read each question aloud once; stop speaking when it changes or the screen closes.
-  const prompt = question.feedback ? null : question.prompt;
+  const prompt = question.feedback ? null : plainText(question.prompt);
   useEffect(() => {
     if (!prompt) return;
     Speech.speak(prompt, { language: "en-GB" });
@@ -176,14 +177,14 @@ function VivaPlayer({ session, onRefetch }: { session: VivaSession; onRefetch: (
       <ScrollView style={tw`flex-1`} contentContainerStyle={tw`px-screen pb-6 gap-5`}>
         <Badge label={REASON_LABELS[question.reason]} style={tw`self-start`} />
         <Card style={tw`p-5 gap-3`}>
-          <AppText style={tw`text-17 font-semibold text-ink leading-relaxed`}>{question.prompt}</AppText>
+          <AppText style={tw`text-17 font-semibold text-ink leading-relaxed`}>{inlineMarkdown(question.prompt)}</AppText>
           {question.feedback ? null : (
             <Pressable
               accessibilityRole="button"
               accessibilityLabel="Read the question aloud again"
               onPress={() => {
                 Speech.stop();
-                Speech.speak(question.prompt, { language: "en-GB" });
+                Speech.speak(plainText(question.prompt), { language: "en-GB" });
               }}
               style={tw`flex-row items-center gap-2 self-start`}
             >

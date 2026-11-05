@@ -19,7 +19,7 @@ inside it.
   `.ts`. Keep the APIs exactly as the sources use them; only add types. Where JavaScript-only
   files appear in a source (for example `App.js`), use the TypeScript name (`App.tsx`). You may
   say "in this course, examples use TypeScript", but don't claim a tool's defaults unless the
-  source says so. Python and shell commands are unchanged.
+  source says so. Python and shell commands are unchanged, and web examples (HTML, CSS) stay plain HTML or CSS in ```html / ```css blocks: never wrap HTML in a React fragment to make it TSX.
 - Adapt and shorten in your own words. Don't copy more than one sentence in a row from a source,
   and keep code samples short (at most about 25 lines) and adapted to the lesson.
 
@@ -32,8 +32,8 @@ inside it.
 ## Lesson notes (markdown)
 - 350 to 800 words.
 - Allowed markdown ONLY: `##` and `###` headings, paragraphs, `-` bullet lists, `1.` numbered
-  lists, **bold**, *italic*, fenced code blocks with a language (```tsx, ```python, ```bash,
-  ```css) and `inline code`. No links, images, tables, HTML, block quotes or nested lists.
+  lists, **bold**, *italic*, fenced code blocks with a language (```tsx, ```ts, ```python, ```bash,
+  ```css, ```html) and `inline code`. No links, images, tables, HTML, block quotes or nested lists.
 - Don't start with a heading that repeats the lesson title (the app shows the title).
 - Structure: a short opening that says what the learner will be able to do, two to four sections
   that teach it with at least one short example, a "### Try it" section with one small exercise

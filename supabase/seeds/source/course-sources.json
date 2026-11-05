@@ -1244,7 +1244,8 @@
           "id": "pandas-docs",
           "path": "getting_started/intro_tutorials/04_plotting.rst"
         }
-      ]
+      ],
+      "context": "The learner downloads the lesson resource london-bike-trips-18-24-may-2026.csv (4.5 MB): a 1-in-5 sample of 41,253 real London Santander Cycles hire journeys from TfL open data, Monday 18 to Sunday 24 May 2026. Columns exactly: \"Start date\" and \"End date\" (text like 2026-05-24 23:59), \"Start station\" and \"End station\" (names such as \"Park Street, Bankside\"), \"Bike model\" (CLASSIC or PBSC_EBIKE) and \"Total duration (ms)\" (integer milliseconds). There are about 800 stations. Because it is a sample, counts are about a fifth of real totals; say so when comparing numbers. Suitable questions: busiest hours and days (weekday vs weekend), most popular start stations, typical journey length in minutes, classic vs e-bike use. The data must be credited \"Powered by TfL Open Data\"."
     },
     {
       "course": "advanced-animations",
@@ -1602,7 +1603,7 @@
       "source": "https://cycling.data.tfl.gov.uk/",
       "licence": "TfL Transport Data Service terms (based on OGL v2.0)",
       "licenceUrl": "https://tfl.gov.uk/corporate/terms-and-conditions/transport-data-service",
-      "credit": "Powered by TfL Open Data. Contains OS data © Crown copyright and database rights 2016 and Geomni UK Map data © and database rights [2019]",
+      "credit": "Powered by TfL Open Data. Contains OS data © Crown copyright and database rights 2016 and Geomni UK Map data © and database rights [2019]. A 1-in-5 sample of Santander Cycles journeys, 18–24 May 2026.",
       "file": "usage-stats/444JourneyDataExtract17May2026-31May2026.csv",
       "dateRange": "2026-05-17 to 2026-05-31",
       "rows": 436202,
@@ -1618,7 +1619,9 @@
         "Bike model",
         "Total duration",
         "Total duration (ms)"
-      ]
+      ],
+      "sample": "scratchpad/datasets/london-bike-trips-18-24-may-2026.csv (node scripts/build-tfl-sample.mjs)",
+      "sampleRows": 41253
     }
   }
 }

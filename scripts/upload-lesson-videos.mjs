@@ -175,11 +175,35 @@ function creditLine(clip) {
 const RESOURCE_MAX_BYTES = 25 * 1024 * 1024;
 const extensionOf = (title) => (title.match(/\.([a-z0-9]+)$/i)?.[1] ?? "bin").toLowerCase();
 const resourceKey = (entry, index, clip) => `resources/${entry.course}-${entry.chapter}-${index + 1}.${extensionOf(clip.title)}`;
-/** "Flowchart-If Then Else.svg" → "Flowchart If Then Else". */
+/** "Flowchart-If Then Else.svg" → "Flowchart If Then Else" (a local file keeps its given title). */
 const resourceTitle = (clip) =>
+  clip.displayTitle ??
   clip.title.replace(/^File:/, "").replace(/\.[a-z0-9]+$/i, "").replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
 const resourceCredit = (clip) =>
+  clip.credit ??
   `File: "${clip.title.replace(/^File:/, "")}" by ${clip.author.replace(/[*_]/g, "")}, ${clip.licence}, via Wikimedia Commons.`;
+
+/**
+ * A chapter resource that isn't on Commons (prompts/19): `{ "local": "scratchpad/…", "title",
+ * "mime", "licence", "credit" }`, e.g. the TfL bike data sample. Its licence was checked by hand
+ * and its credit is the wording the licensor asks for, so the Commons licence filter doesn't apply.
+ */
+function localResource(file) {
+  const full = path.resolve(file.local);
+  if (!fs.existsSync(full)) return null;
+  if (!file.title || !file.mime || !file.licence || !file.credit) throw new Error(`Local resource ${file.local} needs title, mime, licence and credit`);
+  return {
+    title: path.basename(full),
+    displayTitle: file.title,
+    licence: file.licence,
+    author: "",
+    credit: file.credit,
+    mime: file.mime,
+    bytes: fs.statSync(full).size,
+    url: null,
+    localPath: full,
+  };
+}
 
 async function downloadTo(url, file) {
   const response = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
@@ -265,15 +289,17 @@ async function main() {
   const resourceEntries = chapters
     .filter((entry) => Array.isArray(entry.resources) && entry.resources.length && (!only || label(entry) === only))
     .flatMap((entry) => entry.resources.map((file, index) => ({ entry, file, index })));
-  const resourceInfo = resourceEntries.length ? await commonsInfo(resourceEntries.map((item) => item.file)) : new Map();
+  const commonsFiles = resourceEntries.map((item) => item.file).filter((file) => typeof file === "string");
+  const resourceInfo = commonsFiles.length ? await commonsInfo(commonsFiles) : new Map();
   const usableResources = [];
   for (const item of resourceEntries) {
-    const clip = resourceInfo.get(item.file);
+    const local = typeof item.file === "object";
+    const clip = local ? localResource(item.file) : resourceInfo.get(item.file);
     if (!clip) {
-      console.log(`✗ resource ${label(item.entry)}: ${item.file} not found on Commons`);
+      console.log(`✗ resource ${label(item.entry)}: ${local ? `${item.file.local} not found (build it first)` : `${item.file} not found on Commons`}`);
       continue;
     }
-    const allowed = ALLOWED_LICENCE.test(clip.licence) && clip.bytes <= RESOURCE_MAX_BYTES;
+    const allowed = (local || ALLOWED_LICENCE.test(clip.licence)) && clip.bytes <= RESOURCE_MAX_BYTES;
     const size = `${(clip.bytes / 1e6).toFixed(2)} MB`;
     console.log(`${allowed ? "✓" : "✗"} resource ${label(item.entry)}: ${clip.title} | ${clip.licence} | ${clip.author} | ${clip.mime} | ${size}`);
     if (allowed) usableResources.push({ entry: item.entry, clip, key: resourceKey(item.entry, item.index, clip), position: item.index + 1 });
@@ -321,7 +347,8 @@ async function main() {
     const workDir = await fsp.mkdtemp(path.join(os.tmpdir(), "syllo-resource-"));
     try {
       const file = path.join(workDir, `file.${extensionOf(row.clip.title)}`);
-      await downloadTo(row.clip.url, file);
+      if (row.clip.localPath) await fsp.copyFile(row.clip.localPath, file);
+      else await downloadTo(row.clip.url, file);
       row.clip.bytes = (await fsp.stat(file)).size;
       console.log(`  uploading ${row.key} (${(row.clip.bytes / 1e6).toFixed(2)} MB)…`);
       await r2.put(row.key, file, row.clip.mime);

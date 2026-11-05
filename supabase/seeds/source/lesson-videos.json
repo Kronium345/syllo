@@ -56,7 +56,14 @@
       "file": "File:WIKIMANIA Day 2 Nairobi - Adding Our World in Data (OWID) Visualizations to Wikipedia.webm",
       "maxSeconds": 600,
       "resources": [
-        "File:Boxplot vs PDF.svg"
+        "File:Boxplot vs PDF.svg",
+        {
+          "local": "scratchpad/datasets/london-bike-trips-18-24-may-2026.csv",
+          "title": "London bike trips, 18–24 May 2026 (TfL sample)",
+          "mime": "text/csv",
+          "licence": "TfL Transport Data Service terms",
+          "credit": "Powered by TfL Open Data. Contains OS data © Crown copyright and database rights 2016 and Geomni UK Map data © and database rights [2019]. A 1-in-5 sample of Santander Cycles journeys, 18–24 May 2026."
+        }
       ]
     },
     {

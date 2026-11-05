@@ -7,6 +7,7 @@ import { Chip } from "@/components/ui/chip";
 import { Icon } from "@/components/ui/icon";
 import { IconButton } from "@/components/ui/icon-button";
 import { AppText } from "@/components/ui/text";
+import { inlineMarkdown } from "@/components/ui/inline-markdown";
 import { useTopPadding } from "@/components/ui/use-top-padding";
 import { type Attempt, type AttemptQuestion, useAttempt, useFlags } from "@/lib/queries/quizzes";
 import { answerLetter, seededShuffle } from "@/lib/quiz/shuffle";
@@ -97,7 +98,7 @@ function ReviewCard({ attempt, question, flagged }: { attempt: Attempt; question
     <View style={tw`mx-screen p-5 border border-border rounded-2xl bg-surface`}>
       <View style={tw`flex-row items-start gap-3 mb-4`}>
         <AppText style={tw`flex-1 text-16 font-bold text-ink leading-snug`}>
-          {question.position}. {question.prompt}
+          {question.position}. {inlineMarkdown(question.prompt)}
         </AppText>
         {flagged ? <Icon as={Bookmark} size="md" color="primary" filled /> : null}
       </View>
@@ -125,7 +126,7 @@ function ReviewCard({ attempt, question, flagged }: { attempt: Attempt; question
         <View style={tw`flex-row gap-3 mt-4 p-4 rounded-xl bg-subtle`}>
           <Icon as={Lightbulb} size="lg" color="primary" />
           <AppText variant="body" style={tw`flex-1 text-ink`}>
-            {question.explanation}
+            {inlineMarkdown(question.explanation)}
           </AppText>
         </View>
       ) : null}

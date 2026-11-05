@@ -3,6 +3,7 @@ import { Pressable, View } from "react-native";
 
 import { Icon } from "@/components/ui/icon";
 import { AppText } from "@/components/ui/text";
+import { inlineMarkdown, plainText } from "@/components/ui/inline-markdown";
 import { pressScale, tw } from "@/theme";
 
 /**
@@ -32,7 +33,7 @@ export function AnswerCard({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${letter}. ${text}${state === "correct" ? ", correct answer" : state === "wrong" ? ", your answer, wrong" : ""}`}
+      accessibilityLabel={`${letter}. ${plainText(text)}${state === "correct" ? ", correct answer" : state === "wrong" ? ", your answer, wrong" : ""}`}
       accessibilityState={{ disabled: disabled || state !== "idle" }}
       disabled={disabled || state !== "idle"}
       onPress={onPress}
@@ -55,7 +56,7 @@ export function AnswerCard({
       >
         <AppText style={tw.style("text-14 font-bold", graded ? "text-on-primary" : "text-primary")}>{letter}</AppText>
       </View>
-      <AppText style={tw`flex-1 text-16 font-medium text-ink leading-snug`}>{text}</AppText>
+      <AppText style={tw`flex-1 text-16 font-medium text-ink leading-snug`}>{inlineMarkdown(text)}</AppText>
       {state === "correct" ? <Icon as={CircleCheck} size="xl" color="success" /> : null}
       {state === "wrong" ? <Icon as={CircleX} size="xl" color="danger" /> : null}
     </Pressable>

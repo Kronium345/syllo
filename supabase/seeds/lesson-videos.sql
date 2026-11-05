@@ -179,6 +179,14 @@ join public.chapters ch on ch.id = l.chapter_id
 join public.courses c on c.id = ch.course_id
 where c.slug = 'data-analysis-pandas' and ch.position = 4;
 
+-- data-analysis-pandas / chapter 4: london-bike-trips-18-24-may-2026.csv, TfL Transport Data Service terms
+insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
+select l.id, 2, 'London bike trips, 18–24 May 2026 (TfL sample)', 'london-bike-trips-18-24-may-2026.csv', 4545970, 'text/csv', 'resources/data-analysis-pandas-4-2.csv', 'Powered by TfL Open Data. Contains OS data © Crown copyright and database rights 2016 and Geomni UK Map data © and database rights [2019]. A 1-in-5 sample of Santander Cycles journeys, 18–24 May 2026.'
+from public.lessons l
+join public.chapters ch on ch.id = l.chapter_id
+join public.courses c on c.id = ch.course_id
+where c.slug = 'data-analysis-pandas' and ch.position = 4;
+
 -- python-for-everyone / chapter 1: File:Non-Programmer's Tutorial for Python 3.pdf, CC BY-SA 4.0
 insert into public.lesson_resources (lesson_id, position, title, file_name, size_bytes, mime_type, storage_key, credit)
 select l.id, 1, 'Non Programmer''s Tutorial for Python 3', 'Non-Programmer''s Tutorial for Python 3.pdf', 692856, 'application/pdf', 'resources/python-for-everyone-1-1.pdf', 'File: "Non-Programmer''s Tutorial for Python 3.pdf" by JackPotte, CC BY-SA 4.0, via Wikimedia Commons.'
