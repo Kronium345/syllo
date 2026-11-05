@@ -177,7 +177,7 @@
             },
             {
               "position": 3,
-              "title": "Shared element transitions"
+              "title": "Layout animations"
             }
           ]
         },
@@ -1330,18 +1330,12 @@
       "sources": [
         {
           "id": "reanimated-docs",
-          "path": "shared-element-transitions/overview.mdx"
+          "path": "layout-animations/entering-exiting-animations.mdx"
         }
       ],
-      "fallback": {
-        "title": "Layout animations",
-        "sources": [
-          {
-            "id": "reanimated-docs",
-            "path": "layout-animations/entering-exiting-animations.mdx"
-          }
-        ]
-      }
+      "titleReason": "Shared Element Transitions is marked experimental behind a feature flag at the pinned Reanimated commit, so the plan’s fallback applies.",
+      "originalTitle": "Shared element transitions",
+      "title": "Layout animations"
     },
     {
       "course": "advanced-animations",

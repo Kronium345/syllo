@@ -944,14 +944,14 @@
     },
     "data-analysis-pandas/1/1": {
       "title": "Meet pandas",
-      "status": "draft",
-      "body": "By the end of this lesson, you will be able to import pandas, create its two primary data structures—the Series and the DataFrame—and run basic methods to inspect your data.\n\n## Importing pandas and creating a DataFrame\n\nTo begin using pandas, import the library using the standard community alias, `pd`:\n\n```python\nimport pandas as pd\n```\n\nA `DataFrame` is a two-dimensional, labelled data structure with columns that can hold different data types, such as integers, floats, and strings. You can think of it as a spreadsheet table or a SQL table. One common way to create a `DataFrame` manually is by passing a Python dictionary of lists to the constructor. The dictionary keys become the column headers, and the list values become the column contents:\n\n```python\ndf = pd.DataFrame({\n    \"Name\": [\"Braund, Mr. Owen Harris\", \"Allen, Mr. William Henry\", \"Bonnell, Miss Elizabeth\"],\n    \"Age\": [22, 35, 58],\n    \"Sex\": [\"male\", \"male\", \"female\"],\n})\n```\n\nThe resulting table has three labelled columns (`Name`, `Age`, and `Sex`). By default, pandas assigns an integer index to label the rows, beginning at 0.\n\n## Understanding the Series\n\nWhile a `DataFrame` represents a full two-dimensional table, each individual column within that table is a `Series`. A `Series` is a one-dimensional labelled array. You can extract a single column from a `DataFrame` using square brackets with the column label, similar to accessing a value by key in a Python dictionary:\n\n```python\nages = df[\"Age\"]\n```\n\nThis selection yields a `Series`. You can also instantiate a `Series` directly from a list or array, optionally providing a `name` parameter:\n\n```python\nages = pd.Series([22, 35, 58], name=\"Age\")\n```\n\nA `Series` does not have column labels because it holds only a single column, but it retains row labels via its index.\n\n## Calling methods on DataFrames and Series\n\npandas provides methods to perform calculations and data transformations. Because these are methods, you execute them using parentheses `()`.\n\nFor example, you can calculate the highest value in a numerical `Series` or column by calling `.max()`:\n\n```python\n# Called on a DataFrame column\nmax_age = df[\"Age\"].max()\n\n# Called on an independent Series\nmax_age = ages.max()\n```\n\nTo view summary statistics for all numerical columns in a `DataFrame`, call the `.describe()` method:\n\n```python\ndf.describe()\n```\n\nBy default, `.describe()` calculates overview statistics such as count, mean, standard deviation, and percentiles for numerical columns, skipping textual columns such as `Name` and `Sex`.\n\n### Try it\n\nCreate a new Python script or interactive session and complete the following:\n\n1. Import pandas as `pd`.\n2. Create a `DataFrame` with two columns: `\"Product\"` containing three product names as strings, and `\"Price\"` containing three float values.\n3. Extract the `\"Price\"` column into a variable.\n4. Call `.max()` on your price variable to find the highest price, and run `.describe()` on the entire `DataFrame`.\n\n### Key points\n\n- The standard convention to load pandas is `import pandas as pd`.\n- A `DataFrame` is a two-dimensional labelled data structure capable of holding multiple data types in its columns.\n- Each column of a `DataFrame` is a one-dimensional labelled array called a `Series`.\n- Square bracket notation (`df[\"col_name\"]`) selects a single column as a `Series`.\n- You can perform calculations and summaries by invoking methods such as `.max()` and `.describe()`.",
+      "status": "reviewed",
+      "body": "By the end of this lesson, you will be able to import pandas, create its two primary data structures—the Series and the DataFrame—and run basic methods to inspect your data.\n\n## Importing pandas and creating a DataFrame\n\nTo begin using pandas, import the library using the standard community alias, `pd`:\n\n```python\nimport pandas as pd\n```\n\nA `DataFrame` is a two-dimensional, labelled data structure with columns that can hold different data types, such as integers, floats, and strings. You can think of it as a spreadsheet table or a SQL table. One common way to create a `DataFrame` manually is by passing a Python dictionary of lists to the constructor. The dictionary keys become the column headers, and the list values become the column contents:\n\n```python\ndf = pd.DataFrame({\n    \"Name\": [\"Braund, Mr. Owen Harris\", \"Allen, Mr. William Henry\", \"Bonnell, Miss Elizabeth\"],\n    \"Age\": [22, 35, 58],\n    \"Sex\": [\"male\", \"male\", \"female\"],\n})\n```\n\nThe resulting table has three labelled columns (`Name`, `Age`, and `Sex`). By default, pandas assigns an integer index to label the rows, beginning at 0.\n\n## Understanding the Series\n\nWhile a `DataFrame` represents a full two-dimensional table, each individual column within that table is a `Series`. A `Series` is a one-dimensional labelled array. You can extract a single column from a `DataFrame` using square brackets with the column label, similar to accessing a value by key in a Python dictionary:\n\n```python\nages = df[\"Age\"]\n```\n\nThis selection yields a `Series`. You can also instantiate a `Series` directly from a list or array, optionally providing a `name` parameter:\n\n```python\nages = pd.Series([22, 35, 58], name=\"Age\")\n```\n\nA `Series` does not have column labels because it holds only a single column, but it retains row labels via its index.\n\n## Calling methods on DataFrames and Series\n\npandas provides methods to perform calculations and data transformations. Because these are methods, you execute them using parentheses `()`.\n\nFor example, you can calculate the highest value in a numerical `Series` or column by calling `.max()`:\n\n```python\n# Called on a DataFrame column\nmax_age = df[\"Age\"].max()\n\n# Called on an independent Series\nmax_age = ages.max()\n```\n\nTo inspect summary figures for all numerical columns in a `DataFrame`, call the `.describe()` method:\n\n```python\ndf.describe()\n```\n\nThe `.describe()` method provides a quick overview of the numerical data in a `DataFrame`. Because columns such as `Name` and `Sex` contain textual data, they are not taken into account by `.describe()` by default.\n\n### Try it\n\nCreate a new Python script or interactive session and complete the following:\n\n1. Import pandas as `pd`.\n2. Create a `DataFrame` with two columns: `\"Product\"` containing three product names as strings, and `\"Price\"` containing three float values.\n3. Extract the `\"Price\"` column into a variable.\n4. Call `.max()` on your price variable to find the highest price, and run `.describe()` on the entire `DataFrame`.\n\n### Key points\n\n- The standard convention to load pandas is `import pandas as pd`.\n- A `DataFrame` is a two-dimensional labelled data structure capable of holding multiple data types in its columns.\n- Each column of a `DataFrame` is a one-dimensional labelled array called a `Series`.\n- Square bracket notation (`df[\"col_name\"]`) selects a single column as a `Series`.\n- You can perform calculations and summaries by invoking methods such as `.max()` and `.describe()`.",
       "keyPoints": [
-        "The standard convention to load pandas is import pandas as pd.",
-        "A DataFrame is a two-dimensional labelled data structure capable of holding multiple data types in its columns.",
-        "Each column of a DataFrame is a one-dimensional labelled array called a Series.",
-        "Square bracket notation (df[\"col_name\"]) selects a single column as a Series.",
-        "You can perform calculations and summaries by invoking methods such as .max() and .describe()."
+        "The standard convention to load pandas is `import pandas as pd`.",
+        "A `DataFrame` is a two-dimensional labelled data structure capable of holding multiple data types in its columns.",
+        "Each column of a `DataFrame` is a one-dimensional labelled array called a `Series`.",
+        "Square bracket notation (`df[\"col_name\"]`) selects a single column as a `Series`.",
+        "You can perform calculations and summaries by invoking methods such as `.max()` and `.describe()`."
       ],
       "sourcesUsed": [
         "pandas-docs:getting_started/intro_tutorials/01_table_oriented.rst",
@@ -964,11 +964,18 @@
         "output": 1070
       },
       "draftedAt": "2026-11-05T12:20:54.410Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)",
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [error] ## Calling methods on DataFrames and Series: The claim that '.describe()' calculates 'count, mean, standard deviation, and percentiles' is not mentioned in the sources; the sources only state that it provides a 'quick overview of the numerical data'.",
+          "at": "2026-11-05T14:46:44.093Z"
+        }
+      ]
     },
     "data-analysis-pandas/1/2": {
       "title": "Reading CSV files",
-      "status": "draft",
+      "status": "reviewed",
       "body": "You will be able to import tabular text data into pandas using `pd.read_csv()`, configure column names and row indices, select specific subsets of columns, and control data types and missing values.\n\n## Loading flat files and custom delimiters\n\nThe primary tool for loading delimited text data in pandas is the `read_csv()` function. By default, it expects comma-separated values, but you can customise the delimiter with the `sep` parameter.\n\n```python\nimport pandas as pd\nfrom io import StringIO\n\ndata = \"\"\"id,item,price\n101,apples,2.50\n102,oranges,3.10\n\"\"\"\n\ndf = pd.read_csv(StringIO(data))\nprint(df)\n```\n\nIf your file uses a different delimiter, such as a pipe or tab, provide it using `sep=\"|\"`. You can also let pandas detect delimiters automatically by setting `sep=None`, which uses Python's built-in sniffer tool via `engine=\"python\"`.\n\n## Configuring headers, columns, and index labels\n\nBy default, `read_csv()` treats the first line of data as the header containing column names (`header=\"infer\"`). When a file lacks column headers, set `header=None` and supply an explicit list of column labels to the `names` parameter:\n\n```python\nraw_data = \"\"\"101,apples,2.50\n102,oranges,3.10\n\"\"\"\n\ndf = pd.read_csv(StringIO(raw_data), header=None, names=[\"id\", \"item\", \"price\"])\n```\n\nYou can designate one or more columns as the DataFrame row labels using `index_col`:\n\n- Setting `index_col=\"id\"` or `index_col=0` uses that column as the row index.\n- Supplying a list of column numbers or names, such as `index_col=[0, 1]`, constructs a hierarchical MultiIndex.\n- Passing `index_col=False` prevents pandas from using the first column as the index when trailing delimiters confuse line parsing.\n\nTo reduce memory usage and parsing time on wide datasets, use `usecols` to load only the required columns. It accepts column names, positional integer indices, or a callable function:\n\n```python\ndf_sub = pd.read_csv(StringIO(data), usecols=[\"item\", \"price\"])\n```\n\n## Parsing data types, dates, and missing values\n\npandas infers column data types automatically, but you can explicitly specify them with the `dtype` parameter by passing a type or a dictionary mapping column names to types:\n\n```python\ndf = pd.read_csv(StringIO(data), dtype={\"id\": \"Int64\", \"price\": float})\n```\n\nYou can also pass `dtype=\"category\"` or a dictionary mapping specific columns to `\"category\"` to parse categorical variables directly.\n\nWhen dealing with date and time columns:\n\n- Pass a list of column names or positions to `parse_dates` to convert them into datetime objects.\n- Use `date_format` to define an explicit datetime format string, or pass `dayfirst=True` when reading international DD/MM/YYYY formats.\n\nMissing values are converted to `NaN` by default. You can define additional representations using `na_values`, such as `na_values=[\"missing\", \"0\"]`. If you want only your specified values to be treated as missing without including the default strings (such as `'NA'`, `'NaN'`, and empty strings), set `keep_default_na=False`.\n\n### Try it\n\nSuppose you receive sensor readings where lines beginning with `#` are comments, dates are formatted as day-first, and missing numbers are marked as `None`:\n\n```python\nsensor_data = \"\"\"# Daily sensor output\nreading_id,timestamp,value\n1,15/04/2024,24.5\n2,16/04/2024,None\n3,17/04/2024,25.1\n\"\"\"\n\ndf = pd.read_csv(\n    StringIO(sensor_data),\n    comment=\"#\",\n    index_col=\"reading_id\",\n    parse_dates=[\"timestamp\"],\n    dayfirst=True,\n    na_values=[\"None\"],\n)\nprint(df)\nprint(df.dtypes)\n```\n\nRun this snippet and inspect the DataFrame index, column data types, and how the missing entry is converted into `NaN`.\n\n### Key points\n\n- Load delimited files into a DataFrame using `pd.read_csv()`, adjusting delimiters with `sep`.\n- Set `header=None` and pass `names` when the file lacks column headers, or choose row labels with `index_col`.\n- Restrict parsed columns using `usecols` to minimise memory consumption and speed up processing.\n- Control type conversion with `dtype`, convert dates using `parse_dates` and `date_format`, and customise missing values with `na_values` and `keep_default_na`.",
       "keyPoints": [
         "Load delimited files into a DataFrame using `pd.read_csv()`, adjusting delimiters with `sep`.",
@@ -987,11 +994,11 @@
         "output": 1394
       },
       "draftedAt": "2026-11-05T12:21:23.840Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
     },
     "data-analysis-pandas/1/3": {
       "title": "Exploring a DataFrame",
-      "status": "draft",
+      "status": "reviewed",
       "body": "Once you load a dataset into a pandas DataFrame, the first step is to explore its structure, dimensions, and contents. You will learn how to inspect row samples, verify table dimensions, check column data types, and produce descriptive summary statistics.\n\n## Viewing samples and dimensions\n\nTo inspect a small sample of your data without printing the entire table, use the `head()` and `tail()` methods. By default, both methods display five rows, but you can pass an integer argument to view a custom number of rows from the start or end of the DataFrame:\n\n```python\nimport pandas as pd\n\ndf = pd.DataFrame({\n    \"name\": [\"Alice\", \"Bob\", \"Charlie\", \"David\", \"Eva\", \"Frank\"],\n    \"age\": [24, 30, 22, 35, 29, 41],\n    \"salary\": [48000, 52000, 45000, 61000, 58000, 72000]\n})\n\ndf.head(3)\ndf.tail(2)\n```\n\nTo find the dimensions of your DataFrame, access the `shape` attribute. Because `shape` is an attribute rather than a method, do not use parentheses. It returns a tuple in the format `(nrows, ncolumns)`:\n\n```python\ndf.shape\n```\n\nYou can also inspect axis labels directly via the `index` (row labels) and `columns` (column labels) attributes.\n\n## Checking column types and filtering by dtype\n\nA DataFrame can store columns of varying types, such as integers, floating-point numbers, and strings. You can inspect the data type of every column using the `dtypes` attribute, which returns a Series:\n\n```python\ndf.dtypes\n```\n\nTo see a count of how many columns belong to each data type, call `value_counts()` on the attribute:\n\n```python\ndf.dtypes.value_counts()\n```\n\nWhen dealing with many columns, you can isolate specific types using `select_dtypes()`. This method accepts `include` and `exclude` parameters:\n\n```python\n# Select only numeric columns\nnumeric_df = df.select_dtypes(include=[\"number\"])\n\n# Select string columns\nstring_df = df.select_dtypes(include=[str])\n```\n\n## Summarising data with descriptive statistics\n\nThe `describe()` method calculates a set of summary statistics across the columns of a DataFrame, such as count, mean, standard deviation, minimum, maximum, and percentiles:\n\n```python\ndf.describe()\n```\n\nOn a DataFrame with mixed data types, `describe()` restricts the output by default to numerical columns. If no numerical columns exist, it summarises categorical columns. You can alter this behaviour using the `include` parameter. For instance, `df.describe(include=\"all\")` includes all columns in the summary.\n\nFor categorical or discrete fields, use `value_counts()` on a column to calculate frequency counts:\n\n```python\ndf[\"age\"].value_counts()\n```\n\nTo find the number of unique non-null observations in a column, call `nunique()`:\n\n```python\ndf[\"age\"].nunique()\n```\n\n### Try it\n\nCreate a DataFrame containing five passenger records with columns `\"name\"` (strings), `\"age\"` (integers), and `\"survived\"` (booleans). Use `shape` to verify that there are 5 rows and 3 columns, view the last 3 rows with `tail(3)`, and print summary statistics for all columns using `describe(include=\"all\")`.\n\n### Key points\n\n- Use `head()` and `tail()` to display a sample of rows from the beginning or end of a DataFrame, defaulting to five rows.\n- Access the `shape` attribute (without parentheses) to retrieve a tuple of `(nrows, ncolumns)`.\n- Inspect column data types using the `dtypes` attribute and subset columns based on type with `select_dtypes()`.\n- Compute quick summary metrics across numeric columns using `describe()`, or use `describe(include=\"all\")` for full coverage.",
       "keyPoints": [
         "Use `head()` and `tail()` to display a sample of rows from the beginning or end of a DataFrame, defaulting to five rows.",
@@ -1010,11 +1017,11 @@
         "output": 1160
       },
       "draftedAt": "2026-11-05T12:21:47.616Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
     },
     "data-analysis-pandas/2/1": {
       "title": "Missing values",
-      "status": "draft",
+      "status": "reviewed",
       "body": "In this lesson, you will learn how pandas represents missing data across different data types, how missing values behave in calculations, and how to detect, drop, fill, and interpolate them in your datasets.\n\n## Missing value sentinels and detection\n\npandas uses different sentinel markers to represent missing data depending on the column data type:\n\n- `np.nan` represents missing values in NumPy data types. Using it often coerces integers or booleans to `np.float64` or `object`.\n- `pd.NaT` represents missing values in datetime, timedelta, and period types.\n- `pd.NA` is a dedicated scalar indicator for nullable types, such as `Int64`, `Float64`, `StringDtype`, and `ArrowDtype`. These preserve the underlying data type.\n\nTo check for missing values, use `isna()` or `notna()`. You must avoid checking for missing data using standard equality comparisons (`==`), because `np.nan == np.nan` evaluates to `False`, while `pd.NA == pd.NA` returns `pd.NA`:\n\n```python\nimport pandas as pd\nimport numpy as np\n\nser = pd.Series([1, None, 3], dtype=\"Int64\")\nprint(ser.isna())\nprint(ser == pd.NA)\n```\n\nTo convert a DataFrame containing `np.nan` into nullable data types that use `pd.NA`, use `convert_dtypes()`.\n\n## Behaviour in calculations\n\nIn arithmetic operations, missing values propagate: operating on an unknown value results in an unknown value (such as `pd.NA + 1` returning `<NA>`). In logical operations (`&`, `|`), `pd.NA` follows three-valued Kleene logic. It only propagates if the outcome cannot be known beforehand (for example, `True | pd.NA` evaluates to `True`, whereas `False | pd.NA` evaluates to `<NA>`).\n\nBecause `bool(pd.NA)` raises a `TypeError`, you cannot evaluate `pd.NA` in a standard Python `if` statement or use Python's `and`, `or`, and `not` keywords. Use the bitwise operators `&`, `|`, and `~` instead.\n\nUnlike NumPy, pandas reductions such as `mean()`, `std()`, and `sum()` skip missing values by default (`skipna=True`). When summing, NA values or entirely empty data evaluate to 0, while `prod()` evaluates to 1:\n\n```python\ns = pd.Series([1.0, np.nan, 3.0])\nprint(s.std())              # Skips missing values\nprint(s.std(skipna=False))  # Returns NaN\n```\n\n## Dropping, filling, and interpolating\n\nTo discard missing entries, call `dropna()`. By default, this drops rows containing NA values, but setting `axis=1` drops columns instead.\n\nTo fill missing values with non-NA values, use `fillna()`:\n\n```python\ndf = pd.DataFrame({\n    \"A\": [1.0, np.nan, 3.0],\n    \"B\": [np.nan, 2.0, 4.0]\n})\n\n# Fill with a scalar\nfilled_scalar = df.fillna(0)\n\n# Fill per column with a dictionary or column means\nfilled_mean = df.fillna(df.mean())\n```\n\nYou can also propagate neighbouring values using `ffill()` (forward fill) or `bfill()` (backward fill). Both methods accept a `limit` parameter to constrain how many consecutive gaps are filled.\n\nFor continuous series, `interpolate()` estimates missing points based on nearby observations. It defaults to linear interpolation, but you can set `method=\"time\"` for time series, `method=\"values\"` for floating-point indices, or specify SciPy methods like `\"pchip\"` or `\"barycentric\"`:\n\n```python\nser = pd.Series([1.0, np.nan, 5.0, np.nan, 9.0])\nprint(ser.interpolate(limit=1))\n```\n\n### Try it\n\nCreate a pandas Series with values `[10, np.nan, np.nan, 40]` using `dtype=\"Int64\"`. Use `isna()` to display the missing mask, fill the first missing entry only using forward fill with a limit of 1, and then verify the remaining missing count using `sum()` on `isna()`.\n\n### Key points\n\n- pandas uses `np.nan` for NumPy types, `pd.NaT` for datetime types, and `pd.NA` for nullable extension types.\n- Always detect missing entries with `isna()` or `notna()` rather than equality operators (`==`).\n- Reduction methods such as `sum()` and `mean()` exclude missing entries by default using `skipna=True`.\n- You can clean missing data using `dropna()` to remove entries, `fillna()` to replace values, or `interpolate()` to estimate values across gaps.",
       "keyPoints": [
         "pandas uses np.nan for NumPy types, pd.NaT for datetime types, and pd.NA for nullable extension types.",
@@ -1032,11 +1039,11 @@
         "output": 1318
       },
       "draftedAt": "2026-11-05T12:22:06.404Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
     },
     "data-analysis-pandas/2/2": {
       "title": "Fixing types and dates",
-      "status": "draft",
+      "status": "reviewed",
       "body": "In this lesson, you will learn how to convert raw string and numerical values into proper pandas datetime objects, handle invalid date values safely, and access date components for analysis.\n\n## Converting values to timestamps\n\nWhen importing data from formats like CSV, dates are frequently read as plain text objects. In plain text format, you cannot perform calendar operations, extract months, or calculate intervals. The primary tool for fixing this is `pd.to_datetime`.\n\nApplying `pd.to_datetime` converts text series into datetime objects (with a `datetime64[us]` data type by default):\n\n```python\nimport pandas as pd\n\ndf = pd.DataFrame({\n    \"recorded_at\": [\"2024-03-15 08:30\", \"2024-03-16 09:45\", \"2024-03-17 11:15\"],\n    \"value\": [12.4, 15.1, 9.8]\n})\n\ndf[\"recorded_at\"] = pd.to_datetime(df[\"recorded_at\"])\nprint(df[\"recorded_at\"].dtype)\n```\n\nYou can also convert dates during import by passing `parse_dates=[\"recorded_at\"]` to functions such as `pd.read_csv`.\n\n## Handling formats, day-first dates, and errors\n\nDate strings come in varied structures. When parsing non-standard strings, specify the expected structure with the `format` argument to ensure precise and faster parsing. If your dates use day-first formatting (such as European `DD/MM/YYYY`), pass `dayfirst=True`:\n\n```python\n# Using dayfirst for European dates\neu_dates = pd.Series([\"15/03/2024\", \"16/03/2024\"])\npd.to_datetime(eu_dates, dayfirst=True)\n\n# Using explicit format patterns\npd.to_datetime(pd.Series([\"2024/03/15\"]), format=\"%Y/%m/%d\")\n```\n\nReal-world data often includes corrupt or unparseable text. By default, `pd.to_datetime` raises an exception if a value cannot be parsed (`errors=\"raise\"`). Setting `errors=\"coerce\"` converts invalid entries into `pd.NaT` (Not a Time), which is the missing-value marker for date data:\n\n```python\nmixed_series = pd.Series([\"2024-01-01\", \"invalid_date\", \"2024-01-03\"])\nclean_dates = pd.to_datetime(mixed_series, errors=\"coerce\")\nprint(clean_dates)\n```\n\npandas can also assemble datetime values across separate DataFrame columns when given columns such as `year`, `month`, and `day`:\n\n```python\nparts = pd.DataFrame({\"year\": [2024, 2024], \"month\": [1, 2], \"day\": [15, 20]})\nassembled = pd.to_datetime(parts)\n```\n\n## Using the .dt accessor and date arithmetic\n\nOnce a column has a datetime type, its individual components become accessible through the `.dt` accessor. Properties include `.dt.year`, `.dt.month`, `.dt.day`, `.dt.hour`, and `.dt.day_of_week` (where Monday is 0 and Sunday is 6):\n\n```python\ndf[\"month\"] = df[\"recorded_at\"].dt.month\ndf[\"weekday\"] = df[\"recorded_at\"].dt.day_of_week\n```\n\nDatetime objects also support direct mathematical operations. Subtracting two timestamps returns a `pd.Timedelta` object, which defines a precise time duration:\n\n```python\nduration = df[\"recorded_at\"].max() - df[\"recorded_at\"].min()\nprint(duration)\n```\n\n## DatetimeIndex and slicing\n\nWhen a datetime column is moved to the index (using `.set_index`), the object becomes a `DatetimeIndex`. In addition to making `.dt` properties available directly on the index (such as `df.index.year`), this allows partial string slicing:\n\n```python\ndf = df.set_index(\"recorded_at\")\nsubset = df[\"2024-03-15\":\"2024-03-16\"]\n```\n\nUnlike standard Python slicing, label-based slicing on a `DatetimeIndex` includes both endpoints.\n\n### Try it\n\nCreate a DataFrame with three messy string dates (including one invalid string such as `\"missing\"`) and a numerical column. Use `pd.to_datetime` with `errors=\"coerce\"` to transform the dates, extract the day of the week into a new column with `.dt.day_of_week`, and verify that the invalid entry is represented as `NaT`.\n\n### Key points\n\n- Convert text or integer columns to datetime objects using `pd.to_datetime` or the `parse_dates` argument in file readers.\n- Use `dayfirst=True` or provide an explicit `format` string to resolve ambiguous dates.\n- Pass `errors=\"coerce\"` to replace unparseable strings with `NaT` instead of halting execution.\n- Access calendar properties like month, year, and weekday using the `.dt` accessor on Series, or directly on a `DatetimeIndex`.\n- Subtracting timestamps yields a `Timedelta` duration object, and slicing a `DatetimeIndex` includes both endpoints.",
       "keyPoints": [
         "Convert text or integer columns to datetime objects using `pd.to_datetime` or the `parse_dates` argument in file readers.",
@@ -1056,17 +1063,17 @@
         "output": 1516
       },
       "draftedAt": "2026-11-05T12:22:27.681Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
     },
     "data-analysis-pandas/2/3": {
       "title": "Reshaping data",
-      "status": "draft",
-      "body": "In this lesson, you will learn how to reshape DataFrames between wide and long representations using `pivot`, `pivot_table`, and `melt`, as well as how to manipulate hierarchical levels with `stack` and `unstack`.\n\n## Pivoting from long to wide format\n\nTabular data often arrives in a long format where multiple observations are recorded across separate rows. To spread unique category values across columns, use `DataFrame.pivot`.\n\n```python\nimport pandas as pd\n\ndata = {\n    \"date\": [\"2025-01-01\", \"2025-01-02\", \"2025-01-01\", \"2025-01-02\"],\n    \"station\": [\"London\", \"London\", \"Paris\", \"Paris\"],\n    \"no2\": [25, 30, 40, 42],\n}\ndf = pd.DataFrame(data)\npivoted = df.pivot(index=\"date\", columns=\"station\", values=\"no2\")\nprint(pivoted)\n```\n\nThe `pivot` method requires that each index and column intersection contains exactly one value. If your dataset contains repeated combinations that require summarisation, use `pivot_table` instead. It accepts an `aggfunc` argument (such as `\"mean\"` or `\"sum\"`) and optional `margins=True` to compute row and column subtotals:\n\n```python\nsummary = df.pivot_table(\n    index=\"station\",\n    values=\"no2\",\n    aggfunc=\"mean\",\n    margins=True,\n)\nprint(summary)\n```\n\n## Stacking and unstacking levels\n\nWhen working with MultiIndex structures, `stack` and `unstack` pivot levels between row indices and column headers:\n\n- `stack` moves a level of column labels into the row index, forming an inner row level.\n- `unstack` performs the inverse operation, moving a level of the row index to the column axis (defaulting to the innermost level).\n\n```python\nunstacked = pivoted.unstack()\nprint(unstacked)\nrestored = unstacked.unstack()\nprint(restored)\n```\n\nYou can pass a specific level name or integer position to `unstack`, and supply `fill_value` to handle missing combinations resulting from the layout change.\n\n## Unpivoting with melt\n\nTo convert a wide DataFrame back into a long format, use `DataFrame.melt` (or `pd.melt`). You specify which columns act as identifiers (`id_vars`) and which columns should be unpivoted (`value_vars`).\n\n```python\nwide = pd.DataFrame({\n    \"city\": [\"Antwerp\", \"Paris\"],\n    \"2024\": [12.5, 18.2],\n    \"2025\": [11.0, 17.5],\n})\n\nlong_df = wide.melt(\n    id_vars=\"city\",\n    value_vars=[\"2024\", \"2025\"],\n    var_name=\"year\",\n    value_name=\"reading\",\n)\nprint(long_df)\n```\n\nAny column not included in `id_vars` is unpivoted into two columns: one named `variable` (or your chosen `var_name`) containing the original column headers, and one named `value` (or your `value_name`) holding the readings.\n\n## Unnesting lists with explode\n\nWhen a column holds nested, list-like collections in each row, `DataFrame.explode` transforms each element into its own row while preserving the associated index labels and other column values:\n\n```python\nrecords = pd.DataFrame({\n    \"station\": [\"London\", \"Paris\"],\n    \"tags\": [[\"urban\", \"traffic\"], [\"suburban\"]],\n})\nexploded = records.explode(\"tags\")\nprint(exploded)\n```\n\nEmpty lists inside exploded columns are converted into missing value indicators.\n\n### Try it\n\nCreate a small DataFrame containing columns `\"product\"`, `\"store\"`, and `\"sales\"` with multiple entries per product. Use `pivot_table` to calculate the total sales for each product across stores, enabling `margins=True` to observe overall subtotals.\n\n### Key points\n\n- `DataFrame.pivot` reshapes unique row-column combinations into wide tables without aggregation.\n- `DataFrame.pivot_table` combines and aggregates data across categories, supporting multiple aggregation functions and margin subtotals.\n- `DataFrame.melt` transforms wide datasets to long format by unpivoting measured variable columns into row pairs.\n- `stack` compresses column labels into the row index, whilst `unstack` turns row index levels into columns.\n- `DataFrame.explode` unpacks list-like values in a column into separate rows.",
+      "status": "reviewed",
+      "body": "In this lesson, you will learn how to reshape DataFrames between wide and long representations using `pivot`, `pivot_table`, and `melt`, as well as how to manipulate hierarchical levels with `stack` and `unstack`.\n\n## Pivoting from long to wide format\n\nTabular data often arrives in a long format where multiple observations are recorded across separate rows. To spread unique category values across columns, use `DataFrame.pivot`.\n\n```python\nimport pandas as pd\n\ndata = {\n    \"date\": [\"2025-01-01\", \"2025-01-02\", \"2025-01-01\", \"2025-01-02\"],\n    \"station\": [\"London\", \"London\", \"Paris\", \"Paris\"],\n    \"no2\": [25, 30, 40, 42],\n}\ndf = pd.DataFrame(data)\npivoted = df.pivot(index=\"date\", columns=\"station\", values=\"no2\")\nprint(pivoted)\n```\n\nThe `pivot` method requires that each index and column intersection contains exactly one value. If your dataset contains repeated combinations that require summarisation, use `pivot_table` instead. It accepts an `aggfunc` argument (such as `\"mean\"` or `\"sum\"`) and optional `margins=True` to compute row and column subtotals:\n\n```python\nsummary = df.pivot_table(\n    index=\"station\",\n    values=\"no2\",\n    aggfunc=\"mean\",\n    margins=True,\n)\nprint(summary)\n```\n\n## Stacking and unstacking levels\n\nWhen working with MultiIndex structures, `stack` and `unstack` pivot levels between row indices and column headers:\n\n- `stack` moves a level of column labels into the row index, forming an inner row level.\n- `unstack` performs the inverse operation, moving a level of the row index to the column axis (defaulting to the innermost level).\n\n```python\nstacked = pivoted.stack()\nprint(stacked)\nrestored = stacked.unstack()\nprint(restored)\n```\n\nYou can pass a specific level name or integer position to `unstack`, and supply `fill_value` to handle missing combinations resulting from the layout change.\n\n## Unpivoting with melt\n\nTo convert a wide DataFrame back into a long format, use `DataFrame.melt` (or `pd.melt`). You specify which columns act as identifiers (`id_vars`) and which columns should be unpivoted (`value_vars`).\n\n```python\nwide = pd.DataFrame({\n    \"city\": [\"Antwerp\", \"Paris\"],\n    \"2024\": [12.5, 18.2],\n    \"2025\": [11.0, 17.5],\n})\n\nlong_df = wide.melt(\n    id_vars=\"city\",\n    value_vars=[\"2024\", \"2025\"],\n    var_name=\"year\",\n    value_name=\"reading\",\n)\nprint(long_df)\n```\n\nAny column not included in `id_vars` is unpivoted into two columns: one named `variable` (or your chosen `var_name`) containing the original column headers, and one named `value` (or your `value_name`) holding the readings.\n\n## Unnesting lists with explode\n\nWhen a column holds nested, list-like collections in each row, `DataFrame.explode` transforms each element into its own row while preserving the associated index labels and other column values:\n\n```python\nrecords = pd.DataFrame({\n    \"station\": [\"London\", \"Paris\"],\n    \"tags\": [[\"urban\", \"traffic\"], [\"suburban\"]],\n})\nexploded = records.explode(\"tags\")\nprint(exploded)\n```\n\nEmpty lists inside exploded columns are converted into missing value indicators.\n\n### Try it\n\nCreate a small DataFrame containing columns `\"product\"`, `\"store\"`, and `\"sales\"` with multiple entries per product. Use `pivot_table` to calculate the total sales for each product across stores, enabling `margins=True` to observe overall subtotals.\n\n### Key points\n\n- `DataFrame.pivot` reshapes unique row-column combinations into wide tables without aggregation.\n- `DataFrame.pivot_table` combines and aggregates data across categories, supporting multiple aggregation functions and margin subtotals.\n- `DataFrame.melt` transforms wide datasets to long format by unpivoting measured variable columns into row pairs.\n- `stack` compresses column labels into the row index, whilst `unstack` turns row index levels into columns.\n- `DataFrame.explode` unpacks list-like values in a column into separate rows.",
       "keyPoints": [
         "DataFrame.pivot reshapes unique row-column combinations into wide tables without aggregation.",
         "DataFrame.pivot_table combines and aggregates data across categories, supporting multiple aggregation functions and margin subtotals.",
         "DataFrame.melt transforms wide datasets to long format by unpivoting measured variable columns into row pairs.",
-        "stack compresses column labels into the row index, whilst `unstack` turns row index levels into columns.",
+        "stack compresses column labels into the row index, whilst unstack turns row index levels into columns.",
         "DataFrame.explode unpacks list-like values in a column into separate rows."
       ],
       "sourcesUsed": [
@@ -1080,11 +1087,18 @@
         "output": 1321
       },
       "draftedAt": "2026-11-05T12:22:43.397Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)",
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [error] ## Stacking and unstacking levels: The code snippet never calls `stack()`, calling `unstack()` twice instead (`unstacked = pivoted.unstack()` and `restored = unstacked.unstack()`). Furthermore, calling `unstack()` on the resulting Series does not restore the original `pivoted` DataFrame (it yields a transposed DataFrame with `station` as index and `date` as columns); the inverse operation of `unstack()` is `stack()`.",
+          "at": "2026-11-05T14:47:17.724Z"
+        }
+      ]
     },
     "data-analysis-pandas/3/1": {
       "title": "Filtering and sorting",
-      "status": "draft",
+      "status": "reviewed",
       "body": "By the end of this lesson, you will be able to filter rows and select subsets of columns in a pandas DataFrame using boolean conditions, logical operators, membership checks, and indexers.\n\n## Boolean indexing and logical operators\n\nFiltering rows in pandas relies on boolean vectors. When you apply a comparison operator (such as `>`, `<`, `==`, or `!=`) to a `Series`, pandas returns a new `Series` containing `True` and `False` values for each row.\n\n```python\nimport pandas as pd\n\ndata = {\n    \"Name\": [\"Alice\", \"Bob\", \"Charlie\", \"Diana\"],\n    \"Age\": [28, 42, 35, 19],\n    \"Pclass\": [1, 2, 2, 3],\n}\ndf = pd.DataFrame(data)\n\n# Filter for passengers older than 30\nolder_than_30 = df[df[\"Age\"] > 30]\n```\n\nWhen combining multiple conditions, standard Python logical operators like `and` or `or` cannot be used on Series objects. Instead, you must use bitwise operators:\n\n- `&` for *and*\n- `|` for *or*\n- `~` for *not*\n\nBecause of Python's operator precedence, you must enclose each individual condition in parentheses `()`.\n\n```python\n# Passengers who are in class 2 AND older than 25\nclass2_older = df[(df[\"Pclass\"] == 2) & (df[\"Age\"] > 25)]\n\n# Passengers who are not in class 3\nnot_class3 = df[~(df[\"Pclass\"] == 3)]\n```\n\n## Filtering with isin and notna\n\nWriting multiple `|` conditions can become cumbersome when checking against multiple valid values. The `isin()` method provides a concise alternative by checking whether values exist within an iterable, such as a list.\n\n```python\n# Select rows where Pclass is either 2 or 3\nclasses = df[df[\"Pclass\"].isin([2, 3])]\n```\n\nTo identify rows where data is present and exclude missing values, you can use the `notna()` method on a `Series`. This returns `True` for every entry that is not null.\n\n```python\n# Keep rows where Age is known\nvalid_ages = df[df[\"Age\"].notna()]\n```\n\n## Selecting rows and columns with loc and query\n\nWhen you need to filter rows and select specific columns in a single step, selection brackets `[]` alone are insufficient. You can use `.loc`, which accepts row criteria before the comma and column labels after it.\n\n```python\n# Retrieve only names for passengers older than 30\nadult_names = df.loc[df[\"Age\"] > 30, \"Name\"]\n\n# Retrieve names and class for passengers older than 30\nadult_details = df.loc[df[\"Age\"] > 30, [\"Name\", \"Pclass\"]]\n```\n\nWhile `.loc` relies on labels and conditions, `.iloc` operates purely on integer positions (from `0` to `length - 1`):\n\n```python\n# Select the first two rows and the first two columns by position\nfirst_slice = df.iloc[0:2, 0:2]\n```\n\nAnother approach for filtering is the `query()` method, which allows you to filter using readable string expressions without referencing the DataFrame repeatedly.\n\n```python\n# Filter using a query string\nqueried = df.query(\"Age > 30 and Pclass == 2\")\n```\n\n### Try it\n\nCreate a DataFrame containing four products with columns `\"product\"`, `\"price\"`, and `\"in_stock\"`. Then, write a boolean filter that extracts only the products where `price < 50` and `in_stock == True`. Finally, use `.loc` to extract only their `\"product\"` names.\n\n### Key points\n\n- Conditional expressions produce boolean Series that filter DataFrame rows when passed into selection brackets `[]`.\n- Multiple conditional expressions must be wrapped in parentheses `()` and combined using `&` (*and*), `|` (*or*), or `~` (*not*).\n- The `isin()` method checks for membership across a list of values, while `notna()` filters out missing entries.\n- The `.loc` operator performs simultaneous row filtering and column selection based on labels, whereas `.iloc` relies strictly on integer positions.",
       "keyPoints": [
         "Conditional expressions produce boolean Series that filter DataFrame rows when passed into selection brackets `[]`.",
@@ -1103,11 +1117,11 @@
         "output": 1246
       },
       "draftedAt": "2026-11-05T12:23:05.057Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
     },
     "data-analysis-pandas/3/2": {
       "title": "Grouping and aggregating",
-      "status": "draft",
+      "status": "reviewed",
       "body": "In this lesson, you will learn how to group datasets by one or more categories and calculate summary statistics across subsets using pandas. You will explore the split-apply-combine workflow, select target columns, and compute custom metrics using the `.agg()` method.\n\n## The split-apply-combine workflow\n\nWhen analysing tabular data, you often need to calculate summary metrics for distinct subsets—such as finding the average salary per department. In pandas, this approach follows the **split-apply-combine** pattern:\n\n1. **Split**: Break the data into groups based on key criteria.\n2. **Apply**: Compute a function (such as a sum, mean, or count) independently on each group.\n3. **Combine**: Bring the results back together into a single pandas data structure.\n\nYou create groups by calling `df.groupby()`. By default, the grouping column becomes the index of the returned object. If you want the grouping keys to stay as regular DataFrame columns, pass `as_index=False`.\n\n```python\nimport pandas as pd\n\ndf = pd.DataFrame({\n    \"team\": [\"Alpha\", \"Beta\", \"Alpha\", \"Beta\", \"Alpha\"],\n    \"role\": [\"Dev\", \"Dev\", \"QA\", \"QA\", \"Dev\"],\n    \"score\": [85, 90, 78, 88, 92],\n    \"hours\": [40, 35, 38, 42, 45],\n})\n\n# Group by a single column and select one metric to aggregate\nteam_scores = df.groupby(\"team\")[\"score\"].mean()\n\n# Group by multiple columns while retaining columns in the output\nrole_metrics = df.groupby([\"team\", \"role\"], as_index=False)[\"score\"].mean()\n```\n\n## Built-in aggregation methods\n\nGroupBy objects provide built-in methods for computing summary statistics across numeric values, such as `.mean()`, `.median()`, `.sum()`, `.min()`, and `.max()`.\n\nWhen aggregating, two common methods measure group volume:\n- `.count()` returns the number of non-null records for each column.\n- `.size()` returns a Series containing the total number of rows in each group, including `NaN` values.\n\n```python\n# Count non-missing values versus total rows\ncounts = df.groupby(\"team\")[\"score\"].count()\nsizes = df.groupby(\"team\").size()\n```\n\nBy default, `groupby()` drops groups where the grouping key itself is `NaN`. To include missing keys as a distinct group, supply `dropna=False`. If you call a method like `.mean()` on an entire DataFrame containing non-numeric data, pass `numeric_only=True` to exclude text columns.\n\n## Custom aggregations with `.agg()`\n\nThe `.agg()` (or `.aggregate()`) method gives you precise control over what statistics to compute. You can pass a list of method names, provide a dictionary to apply different functions to different columns, or use named aggregation to specify clear output column names.\n\n```python\n# Apply multiple metrics to a single grouped column\ndf.groupby(\"team\")[\"score\"].agg([\"min\", \"max\", \"mean\"])\n\n# Apply different functions to different columns\ndf.groupby(\"team\").agg({\n    \"score\": [\"mean\", \"max\"],\n    \"hours\": \"sum\",\n})\n\n# Named aggregation: assign explicit output column names\ndf.groupby(\"team\").agg(\n    avg_score=(\"score\", \"mean\"),\n    total_hours=(\"hours\", \"sum\"),\n)\n```\n\nNamed aggregation accepts keyword arguments where each key is your desired column name and the value is a tuple of `(\"column_name\", \"function_name\")`. This avoids generating hierarchical column MultiIndexes.\n\n### Try it\n\nCreate a DataFrame of product sales with columns for `category` (`\"Books\"`, `\"Electronics\"`), `units_sold`, and `unit_price`. Group the DataFrame by `category` and use named aggregation with `.agg()` to return a single DataFrame containing `min_units` and `avg_price`.\n\n### Key points\n\n- The `groupby` method implements the split-apply-combine workflow across one or more grouping keys.\n- Selecting columns with bracket notation after `groupby` applies calculations only to specified columns.\n- Setting `as_index=False` preserves grouping keys as standard DataFrame columns instead of moving them to the index.\n- `.count()` ignores `NaN` values in columns, whereas `.size()` measures the total row count per group.\n- The `.agg()` method allows computing multiple statistics at once and supports named aggregation tuples `(\"column\", \"aggfunc\")` for readable column headers.",
       "keyPoints": [
         "The `groupby` method implements the split-apply-combine workflow across one or more grouping keys.",
@@ -1127,11 +1141,11 @@
         "output": 1298
       },
       "draftedAt": "2026-11-05T12:23:31.787Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
     },
     "data-analysis-pandas/3/3": {
       "title": "Joining datasets",
-      "status": "draft",
+      "status": "reviewed",
       "body": "In real-world data analysis, information is often split across multiple tables. In this lesson, you will learn how to combine datasets by concatenating them along an axis or merging them using database-style join keys.\n\n## Concatenating tables with pd.concat\n\nWhen you have tables with a similar structure—such as monthly reports or data collected from different sensors—you can stack them together using `pd.concat()`. By default, concatenation occurs along `axis=0` (row-wise), combining the rows of each table:\n\n```python\nimport pandas as pd\n\npm25 = pd.DataFrame({\"city\": [\"Antwerp\", \"Paris\"], \"val\": [18.0, 25.0]})\nno2 = pd.DataFrame({\"city\": [\"Antwerp\", \"Paris\"], \"val\": [20.5, 31.2]})\n\ncombined = pd.concat([pm25, no2], axis=0, ignore_index=True)\nprint(combined)\n```\n\nYou can also concatenate along columns by setting `axis=1`. When combining along rows where the index is not meaningful, setting `ignore_index=True` creates a clean, continuous numerical index. Note that `pd.concat()` makes a full copy of the data, so it is best to collect all your DataFrames into a list before calling `pd.concat()` rather than appending in a loop.\n\n## Database-style merging with pd.merge\n\nTo join tables based on a shared key or identifier rather than index alignment, use `pd.merge()`. This mirrors relational database operations:\n\n```python\nmeasurements = pd.DataFrame({\n    \"city\": [\"Antwerp\", \"Paris\", \"London\"],\n    \"val\": [18.0, 25.0, 14.2],\n})\n\nstations = pd.DataFrame({\n    \"city\": [\"Antwerp\", \"Paris\", \"Madrid\"],\n    \"country\": [\"Belgium\", \"France\", \"Spain\"],\n})\n\nmerged = pd.merge(measurements, stations, on=\"city\", how=\"left\")\nprint(merged)\n```\n\nThe `how` argument controls which keys remain in the resulting table:\n\n- `how=\"left\"`: Keeps all keys from the left DataFrame.\n- `how=\"right\"`: Keeps all keys from the right DataFrame.\n- `how=\"inner\"`: Keeps only keys present in both DataFrames (intersection).\n- `how=\"outer\"`: Keeps all keys from both DataFrames (union), inserting `NaN` where matches are missing.\n- `how=\"cross\"`: Creates the Cartesian product of rows from both frames.\n\n## Handling differing column names and tracking joins\n\nWhen the shared identifier has different column names in each DataFrame, use `left_on` and `right_on` instead of `on`:\n\n```python\nparams = pd.DataFrame({\"param_id\": [1, 2], \"name\": [\"PM25\", \"NO2\"]})\nreadings = pd.DataFrame({\"sensor\": [101, 102], \"parameter\": [1, 2]})\n\nresult = pd.merge(\n    readings, params, left_on=\"parameter\", right_on=\"param_id\", how=\"left\"\n)\n```\n\nIf non-key columns share identical names across both tables, pandas automatically appends `_x` and `_y` to distinguish them. You can customise these using the `suffixes` argument (for example, `suffixes=(\"_left\", \"_right\")`).\n\nTo audit the outcome of a merge, pass `indicator=True`. This adds a categorical `_merge` column with values indicating whether each row was found in `left_only`, `right_only`, or `both`.\n\n### Try it\n\nCreate two small DataFrames: `sales` with columns `\"item_id\"` and `\"units\"`, and `inventory` with columns `\"sku\"` and `\"price\"`. Use `pd.merge()` to perform an outer join matching `item_id` to `sku`, with `indicator=True` enabled to see where each record originated.\n\n### Key points\n\n- Use `pd.concat()` to stack DataFrames along rows (`axis=0`) or across columns (`axis=1`).\n- Use `pd.merge()` to combine tables based on matching keys, supporting `'left'`, `'right'`, `'inner'`, `'outer'`, and `'cross'` joins.\n- Connect tables with mismatched key names using the `left_on` and `right_on` parameters.\n- Set `indicator=True` in `pd.merge()` to inspect whether rows came from `left_only`, `right_only`, or `both`.\n- Customise overlapping column names by providing a tuple of labels to `suffixes`.",
       "keyPoints": [
         "Use `pd.concat()` to stack DataFrames along rows (`axis=0`) or across columns (`axis=1`).",
@@ -1151,11 +1165,11 @@
         "output": 1316
       },
       "draftedAt": "2026-11-05T12:23:48.663Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
     },
     "data-analysis-pandas/4/1": {
       "title": "Charts that explain",
-      "status": "draft",
+      "status": "reviewed",
       "body": "In this lesson, you will learn how to select and customise pandas charts to explain patterns in your data clearly. You will connect pandas plotting methods to Matplotlib, control subplots and formatting, and manage how missing values appear in your visualisations.\n\n## Choosing the right chart type\n\nPandas provides plotting methods directly on `Series` and `DataFrame` objects through the `.plot` accessor. By default, `df.plot()` produces a line plot for each numeric column, which is suited for continuous trends such as time series. When your goal is to communicate specific relationships or comparisons to an audience, you can choose alternative chart kinds using `df.plot.<kind>()` or the `kind` keyword parameter:\n\n- **Bar plots** (`kind=\"bar\"` or `plot.bar()`): Compare values across distinct categories. Setting `stacked=True` displays cumulative segment totals.\n- **Scatter plots** (`plot.scatter(x=\"col1\", y=\"col2\")`): Highlight relationships, correlations, and outliers between two numerical variables. You can pass a third column to `c` to colour points or to `s` to scale point size.\n- **Histograms** (`plot.hist()`): Summarise the frequency distribution of a continuous variable across bins.\n- **Box plots** (`plot.box()`): Visualise data distributions by displaying medians, quartiles, whiskers, and fliers.\n\n```python\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\ndata = {\n    \"quarter\": [\"Q1\", \"Q2\", \"Q3\", \"Q4\"],\n    \"station_a\": [120, 150, 170, 160],\n    \"station_b\": [90, 110, 130, 140],\n}\ndf = pd.DataFrame(data).set_index(\"quarter\")\n\n# Stacked bar chart comparing station performance\ndf.plot.bar(stacked=True)\nplt.show()\n```\n\n## Customising figures with Matplotlib\n\nEvery chart created by pandas is built on top of a Matplotlib object. To build figures that clearly explain data, you can create explicit Matplotlib figures and axes using `plt.subplots()` and pass the axis object into the pandas `ax` parameter. This allows you to set titles, label axes, and save the result to an image file.\n\n```python\nfig, ax = plt.subplots(figsize=(8, 4))\n\ndf.plot(ax=ax)\nax.set_title(\"Quarterly Station Footfall\")\nax.set_ylabel(\"Passenger Count\")\n\nfig.savefig(\"station_footfall.png\")\nplt.show()\n```\n\nWhen comparing multiple columns that share different scales, using a single axis can clutter the chart. Passing `subplots=True` creates separate subplots for each column, keeping the visual story clear.\n\n```python\ndf.plot(subplots=True, figsize=(8, 6))\nplt.show()\n```\n\n## Plotting with missing data\n\nMissing data can distort the visual narrative if ignored. Pandas handles missing values (`NaN`) pragmatically depending on the chart type:\n\n- **Line plots** leave gaps at `NaN` values, preventing misleading interpolations.\n- **Bar and area plots** fill missing entries with zeros.\n- **Scatter plots, histograms, and box plots** drop `NaN` values automatically before plotting.\n\nIf the default behaviour does not suit your explanation, clean or impute the data explicitly before plotting by using `.dropna()` or `.fillna()`.\n\n### Try it\n\nCreate a DataFrame containing four quarters of revenue and expense figures. Generate a horizontal bar plot (`plot.barh()`) displaying both columns side by side, set custom labels on the axes using an explicit Matplotlib axis, and save the figure as `financial_summary.png`.\n\n### Key points\n\n- The `DataFrame.plot` accessor provides distinct chart types such as line, bar, scatter, hist, and box.\n- Linking pandas plots to Matplotlib via `ax=ax` gives full control over titles, axis labels, and file exports via `fig.savefig()`.\n- Setting `subplots=True` splits DataFrame columns into separate subplots for cleaner comparisons.\n- Pandas handles missing values differently across plot types, such as leaving gaps in line plots and filling zeros in bar plots.",
       "keyPoints": [
         "The DataFrame.plot accessor provides distinct chart types such as line, bar, scatter, hist, and box.",
@@ -1175,11 +1189,11 @@
         "output": 1177
       },
       "draftedAt": "2026-11-05T12:24:05.115Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
     },
     "data-analysis-pandas/4/2": {
       "title": "Project: city bike trips",
-      "status": "draft",
+      "status": "reviewed",
       "body": "In this project, you will analyse real hire journeys from London's Santander Cycles scheme to uncover travel patterns across the city. By the end of this project, you will be able to parse date fields, compute summary statistics, group by temporal properties, and visualise hourly hire trends.\n\nAll journey records in this project are Powered by TfL Open Data.\n\n## Loading and preparing the journey records\n\nThe dataset `london-bike-trips-18-24-may-2026.csv` contains a 1-in-5 sample of 41,253 journeys recorded from Monday 18 May to Sunday 24 May 2026 across roughly 800 docking stations. Because this is a sample, any counts you calculate represent roughly one-fifth of the true operational totals.\n\nYou can parse the date columns directly on import using `read_csv` with the `parse_dates` parameter:\n\n```python\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\ntrips = pd.read_csv(\n    \"london-bike-trips-18-24-may-2026.csv\",\n    parse_dates=[\"Start date\", \"End date\"],\n)\n\n# Convert duration from milliseconds to minutes\ntrips[\"Duration (min)\"] = trips[\"Total duration (ms)\"] / (1000 * 60)\nprint(trips[[\"Start station\", \"Bike model\", \"Duration (min)\"]].head())\n```\n\nUsing `head()` allows you to inspect the transformed columns and verify that `Duration (min)` looks sensible.\n\n## Evaluating journey lengths and bike models\n\nTo discover typical journey behaviour, you can compute summary statistics on journey duration and inspect the distribution of bike types (`CLASSIC` versus `PBSC_EBIKE`).\n\n```python\n# Compare typical journey durations\nprint(trips[\"Duration (min)\"].agg([\"mean\", \"median\", \"min\", \"max\"]))\n\n# Check the breakdown between classic bikes and e-bikes\nprint(trips[\"Bike model\"].value_counts())\n\n# Calculate median duration for each bike model\nprint(trips.groupby(\"Bike model\")[\"Duration (min)\"].median())\n```\n\nThe `median()` provides a helpful measure of typical journey length when durations contain extreme outliers, whilst `value_counts()` highlights fleet adoption across the sampled hires.\n\n## Identifying popular stations and peak hours\n\nUsing the `dt` accessor on timestamp columns lets you extract time components like the hour of the day and day of the week (where Monday is 0 and Sunday is 6).\n\n```python\n# Identify the top 5 busiest start stations in the sample\nprint(trips[\"Start station\"].value_counts().head(5))\n\n# Group hires by hour of the day and plot the count\nhourly_counts = trips.groupby(trips[\"Start date\"].dt.hour)[\"Start date\"].count()\n\nfig, axs = plt.subplots(figsize=(10, 4))\nhourly_counts.plot(kind=\"bar\", rot=0, ax=axs)\naxs.set_xlabel(\"Hour of the day\")\naxs.set_ylabel(\"Sampled hire count\")\nfig.savefig(\"hourly_bike_trips.png\")\nplt.show()\n```\n\nRemember that each count displayed in the chart reflects approximately one-fifth of real hire activity across London during that week.\n\n### Try it\n\nCompare weekday and weekend hire habits. Use `trips[\"Start date\"].dt.day_of_week` to group journeys into weekdays (days 0 to 4) and weekends (days 5 and 6), then calculate the mean and median journey durations in minutes for both groups.\n\n### Key points\n\n- Convert date text to timestamps on ingestion with `pd.read_csv(..., parse_dates=[...])`.\n- Access temporal components such as `.dt.hour` and `.dt.day_of_week` for time-based groupings.\n- Compute central tendencies with `mean()`, `median()`, and `agg()` to evaluate typical journey metrics.\n- Remember that counts derived from a 1-in-5 sample represent approximately 20% of full totals.",
       "keyPoints": [
         "Convert date text to timestamps on ingestion with `pd.read_csv(..., parse_dates=[...])`.",
@@ -1200,6 +1214,291 @@
         "output": 1229
       },
       "draftedAt": "2026-11-05T12:24:21.031Z",
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
+    },
+    "advanced-animations/1/1": {
+      "title": "Why motion matters",
+      "status": "draft",
+      "body": "Understanding why motion matters is the foundation of high-quality mobile interface engineering. By the end of this lesson, you will be able to explain the physical principles that make interface motion believable, describe how React Native declaratively models these transitions, and assess motion choices to avoid triggering adverse vestibular and cognitive reactions.\n\n## Physical believability and interface motion\n\nIn the physical world, stationary objects must overcome inertia before they start moving. Similarly, moving objects possess momentum and rarely come to an immediate, abrupt halt. When an interface element jumps instantaneously between states or stops dead with no deceleration, it feels unnatural to the human eye.\n\nAnimations allow you to convey physically believable motion within your interface. Easing curves and spring models simulate the natural laws of acceleration and deceleration. React Native provides two complementary animation systems to handle this:\n\n- `Animated` for granular, interactive control of specific values over time or gestures.\n- `LayoutAnimation` for animated global layout transactions across render cycles.\n\n`Animated` focuses on declarative relationships between inputs and outputs, rather than manually re-rendering components frame by frame. You define the target value, the easing curve, and the duration, allowing the runtime to drive updates smoothly.\n\n```tsx\nimport React, { useEffect, useRef } from 'react';\nimport { Animated, StyleSheet, View } from 'react-native';\n\nexport const FadeInCard = (): React.JSX.Element => {\n  const fadeAnim = useRef(new Animated.Value(0)).current;\n\n  useEffect(() => {\n    Animated.timing(fadeAnim, {\n      toValue: 1,\n      duration: 1000,\n      useNativeDriver: true,\n    }).start();\n  }, [fadeAnim]);\n\n  return (\n    <Animated.View style={[styles.card, { opacity: fadeAnim }]}>\n      <View style={styles.inner} />\n    </Animated.View>\n  );\n};\n\nconst styles = StyleSheet.create({\n  card: { width: 200, height: 100, backgroundColor: 'powderblue' },\n  inner: { flex: 1 },\n});\n```\n\nBy default, `Animated.timing()` relies on an `easeInOut` curve that reflects real-world physics: an element gradually accelerates up to full speed and concludes by gradually decelerating to a stop.\n\n## Motion sensitivity and accessibility\n\nWhile well-crafted motion provides context and polish, excessive or unconstrained movement can severely harm usability. Motion sensitivity is common: over 35% of adults experience vestibular dysfunction by age 40. For these individuals, unwarranted movement across a screen can trigger dizziness, migraine-induced vertigo, or severe nausea.\n\nMotion can also disrupt cognitive processing. People with ADHD and attention deficit disorders can find moving, blinking, or scrolling elements intensely distracting, pulling their attention away from the core task. Furthermore, extreme motion and rapid flickering can trigger seizures in people with photosensitive epilepsy. Web Content Accessibility Guidelines (WCAG) specifically advise against content that flashes more than three times in any one second.\n\nTo ensure your animations enhance rather than detract from the user experience, follow these design principles:\n\n1. Question necessity: Determine whether an animation is essential to understanding content or an interaction. If it is purely decorative and non-essential, consider reducing or removing it.\n2. Respect duration limits: Any non-essential moving, blinking, or scrolling element that starts automatically must provide mechanisms to pause, stop, or hide the motion if it lasts longer than five seconds.\n3. Honour system preferences: Operating systems provide explicit accessibility toggles, such as Reduce Motion on macOS or Remove Animations on Android. Designing your animations to respect these preferences ensures your app remains accessible to everyone.\n\n### Try it\n\nReview an existing transition or entrance animation in your app. Check whether its timing mimics physical momentum with gradual acceleration and deceleration. Then verify how long the animation runs: if it lasts longer than five seconds or loops continuously, plan how you will give users a mechanism to pause or disable it.\n\n### Key points\n\n- Animations convey physically believable motion by accounting for inertia and momentum.\n- React Native uses declarative relationships in the `Animated` API to map animated values to styles without regular re-rendering.\n- Vestibular disorders affect more than 35% of adults by age 40, meaning excessive movement can cause dizziness or illness.\n- Elements must avoid flashing more than three times per second to prevent triggering seizures in photosensitive users.\n- Non-essential animations that start automatically and last over five seconds require an option to pause, stop, or hide them.",
+      "keyPoints": [
+        "Animations convey physically believable motion by accounting for inertia and momentum.",
+        "React Native uses declarative relationships in the Animated API to map animated values to styles without regular re-rendering.",
+        "Vestibular disorders affect more than 35% of adults by age 40, meaning excessive movement can cause dizziness or illness.",
+        "Elements must avoid flashing more than three times per second to prevent triggering seizures in photosensitive users.",
+        "Non-essential animations that start automatically and last over five seconds require an option to pause, stop, or hide them."
+      ],
+      "sourcesUsed": [
+        "rn-docs:animations.md",
+        "webdev-learn:accessibility/motion"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 9832,
+        "output": 1182
+      },
+      "draftedAt": "2026-11-05T15:08:07.685Z",
+      "reviewed": null
+    },
+    "advanced-animations/1/2": {
+      "title": "Springs vs timing",
+      "status": "draft",
+      "body": "In this lesson, you will learn how to choose between spring-driven and timing-driven animations in React Native Reanimated, and how to configure their properties to achieve the exact motion behaviour you need.\n\n## Time-based transitions with withTiming\n\nWhen you need an animation to complete within an exact period, `withTiming` is the appropriate tool. It creates transitions determined by a specified duration in milliseconds alongside an easing curve.\n\nBy default, `withTiming` runs for 300 milliseconds with an easing of `Easing.inOut(Easing.quad)`. Reanimated includes built-in easings such as `linear`, `cubic`, `bounce`, `circle`, `bezier`, and `exp`, as well as modifier helpers like `in`, `out`, and `inOut`.\n\n```tsx\nimport { useSharedValue, withTiming, Easing } from 'react-native-reanimated';\n\nexport function FadeExample() {\n  const opacity = useSharedValue<number>(0);\n\n  const fadeIn = () => {\n    opacity.value = withTiming(1, {\n      duration: 450,\n      easing: Easing.out(Easing.cubic),\n    });\n  };\n\n  return null;\n}\n```\n\nTiming animations are deterministic: regardless of the distance between the starting value and target value, the transition will always consume the exact duration specified.\n\n## Physics-based motion with withSpring\n\n`withSpring` simulates real-world physical motion rather than sticking to a rigid timeline. Reanimated provides two ways to configure springs: physics-based and duration-based.\n\n### Physics-based springs\n\nA physics-based spring calculates its trajectory using mechanical properties:\n\n- `stiffness`: Defines how bouncy the spring is (defaults to 900).\n- `damping`: Determines how quickly the spring slows down and comes to rest (defaults to 120).\n- `mass`: The weight of the spring (defaults to 4). Reducing this value makes the animation faster.\n- `velocity`: Initial velocity applied to the spring equation (defaults to 0).\n- `overshootClamping`: A boolean (defaults to `false`) specifying whether the spring can bounce over the target value.\n\n### Duration-based springs\n\nIf you prefer to configure springs using perceptual time while retaining a natural bounce, you can supply `duration` and `dampingRatio` instead. In this mode:\n\n- `duration`: The perceptual duration in milliseconds (defaults to 550). The actual duration is 1.5 times this value.\n- `dampingRatio`: How damped the spring is (defaults to 1). A value of 1 represents critical damping (no bounce), values below 1 produce underdamped bouncy movement, and values above 1 yield overdamped motion.\n\nNote that `stiffness` and `damping` cannot be used alongside `duration` and `dampingRatio`. If both are provided, `duration` and `dampingRatio` will override `stiffness` and `damping`.\n\n```tsx\nimport { useSharedValue, withSpring } from 'react-native-reanimated';\n\nexport function SpringExample() {\n  const position = useSharedValue<number>(0);\n\n  const animateWithPhysics = () => {\n    position.value = withSpring(100, {\n      stiffness: 800,\n      damping: 90,\n      mass: 2,\n    });\n  };\n\n  const animateWithDuration = () => {\n    position.value = withSpring(100, {\n      duration: 400,\n      dampingRatio: 0.8,\n    });\n  };\n\n  return null;\n}\n```\n\n## Callbacks and execution\n\nBoth `withSpring` and `withTiming` accept an optional callback as their third argument. This callback receives a `finished` boolean (`false` if cancelled, `true` upon completion) and an optional `current` animatable value. Reanimated automatically workletises this callback so that it runs directly on the UI thread.\n\n### Try it\n\nCreate a component with a shared value initialised to 0. Trigger a `withSpring` animation to 200 using a `dampingRatio` of 0.6 and a perceptual duration of 500 ms. Add a completion callback that inspects the `finished` boolean.\n\n### Key points\n\n- `withTiming` moves between values across a predetermined millisecond duration shaped by an easing function.\n- `withSpring` models physical movement using either classic physics parameters (`stiffness`, `damping`, `mass`) or perceptual parameters (`duration`, `dampingRatio`).\n- Duration-based spring parameters (`duration` and `dampingRatio`) override physics-based parameters (`stiffness` and `damping`) when provided together.\n- Both functions support an optional completion callback that is automatically workletised and runs on the UI thread.",
+      "keyPoints": [
+        "withTiming moves between values across a predetermined millisecond duration shaped by an easing function.",
+        "withSpring models physical movement using either classic physics parameters (stiffness, damping, mass) or perceptual parameters (duration, dampingRatio).",
+        "Duration-based spring parameters (duration and dampingRatio) override physics-based parameters (stiffness and damping) when provided together.",
+        "Both functions support an optional completion callback that is automatically workletised and runs on the UI thread."
+      ],
+      "sourcesUsed": [
+        "reanimated-docs:animations/withSpring.mdx",
+        "reanimated-docs:animations/withTiming.mdx"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 3372,
+        "output": 1281
+      },
+      "draftedAt": "2026-11-05T15:08:52.313Z",
+      "reviewed": null,
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [error] ### Physics-based springs: The claim that `velocity` is 'useful for handing off momentum from drag gestures' is not in the source text. The source only defines `velocity` as 'Initial velocity applied to the spring equation.'\n- [error] ## Callbacks and execution: The callback's second parameter is defined in the source type definitions as `current?: AnimatableValue`. Describing it as 'the final value' is unsupported and misleading, as it represents the current value when cancelled rather than the intended final/target value.",
+          "at": "2026-11-05T15:42:10.268Z"
+        }
+      ]
+    },
+    "advanced-animations/1/3": {
+      "title": "The UI thread",
+      "status": "draft",
+      "body": "In this lesson, you will learn how React Native Reanimated uses the UI thread for animations and gestures, how worklets execute code across runtimes, and how data moves between the JavaScript thread and the UI thread.\n\n## The JavaScript thread versus the UI thread\n\nThe JavaScript thread (also referred to as the JS thread or RN runtime) is responsible for handling JavaScript code execution in your application. This is the primary environment where your standard React Native application code runs, including state updates and component logic.\n\nThe UI thread (also known as the main thread or UI runtime) is responsible for handling user interface updates. Reanimated takes advantage of the UI thread by executing worklets there to calculate view styles and react immediately to events.\n\n## What is a worklet?\n\nA worklet is a short-running JavaScript function that can be copied and executed across different JavaScript runtimes, including the UI runtime. Reanimated uses worklets to calculate view styles and react to events on the UI thread.\n\nYou create a worklet by placing the `'worklet'` directive at the top of a function body:\n\n```ts\nfunction logMessage(text: string): void {\n  'worklet';\n  console.log('UI message:', text);\n}\n```\n\nThe Worklets Babel plugin inspects your code for this directive and workletises the function, converting it into a serialisable object that can be passed to and run on the UI thread. Functions marked with `'worklet'` are not hoisted. Most Reanimated callbacks, such as functions passed to `useAnimatedStyle`, are workletised automatically.\n\n## Scheduling execution across threads\n\nTo run a worklet on the UI runtime manually from the JavaScript thread, use `scheduleOnUI`:\n\n```tsx\nimport React from 'react';\nimport { Button, View } from 'react-native';\nimport { scheduleOnUI } from 'react-native-worklets';\n\nfunction notifyUI(message: string): void {\n  'worklet';\n  console.log(`${message} on the UI thread`);\n}\n\nexport default function App(): React.JSX.Element {\n  const handlePress = (): void => {\n    scheduleOnUI(notifyUI, 'Hello');\n  };\n\n  return (\n    <View>\n      <Button title=\"Run on UI\" onPress={handlePress} />\n    </View>\n  );\n}\n```\n\nConversely, when your code is running inside a worklet on the UI thread and needs to trigger code on the JavaScript thread—such as setting React state or calling a third-party library—you use `scheduleOnRN`. Functions passed to `scheduleOnRN` must be declared in the JavaScript thread scope (in the component body or global scope), not created dynamically inside the worklet.\n\n## Closures and shared values\n\nWorklets are closures that capture variables from their outer scope. However, only variables explicitly referenced in the worklet body are captured. Capturing large objects can lead to performance issues, so extract properties into dedicated variables first:\n\n```ts\ntype Config = { primaryColour: string; data: number[] };\nconst config: Config = { primaryColour: '#007aff', data: new Array(1000).fill(0) };\n\n// Bad: capturing the whole object\nfunction badWorklet(): void {\n  'worklet';\n  console.log(config.primaryColour);\n}\n\n// Good: extract the property first\nconst colour = config.primaryColour;\nfunction goodWorklet(): void {\n  'worklet';\n  console.log(colour);\n}\n```\n\nTo pass dynamic values between the JavaScript thread and the UI thread, use shared values created with `useSharedValue`. Their data synchronises automatically across both runtimes.\n\n### Try it\n\nWrite a custom worklet function that accepts an offset value (`number`) and logs twice that value to the console. Trigger your worklet from a button press handler using `scheduleOnUI`, and verify in your logs that the message runs on the UI thread.\n\n### Key points\n\n- The UI thread handles user interface updates, whilst the JavaScript thread handles general JavaScript execution in the app.\n- Worklets are small JavaScript functions marked with `'worklet'` that are converted into serialisable objects by the Babel plugin.\n- Use `scheduleOnUI` to invoke worklets on the UI thread, and `scheduleOnRN` from the UI thread to call functions defined in the JavaScript thread scope.\n- Worklets capture referenced variables via closures, so extract individual properties from large objects to avoid copying unnecessary data.",
+      "keyPoints": [
+        "The UI thread handles user interface updates, whilst the JavaScript thread handles general JavaScript execution in the app.",
+        "Worklets are small JavaScript functions marked with 'worklet' that are converted into serialisable objects by the Babel plugin.",
+        "Use scheduleOnUI to invoke worklets on the UI thread, and scheduleOnRN from the UI thread to call functions defined in the JavaScript thread scope.",
+        "Worklets capture referenced variables via closures, so extract individual properties from large objects to avoid copying unnecessary data."
+      ],
+      "sourcesUsed": [
+        "reanimated-docs:guides/worklets.mdx",
+        "reanimated-docs:fundamentals/glossary.mdx"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 4362,
+        "output": 1194
+      },
+      "draftedAt": "2026-11-05T15:09:29.475Z",
+      "reviewed": null,
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [warning] ## What is a worklet?: \"workletizes\" uses US spelling (-ize). Per the writing rules, use UK English spelling (\"workletises\"), which also matches \"workletised\" in the next sentence.",
+          "at": "2026-11-05T15:42:38.762Z"
+        },
+        {
+          "round": 2,
+          "fixed": "- [warning] ## The JavaScript thread versus the UI thread: The claims that animations executing on the JS thread cause 'dropped frames and noticeable stutter' and that Reanimated avoids this bottleneck by moving logic to the UI thread are not mentioned in the provided sources (which define the threads and workletization without discussing frame dropping or stutter).\n- [warning] ### Key points: The statement that the UI thread handles updates 'to prevent frame drops' introduces a concept (frame drops) not covered in the source text.",
+          "at": "2026-11-05T15:43:36.785Z"
+        }
+      ]
+    },
+    "advanced-animations/2/1": {
+      "title": "Pan and fling",
+      "status": "draft",
+      "body": "In this lesson, you will learn how to recognise dragging interactions using pan gestures, detect directional swipes with fling gestures, and smoothly animate views using gesture event data alongside Reanimated.\n\n## Tracking movement with pan gestures\n\nA pan gesture recognises continuous dragging across the screen. It activates once a pointer touches the screen and moves beyond an initial threshold. During the gesture, callbacks supply event data such as accumulated displacement (`translationX`, `translationY`), incremental movement since the last frame (`changeX`, `changeY`), and instantaneous velocity (`velocityX`, `velocityY`).\n\nIn this course, examples use TypeScript. You attach a pan gesture to an animated element by passing the gesture configuration to a `GestureDetector` component:\n\n```tsx\nimport Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';\nimport { GestureDetector, usePanGesture } from 'react-native-gesture-handler';\n\nexport function DraggableBox() {\n  const translationX = useSharedValue<number>(0);\n\n  const panGesture = usePanGesture({\n    onUpdate: (event) => {\n      translationX.value = event.translationX;\n    },\n    onDeactivate: () => {\n      translationX.value = withTiming(0, { duration: 150 });\n    },\n  });\n\n  const animatedStyle = useAnimatedStyle(() => ({\n    transform: [{ translateX: translationX.value }],\n  }));\n\n  return (\n    <GestureDetector gesture={panGesture}>\n      <Animated.View style={[{ width: 120, height: 120, backgroundColor: '#b58df1' }, animatedStyle]} />\n    </GestureDetector>\n  );\n}\n```\n\nBecause gesture callbacks are automatically workletised, you can safely mutate shared values directly inside them.\n\n## Handling gesture momentum with withDecay\n\nWhen releasing a dragged element, you can preserve gesture momentum instead of resetting it abruptly. The `withDecay` animation decelerates a value based on its instantaneous release velocity.\n\nYou read `velocityX` or `velocityY` when the gesture completes—such as in `onFinalize`—and pass it directly to `withDecay`. This allows the dragged component to glide naturally to a stop.\n\n## Detecting directional swipes with fling gestures\n\nWhile a pan tracks continuous movement frame by frame, a fling gesture detects a rapid movement in a specific direction. The fling activates when the gesture is sufficiently long and fast, and it ends when the finger is released. If the touch is lifted before fulfilling the movement requirement, the gesture fails.\n\nYou specify acceptable movement paths with the `Directions` object:\n\n```tsx\nimport Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';\nimport { GestureDetector, Directions, useFlingGesture } from 'react-native-gesture-handler';\n\nexport function FlingCard() {\n  const position = useSharedValue<number>(0);\n\n  const flingGesture = useFlingGesture({\n    direction: Directions.RIGHT | Directions.LEFT,\n    onActivate: () => {\n      position.value = withTiming(position.value + 50, { duration: 150 });\n    },\n  });\n\n  const animatedStyle = useAnimatedStyle(() => ({\n    transform: [{ translateX: position.value }],\n  }));\n\n  return (\n    <GestureDetector gesture={flingGesture}>\n      <Animated.View style={[{ width: 120, height: 120, backgroundColor: '#b58df1' }, animatedStyle]} />\n    </GestureDetector>\n  );\n}\n```\n\nDirections can be combined using the bitwise OR (`|`) operator. You can also configure `numberOfPointers` if a fling should require more than one touch.\n\n## Fine-tuning pan activation\n\nPan gestures provide extensive configuration options to prevent accidental triggers or resolve conflicts:\n\n- `minDistance`: The travel distance in points required before activation.\n- `minVelocity`: The speed threshold in points per second required to activate.\n- `activeOffsetX` and `activeOffsetY`: Boundaries along the X or Y axis where fingers can travel without activating the gesture. Moving outside this range triggers activation.\n- `failOffsetX` and `failOffsetY`: Boundaries outside of which the gesture fails if it has not yet activated.\n- `minPointers` and `maxPointers`: The minimum and maximum number of touches allowed.\n\nFor multi-touch interactions on Android, the default behaviour tracks the latest placed finger. You can enable `averageTouches` to average pointer positions into a centre of mass, matching iOS behaviour.\n\n### Try it\n\nCreate a draggable box using `usePanGesture`. Set `activeOffsetX` to `[-20, 20]` so horizontal movement must exceed 20 points before triggering, and update `translationX` only while panning.\n\n### Key points\n\n- Pan gestures track continuous dragging, providing `translationX`, `translationY`, and instantaneous velocities.\n- Fling gestures detect rapid, directed swipes defined with `Directions` constants such as `Directions.RIGHT` or `Directions.UP`.\n- Gesture callbacks are automatically workletised, enabling direct updates to Reanimated shared values without bridging overhead.\n- Velocity from pan gestures can feed into `withDecay` to create natural decelerating release animations.\n- Threshold properties like `minDistance`, `activeOffsetX`, and `failOffsetY` let you fine-tune exactly when a pan activates or fails.",
+      "keyPoints": [
+        "Pan gestures track continuous dragging, providing translationX, translationY, and instantaneous velocities.",
+        "Fling gestures detect rapid, directed swipes defined with Directions constants such as Directions.RIGHT or Directions.UP.",
+        "Gesture callbacks are automatically workletised, enabling direct updates to Reanimated shared values without bridging overhead.",
+        "Velocity from pan gestures can feed into withDecay to create natural decelerating release animations.",
+        "Threshold properties like minDistance, activeOffsetX, and failOffsetY let you fine-tune exactly when a pan activates or fails."
+      ],
+      "sourcesUsed": [
+        "rngh-docs:gestures/use-pan-gesture.mdx",
+        "rngh-docs:gestures/use-fling-gesture.mdx",
+        "reanimated-docs:fundamentals/handling-gestures.mdx"
+      ],
+      "flags": [
+        {
+          "where": "## Tracking movement with pan gestures",
+          "severity": "warning",
+          "issue": "The code sample is 52 lines long, exceeding the guideline to keep code samples short (at most about 25 lines)."
+        },
+        {
+          "where": "## Detecting directional swipes with fling gestures",
+          "severity": "warning",
+          "issue": "The code block is 34 lines long (exceeding the ~25 line limit), and `<Animated.View style={animatedStyle} />` lacks width, height, or background styling, rendering it with 0x0 dimensions so it cannot be seen or receive gestures."
+        }
+      ],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 7320,
+        "output": 1612
+      },
+      "draftedAt": "2026-11-05T15:14:46.210Z",
+      "reviewed": null,
+      "revisions": [
+        {
+          "round": 1,
+          "fixed": "- [warning] ## Tracking movement with pan gestures: The code sample is 52 lines long, exceeding the guideline to keep code samples short (at most about 25 lines).\n- [warning] ## Detecting directional swipes with fling gestures: The code block is 34 lines long (exceeding the ~25 line limit), and `<Animated.View style={animatedStyle} />` lacks width, height, or background styling, rendering it with 0x0 dimensions so it cannot be seen or receive gestures.",
+          "at": "2026-11-05T16:02:32.386Z"
+        }
+      ]
+    },
+    "advanced-animations/2/2": {
+      "title": "Bottom sheets from scratch",
+      "status": "draft",
+      "body": "Building an interactive bottom sheet requires tracking user movement, responding to touches, and animating the interface smoothly. By combining `react-native-gesture-handler` and `react-native-reanimated`, you will be able to construct a custom vertical draggable sheet with gesture detection and spring-driven updates.\n\n## Tracking sheet state with shared values\n\nTo move a component interactively, you need reactive values that can update without triggering React re-renders. Reanimated provides `useSharedValue` for this purpose.\n\nFor a draggable sheet, you track both the translation offset and the active interaction state:\n\n```ts\nimport { useSharedValue } from 'react-native-reanimated';\n\ntype Offset = { x: number; y: number };\n\nconst isPressed = useSharedValue<boolean>(false);\nconst offset = useSharedValue<Offset>({ x: 0, y: 0 });\n```\n\nThe `offset` value holds the position coordinates, while `isPressed` tracks whether the user is actively dragging the element.\n\n## Handling drag gestures\n\nGesture Handler provides the `usePanGesture` hook to capture pan interactions. When constructing the gesture, you register lifecycle callbacks:\n\n- `onBegin`: Triggers when initial contact is detected. You can set `isPressed.value = true` here.\n- `onUpdate`: Runs repeatedly as the finger moves. It provides an event payload with relative coordinate deltas such as `e.changeY` and `e.changeX`.\n- `onFinalize`: Fires when the gesture ends or is cancelled, allowing you to reset `isPressed.value = false`.\n\n```ts\nimport { usePanGesture } from 'react-native-gesture-handler';\n\nconst gesture = usePanGesture({\n  onBegin: () => {\n    isPressed.value = true;\n  },\n  onUpdate: (e) => {\n    offset.value = {\n      x: offset.value.x,\n      y: offset.value.y + e.changeY,\n    };\n  },\n  onFinalize: () => {\n    isPressed.value = false;\n  },\n});\n```\n\nAdding `e.changeY` to `offset.value.y` ensures that the panel moves vertically in tandem with the touch movement.\n\n## Connecting styles and gesture detectors\n\nTo reflect position updates on the screen, connect the shared values to styles using `useAnimatedStyle`. You can also wrap reactive property changes inside `withSpring` for fluid transitions when press states alter.\n\nOnce defined, pass the gesture into a `GestureDetector` component wrapping an `Animated.View`, all contained inside `GestureHandlerRootView`:\n\n```tsx\nimport React from 'react';\nimport { StyleSheet } from 'react-native';\nimport { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';\nimport Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';\n\nconst animatedStyles = useAnimatedStyle(() => ({\n  transform: [\n    { translateY: offset.value.y },\n    { scale: withSpring(isPressed.value ? 1.05 : 1) },\n  ],\n}));\n\nreturn (\n  <GestureHandlerRootView>\n    <GestureDetector gesture={gesture}>\n      <Animated.View style={[styles.sheet, animatedStyles]} />\n    </GestureDetector>\n  </GestureHandlerRootView>\n);\n```\n\n### Try it\n\nAdjust the `onUpdate` callback in your pan gesture to restrict movement exclusively to the vertical axis by only applying `e.changeY`. Verify that horizontal changes do not alter `offset.value.x` during drag interactions.\n\n### Key points\n\n- Track sheet position and active touch states using `useSharedValue`.\n- Use `usePanGesture` lifecycle hooks (`onBegin`, `onUpdate`, and `onFinalize`) to handle drag events.\n- Apply incremental displacement from `e.changeY` during `onUpdate` to move the sheet along the Y axis.\n- Connect transform properties to shared values with `useAnimatedStyle` and wrap the component with `GestureDetector` inside `GestureHandlerRootView`.",
+      "keyPoints": [
+        "Track sheet position and active touch states using useSharedValue.",
+        "Use usePanGesture lifecycle hooks (onBegin, onUpdate, and onFinalize) to handle drag events.",
+        "Apply incremental displacement from e.changeY during onUpdate to move the sheet along the Y axis.",
+        "Connect transform properties to shared values with useAnimatedStyle and wrap the component with GestureDetector inside GestureHandlerRootView."
+      ],
+      "sourcesUsed": [
+        "rngh-docs:fundamentals/gesture-animation/"
+      ],
+      "flags": [
+        {
+          "where": "Connecting styles and gesture detectors",
+          "severity": "error",
+          "issue": "The code block cannot run as written: it has a top-level `return` statement outside of any function component, and references `styles`, `offset`, `isPressed`, and `gesture` without defining them."
+        },
+        {
+          "where": "### Try it",
+          "severity": "warning",
+          "issue": "The exercise asks the learner to restrict movement to the vertical axis by only using `e.changeY`, but the code snippet in the preceding section already does this."
+        },
+        {
+          "where": "Lesson notes",
+          "severity": "warning",
+          "issue": "The lesson notes are approximately 320 words, falling short of the required 350 to 800 word range."
+        }
+      ],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 2404,
+        "output": 1098
+      },
+      "draftedAt": "2026-11-05T15:15:53.586Z",
+      "reviewed": null
+    },
+    "advanced-animations/2/3": {
+      "title": "Layout animations",
+      "status": "draft",
+      "body": "You will learn how to configure entering and exiting layout animations in React Native Reanimated to animate elements automatically as they enter or leave the view hierarchy.\n\n## Entering and exiting presets\n\nReanimated provides predefined animation presets that run when a component mounts or unmounts from the view tree. Rather than driving shared values manually, you attach animation builders directly to an `Animated.View` using the `entering` and `exiting` props.\n\nPreset families include `Fade`, `Bounce`, `Flip`, `Slide`, `Zoom`, `Roll`, `Stretch`, and `LightSpeed`. For example, `FadeInUp` animates opacity and vertical position into view, whilst `SlideOutLeft` translates an element off-screen upon removal.\n\n## Modifying animation behaviour\n\nYou can chain modifier methods onto any preset builder to tailor its duration, curve, or physical behaviour:\n\n- **Time-based**: Set length in milliseconds with `.duration(ms)` and shape movement with `.easing(fn)`. Timing defaults to 300 ms.\n- **Spring-based**: Calling `.springify()` converts the animation to a physics-based spring. You can further chain `.damping()`, `.mass()`, `.stiffness()`, `.overshootClamping()`, and `.energyThreshold()`. Applying `.springify()` causes time-based modifiers such as `.easing()` to have no effect.\n- **Common settings**: Add delays using `.delay(ms)` or `.randomDelay()`, handle accessibility with `.reduceMotion()`, and attach completion handlers with `.withCallback()`.\n- **Custom values**: Override default start and end values using `.withInitialValues()` and `.withTargetValues()`. Prefer flat top-level transform properties, such as `{ translateY: 40 }`, over deprecated transform tuple arrays.\n\nHere is an example building customised entering and exiting transitions in TypeScript:\n\n```tsx\nimport React, { useState } from 'react';\nimport { View, Button, StyleSheet } from 'react-native';\nimport Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';\n\nconst enteringAnimation = FadeInDown.springify()\n  .damping(20)\n  .mass(2)\n  .withInitialValues({ translateY: 40 });\n\nconst exitingAnimation = FadeOutDown.duration(200);\n\nexport function Banner(): React.JSX.Element {\n  const [visible, setVisible] = useState<boolean>(true);\n\n  return (\n    <View style={styles.container}>\n      <Button title=\"Toggle Banner\" onPress={() => setVisible((prev) => !prev)} />\n      {visible && (\n        <Animated.View\n          entering={enteringAnimation}\n          exiting={exitingAnimation}\n          style={styles.banner}\n        />\n      )}\n    </View>\n  );\n}\n\nconst styles = StyleSheet.create({\n  container: { flex: 1, padding: 16 },\n  banner: { height: 60, backgroundColor: 'cornflowerblue', borderRadius: 8 },\n});\n```\n\n## Performance and New Architecture considerations\n\nTo ensure optimal rendering performance, define your layout animation builders outside of components or wrap them in `useMemo`. Creating builder instances inline inside render methods forces Reanimated to re-initialise configurations on every render pass.\n\nOn the New Architecture, keep two specific behaviours in mind:\n\n1. Reanimated relies on `nativeID` internally to configure entering animations. If a parent component or third-party wrapper overrides `nativeID`, the entering animation will not trigger. Wrapping the animated element in a plain `View` resolves this collision.\n2. When removing an un-animated parent container, view flattening can cause the parent to vanish immediately without waiting for its animated children to finish their exiting transitions. You can prevent this by setting `collapsable={false}` on the parent container.\n\n### Try it\n\nTake the banner example and adapt `enteringAnimation` into a `SlideInRight` preset. Chain `.springify()` and `.withInitialValues({ originX: 200 })`, then add an `exiting` transition using `SlideOutLeft.duration(400)`.\n\n### Key points\n\n- Attach predefined builders to the `entering` and `exiting` props of an `Animated.View` to animate mounting and unmounting.\n- Chain `.springify()` to enable spring physics; note that time-based modifiers such as `.easing()` have no effect once spring mode is active.\n- Define animation builders outside component render cycles or memoise them with `useMemo` for optimal performance.\n- Use flat top-level transform properties in `.withInitialValues()` and `.withTargetValues()`, avoiding deprecated tuple arrays.\n- Mitigate view flattening on the New Architecture by applying `collapsable={false}` to parents whose children have exiting animations.",
+      "keyPoints": [
+        "Attach predefined builders to the `entering` and `exiting` props of an `Animated.View` to animate mounting and unmounting.",
+        "Chain `.springify()` to enable spring physics; note that time-based modifiers such as `.easing()` have no effect once spring mode is active.",
+        "Define animation builders outside component render cycles or memoise them with `useMemo` for optimal performance.",
+        "Use flat top-level transform properties in `.withInitialValues()` and `.withTargetValues()`, avoiding deprecated tuple arrays.",
+        "Mitigate view flattening on the New Architecture by applying `collapsable={false}` to parents whose children have exiting animations."
+      ],
+      "sourcesUsed": [
+        "reanimated-docs:layout-animations/entering-exiting-animations.mdx"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 19076,
+        "output": 1284
+      },
+      "draftedAt": "2026-11-05T15:18:45.214Z",
+      "reviewed": null
+    },
+    "advanced-animations/3/1": {
+      "title": "Measuring frame drops",
+      "status": "draft",
+      "body": "In this lesson, you will learn how to measure frame drops in React Native, distinguish between JavaScript thread and native UI thread bottlenecks, and inspect system traces to identify what causes animation hitches.\n\n## The 16.67 ms frame budget\n\nTo achieve smooth motion, mobile devices render displays at a target of at least 60 frames per second (FPS). This leaves your application at most 16.67 ms to complete all the work needed to produce each frame. If layout, rendering, or script execution takes longer than this window, the device drops a frame, causing visible stutter (often called jank) or unresponsive interactions.\n\nReact Native divides this workload across separate threads:\n\n- **JavaScript thread (`mqt_js`)**: Runs your application business logic, processes touch events, executes API callbacks, and triggers state updates. If an expensive computation takes 200 ms, the JavaScript thread locks up and drops around 12 frames, freezing any animation managed by JavaScript.\n- **UI thread**: Handles native Android or iOS view measurement, layout, and drawing. Even if the JavaScript thread is locked up, native components like `ScrollView` or native stack transitions can often continue running at 60 FPS on the UI thread.\n- **Render thread**: On Android 5.0 and newer, this thread converts view hierarchies into OpenGL commands through operations like `DrawFrame` and queues them for the GPU.\n\n## Observing frame rates with Perf Monitor\n\nA quick way to observe frame performance during development is through the in-app developer menu. Toggling **Show Perf Monitor** displays an overlay showing live figures for both UI FPS and JS FPS.\n\nWhen testing, keep in mind that running in development mode (`dev=true`) imposes substantial overhead due to runtime warnings and error checks. While the Perf Monitor helps you spot immediate problems during daily development, you must always verify frame rates on release or profileable builds to obtain realistic measurements.\n\nWhen a touch handler triggers heavy component re-renders, it can starve the JavaScript thread immediately. Deferring non-essential state changes using `requestAnimationFrame` allows touch feedback to complete before running heavy calculations:\n\n```tsx\nimport React, { useState } from 'react';\nimport { View, Button, Text, StyleSheet } from 'react-native';\n\ntype TaskState = { isProcessing: boolean };\n\nexport function HeavyActionView(): React.JSX.Element {\n  const [status, setStatus] = useState<TaskState>({ isProcessing: false });\n\n  const handlePress = (): void => {\n    requestAnimationFrame(() => {\n      setStatus({ isProcessing: true });\n    });\n  };\n\n  return (\n    <View style={styles.container}>\n      <Button title=\"Execute\" onPress={handlePress} />\n      <Text>{status.isProcessing ? 'Processing' : 'Idle'}</Text>\n    </View>\n  );\n}\n\nconst styles = StyleSheet.create({ container: { padding: 16 } });\n```\n\n## Tracing frame boundaries with Android Studio Profiler\n\nWhen an animation stutters and you need to find the root cause, recording a system trace gives you detailed thread timings. Connect a physical Android device via USB, open the project in Android Studio, and run the app as profileable.\n\nIn the Android Studio Profiler, start the **Capture System Activities** task, perform the animation you want to investigate, and stop the recording. You can inspect the resulting trace directly in Android Studio or export it to tools such as Perfetto.\n\nInside the trace:\n\n1. Enable the **VSync highlighting** checkbox to display vertical zebra stripes marking each 16 ms frame boundary.\n2. Locate your app's process rows to inspect `UI Thread`, `mqt_js`, and `RenderThread`.\n3. Identify which thread breaches the boundary. If `mqt_js` is continuously active across the zebra stripes (executing repeated `JSCall` or event emitter events), the bottleneck is in your JavaScript code. If `RenderThread` spends long periods inside `DrawFrame` crossing boundaries, the GPU is overloaded by complex layouts, excessive alpha compositing, or unoptimised view updates.\n\n### Try it\n\nEnable **Show Perf Monitor** from the developer menu in your local build. Trigger a navigation transition or animate a view while dispatching an expensive state update, and check whether the UI frame rate, the JS frame rate, or both drop below 60 FPS.\n\n### Key points\n\n- Maintaining 60 FPS requires all frame work to finish within a 16.67 ms window.\n- React Native separates execution into the JavaScript thread, the native UI thread, and the Render thread.\n- The Dev Menu's Perf Monitor provides real-time readouts of both UI and JS frame rates.\n- System tracing in Android Studio with VSync highlighting reveals whether frame boundary overruns originate in JavaScript or native rendering.\n- Accurate performance measurements must be taken on release or profileable builds, as development mode degrades JavaScript performance.",
+      "keyPoints": [
+        "Maintaining 60 FPS requires all frame work to finish within a 16.67 ms window.",
+        "React Native separates execution into the JavaScript thread, the native UI thread, and the Render thread.",
+        "The Dev Menu's Perf Monitor provides real-time readouts of both UI and JS frame rates.",
+        "System tracing in Android Studio with VSync highlighting reveals whether frame boundary overruns originate in JavaScript or native rendering.",
+        "Accurate performance measurements must be taken on release or profileable builds, as development mode degrades JavaScript performance."
+      ],
+      "sourcesUsed": [
+        "rn-docs:performance.md",
+        "rn-docs:profiling.md"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 5407,
+        "output": 1285
+      },
+      "draftedAt": "2026-11-05T15:19:39.794Z",
+      "reviewed": null
+    },
+    "advanced-animations/3/2": {
+      "title": "Avoiding re-renders",
+      "status": "draft",
+      "body": "In high-performance mobile applications, unnecessary render passes can block the JavaScript thread and trigger dropped frames. You will learn how to identify the causes of redundant renders, memoise components and callbacks, and eliminate cascading updates caused by misplaced state and effects.\n\n## The render and commit cycle\n\nEvery screen update in React follows three steps:\n\n1. **Triggering** a render (due to the initial render or a state update in the component or an ancestor).\n2. **Rendering** the component (React calls your component functions to determine what needs to be displayed).\n3. **Committing** the changes (React applies the minimal necessary updates to the native view hierarchy or DOM).\n\nRendering is recursive. When an ancestor component's state updates, React by default calls every component nested inside it. If rendering calculations take too long or trigger subsequent state updates, you risk stalling event processing and degrading responsiveness.\n\n## Memoising components and handlers\n\nWhen a parent component re-renders, you can prevent unchanged children from re-rendering by wrapping them in `memo` (or `React.memo`). A memoised component only re-renders when its props change.\n\nYou can also supply a custom comparison function as the second argument to `memo`. If the comparison function returns `true`, the component will skip re-rendering.\n\n```tsx\nimport React, { memo, useCallback } from 'react';\nimport { FlatList, Text, View } from 'react-native';\n\ntype Item = { id: string; title: string };\n\nconst ListItem = memo(\n  ({ title }: { title: string }) => (\n    <View>\n      <Text>{title}</Text>\n    </View>\n  ),\n  (prevProps, nextProps) => prevProps.title === nextProps.title\n);\n\nexport function ItemList({ items }: { items: Item[] }) {\n  const renderItem = useCallback(\n    ({ item }: { item: Item }) => <ListItem title={item.title} />,\n    []\n  );\n\n  return <FlatList data={items} renderItem={renderItem} />;\n}\n```\n\nNotice the use of `useCallback` for `renderItem`. If you pass an anonymous inline function directly to `renderItem`, a new function instance is created on every render of the parent list, invalidating prop equality and triggering avoidable re-renders.\n\n## Eliminating cascading updates\n\nA frequent source of redundant renders is updating state inside a `useEffect` hook to transform data. When state updates inside an effect:\n\n1. React calls your components to calculate the initial UI.\n2. React commits those changes to the screen.\n3. React runs your effect, which immediately updates state with `setState`.\n4. This state update restarts the entire render and commit process from scratch.\n\nIf a value can be computed from existing props or state, do not store it in state or update it inside an effect. Calculate it directly during rendering:\n\n```tsx\nimport React, { useMemo, useState } from 'react';\n\ntype Todo = { id: number; text: string; completed: boolean };\n\nexport function TodoList({ todos, filter }: { todos: Todo[]; filter: string }) {\n  const [newTodo, setNewTodo] = useState<string>('');\n\n  // Calculated during rendering; memoised if computation is expensive\n  const visibleTodos = useMemo(() => {\n    return todos.filter((todo) => todo.text.includes(filter));\n  }, [todos, filter]);\n\n  return null;\n}\n```\n\nWrapping the calculation in `useMemo` caches the result and skips recalculating it during subsequent renders unless `todos` or `filter` change. If the calculation is not expensive, running it directly without `useMemo` is sufficient.\n\nSimilarly, avoid chaining effects where one effect updates state that triggers another effect. Update all related states in the initiating event handler so that React can batch the updates into a single render pass.\n\n### Try it\n\nReview an existing list component in your application. Wrap the list item component in `memo` and extract its `renderItem` callback into a `useCallback` hook outside of the JSX. Check whether any values passed to the list item can be calculated during the render pass rather than stored in a separate `useState` variable.\n\n### Key points\n\n- React re-renders components recursively whenever their state or an ancestor's state updates.\n- Wrap child components in `memo` to skip rendering when their props remain unchanged.\n- Use `useCallback` to avoid passing freshly instantiated anonymous functions as props on each render.\n- Calculate derived values during rendering rather than updating secondary state inside `useEffect`.",
+      "keyPoints": [
+        "React re-renders components recursively whenever their state or an ancestor's state updates.",
+        "Wrap child components in `memo` to skip rendering when their props remain unchanged.",
+        "Use `useCallback` to avoid passing freshly instantiated anonymous functions as props on each render.",
+        "Calculate derived values during rendering rather than updating secondary state inside `useEffect`."
+      ],
+      "sourcesUsed": [
+        "react-docs:render-and-commit.md",
+        "react-docs:you-might-not-need-an-effect.md",
+        "rn-docs:optimizing-flatlist-configuration.md"
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 15337,
+        "output": 1217
+      },
+      "draftedAt": "2026-11-05T15:20:12.561Z",
+      "reviewed": null
+    },
+    "advanced-animations/3/3": {
+      "title": "Testing on real devices",
+      "status": "draft",
+      "body": "In this lesson, you will learn how to configure and deploy your animated React Native application onto physical Android and iOS devices, run performance benchmarks using release builds, and verify hardware limits such as device component thresholds and high refresh rates.\n\n## Setting up physical devices\n\nSimulators and emulators run on your host computer's processor and graphics hardware, which masks real-world bottlenecks. Testing on physical devices ensures your animations run smoothly on actual mobile hardware.\n\n### Android configuration\n\nTo prepare an Android phone:\n1. Enable developer mode by navigating to **Settings** → **About phone** → **Software information** and tapping **Build number** seven times.\n2. Return to **Settings** → **Developer options** and enable **USB debugging**.\n3. Connect the phone via USB and ensure ADB detects it:\n\n```bash\nadb devices\n```\n\nEnsure only one device is listed with the `device` status. If using Android 5.0 or newer, forward port 8081 from your phone to your host machine over USB:\n\n```bash\nadb reverse tcp:8081 tcp:8081\n```\n\nYou can then install and start the app using `yarn android` or `npm run android`.\n\n### iOS configuration\n\nTo run on an iOS device:\n1. Connect the phone to your Mac using a cable.\n2. Open the project workspace in Xcode (`.xcworkspace` or `.xcodeproj`).\n3. Select your device under **Product** → **Destination**.\n4. Select your project target in Xcode, open the **Signing** section, and assign an Apple Developer team. Repeat this step for the tests target.\n5. Press **Cmd ⌘** + **R** to build and install the application.\n\n## Testing in release mode\n\nNever benchmark animation frame rates in development or debug mode. Development builds include substantial runtime overhead, LogBox assertions, and unoptimised code paths. In release mode, React Native and Reanimated are compiled with full compiler optimisations, which yields vastly superior frame delivery.\n\nTo generate and run a release build directly onto your connected device with the React Native CLI, execute:\n\n```bash\nyarn android --mode release\n```\n\nFor Android development iterations, you can also consider the `debugOptimized` build variant (available from React Native 0.82) to improve performance while testing.\n\n## Hardware thresholds and high refresh rates\n\nWhen testing on actual hardware, keep component limits in mind. As a general rule of thumb, Reanimated performs best when animating no more than 100 components simultaneously on low-end Android devices, and no more than 500 components on iOS. Animating beyond these counts can trigger frame drops.\n\nTo test high-refresh displays (such as 120 fps screens on supported iOS hardware), verify that the `CADisableMinimumFrameDurationOnPhone` key is present and enabled in your `Info.plist`:\n\n```xml\n<key>CADisableMinimumFrameDurationOnPhone</key>\n<true/>\n```\n\nThis flag allows animations to exceed standard 60 fps caps on supported iOS devices.\n\n### Try it\n\nConnect an Android device with USB debugging enabled. First run `adb devices` in your terminal to ensure it is recognised, forward the Metro port with `adb reverse tcp:8081 tcp:8081`, and run a release build using `yarn android --mode release`. Observe how your complex animations feel compared to the debug version.",
+      "keyPoints": [
+        "Always test animations on physical hardware, as emulators and simulators do not accurately reflect mobile CPU and GPU constraints.",
+        "Benchmark animation performance exclusively in release mode (`yarn android --mode release`), where compiler optimisations are fully enabled.",
+        "Respect device component thresholds: limit concurrent animated components to roughly 100 on low-end Android and 500 on iOS.",
+        "Enable 120 fps support on iOS devices by setting `CADisableMinimumFrameDurationOnPhone` to true in `Info.plist`."
+      ],
+      "sourcesUsed": [
+        "rn-docs:running-on-device.md",
+        "reanimated-docs:guides/performance.md"
+      ],
+      "flags": [
+        {
+          "where": "Lesson notes",
+          "severity": "error",
+          "issue": "The lesson is missing the mandatory '### Key points' section with 3 to 5 bullet points required by the writing rules."
+        },
+        {
+          "where": "## Hardware thresholds and high refresh rates",
+          "severity": "warning",
+          "issue": "The code block uses '```xml', which is not in the allowed set of languages (allowed: ```tsx, ```ts, ```python, ```bash, ```css, ```html)."
+        },
+        {
+          "where": "## Setting up physical devices",
+          "severity": "error",
+          "issue": "The claim that simulators and emulators run on the host computer's processor and graphics hardware to mask real-world bottlenecks is not supported by the source."
+        },
+        {
+          "where": "## Testing in release mode",
+          "severity": "error",
+          "issue": "The claim that development builds include LogBox assertions is not supported by the source text."
+        }
+      ],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 8620,
+        "output": 961
+      },
+      "draftedAt": "2026-11-05T15:20:52.092Z",
       "reviewed": null
     }
   },
@@ -3117,7 +3416,7 @@
     },
     "data-analysis-pandas/1": {
       "title": "Loading data quiz",
-      "status": "draft",
+      "status": "reviewed",
       "questions": [
         {
           "prompt": "What data structure does pandas return when you select a single column from a DataFrame using square brackets, such as `df[\"Age\"]`?",
@@ -3322,11 +3621,11 @@
         "output": 2290
       },
       "draftedAt": "2026-11-05T12:24:40.062Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
     },
     "data-analysis-pandas/2": {
       "title": "Cleaning and shaping quiz",
-      "status": "draft",
+      "status": "reviewed",
       "questions": [
         {
           "prompt": "What is the result of evaluating `True | pd.NA` in pandas?",
@@ -3531,11 +3830,11 @@
         "output": 2534
       },
       "draftedAt": "2026-11-05T12:25:31.974Z",
-      "reviewed": null
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
     },
     "data-analysis-pandas/3": {
       "title": "Asking questions quiz",
-      "status": "draft",
+      "status": "reviewed",
       "questions": [
         {
           "prompt": "When combining multiple conditional statements to filter a pandas DataFrame, which operators and syntax must be used?",
@@ -3740,6 +4039,842 @@
         "output": 2533
       },
       "draftedAt": "2026-11-05T12:26:11.587Z",
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
+    },
+    "data-analysis-pandas/4": {
+      "title": "Telling the story quiz",
+      "status": "reviewed",
+      "questions": [
+        {
+          "prompt": "What chart type does `df.plot()` produce by default when called on a DataFrame with numeric columns?",
+          "answers": [
+            "A scatter plot comparing the first two numeric fields",
+            "One line plot for each column of numeric data",
+            "A single stacked vertical bar chart",
+            "A box plot displaying quartiles across all columns"
+          ],
+          "correct": 1,
+          "explanation": "By default, calling `plot()` on a DataFrame produces one line plot for each numeric column.",
+          "sourceRef": "pandas-docs:getting_started/intro_tutorials/04_plotting.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html"
+        },
+        {
+          "prompt": "What underlying graphics object is produced when pandas creates a plot?",
+          "answers": [
+            "A Matplotlib object",
+            "A Seaborn facet",
+            "An HTML5 canvas element",
+            "An OpenGL rendering surface"
+          ],
+          "correct": 0,
+          "explanation": "Every plot object created by pandas is directly built as a Matplotlib object.",
+          "sourceRef": "pandas-docs:getting_started/intro_tutorials/04_plotting.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html"
+        },
+        {
+          "prompt": "You create an explicit figure and axis using `fig, axs = plt.subplots()`. Which parameter in a pandas plot method directs the drawing onto that axis?",
+          "answers": [
+            "axis=axs",
+            "target=axs",
+            "ax=axs",
+            "figure=axs"
+          ],
+          "correct": 2,
+          "explanation": "Passing `ax=axs` into pandas plotting methods instructs pandas to draw the visual directly onto the prepared Matplotlib axis.",
+          "sourceRef": "pandas-docs:getting_started/intro_tutorials/04_plotting.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html"
+        },
+        {
+          "prompt": "Which parameter must you set to draw a stacked bar chart using `df.plot.bar()`?",
+          "answers": [
+            "cumulative=True",
+            "align=\"stacked\"",
+            "layered=True",
+            "stacked=True"
+          ],
+          "correct": 3,
+          "explanation": "Passing `stacked=True` to `plot.bar()` stacks the distinct columns instead of rendering them side by side.",
+          "sourceRef": "pandas-docs:user_guide/visualization.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/visualization.html"
+        },
+        {
+          "prompt": "How can you render each DataFrame column into its own separate subplot within a single plot call?",
+          "answers": [
+            "Set split=True",
+            "Set subplots=True",
+            "Set multiple=True",
+            "Set layout=\"grid\""
+          ],
+          "correct": 1,
+          "explanation": "The `subplots=True` argument instructs pandas plot functions to draw each data column in an independent subplot.",
+          "sourceRef": "pandas-docs:getting_started/intro_tutorials/04_plotting.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html"
+        },
+        {
+          "prompt": "Which method or accessor call generates a horizontal bar plot in pandas?",
+          "answers": [
+            "df.plot.horizontal()",
+            "df.plot.hbar()",
+            "df.plot.bar(horizontal=True)",
+            "df.plot.barh()"
+          ],
+          "correct": 3,
+          "explanation": "Horizontal bar plots are generated using `df.plot.barh()` or by specifying `kind=\"barh\"`.",
+          "sourceRef": "pandas-docs:user_guide/visualization.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/visualization.html"
+        },
+        {
+          "prompt": "Which parameter adjusts the number of bins when drawing a histogram using `df.plot.hist()`?",
+          "answers": [
+            "intervals=20",
+            "step=20",
+            "bins=20",
+            "range=20"
+          ],
+          "correct": 2,
+          "explanation": "The `bins` keyword argument controls the number of histogram bins.",
+          "sourceRef": "pandas-docs:user_guide/visualization.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/visualization.html"
+        },
+        {
+          "prompt": "According to The Turing Way guide for communication, why should researchers translate technical writing into varied styles such as summaries or blogs?",
+          "answers": [
+            "To replace the requirement for formal peer review and archiving",
+            "To restrict early progress updates strictly to project co-authors",
+            "To make research accessible to specialists outside the discipline and the public",
+            "To eliminate the necessity of publishing computational source code"
+          ],
+          "correct": 2,
+          "explanation": "Adapting technical writing into accessible formats widens research impact beyond a specific field to other specialists and the wider public.",
+          "sourceRef": "turing-way:communication/comms-overview.md",
+          "referenceUrl": "https://book.the-turing-way.org/communication/comms-overview"
+        },
+        {
+          "prompt": "Which argument in `pd.read_csv()` automatically parses specified date columns into Timestamp objects during ingestion?",
+          "answers": [
+            "parse_dates",
+            "convert_dates",
+            "datetime_cols",
+            "to_timestamp"
+          ],
+          "correct": 0,
+          "explanation": "Passing a list of column names to `parse_dates` converts those text columns into pandas `Timestamp` objects when reading a CSV file.",
+          "sourceRef": "pandas-docs:getting_started/intro_tutorials/09_timeseries.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html"
+        },
+        {
+          "prompt": "When accessing `Series.dt.day_of_week` on a datetime column, what integer values represent Monday and Sunday?",
+          "answers": [
+            "Monday is 1 and Sunday is 7",
+            "Monday is 0 and Sunday is 6",
+            "Monday is 7 and Sunday is 1",
+            "Monday is 6 and Sunday is 0"
+          ],
+          "correct": 1,
+          "explanation": "In pandas, the `day_of_week` property indexes days starting with Monday as 0 through to Sunday as 6.",
+          "sourceRef": "pandas-docs:getting_started/intro_tutorials/09_timeseries.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html"
+        },
+        {
+          "prompt": "What object type is returned when calculating the difference between two pandas Timestamp values, such as `df[\"End date\"] - df[\"Start date\"]`?",
+          "answers": [
+            "PeriodIndex",
+            "DateOffset",
+            "Timedelta",
+            "Timestamp"
+          ],
+          "correct": 2,
+          "explanation": "Subtracting one Timestamp from another calculates a duration, which pandas represents as a `Timedelta` object.",
+          "sourceRef": "pandas-docs:getting_started/intro_tutorials/09_timeseries.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html"
+        },
+        {
+          "prompt": "What is the key difference between using `.size()` and `.count()` on grouped data?",
+          "answers": [
+            "size includes missing (NaN) values, whereas count excludes them",
+            "count includes missing (NaN) values, whereas size excludes them",
+            "size only operates on string fields, whereas count accepts numbers",
+            "count returns distinct elements, whereas size tallies string lengths"
+          ],
+          "correct": 0,
+          "explanation": "While `size` provides the total number of rows in each group including `NaN` entries, `count` excludes missing values.",
+          "sourceRef": "pandas-docs:getting_started/intro_tutorials/06_calculate_statistics.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html"
+        },
+        {
+          "prompt": "How can you compute distinct sets of summary statistics for different columns simultaneously using `DataFrame.agg()`?",
+          "answers": [
+            "Pass a semicolon-separated string listing each desired metric",
+            "Chain separate summary methods like `.mean().median()` together",
+            "Provide a tuple of functions directly to `.describe(methods=...)`",
+            "Pass a dictionary mapping column names to lists of metric names"
+          ],
+          "correct": 3,
+          "explanation": "Passing a dictionary where keys are column names and values are lists of statistics allows custom aggregations per column via `agg()`.",
+          "sourceRef": "pandas-docs:getting_started/intro_tutorials/06_calculate_statistics.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html"
+        },
+        {
+          "prompt": "What technical summary information is displayed when you run `df.info()` on a DataFrame?",
+          "answers": [
+            "Quartiles, medians, and standard deviations for all columns",
+            "Row count, column data types, non-null counts, and memory usage",
+            "Frequency tables of the most common categories in each column",
+            "A random sample of rows alongside index ranges and correlations"
+          ],
+          "correct": 1,
+          "explanation": "The `info()` method outputs technical information including index range, total rows, column types, non-null tallies, and memory usage.",
+          "sourceRef": "pandas-docs:getting_started/intro_tutorials/02_read_write.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/02_read_write.html"
+        },
+        {
+          "prompt": "Which syntax extracts the hour of the day from a pandas datetime column named `trips[\"Start date\"]`?",
+          "answers": [
+            "trips[\"Start date\"].hour()",
+            "trips[\"Start date\"].time.hour",
+            "trips[\"Start date\"].to_hour()",
+            "trips[\"Start date\"].dt.hour"
+          ],
+          "correct": 3,
+          "explanation": "Datetime properties on a Series are accessed through the `.dt` accessor, so `.dt.hour` retrieves the hour integer.",
+          "sourceRef": "pandas-docs:getting_started/intro_tutorials/09_timeseries.rst",
+          "referenceUrl": "https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html"
+        }
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 21717,
+        "output": 2246
+      },
+      "draftedAt": "2026-11-05T12:26:58.932Z",
+      "reviewed": "Daniel Awolowo 2026-11-05 (approved by delegation; checked in the database, phone check pending)"
+    },
+    "advanced-animations/1": {
+      "title": "Motion principles quiz",
+      "status": "draft",
+      "questions": [
+        {
+          "prompt": "According to the React Native documentation, what easing curve does Animated.timing() use by default?",
+          "answers": [
+            "A linear curve that maintains constant speed throughout the transition",
+            "An ease-in curve that accelerates gradually until the final position",
+            "An ease-in-out curve that accelerates gradually and decelerates to a stop",
+            "An ease-out curve that begins at full speed and slowly halts"
+          ],
+          "correct": 2,
+          "explanation": "In React Native's Animated API, Animated.timing() defaults to an easeInOut curve, conveying gradual acceleration to full speed followed by gradual deceleration to a stop.",
+          "sourceRef": "rn-docs:animations.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/animations"
+        },
+        {
+          "prompt": "According to research on motion sensitivity, what proportion of adults experience some form of vestibular dysfunction by age 40?",
+          "answers": [
+            "Over 35%",
+            "Around 10%",
+            "Under 5%",
+            "Exactly 50%"
+          ],
+          "correct": 0,
+          "explanation": "By age 40, over 35% of adults will have experienced some form of vestibular dysfunction, which can lead to dizziness or vertigo when viewing moving interface elements.",
+          "sourceRef": "webdev-learn:accessibility/motion",
+          "referenceUrl": "https://web.dev/learn/accessibility/motion"
+        },
+        {
+          "prompt": "To minimise the risk of triggering seizures in users with photosensitive epilepsy, what flashing threshold does WCAG recommend against?",
+          "answers": [
+            "Flashing more than five times in any two seconds",
+            "Flashing more than three times in any one second",
+            "Any contrast transition occurring within 500 milliseconds",
+            "Flashing that exceeds 80% screen luminance"
+          ],
+          "correct": 1,
+          "explanation": "WCAG guidelines explicitly recommend against content that flashes more than three times in any one second, as rapid flickering can induce seizures in photosensitive individuals.",
+          "sourceRef": "webdev-learn:accessibility/motion",
+          "referenceUrl": "https://web.dev/learn/accessibility/motion"
+        },
+        {
+          "prompt": "According to WCAG guidelines on motion, under what condition must an interface provide a mechanism to pause, stop, or hide movement?",
+          "answers": [
+            "Any transition that runs across multiple navigation routes",
+            "Decorative motion that exceeds 60 frames per second",
+            "Non-essential movement that starts automatically and lasts over five seconds",
+            "Interactive gestures that animate layout dimensions"
+          ],
+          "correct": 2,
+          "explanation": "WCAG requires a pause, stop, or hide control for non-essential moving, blinking, or scrolling elements that start automatically, last more than five seconds, and accompany other page content.",
+          "sourceRef": "webdev-learn:accessibility/motion",
+          "referenceUrl": "https://web.dev/learn/accessibility/motion"
+        },
+        {
+          "prompt": "In React Native, how do the roles of Animated and LayoutAnimation differ?",
+          "answers": [
+            "Animated is limited to Android, whereas LayoutAnimation is exclusive to iOS.",
+            "Animated controls layout changes globally, whereas LayoutAnimation tracks interactive values.",
+            "Animated requires manual state re-renders, whereas LayoutAnimation is fully declarative.",
+            "Animated provides granular control of specific values, whereas LayoutAnimation handles global layout transactions."
+          ],
+          "correct": 3,
+          "explanation": "React Native provides Animated for granular and interactive control of specific animated values, while LayoutAnimation is intended for animated global layout transactions across renders.",
+          "sourceRef": "rn-docs:animations.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/animations"
+        },
+        {
+          "prompt": "In React Native Reanimated, what are the default duration and easing settings for withTiming when config is omitted?",
+          "answers": [
+            "500 ms and Easing.linear",
+            "250 ms and Easing.in(Easing.quad)",
+            "400 ms and Easing.out(Easing.cubic)",
+            "300 ms and Easing.inOut(Easing.quad)"
+          ],
+          "correct": 3,
+          "explanation": "By default, withTiming executes for 300 milliseconds using an easing curve of Easing.inOut(Easing.quad).",
+          "sourceRef": "reanimated-docs:animations/withTiming.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/animations/withTiming"
+        },
+        {
+          "prompt": "What are the default values for damping and stiffness in a physics-based withSpring animation in Reanimated?",
+          "answers": [
+            "damping: 120 and stiffness: 900",
+            "damping: 50 and stiffness: 500",
+            "damping: 900 and stiffness: 120",
+            "damping: 10 and stiffness: 100"
+          ],
+          "correct": 0,
+          "explanation": "In Reanimated's withSpring, the default physics-based values are 120 for damping and 900 for stiffness.",
+          "sourceRef": "reanimated-docs:animations/withSpring.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/animations/withSpring"
+        },
+        {
+          "prompt": "What occurs if both physics-based properties (stiffness, damping) and duration-based properties (duration, dampingRatio) are passed to withSpring?",
+          "answers": [
+            "Reanimated throws a runtime exception during worklet execution.",
+            "duration and dampingRatio override stiffness and damping.",
+            "stiffness and damping override duration and dampingRatio.",
+            "Reanimated computes an arithmetic average of both parameter sets."
+          ],
+          "correct": 1,
+          "explanation": "According to the withSpring documentation, when both parameter types are provided, duration and dampingRatio override stiffness and damping.",
+          "sourceRef": "reanimated-docs:animations/withSpring.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/animations/withSpring"
+        },
+        {
+          "prompt": "In duration-based withSpring animations, what physical behaviour does a dampingRatio value of 1 produce?",
+          "answers": [
+            "An underdamped motion with multiple pronounced oscillations",
+            "An overdamped motion that approaches the target very slowly",
+            "A critically damped motion that comes to rest without bouncing",
+            "An undamped oscillation that continues indefinitely"
+          ],
+          "correct": 2,
+          "explanation": "A dampingRatio of 1 signifies critical damping, meaning the spring settles without oscillating past its target. Values below 1 bounce, whereas values above 1 are overdamped.",
+          "sourceRef": "reanimated-docs:animations/withSpring.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/animations/withSpring"
+        },
+        {
+          "prompt": "In duration-based withSpring configurations, how does the actual animation duration compare to the duration property passed in config?",
+          "answers": [
+            "The actual duration equals the specified duration exactly.",
+            "The actual duration is 1.5 times the specified perceptual duration.",
+            "The actual duration is half the specified perceptual duration.",
+            "The actual duration is twice the specified perceptual duration."
+          ],
+          "correct": 1,
+          "explanation": "The duration property sets the perceptual duration in milliseconds, while the actual animation duration is 1.5 times that value.",
+          "sourceRef": "reanimated-docs:animations/withSpring.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/animations/withSpring"
+        },
+        {
+          "prompt": "When supplying a completion callback to withTiming or withSpring, what argument does the callback receive if the animation is cancelled?",
+          "answers": [
+            "undefined",
+            "0",
+            "null",
+            "false"
+          ],
+          "correct": 3,
+          "explanation": "The completion callback receives a finished boolean: true if the animation ran to completion, or false if it was cancelled or interrupted.",
+          "sourceRef": "reanimated-docs:animations/withTiming.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/animations/withTiming"
+        },
+        {
+          "prompt": "How does marking a function with the 'worklet' directive affect standard JavaScript hoisting?",
+          "answers": [
+            "The function is hoisted to the top of the enclosing block scope.",
+            "The function is not hoisted.",
+            "The function is hoisted only when executed on the UI runtime.",
+            "The function is hoisted directly to global runtime scope."
+          ],
+          "correct": 1,
+          "explanation": "Reanimated documentation notes that functions marked with the 'worklet' directive are not hoisted.",
+          "sourceRef": "reanimated-docs:guides/worklets.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/guides/worklets"
+        },
+        {
+          "prompt": "Which function is used to manually schedule the execution of a worklet on the UI thread from the JavaScript thread?",
+          "answers": [
+            "scheduleOnUI",
+            "requestAnimationFrame",
+            "scheduleOnRN",
+            "runOnJS"
+          ],
+          "correct": 0,
+          "explanation": "In React Native Worklets, scheduleOnUI is used to dispatch worklet execution to the UI runtime from the JavaScript thread.",
+          "sourceRef": "reanimated-docs:guides/worklets.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/guides/worklets"
+        },
+        {
+          "prompt": "Where must a function passed to scheduleOnRN be defined when called from a UI thread worklet?",
+          "answers": [
+            "Directly inside the callback passed to withTiming or withSpring",
+            "Inside an anonymous inner closure defined within the worklet",
+            "In the JavaScript thread scope, such as the component body or global scope",
+            "Inside the native UI view manager registry"
+          ],
+          "correct": 2,
+          "explanation": "Functions passed to scheduleOnRN must be defined in the JavaScript thread scope (in the component body or global scope). They cannot be created dynamically inside UI thread worklets.",
+          "sourceRef": "reanimated-docs:guides/worklets.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/guides/worklets"
+        },
+        {
+          "prompt": "When reading an object property inside a worklet closure, why is extracting the property into a separate variable recommended?",
+          "answers": [
+            "Referencing a property directly captures the entire object, which can cause performance issues.",
+            "Worklets cannot read object keys formatted as strings.",
+            "The Worklets Babel plugin cannot parse dot notation syntax.",
+            "Worklets freeze referenced objects, preventing further modification on the JavaScript thread."
+          ],
+          "correct": 0,
+          "explanation": "Worklets capture outer variables referenced in their body. Reading a single property of a large object causes the entire object to be copied into the worklet closure.",
+          "sourceRef": "reanimated-docs:guides/worklets.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/guides/worklets"
+        }
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 15854,
+        "output": 2382
+      },
+      "draftedAt": "2026-11-05T15:36:04.604Z",
+      "reviewed": null
+    },
+    "advanced-animations/2": {
+      "title": "Gestures quiz",
+      "status": "draft",
+      "questions": [
+        {
+          "prompt": "In React Native Gesture Handler, how do you configure a fling gesture to recognise movement in both the left and right directions?",
+          "answers": [
+            "Pass an array of direction constants: `[Directions.LEFT, Directions.RIGHT]`",
+            "Combine the constants using the bitwise OR operator: `Directions.RIGHT | Directions.LEFT`",
+            "Chain separate direction calls: `fling.direction('left').direction('right')`",
+            "Pass a comma-separated string: `'left, right'`"
+          ],
+          "correct": 1,
+          "explanation": "Directions for fling gestures are exported as constants in the Directions object and can be combined using the bitwise OR (|) operator.",
+          "sourceRef": "rngh-docs:gestures/use-fling-gesture.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-fling-gesture"
+        },
+        {
+          "prompt": "When handling a pan gesture callback, what is the difference between `changeX` and `translationX` in the event data?",
+          "answers": [
+            "`changeX` reports the raw touch position on the screen, whereas `translationX` reports position relative to the root view.",
+            "`changeX` measures velocity in points per second, whereas `translationX` measures displacement in density-independent pixels.",
+            "`changeX` provides the incremental distance moved since the last frame, whereas `translationX` is the accumulated displacement from the start.",
+            "`changeX` is used exclusively during pointer release, whereas `translationX` updates during continuous movement."
+          ],
+          "correct": 2,
+          "explanation": "In pan gesture event data, changeX represents the immediate incremental change in the X axis since the last event frame, whilst translationX represents the total displacement accumulated over time.",
+          "sourceRef": "rngh-docs:gestures/use-pan-gesture.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-pan-gesture"
+        },
+        {
+          "prompt": "How does multi-touch pan gesture translation calculation differ by default between iOS and Android?",
+          "answers": [
+            "Android averages all pointer coordinates into a centre of mass, whilst iOS tracks the initial pointer only.",
+            "iOS tracks the latest placed finger, whilst Android rejects multi-touch gestures unless configured otherwise.",
+            "Both platforms calculate translation strictly from the first finger placed on the screen.",
+            "iOS calculates translation from the averaged centre of mass of all touches, whilst Android tracks the latest placed finger."
+          ],
+          "correct": 3,
+          "explanation": "On iOS, translation calculations default to treating touches as a single pointer at the centre of mass. On Android, the gesture defaults to tracking the latest placed finger unless averageTouches is enabled.",
+          "sourceRef": "rngh-docs:gestures/use-pan-gesture.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-pan-gesture"
+        },
+        {
+          "prompt": "Why is it safe to modify Reanimated shared values directly inside Gesture Handler callbacks such as `onUpdate` or `onChange`?",
+          "answers": [
+            "Reanimated proxies all shared value writes through an asynchronous bridge callback.",
+            "Gesture callbacks are automatically workletised by Gesture Handler and Reanimated.",
+            "Shared values automatically re-render the hosting React functional component.",
+            "React Native bundles a special Babel plugin that converts all gestures into synchronous layout effects."
+          ],
+          "correct": 1,
+          "explanation": "Reanimated and Gesture Handler automatically workletise callbacks passed to gestures, allowing them to run on the UI thread and safely read or mutate shared values directly without extra boilerplate.",
+          "sourceRef": "reanimated-docs:fundamentals/handling-gestures.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/handling-gestures"
+        },
+        {
+          "prompt": "How does setting `activeOffsetX` affect the behaviour of a pan gesture?",
+          "answers": [
+            "It defines a range along the X axis where the pointer can move without activating the gesture.",
+            "It defines an offset added to the animated view's transform property after activation.",
+            "It forces the gesture to fail immediately if horizontal movement exceeds the specified boundaries.",
+            "It sets the exact horizontal position where the pointer must first touch down."
+          ],
+          "correct": 0,
+          "explanation": "activeOffsetX defines a range along the X axis where fingers can travel without activating the pan gesture. Moving outside of this range triggers gesture activation.",
+          "sourceRef": "rngh-docs:gestures/use-pan-gesture.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-pan-gesture"
+        },
+        {
+          "prompt": "When implementing momentum-based release animations with `withDecay`, which gesture lifecycle method is typically used to capture final velocity and initiate deceleration?",
+          "answers": [
+            "`onBegin`",
+            "`onTouchesDown`",
+            "`onFinalize`",
+            "`onStart`"
+          ],
+          "correct": 2,
+          "explanation": "withDecay uses the instantaneous velocity of a gesture to decelerate to a stop. This final velocity is retrieved and supplied to withDecay inside the onFinalize callback when the gesture completes.",
+          "sourceRef": "reanimated-docs:fundamentals/handling-gestures.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/handling-gestures"
+        },
+        {
+          "prompt": "When tracking drag movement for a custom draggable sheet, why is `e.changeY` added to `offset.value.y` inside `onUpdate`?",
+          "answers": [
+            "It resets the sheet to its original layout coordinates on each render pass.",
+            "It applies the immediate frame-to-frame vertical displacement to update the sheet's current offset continuously.",
+            "It normalises the touch coordinates to match the absolute screen height.",
+            "It computes the instantaneous acceleration needed to trigger a decay animation."
+          ],
+          "correct": 1,
+          "explanation": "changeY supplies the vertical distance moved since the previous event frame. Adding changeY to the current offset value allows the sheet to track drag interactions incrementally on each frame.",
+          "sourceRef": "rngh-docs:fundamentals/gesture-animation/",
+          "referenceUrl": "https://docs.swmansion.com/react-native-gesture-handler/docs/fundamentals/gesture-animation"
+        },
+        {
+          "prompt": "Under what condition will a fling gesture fail to activate?",
+          "answers": [
+            "If the finger moves faster than the configured maximum velocity threshold.",
+            "If the pointer travels outside the view bounds before the touch ends.",
+            "If more than one pointer makes contact with the screen simultaneously.",
+            "If the finger is lifted before the quick, sufficiently long movement requirement is fulfilled."
+          ],
+          "correct": 3,
+          "explanation": "A fling gesture activates only when the pointer movement is fast and long enough. If the finger is lifted before satisfying these activation requirements, the gesture fails.",
+          "sourceRef": "rngh-docs:gestures/use-fling-gesture.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-fling-gesture"
+        },
+        {
+          "prompt": "According to the React Native Gesture Handler documentation, when is it recommended to use `absoluteX` instead of `x`?",
+          "answers": [
+            "When multi-finger touch averaging is explicitly disabled on Android.",
+            "When measuring velocity instead of spatial displacement.",
+            "When tracking gestures inside nested web modals.",
+            "When the view attached to the gesture detector can be transformed as an effect of the gesture."
+          ],
+          "correct": 3,
+          "explanation": "The documentation recommends absoluteX and absoluteY instead of x and y when the target view can be transformed as an effect of the gesture, as absolute coordinates measure relative to the window.",
+          "sourceRef": "rngh-docs:gestures/use-pan-gesture.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-pan-gesture"
+        },
+        {
+          "prompt": "What happens if you chain `.easing()` onto a layout animation preset after calling `.springify()`?",
+          "answers": [
+            "The easing curve replaces the spring's damping parameter.",
+            "Reanimated throws a runtime configuration error when the view mounts.",
+            "Time-based modifiers have no effect once `.springify()` is used.",
+            "The spring physics are blended equally with the timing curve."
+          ],
+          "correct": 2,
+          "explanation": "The documentation explicitly notes that time-based modifiers such as .easing() have no effect when .springify() is used, because spring physics govern the animation curve instead.",
+          "sourceRef": "reanimated-docs:layout-animations/entering-exiting-animations.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/layout-animations/entering-exiting-animations"
+        },
+        {
+          "prompt": "What is the recommended format for transform overrides when configuring layout animation values in Reanimated?",
+          "answers": [
+            "Flat top-level props such as `{ translateY: 50 }`, rather than deprecated tuple arrays like `transform: [{ translateY: 50 }]`.",
+            "An array of string tuples such as `transform: [['translateY', 50]]`.",
+            "Nested transform style objects wrapped inside an inline function callback.",
+            "String interpolation syntax formatted as CSS transform expressions such as `transform: 'translateY(50px)'`."
+          ],
+          "correct": 0,
+          "explanation": "Reanimated recommends flat top-level transform properties such as { translateY: 50 } in withInitialValues and withTargetValues. The tuple array syntax transform: [{ ... }] is deprecated.",
+          "sourceRef": "reanimated-docs:layout-animations/entering-exiting-animations.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/layout-animations/entering-exiting-animations"
+        },
+        {
+          "prompt": "On the New Architecture, what can happen when removing an un-animated parent view containing animated children, and how is it resolved?",
+          "answers": [
+            "The children trigger a duplicate entering animation; resolve it by memoising child keys.",
+            "View flattening causes the parent to vanish without waiting for child exit transitions; resolve it with `collapsable={false}`.",
+            "The JavaScript thread deadlocks during unmounting; resolve it by replacing the parent with `GestureDetector`.",
+            "Exiting animations ignore duration modifiers; resolve it by wrapping children in `Animated.ScrollView`."
+          ],
+          "correct": 1,
+          "explanation": "Because of view flattening on the New Architecture, removing a non-animated parent view can cause it to vanish immediately without waiting for child exit animations. Applying collapsable={false} prevents this.",
+          "sourceRef": "reanimated-docs:layout-animations/entering-exiting-animations.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/layout-animations/entering-exiting-animations"
+        },
+        {
+          "prompt": "Where should layout animation preset builders (such as `FadeIn.duration(300)`) ideally be defined for optimal performance?",
+          "answers": [
+            "Inside the inline JSX prop of `Animated.View`, to ensure access to current React state.",
+            "Directly inside the `onLayout` callback of the parent container component.",
+            "Outside components or memoised with `useMemo`, to avoid re-initialising configurations on every render.",
+            "Inside a separate worklet function executed on the UI thread via `runOnUI`."
+          ],
+          "correct": 2,
+          "explanation": "Reanimated recommends defining layout animation builders outside components or memoising them with useMemo to avoid re-creating builder configurations on every render pass, ensuring optimal performance.",
+          "sourceRef": "reanimated-docs:layout-animations/entering-exiting-animations.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/layout-animations/entering-exiting-animations"
+        },
+        {
+          "prompt": "On the New Architecture, why might an entering layout animation fail if an animated child is wrapped by certain components like `TouchableWithoutFeedback`?",
+          "answers": [
+            "`TouchableWithoutFeedback` blocks all layout measurement events emitted by the native Fabric renderer.",
+            "Entering animations require active touch responders to calculate initial mounting positions.",
+            "Wrapper components un-workletise layout builder callbacks during component tree reconciliation.",
+            "Reanimated relies internally on `nativeID` to configure entering animations, which can be overwritten by wrapper components."
+          ],
+          "correct": 3,
+          "explanation": "Reanimated uses nativeID internally to configure entering animations on the New Architecture. When a parent wrapper like TouchableWithoutFeedback overwrites nativeID, entering animations fail to run unless wrapped in a plain View.",
+          "sourceRef": "reanimated-docs:layout-animations/entering-exiting-animations.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/layout-animations/entering-exiting-animations"
+        },
+        {
+          "prompt": "What is the behaviour of the `activateAfterLongPress` property on a pan gesture?",
+          "answers": [
+            "It specifies the duration of a long press required before pan activation, failing the gesture if the finger moves during that period.",
+            "It automatically switches the pan gesture into a fling gesture if the touch lasts longer than the set period.",
+            "It delays the gesture callback by a fixed duration while continuing to record coordinate displacement.",
+            "It forces the gesture to deactivate and reset shared values if a press exceeds the specified time limit."
+          ],
+          "correct": 0,
+          "explanation": "activateAfterLongPress sets the duration in milliseconds required before Pan can activate. If the finger moves during that waiting period, the gesture will fail.",
+          "sourceRef": "rngh-docs:gestures/use-pan-gesture.mdx",
+          "referenceUrl": "https://docs.swmansion.com/react-native-gesture-handler/docs/gestures/use-pan-gesture"
+        }
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 28658,
+        "output": 2906
+      },
+      "draftedAt": "2026-11-05T15:37:14.320Z",
+      "reviewed": null
+    },
+    "advanced-animations/3": {
+      "title": "Performance quiz",
+      "status": "draft",
+      "questions": [
+        {
+          "prompt": "What is the maximum time available to the UI system and your application to generate a single frame when targeting 60 frames per second on mobile devices?",
+          "answers": [
+            "8.33 ms",
+            "16.67 ms",
+            "33.33 ms",
+            "50.00 ms"
+          ],
+          "correct": 1,
+          "explanation": "Mobile devices target at least 60 frames per second, which provides a frame budget of at most 16.67 ms to complete all rendering work. If work takes longer, the device drops a frame.",
+          "sourceRef": "rn-docs:performance.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/performance"
+        },
+        {
+          "prompt": "Why can a native `ScrollView` or native stack transition remain smooth at 60 FPS even when the JavaScript thread is locked by heavy computations?",
+          "answers": [
+            "The JavaScript thread automatically yields control whenever scroll touches occur.",
+            "React Native pauses all background network calls during native gesture execution.",
+            "Transition animations and scrolling live on the native main UI thread.",
+            "The render thread recompiles JavaScript tasks into background OpenGL shaders."
+          ],
+          "correct": 2,
+          "explanation": "Native stack navigators and `ScrollView` run their animations directly on the native main UI thread. Even when the JavaScript thread is blocked and unable to receive events, the native thread continues scrolling without interruption.",
+          "sourceRef": "rn-docs:performance.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/performance"
+        },
+        {
+          "prompt": "In the Android Studio Profiler system trace, what visual indicator appears when enabling the VSync highlighting setting?",
+          "answers": [
+            "Vertical zebra stripes that mark the 16 ms frame boundaries",
+            "Red warning badges above threads exceeding 100% CPU utilisation",
+            "Flashing markers flagging uncollected native garbage allocations",
+            "Horizontal dividers separating Java method calls from C++ routines"
+          ],
+          "correct": 0,
+          "explanation": "Checking the VSync highlighting box displays vertical zebra stripes across the trace timeline. These stripes delineate the 16 ms boundaries to help identify whether threads overrun the frame deadline.",
+          "sourceRef": "rn-docs:profiling.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/profiling"
+        },
+        {
+          "prompt": "When inspecting a system trace in Android Studio, what does a long period spent in `DrawFrame` that crosses frame boundaries on the `RenderThread` indicate?",
+          "answers": [
+            "The JavaScript thread is blocked by an unmemoised inline callback.",
+            "The Hermes engine is stalled while compiling bytecode in development mode.",
+            "The native modules bridge is waiting for pending network socket responses.",
+            "The GPU is overloaded and waiting to drain its command buffer."
+          ],
+          "correct": 3,
+          "explanation": "Long durations inside `DrawFrame` crossing frame boundaries show that the application is spending time waiting for the GPU to drain its command buffer from the previous frame, indicating an overloaded GPU.",
+          "sourceRef": "rn-docs:profiling.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/profiling"
+        },
+        {
+          "prompt": "If tapping a touchable component causes immediate dropped frames because `onPress` sets state that triggers a heavy re-render, what workaround does the React Native documentation recommend?",
+          "answers": [
+            "Disabling native touch propagation using `pointerEvents=\"none\"`.",
+            "Wrapping the expensive state update inside `requestAnimationFrame`.",
+            "Delegating the click handler to an asynchronous web worker script.",
+            "Forcing a synchronous native layout measurement before invoking the callback."
+          ],
+          "correct": 1,
+          "explanation": "Wrapping the action inside `requestAnimationFrame` allows the touchable component to complete its opacity or highlight feedback before the JavaScript thread begins the heavy state re-render.",
+          "sourceRef": "rn-docs:performance.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/performance"
+        },
+        {
+          "prompt": "According to React documentation, what are the three sequential steps that occur every time the screen updates?",
+          "answers": [
+            "Binding, calculating, and painting",
+            "Compiling, diffing, and mounting",
+            "Triggering, rendering, and committing",
+            "Scheduling, memoising, and rendering"
+          ],
+          "correct": 2,
+          "explanation": "Any screen update in React follows three steps: triggering a render (due to initial render or state update), rendering the component (calling component functions), and committing changes to the native tree or DOM.",
+          "sourceRef": "react-docs:render-and-commit.md",
+          "referenceUrl": "https://react.dev/learn/render-and-commit"
+        },
+        {
+          "prompt": "When supplying a custom comparison function as the second argument to `React.memo(Component, arePropsEqual)`, how does React interpret the boolean return value?",
+          "answers": [
+            "Returning `true` skips re-rendering the component.",
+            "Returning `true` forces the component and its children to re-render.",
+            "Returning `false` preserves the previously committed native views.",
+            "Returning `false` caches the component props for subsequent renders."
+          ],
+          "correct": 0,
+          "explanation": "If the custom comparison function passed to `React.memo` returns `true`, React treats the props as equivalent and skips re-rendering the component.",
+          "sourceRef": "rn-docs:optimizing-flatlist-configuration.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/optimizing-flatlist-configuration"
+        },
+        {
+          "prompt": "Why should you avoid updating state inside a `useEffect` hook simply to transform or filter data received from props?",
+          "answers": [
+            "Effects are strictly restricted to updating native layout parameters.",
+            "The JavaScript engine suspends rendering whenever an effect modifies an array.",
+            "Updating state inside an effect permanently prevents props from updating.",
+            "It causes an initial render with stale data followed by an immediate redundant re-render."
+          ],
+          "correct": 3,
+          "explanation": "When state is updated inside an effect, React completes an initial render and commit pass, runs the effect, updates state, and restarts the entire render pass from scratch, creating unnecessary cascading renders.",
+          "sourceRef": "react-docs:you-might-not-need-an-effect.md",
+          "referenceUrl": "https://react.dev/learn/you-might-not-need-an-effect"
+        },
+        {
+          "prompt": "According to React documentation, what is the recommended way to reset all state inside a component when a prop such as `userId` changes?",
+          "answers": [
+            "Call `setState` for every state variable inside an empty `useCallback` hook.",
+            "Pass `userId` as the `key` prop to the component so React remounts it.",
+            "Mutate the previous state ref directly during the component render phase.",
+            "Clear the component state inside an asynchronous cleanup function in `useEffect`."
+          ],
+          "correct": 1,
+          "explanation": "Passing the identifier as a `key` tells React that two instances with different keys are distinct components. When the key changes, React recreates the view tree and automatically resets all state without effects.",
+          "sourceRef": "react-docs:you-might-not-need-an-effect.md",
+          "referenceUrl": "https://react.dev/learn/you-might-not-need-an-effect"
+        },
+        {
+          "prompt": "Why should you avoid defining an anonymous inline function directly on the `renderItem` prop of a `FlatList`?",
+          "answers": [
+            "A new function instance is created on each render, invalidating prop equality.",
+            "Inline functions cannot receive the `item` and `index` arguments from the list.",
+            "Anonymous functions bypass React Native's virtualised clipping optimisations.",
+            "The Hermes engine cannot compile closures passed to native virtualised lists."
+          ],
+          "correct": 0,
+          "explanation": "Defining `renderItem` inline creates a fresh function reference on every parent render pass. Wrapping the callback in `useCallback` ensures function identity remains stable across renders.",
+          "sourceRef": "rn-docs:optimizing-flatlist-configuration.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/optimizing-flatlist-configuration"
+        },
+        {
+          "prompt": "What performance advantage does providing the `getItemLayout` prop to a `FlatList` offer when all items have identical fixed dimensions?",
+          "answers": [
+            "It decouples the list from the native UI thread layout pipeline.",
+            "It forces items to load and execute asynchronously inside a background worker.",
+            "It skips asynchronous layout measurements by providing predefined item offsets.",
+            "It caches rendered bitmap textures on the GPU to prevent layout recalculations."
+          ],
+          "correct": 2,
+          "explanation": "When all items have a known fixed size, providing `getItemLayout` allows `FlatList` to skip dynamic measurement of rendered elements, improving rendering speed and scroll efficiency.",
+          "sourceRef": "rn-docs:optimizing-flatlist-configuration.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/optimizing-flatlist-configuration"
+        },
+        {
+          "prompt": "When debugging a React Native app on an Android 5.0+ device connected via USB, which ADB command forwards the Metro bundler port from the phone to your development host?",
+          "answers": [
+            "`adb forward tcp:8081 local:8081`",
+            "`adb connect 127.0.0.1:8081`",
+            "`adb push --port 8081 tcp:8081`",
+            "`adb reverse tcp:8081 tcp:8081`"
+          ],
+          "correct": 3,
+          "explanation": "Running `adb reverse tcp:8081 tcp:8081` forwards port 8081 from the connected Android device back to your local development machine over USB.",
+          "sourceRef": "rn-docs:running-on-device.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/running-on-device"
+        },
+        {
+          "prompt": "Which command does the React Native CLI provide to build and run an application directly in release mode on a connected device?",
+          "answers": [
+            "`yarn run android:prod`",
+            "`yarn android --mode release`",
+            "`npx react-native start --release`",
+            "`adb install --release-mode`"
+          ],
+          "correct": 1,
+          "explanation": "The React Native CLI allows generating and running a release build directly onto a connected device by passing the `--mode release` flag, for example with `yarn android --mode release`.",
+          "sourceRef": "rn-docs:running-on-device.md",
+          "referenceUrl": "https://reactnative.dev/docs/0.88/running-on-device"
+        },
+        {
+          "prompt": "According to the React Native Reanimated performance guide, what is the rule of thumb limit for simultaneously animated components on low-end Android devices?",
+          "answers": [
+            "No more than 100 components",
+            "No more than 25 components",
+            "No more than 250 components",
+            "No more than 500 components"
+          ],
+          "correct": 0,
+          "explanation": "As a rule of thumb, Reanimated recommends animating no more than 100 components simultaneously on low-end Android devices, and no more than 500 components on iOS.",
+          "sourceRef": "reanimated-docs:guides/performance.md",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/guides/performance"
+        },
+        {
+          "prompt": "Which `Info.plist` key must be enabled to allow animations to achieve 120 fps on supported iOS devices?",
+          "answers": [
+            "`UIHighFrequencyAnimationEnabled`",
+            "`EnableProMotionDisplayRefreshRate`",
+            "`CADisableMinimumFrameDurationOnPhone`",
+            "`UIScreenMaximumFramesPerSecond`"
+          ],
+          "correct": 2,
+          "explanation": "To support 120 fps display refresh rates on iOS, the `CADisableMinimumFrameDurationOnPhone` key must be set to `true` in `Info.plist`.",
+          "sourceRef": "reanimated-docs:guides/performance.md",
+          "referenceUrl": "https://docs.swmansion.com/react-native-reanimated/docs/guides/performance"
+        }
+      ],
+      "flags": [],
+      "model": "gemini-3.8-flash",
+      "tokens": {
+        "input": 23640,
+        "output": 2663
+      },
+      "draftedAt": "2026-11-05T15:38:10.129Z",
       "reviewed": null
     }
   }

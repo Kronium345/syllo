@@ -2300,6 +2300,968 @@ insert into public.lesson_sources (lesson_id, position, title, author, url, lice
   (md5('lesson:python-for-everyone:3:3')::uuid, 1, 'More Control Flow Tools (Python 3.15 documentation)', 'Python Software Foundation', 'https://docs.python.org/3.15/tutorial/controlflow.html', 'PSF License v2', 'https://docs.python.org/3/license.html', null, 'adapted'),
   (md5('lesson:python-for-everyone:3:3')::uuid, 2, 'Input and output (Python 3.15 documentation)', 'Python Software Foundation', 'https://docs.python.org/3.15/tutorial/inputoutput.html', 'PSF License v2', 'https://docs.python.org/3/license.html', null, 'adapted');
 
+-- Lesson data-analysis-pandas/1/1: Meet pandas
+update public.lesson_contents set body = 'By the end of this lesson, you will be able to import pandas, create its two primary data structures—the Series and the DataFrame—and run basic methods to inspect your data.
+
+## Importing pandas and creating a DataFrame
+
+To begin using pandas, import the library using the standard community alias, `pd`:
+
+```python
+import pandas as pd
+```
+
+A `DataFrame` is a two-dimensional, labelled data structure with columns that can hold different data types, such as integers, floats, and strings. You can think of it as a spreadsheet table or a SQL table. One common way to create a `DataFrame` manually is by passing a Python dictionary of lists to the constructor. The dictionary keys become the column headers, and the list values become the column contents:
+
+```python
+df = pd.DataFrame({
+    "Name": ["Braund, Mr. Owen Harris", "Allen, Mr. William Henry", "Bonnell, Miss Elizabeth"],
+    "Age": [22, 35, 58],
+    "Sex": ["male", "male", "female"],
+})
+```
+
+The resulting table has three labelled columns (`Name`, `Age`, and `Sex`). By default, pandas assigns an integer index to label the rows, beginning at 0.
+
+## Understanding the Series
+
+While a `DataFrame` represents a full two-dimensional table, each individual column within that table is a `Series`. A `Series` is a one-dimensional labelled array. You can extract a single column from a `DataFrame` using square brackets with the column label, similar to accessing a value by key in a Python dictionary:
+
+```python
+ages = df["Age"]
+```
+
+This selection yields a `Series`. You can also instantiate a `Series` directly from a list or array, optionally providing a `name` parameter:
+
+```python
+ages = pd.Series([22, 35, 58], name="Age")
+```
+
+A `Series` does not have column labels because it holds only a single column, but it retains row labels via its index.
+
+## Calling methods on DataFrames and Series
+
+pandas provides methods to perform calculations and data transformations. Because these are methods, you execute them using parentheses `()`.
+
+For example, you can calculate the highest value in a numerical `Series` or column by calling `.max()`:
+
+```python
+# Called on a DataFrame column
+max_age = df["Age"].max()
+
+# Called on an independent Series
+max_age = ages.max()
+```
+
+To inspect summary figures for all numerical columns in a `DataFrame`, call the `.describe()` method:
+
+```python
+df.describe()
+```
+
+The `.describe()` method provides a quick overview of the numerical data in a `DataFrame`. Because columns such as `Name` and `Sex` contain textual data, they are not taken into account by `.describe()` by default.
+
+### Try it
+
+Create a new Python script or interactive session and complete the following:
+
+1. Import pandas as `pd`.
+2. Create a `DataFrame` with two columns: `"Product"` containing three product names as strings, and `"Price"` containing three float values.
+3. Extract the `"Price"` column into a variable.
+4. Call `.max()` on your price variable to find the highest price, and run `.describe()` on the entire `DataFrame`.
+
+### Key points
+
+- The standard convention to load pandas is `import pandas as pd`.
+- A `DataFrame` is a two-dimensional labelled data structure capable of holding multiple data types in its columns.
+- Each column of a `DataFrame` is a one-dimensional labelled array called a `Series`.
+- Square bracket notation (`df["col_name"]`) selects a single column as a `Series`.
+- You can perform calculations and summaries by invoking methods such as `.max()` and `.describe()`.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:1:1')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:1:1')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:data-analysis-pandas:1:1')::uuid, 1, 'What kind of data does pandas handle? (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/01_table_oriented.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:1:1')::uuid, 2, 'Intro to data structures (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/dsintro.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+
+-- Lesson data-analysis-pandas/1/2: Reading CSV files
+update public.lesson_contents set body = 'You will be able to import tabular text data into pandas using `pd.read_csv()`, configure column names and row indices, select specific subsets of columns, and control data types and missing values.
+
+## Loading flat files and custom delimiters
+
+The primary tool for loading delimited text data in pandas is the `read_csv()` function. By default, it expects comma-separated values, but you can customise the delimiter with the `sep` parameter.
+
+```python
+import pandas as pd
+from io import StringIO
+
+data = """id,item,price
+101,apples,2.50
+102,oranges,3.10
+"""
+
+df = pd.read_csv(StringIO(data))
+print(df)
+```
+
+If your file uses a different delimiter, such as a pipe or tab, provide it using `sep="|"`. You can also let pandas detect delimiters automatically by setting `sep=None`, which uses Python''s built-in sniffer tool via `engine="python"`.
+
+## Configuring headers, columns, and index labels
+
+By default, `read_csv()` treats the first line of data as the header containing column names (`header="infer"`). When a file lacks column headers, set `header=None` and supply an explicit list of column labels to the `names` parameter:
+
+```python
+raw_data = """101,apples,2.50
+102,oranges,3.10
+"""
+
+df = pd.read_csv(StringIO(raw_data), header=None, names=["id", "item", "price"])
+```
+
+You can designate one or more columns as the DataFrame row labels using `index_col`:
+
+- Setting `index_col="id"` or `index_col=0` uses that column as the row index.
+- Supplying a list of column numbers or names, such as `index_col=[0, 1]`, constructs a hierarchical MultiIndex.
+- Passing `index_col=False` prevents pandas from using the first column as the index when trailing delimiters confuse line parsing.
+
+To reduce memory usage and parsing time on wide datasets, use `usecols` to load only the required columns. It accepts column names, positional integer indices, or a callable function:
+
+```python
+df_sub = pd.read_csv(StringIO(data), usecols=["item", "price"])
+```
+
+## Parsing data types, dates, and missing values
+
+pandas infers column data types automatically, but you can explicitly specify them with the `dtype` parameter by passing a type or a dictionary mapping column names to types:
+
+```python
+df = pd.read_csv(StringIO(data), dtype={"id": "Int64", "price": float})
+```
+
+You can also pass `dtype="category"` or a dictionary mapping specific columns to `"category"` to parse categorical variables directly.
+
+When dealing with date and time columns:
+
+- Pass a list of column names or positions to `parse_dates` to convert them into datetime objects.
+- Use `date_format` to define an explicit datetime format string, or pass `dayfirst=True` when reading international DD/MM/YYYY formats.
+
+Missing values are converted to `NaN` by default. You can define additional representations using `na_values`, such as `na_values=["missing", "0"]`. If you want only your specified values to be treated as missing without including the default strings (such as `''NA''`, `''NaN''`, and empty strings), set `keep_default_na=False`.
+
+### Try it
+
+Suppose you receive sensor readings where lines beginning with `#` are comments, dates are formatted as day-first, and missing numbers are marked as `None`:
+
+```python
+sensor_data = """# Daily sensor output
+reading_id,timestamp,value
+1,15/04/2024,24.5
+2,16/04/2024,None
+3,17/04/2024,25.1
+"""
+
+df = pd.read_csv(
+    StringIO(sensor_data),
+    comment="#",
+    index_col="reading_id",
+    parse_dates=["timestamp"],
+    dayfirst=True,
+    na_values=["None"],
+)
+print(df)
+print(df.dtypes)
+```
+
+Run this snippet and inspect the DataFrame index, column data types, and how the missing entry is converted into `NaN`.
+
+### Key points
+
+- Load delimited files into a DataFrame using `pd.read_csv()`, adjusting delimiters with `sep`.
+- Set `header=None` and pass `names` when the file lacks column headers, or choose row labels with `index_col`.
+- Restrict parsed columns using `usecols` to minimise memory consumption and speed up processing.
+- Control type conversion with `dtype`, convert dates using `parse_dates` and `date_format`, and customise missing values with `na_values` and `keep_default_na`.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:1:2')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:1:2')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:data-analysis-pandas:1:2')::uuid, 1, 'How do I read and write tabular data? (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/02_read_write.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:1:2')::uuid, 2, 'IO tools (text, CSV, HDF5, ...) (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/io.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+
+-- Lesson data-analysis-pandas/1/3: Exploring a DataFrame
+update public.lesson_contents set body = 'Once you load a dataset into a pandas DataFrame, the first step is to explore its structure, dimensions, and contents. You will learn how to inspect row samples, verify table dimensions, check column data types, and produce descriptive summary statistics.
+
+## Viewing samples and dimensions
+
+To inspect a small sample of your data without printing the entire table, use the `head()` and `tail()` methods. By default, both methods display five rows, but you can pass an integer argument to view a custom number of rows from the start or end of the DataFrame:
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "name": ["Alice", "Bob", "Charlie", "David", "Eva", "Frank"],
+    "age": [24, 30, 22, 35, 29, 41],
+    "salary": [48000, 52000, 45000, 61000, 58000, 72000]
+})
+
+df.head(3)
+df.tail(2)
+```
+
+To find the dimensions of your DataFrame, access the `shape` attribute. Because `shape` is an attribute rather than a method, do not use parentheses. It returns a tuple in the format `(nrows, ncolumns)`:
+
+```python
+df.shape
+```
+
+You can also inspect axis labels directly via the `index` (row labels) and `columns` (column labels) attributes.
+
+## Checking column types and filtering by dtype
+
+A DataFrame can store columns of varying types, such as integers, floating-point numbers, and strings. You can inspect the data type of every column using the `dtypes` attribute, which returns a Series:
+
+```python
+df.dtypes
+```
+
+To see a count of how many columns belong to each data type, call `value_counts()` on the attribute:
+
+```python
+df.dtypes.value_counts()
+```
+
+When dealing with many columns, you can isolate specific types using `select_dtypes()`. This method accepts `include` and `exclude` parameters:
+
+```python
+# Select only numeric columns
+numeric_df = df.select_dtypes(include=["number"])
+
+# Select string columns
+string_df = df.select_dtypes(include=[str])
+```
+
+## Summarising data with descriptive statistics
+
+The `describe()` method calculates a set of summary statistics across the columns of a DataFrame, such as count, mean, standard deviation, minimum, maximum, and percentiles:
+
+```python
+df.describe()
+```
+
+On a DataFrame with mixed data types, `describe()` restricts the output by default to numerical columns. If no numerical columns exist, it summarises categorical columns. You can alter this behaviour using the `include` parameter. For instance, `df.describe(include="all")` includes all columns in the summary.
+
+For categorical or discrete fields, use `value_counts()` on a column to calculate frequency counts:
+
+```python
+df["age"].value_counts()
+```
+
+To find the number of unique non-null observations in a column, call `nunique()`:
+
+```python
+df["age"].nunique()
+```
+
+### Try it
+
+Create a DataFrame containing five passenger records with columns `"name"` (strings), `"age"` (integers), and `"survived"` (booleans). Use `shape` to verify that there are 5 rows and 3 columns, view the last 3 rows with `tail(3)`, and print summary statistics for all columns using `describe(include="all")`.
+
+### Key points
+
+- Use `head()` and `tail()` to display a sample of rows from the beginning or end of a DataFrame, defaulting to five rows.
+- Access the `shape` attribute (without parentheses) to retrieve a tuple of `(nrows, ncolumns)`.
+- Inspect column data types using the `dtypes` attribute and subset columns based on type with `select_dtypes()`.
+- Compute quick summary metrics across numeric columns using `describe()`, or use `describe(include="all")` for full coverage.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:1:3')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:1:3')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:data-analysis-pandas:1:3')::uuid, 1, 'How do I select a subset of a DataFrame? (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/03_subset_data.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:1:3')::uuid, 2, 'Essential basic functionality (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/basics.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+
+-- Lesson data-analysis-pandas/2/1: Missing values
+update public.lesson_contents set body = 'In this lesson, you will learn how pandas represents missing data across different data types, how missing values behave in calculations, and how to detect, drop, fill, and interpolate them in your datasets.
+
+## Missing value sentinels and detection
+
+pandas uses different sentinel markers to represent missing data depending on the column data type:
+
+- `np.nan` represents missing values in NumPy data types. Using it often coerces integers or booleans to `np.float64` or `object`.
+- `pd.NaT` represents missing values in datetime, timedelta, and period types.
+- `pd.NA` is a dedicated scalar indicator for nullable types, such as `Int64`, `Float64`, `StringDtype`, and `ArrowDtype`. These preserve the underlying data type.
+
+To check for missing values, use `isna()` or `notna()`. You must avoid checking for missing data using standard equality comparisons (`==`), because `np.nan == np.nan` evaluates to `False`, while `pd.NA == pd.NA` returns `pd.NA`:
+
+```python
+import pandas as pd
+import numpy as np
+
+ser = pd.Series([1, None, 3], dtype="Int64")
+print(ser.isna())
+print(ser == pd.NA)
+```
+
+To convert a DataFrame containing `np.nan` into nullable data types that use `pd.NA`, use `convert_dtypes()`.
+
+## Behaviour in calculations
+
+In arithmetic operations, missing values propagate: operating on an unknown value results in an unknown value (such as `pd.NA + 1` returning `<NA>`). In logical operations (`&`, `|`), `pd.NA` follows three-valued Kleene logic. It only propagates if the outcome cannot be known beforehand (for example, `True | pd.NA` evaluates to `True`, whereas `False | pd.NA` evaluates to `<NA>`).
+
+Because `bool(pd.NA)` raises a `TypeError`, you cannot evaluate `pd.NA` in a standard Python `if` statement or use Python''s `and`, `or`, and `not` keywords. Use the bitwise operators `&`, `|`, and `~` instead.
+
+Unlike NumPy, pandas reductions such as `mean()`, `std()`, and `sum()` skip missing values by default (`skipna=True`). When summing, NA values or entirely empty data evaluate to 0, while `prod()` evaluates to 1:
+
+```python
+s = pd.Series([1.0, np.nan, 3.0])
+print(s.std())              # Skips missing values
+print(s.std(skipna=False))  # Returns NaN
+```
+
+## Dropping, filling, and interpolating
+
+To discard missing entries, call `dropna()`. By default, this drops rows containing NA values, but setting `axis=1` drops columns instead.
+
+To fill missing values with non-NA values, use `fillna()`:
+
+```python
+df = pd.DataFrame({
+    "A": [1.0, np.nan, 3.0],
+    "B": [np.nan, 2.0, 4.0]
+})
+
+# Fill with a scalar
+filled_scalar = df.fillna(0)
+
+# Fill per column with a dictionary or column means
+filled_mean = df.fillna(df.mean())
+```
+
+You can also propagate neighbouring values using `ffill()` (forward fill) or `bfill()` (backward fill). Both methods accept a `limit` parameter to constrain how many consecutive gaps are filled.
+
+For continuous series, `interpolate()` estimates missing points based on nearby observations. It defaults to linear interpolation, but you can set `method="time"` for time series, `method="values"` for floating-point indices, or specify SciPy methods like `"pchip"` or `"barycentric"`:
+
+```python
+ser = pd.Series([1.0, np.nan, 5.0, np.nan, 9.0])
+print(ser.interpolate(limit=1))
+```
+
+### Try it
+
+Create a pandas Series with values `[10, np.nan, np.nan, 40]` using `dtype="Int64"`. Use `isna()` to display the missing mask, fill the first missing entry only using forward fill with a limit of 1, and then verify the remaining missing count using `sum()` on `isna()`.
+
+### Key points
+
+- pandas uses `np.nan` for NumPy types, `pd.NaT` for datetime types, and `pd.NA` for nullable extension types.
+- Always detect missing entries with `isna()` or `notna()` rather than equality operators (`==`).
+- Reduction methods such as `sum()` and `mean()` exclude missing entries by default using `skipna=True`.
+- You can clean missing data using `dropna()` to remove entries, `fillna()` to replace values, or `interpolate()` to estimate values across gaps.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:2:1')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:2:1')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:data-analysis-pandas:2:1')::uuid, 1, 'Working with missing data (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/missing_data.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+
+-- Lesson data-analysis-pandas/2/2: Fixing types and dates
+update public.lesson_contents set body = 'In this lesson, you will learn how to convert raw string and numerical values into proper pandas datetime objects, handle invalid date values safely, and access date components for analysis.
+
+## Converting values to timestamps
+
+When importing data from formats like CSV, dates are frequently read as plain text objects. In plain text format, you cannot perform calendar operations, extract months, or calculate intervals. The primary tool for fixing this is `pd.to_datetime`.
+
+Applying `pd.to_datetime` converts text series into datetime objects (with a `datetime64[us]` data type by default):
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "recorded_at": ["2024-03-15 08:30", "2024-03-16 09:45", "2024-03-17 11:15"],
+    "value": [12.4, 15.1, 9.8]
+})
+
+df["recorded_at"] = pd.to_datetime(df["recorded_at"])
+print(df["recorded_at"].dtype)
+```
+
+You can also convert dates during import by passing `parse_dates=["recorded_at"]` to functions such as `pd.read_csv`.
+
+## Handling formats, day-first dates, and errors
+
+Date strings come in varied structures. When parsing non-standard strings, specify the expected structure with the `format` argument to ensure precise and faster parsing. If your dates use day-first formatting (such as European `DD/MM/YYYY`), pass `dayfirst=True`:
+
+```python
+# Using dayfirst for European dates
+eu_dates = pd.Series(["15/03/2024", "16/03/2024"])
+pd.to_datetime(eu_dates, dayfirst=True)
+
+# Using explicit format patterns
+pd.to_datetime(pd.Series(["2024/03/15"]), format="%Y/%m/%d")
+```
+
+Real-world data often includes corrupt or unparseable text. By default, `pd.to_datetime` raises an exception if a value cannot be parsed (`errors="raise"`). Setting `errors="coerce"` converts invalid entries into `pd.NaT` (Not a Time), which is the missing-value marker for date data:
+
+```python
+mixed_series = pd.Series(["2024-01-01", "invalid_date", "2024-01-03"])
+clean_dates = pd.to_datetime(mixed_series, errors="coerce")
+print(clean_dates)
+```
+
+pandas can also assemble datetime values across separate DataFrame columns when given columns such as `year`, `month`, and `day`:
+
+```python
+parts = pd.DataFrame({"year": [2024, 2024], "month": [1, 2], "day": [15, 20]})
+assembled = pd.to_datetime(parts)
+```
+
+## Using the .dt accessor and date arithmetic
+
+Once a column has a datetime type, its individual components become accessible through the `.dt` accessor. Properties include `.dt.year`, `.dt.month`, `.dt.day`, `.dt.hour`, and `.dt.day_of_week` (where Monday is 0 and Sunday is 6):
+
+```python
+df["month"] = df["recorded_at"].dt.month
+df["weekday"] = df["recorded_at"].dt.day_of_week
+```
+
+Datetime objects also support direct mathematical operations. Subtracting two timestamps returns a `pd.Timedelta` object, which defines a precise time duration:
+
+```python
+duration = df["recorded_at"].max() - df["recorded_at"].min()
+print(duration)
+```
+
+## DatetimeIndex and slicing
+
+When a datetime column is moved to the index (using `.set_index`), the object becomes a `DatetimeIndex`. In addition to making `.dt` properties available directly on the index (such as `df.index.year`), this allows partial string slicing:
+
+```python
+df = df.set_index("recorded_at")
+subset = df["2024-03-15":"2024-03-16"]
+```
+
+Unlike standard Python slicing, label-based slicing on a `DatetimeIndex` includes both endpoints.
+
+### Try it
+
+Create a DataFrame with three messy string dates (including one invalid string such as `"missing"`) and a numerical column. Use `pd.to_datetime` with `errors="coerce"` to transform the dates, extract the day of the week into a new column with `.dt.day_of_week`, and verify that the invalid entry is represented as `NaT`.
+
+### Key points
+
+- Convert text or integer columns to datetime objects using `pd.to_datetime` or the `parse_dates` argument in file readers.
+- Use `dayfirst=True` or provide an explicit `format` string to resolve ambiguous dates.
+- Pass `errors="coerce"` to replace unparseable strings with `NaT` instead of halting execution.
+- Access calendar properties like month, year, and weekday using the `.dt` accessor on Series, or directly on a `DatetimeIndex`.
+- Subtracting timestamps yields a `Timedelta` duration object, and slicing a `DatetimeIndex` includes both endpoints.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:2:2')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:2:2')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:data-analysis-pandas:2:2')::uuid, 1, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:2:2')::uuid, 2, 'Time series / date functionality (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/timeseries.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+
+-- Lesson data-analysis-pandas/2/3: Reshaping data
+update public.lesson_contents set body = 'In this lesson, you will learn how to reshape DataFrames between wide and long representations using `pivot`, `pivot_table`, and `melt`, as well as how to manipulate hierarchical levels with `stack` and `unstack`.
+
+## Pivoting from long to wide format
+
+Tabular data often arrives in a long format where multiple observations are recorded across separate rows. To spread unique category values across columns, use `DataFrame.pivot`.
+
+```python
+import pandas as pd
+
+data = {
+    "date": ["2025-01-01", "2025-01-02", "2025-01-01", "2025-01-02"],
+    "station": ["London", "London", "Paris", "Paris"],
+    "no2": [25, 30, 40, 42],
+}
+df = pd.DataFrame(data)
+pivoted = df.pivot(index="date", columns="station", values="no2")
+print(pivoted)
+```
+
+The `pivot` method requires that each index and column intersection contains exactly one value. If your dataset contains repeated combinations that require summarisation, use `pivot_table` instead. It accepts an `aggfunc` argument (such as `"mean"` or `"sum"`) and optional `margins=True` to compute row and column subtotals:
+
+```python
+summary = df.pivot_table(
+    index="station",
+    values="no2",
+    aggfunc="mean",
+    margins=True,
+)
+print(summary)
+```
+
+## Stacking and unstacking levels
+
+When working with MultiIndex structures, `stack` and `unstack` pivot levels between row indices and column headers:
+
+- `stack` moves a level of column labels into the row index, forming an inner row level.
+- `unstack` performs the inverse operation, moving a level of the row index to the column axis (defaulting to the innermost level).
+
+```python
+stacked = pivoted.stack()
+print(stacked)
+restored = stacked.unstack()
+print(restored)
+```
+
+You can pass a specific level name or integer position to `unstack`, and supply `fill_value` to handle missing combinations resulting from the layout change.
+
+## Unpivoting with melt
+
+To convert a wide DataFrame back into a long format, use `DataFrame.melt` (or `pd.melt`). You specify which columns act as identifiers (`id_vars`) and which columns should be unpivoted (`value_vars`).
+
+```python
+wide = pd.DataFrame({
+    "city": ["Antwerp", "Paris"],
+    "2024": [12.5, 18.2],
+    "2025": [11.0, 17.5],
+})
+
+long_df = wide.melt(
+    id_vars="city",
+    value_vars=["2024", "2025"],
+    var_name="year",
+    value_name="reading",
+)
+print(long_df)
+```
+
+Any column not included in `id_vars` is unpivoted into two columns: one named `variable` (or your chosen `var_name`) containing the original column headers, and one named `value` (or your `value_name`) holding the readings.
+
+## Unnesting lists with explode
+
+When a column holds nested, list-like collections in each row, `DataFrame.explode` transforms each element into its own row while preserving the associated index labels and other column values:
+
+```python
+records = pd.DataFrame({
+    "station": ["London", "Paris"],
+    "tags": [["urban", "traffic"], ["suburban"]],
+})
+exploded = records.explode("tags")
+print(exploded)
+```
+
+Empty lists inside exploded columns are converted into missing value indicators.
+
+### Try it
+
+Create a small DataFrame containing columns `"product"`, `"store"`, and `"sales"` with multiple entries per product. Use `pivot_table` to calculate the total sales for each product across stores, enabling `margins=True` to observe overall subtotals.
+
+### Key points
+
+- `DataFrame.pivot` reshapes unique row-column combinations into wide tables without aggregation.
+- `DataFrame.pivot_table` combines and aggregates data across categories, supporting multiple aggregation functions and margin subtotals.
+- `DataFrame.melt` transforms wide datasets to long format by unpivoting measured variable columns into row pairs.
+- `stack` compresses column labels into the row index, whilst `unstack` turns row index levels into columns.
+- `DataFrame.explode` unpacks list-like values in a column into separate rows.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:2:3')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:2:3')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:data-analysis-pandas:2:3')::uuid, 1, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/07_reshape_table_layout.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:2:3')::uuid, 2, 'Reshaping and pivot tables (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/reshaping.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+
+-- Lesson data-analysis-pandas/3/1: Filtering and sorting
+update public.lesson_contents set body = 'By the end of this lesson, you will be able to filter rows and select subsets of columns in a pandas DataFrame using boolean conditions, logical operators, membership checks, and indexers.
+
+## Boolean indexing and logical operators
+
+Filtering rows in pandas relies on boolean vectors. When you apply a comparison operator (such as `>`, `<`, `==`, or `!=`) to a `Series`, pandas returns a new `Series` containing `True` and `False` values for each row.
+
+```python
+import pandas as pd
+
+data = {
+    "Name": ["Alice", "Bob", "Charlie", "Diana"],
+    "Age": [28, 42, 35, 19],
+    "Pclass": [1, 2, 2, 3],
+}
+df = pd.DataFrame(data)
+
+# Filter for passengers older than 30
+older_than_30 = df[df["Age"] > 30]
+```
+
+When combining multiple conditions, standard Python logical operators like `and` or `or` cannot be used on Series objects. Instead, you must use bitwise operators:
+
+- `&` for *and*
+- `|` for *or*
+- `~` for *not*
+
+Because of Python''s operator precedence, you must enclose each individual condition in parentheses `()`.
+
+```python
+# Passengers who are in class 2 AND older than 25
+class2_older = df[(df["Pclass"] == 2) & (df["Age"] > 25)]
+
+# Passengers who are not in class 3
+not_class3 = df[~(df["Pclass"] == 3)]
+```
+
+## Filtering with isin and notna
+
+Writing multiple `|` conditions can become cumbersome when checking against multiple valid values. The `isin()` method provides a concise alternative by checking whether values exist within an iterable, such as a list.
+
+```python
+# Select rows where Pclass is either 2 or 3
+classes = df[df["Pclass"].isin([2, 3])]
+```
+
+To identify rows where data is present and exclude missing values, you can use the `notna()` method on a `Series`. This returns `True` for every entry that is not null.
+
+```python
+# Keep rows where Age is known
+valid_ages = df[df["Age"].notna()]
+```
+
+## Selecting rows and columns with loc and query
+
+When you need to filter rows and select specific columns in a single step, selection brackets `[]` alone are insufficient. You can use `.loc`, which accepts row criteria before the comma and column labels after it.
+
+```python
+# Retrieve only names for passengers older than 30
+adult_names = df.loc[df["Age"] > 30, "Name"]
+
+# Retrieve names and class for passengers older than 30
+adult_details = df.loc[df["Age"] > 30, ["Name", "Pclass"]]
+```
+
+While `.loc` relies on labels and conditions, `.iloc` operates purely on integer positions (from `0` to `length - 1`):
+
+```python
+# Select the first two rows and the first two columns by position
+first_slice = df.iloc[0:2, 0:2]
+```
+
+Another approach for filtering is the `query()` method, which allows you to filter using readable string expressions without referencing the DataFrame repeatedly.
+
+```python
+# Filter using a query string
+queried = df.query("Age > 30 and Pclass == 2")
+```
+
+### Try it
+
+Create a DataFrame containing four products with columns `"product"`, `"price"`, and `"in_stock"`. Then, write a boolean filter that extracts only the products where `price < 50` and `in_stock == True`. Finally, use `.loc` to extract only their `"product"` names.
+
+### Key points
+
+- Conditional expressions produce boolean Series that filter DataFrame rows when passed into selection brackets `[]`.
+- Multiple conditional expressions must be wrapped in parentheses `()` and combined using `&` (*and*), `|` (*or*), or `~` (*not*).
+- The `isin()` method checks for membership across a list of values, while `notna()` filters out missing entries.
+- The `.loc` operator performs simultaneous row filtering and column selection based on labels, whereas `.iloc` relies strictly on integer positions.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:3:1')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:3:1')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:data-analysis-pandas:3:1')::uuid, 1, 'How do I select a subset of a DataFrame? (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/03_subset_data.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:3:1')::uuid, 2, 'Indexing and selecting data (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/indexing.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+
+-- Lesson data-analysis-pandas/3/2: Grouping and aggregating
+update public.lesson_contents set body = 'In this lesson, you will learn how to group datasets by one or more categories and calculate summary statistics across subsets using pandas. You will explore the split-apply-combine workflow, select target columns, and compute custom metrics using the `.agg()` method.
+
+## The split-apply-combine workflow
+
+When analysing tabular data, you often need to calculate summary metrics for distinct subsets—such as finding the average salary per department. In pandas, this approach follows the **split-apply-combine** pattern:
+
+1. **Split**: Break the data into groups based on key criteria.
+2. **Apply**: Compute a function (such as a sum, mean, or count) independently on each group.
+3. **Combine**: Bring the results back together into a single pandas data structure.
+
+You create groups by calling `df.groupby()`. By default, the grouping column becomes the index of the returned object. If you want the grouping keys to stay as regular DataFrame columns, pass `as_index=False`.
+
+```python
+import pandas as pd
+
+df = pd.DataFrame({
+    "team": ["Alpha", "Beta", "Alpha", "Beta", "Alpha"],
+    "role": ["Dev", "Dev", "QA", "QA", "Dev"],
+    "score": [85, 90, 78, 88, 92],
+    "hours": [40, 35, 38, 42, 45],
+})
+
+# Group by a single column and select one metric to aggregate
+team_scores = df.groupby("team")["score"].mean()
+
+# Group by multiple columns while retaining columns in the output
+role_metrics = df.groupby(["team", "role"], as_index=False)["score"].mean()
+```
+
+## Built-in aggregation methods
+
+GroupBy objects provide built-in methods for computing summary statistics across numeric values, such as `.mean()`, `.median()`, `.sum()`, `.min()`, and `.max()`.
+
+When aggregating, two common methods measure group volume:
+- `.count()` returns the number of non-null records for each column.
+- `.size()` returns a Series containing the total number of rows in each group, including `NaN` values.
+
+```python
+# Count non-missing values versus total rows
+counts = df.groupby("team")["score"].count()
+sizes = df.groupby("team").size()
+```
+
+By default, `groupby()` drops groups where the grouping key itself is `NaN`. To include missing keys as a distinct group, supply `dropna=False`. If you call a method like `.mean()` on an entire DataFrame containing non-numeric data, pass `numeric_only=True` to exclude text columns.
+
+## Custom aggregations with `.agg()`
+
+The `.agg()` (or `.aggregate()`) method gives you precise control over what statistics to compute. You can pass a list of method names, provide a dictionary to apply different functions to different columns, or use named aggregation to specify clear output column names.
+
+```python
+# Apply multiple metrics to a single grouped column
+df.groupby("team")["score"].agg(["min", "max", "mean"])
+
+# Apply different functions to different columns
+df.groupby("team").agg({
+    "score": ["mean", "max"],
+    "hours": "sum",
+})
+
+# Named aggregation: assign explicit output column names
+df.groupby("team").agg(
+    avg_score=("score", "mean"),
+    total_hours=("hours", "sum"),
+)
+```
+
+Named aggregation accepts keyword arguments where each key is your desired column name and the value is a tuple of `("column_name", "function_name")`. This avoids generating hierarchical column MultiIndexes.
+
+### Try it
+
+Create a DataFrame of product sales with columns for `category` (`"Books"`, `"Electronics"`), `units_sold`, and `unit_price`. Group the DataFrame by `category` and use named aggregation with `.agg()` to return a single DataFrame containing `min_units` and `avg_price`.
+
+### Key points
+
+- The `groupby` method implements the split-apply-combine workflow across one or more grouping keys.
+- Selecting columns with bracket notation after `groupby` applies calculations only to specified columns.
+- Setting `as_index=False` preserves grouping keys as standard DataFrame columns instead of moving them to the index.
+- `.count()` ignores `NaN` values in columns, whereas `.size()` measures the total row count per group.
+- The `.agg()` method allows computing multiple statistics at once and supports named aggregation tuples `("column", "aggfunc")` for readable column headers.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:3:2')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:3:2')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:data-analysis-pandas:3:2')::uuid, 1, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:3:2')::uuid, 2, 'Group by: split-apply-combine (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/groupby.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+
+-- Lesson data-analysis-pandas/3/3: Joining datasets
+update public.lesson_contents set body = 'In real-world data analysis, information is often split across multiple tables. In this lesson, you will learn how to combine datasets by concatenating them along an axis or merging them using database-style join keys.
+
+## Concatenating tables with pd.concat
+
+When you have tables with a similar structure—such as monthly reports or data collected from different sensors—you can stack them together using `pd.concat()`. By default, concatenation occurs along `axis=0` (row-wise), combining the rows of each table:
+
+```python
+import pandas as pd
+
+pm25 = pd.DataFrame({"city": ["Antwerp", "Paris"], "val": [18.0, 25.0]})
+no2 = pd.DataFrame({"city": ["Antwerp", "Paris"], "val": [20.5, 31.2]})
+
+combined = pd.concat([pm25, no2], axis=0, ignore_index=True)
+print(combined)
+```
+
+You can also concatenate along columns by setting `axis=1`. When combining along rows where the index is not meaningful, setting `ignore_index=True` creates a clean, continuous numerical index. Note that `pd.concat()` makes a full copy of the data, so it is best to collect all your DataFrames into a list before calling `pd.concat()` rather than appending in a loop.
+
+## Database-style merging with pd.merge
+
+To join tables based on a shared key or identifier rather than index alignment, use `pd.merge()`. This mirrors relational database operations:
+
+```python
+measurements = pd.DataFrame({
+    "city": ["Antwerp", "Paris", "London"],
+    "val": [18.0, 25.0, 14.2],
+})
+
+stations = pd.DataFrame({
+    "city": ["Antwerp", "Paris", "Madrid"],
+    "country": ["Belgium", "France", "Spain"],
+})
+
+merged = pd.merge(measurements, stations, on="city", how="left")
+print(merged)
+```
+
+The `how` argument controls which keys remain in the resulting table:
+
+- `how="left"`: Keeps all keys from the left DataFrame.
+- `how="right"`: Keeps all keys from the right DataFrame.
+- `how="inner"`: Keeps only keys present in both DataFrames (intersection).
+- `how="outer"`: Keeps all keys from both DataFrames (union), inserting `NaN` where matches are missing.
+- `how="cross"`: Creates the Cartesian product of rows from both frames.
+
+## Handling differing column names and tracking joins
+
+When the shared identifier has different column names in each DataFrame, use `left_on` and `right_on` instead of `on`:
+
+```python
+params = pd.DataFrame({"param_id": [1, 2], "name": ["PM25", "NO2"]})
+readings = pd.DataFrame({"sensor": [101, 102], "parameter": [1, 2]})
+
+result = pd.merge(
+    readings, params, left_on="parameter", right_on="param_id", how="left"
+)
+```
+
+If non-key columns share identical names across both tables, pandas automatically appends `_x` and `_y` to distinguish them. You can customise these using the `suffixes` argument (for example, `suffixes=("_left", "_right")`).
+
+To audit the outcome of a merge, pass `indicator=True`. This adds a categorical `_merge` column with values indicating whether each row was found in `left_only`, `right_only`, or `both`.
+
+### Try it
+
+Create two small DataFrames: `sales` with columns `"item_id"` and `"units"`, and `inventory` with columns `"sku"` and `"price"`. Use `pd.merge()` to perform an outer join matching `item_id` to `sku`, with `indicator=True` enabled to see where each record originated.
+
+### Key points
+
+- Use `pd.concat()` to stack DataFrames along rows (`axis=0`) or across columns (`axis=1`).
+- Use `pd.merge()` to combine tables based on matching keys, supporting `''left''`, `''right''`, `''inner''`, `''outer''`, and `''cross''` joins.
+- Connect tables with mismatched key names using the `left_on` and `right_on` parameters.
+- Set `indicator=True` in `pd.merge()` to inspect whether rows came from `left_only`, `right_only`, or `both`.
+- Customise overlapping column names by providing a tuple of labels to `suffixes`.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:3:3')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:3:3')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:data-analysis-pandas:3:3')::uuid, 1, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/08_combine_dataframes.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:3:3')::uuid, 2, 'Merge, join, concatenate and compare (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/merging.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+
+-- Lesson data-analysis-pandas/4/1: Charts that explain
+update public.lesson_contents set body = 'In this lesson, you will learn how to select and customise pandas charts to explain patterns in your data clearly. You will connect pandas plotting methods to Matplotlib, control subplots and formatting, and manage how missing values appear in your visualisations.
+
+## Choosing the right chart type
+
+Pandas provides plotting methods directly on `Series` and `DataFrame` objects through the `.plot` accessor. By default, `df.plot()` produces a line plot for each numeric column, which is suited for continuous trends such as time series. When your goal is to communicate specific relationships or comparisons to an audience, you can choose alternative chart kinds using `df.plot.<kind>()` or the `kind` keyword parameter:
+
+- **Bar plots** (`kind="bar"` or `plot.bar()`): Compare values across distinct categories. Setting `stacked=True` displays cumulative segment totals.
+- **Scatter plots** (`plot.scatter(x="col1", y="col2")`): Highlight relationships, correlations, and outliers between two numerical variables. You can pass a third column to `c` to colour points or to `s` to scale point size.
+- **Histograms** (`plot.hist()`): Summarise the frequency distribution of a continuous variable across bins.
+- **Box plots** (`plot.box()`): Visualise data distributions by displaying medians, quartiles, whiskers, and fliers.
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+
+data = {
+    "quarter": ["Q1", "Q2", "Q3", "Q4"],
+    "station_a": [120, 150, 170, 160],
+    "station_b": [90, 110, 130, 140],
+}
+df = pd.DataFrame(data).set_index("quarter")
+
+# Stacked bar chart comparing station performance
+df.plot.bar(stacked=True)
+plt.show()
+```
+
+## Customising figures with Matplotlib
+
+Every chart created by pandas is built on top of a Matplotlib object. To build figures that clearly explain data, you can create explicit Matplotlib figures and axes using `plt.subplots()` and pass the axis object into the pandas `ax` parameter. This allows you to set titles, label axes, and save the result to an image file.
+
+```python
+fig, ax = plt.subplots(figsize=(8, 4))
+
+df.plot(ax=ax)
+ax.set_title("Quarterly Station Footfall")
+ax.set_ylabel("Passenger Count")
+
+fig.savefig("station_footfall.png")
+plt.show()
+```
+
+When comparing multiple columns that share different scales, using a single axis can clutter the chart. Passing `subplots=True` creates separate subplots for each column, keeping the visual story clear.
+
+```python
+df.plot(subplots=True, figsize=(8, 6))
+plt.show()
+```
+
+## Plotting with missing data
+
+Missing data can distort the visual narrative if ignored. Pandas handles missing values (`NaN`) pragmatically depending on the chart type:
+
+- **Line plots** leave gaps at `NaN` values, preventing misleading interpolations.
+- **Bar and area plots** fill missing entries with zeros.
+- **Scatter plots, histograms, and box plots** drop `NaN` values automatically before plotting.
+
+If the default behaviour does not suit your explanation, clean or impute the data explicitly before plotting by using `.dropna()` or `.fillna()`.
+
+### Try it
+
+Create a DataFrame containing four quarters of revenue and expense figures. Generate a horizontal bar plot (`plot.barh()`) displaying both columns side by side, set custom labels on the axes using an explicit Matplotlib axis, and save the figure as `financial_summary.png`.
+
+### Key points
+
+- The `DataFrame.plot` accessor provides distinct chart types such as line, bar, scatter, hist, and box.
+- Linking pandas plots to Matplotlib via `ax=ax` gives full control over titles, axis labels, and file exports via `fig.savefig()`.
+- Setting `subplots=True` splits DataFrame columns into separate subplots for cleaner comparisons.
+- Pandas handles missing values differently across plot types, such as leaving gaps in line plots and filling zeros in bar plots.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:4:1')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:4:1')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:data-analysis-pandas:4:1')::uuid, 1, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:4:1')::uuid, 2, 'Chart visualization (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/visualization.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:4:1')::uuid, 3, 'Introduction to Python Programming (Das, Lawson, Mayfield and Norouzi; OpenStax), CC BY 4.0 edition', 'Rice University (OpenStax); authors Udayan Das, Aubrey Lawson, Chris Mayfield and Narges Norouzi', 'https://github.com/openstax/osbooks-introduction-python-programming/tree/2825b114221917bea5ae328a94e484b4da8a93ca', 'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', null, 'adapted');
+
+-- Lesson data-analysis-pandas/4/2: Project: city bike trips
+update public.lesson_contents set body = 'In this project, you will analyse real hire journeys from London''s Santander Cycles scheme to uncover travel patterns across the city. By the end of this project, you will be able to parse date fields, compute summary statistics, group by temporal properties, and visualise hourly hire trends.
+
+All journey records in this project are Powered by TfL Open Data.
+
+## Loading and preparing the journey records
+
+The dataset `london-bike-trips-18-24-may-2026.csv` contains a 1-in-5 sample of 41,253 journeys recorded from Monday 18 May to Sunday 24 May 2026 across roughly 800 docking stations. Because this is a sample, any counts you calculate represent roughly one-fifth of the true operational totals.
+
+You can parse the date columns directly on import using `read_csv` with the `parse_dates` parameter:
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+
+trips = pd.read_csv(
+    "london-bike-trips-18-24-may-2026.csv",
+    parse_dates=["Start date", "End date"],
+)
+
+# Convert duration from milliseconds to minutes
+trips["Duration (min)"] = trips["Total duration (ms)"] / (1000 * 60)
+print(trips[["Start station", "Bike model", "Duration (min)"]].head())
+```
+
+Using `head()` allows you to inspect the transformed columns and verify that `Duration (min)` looks sensible.
+
+## Evaluating journey lengths and bike models
+
+To discover typical journey behaviour, you can compute summary statistics on journey duration and inspect the distribution of bike types (`CLASSIC` versus `PBSC_EBIKE`).
+
+```python
+# Compare typical journey durations
+print(trips["Duration (min)"].agg(["mean", "median", "min", "max"]))
+
+# Check the breakdown between classic bikes and e-bikes
+print(trips["Bike model"].value_counts())
+
+# Calculate median duration for each bike model
+print(trips.groupby("Bike model")["Duration (min)"].median())
+```
+
+The `median()` provides a helpful measure of typical journey length when durations contain extreme outliers, whilst `value_counts()` highlights fleet adoption across the sampled hires.
+
+## Identifying popular stations and peak hours
+
+Using the `dt` accessor on timestamp columns lets you extract time components like the hour of the day and day of the week (where Monday is 0 and Sunday is 6).
+
+```python
+# Identify the top 5 busiest start stations in the sample
+print(trips["Start station"].value_counts().head(5))
+
+# Group hires by hour of the day and plot the count
+hourly_counts = trips.groupby(trips["Start date"].dt.hour)["Start date"].count()
+
+fig, axs = plt.subplots(figsize=(10, 4))
+hourly_counts.plot(kind="bar", rot=0, ax=axs)
+axs.set_xlabel("Hour of the day")
+axs.set_ylabel("Sampled hire count")
+fig.savefig("hourly_bike_trips.png")
+plt.show()
+```
+
+Remember that each count displayed in the chart reflects approximately one-fifth of real hire activity across London during that week.
+
+### Try it
+
+Compare weekday and weekend hire habits. Use `trips["Start date"].dt.day_of_week` to group journeys into weekdays (days 0 to 4) and weekends (days 5 and 6), then calculate the mean and median journey durations in minutes for both groups.
+
+### Key points
+
+- Convert date text to timestamps on ingestion with `pd.read_csv(..., parse_dates=[...])`.
+- Access temporal components such as `.dt.hour` and `.dt.day_of_week` for time-based groupings.
+- Compute central tendencies with `mean()`, `median()`, and `agg()` to evaluate typical journey metrics.
+- Remember that counts derived from a 1-in-5 sample represent approximately 20% of full totals.' || coalesce(substring(body from E'\n\n\\*Video: [^\n]*\\*$'), '') where lesson_id = md5('lesson:data-analysis-pandas:4:2')::uuid;
+delete from public.lesson_sources where lesson_id = md5('lesson:data-analysis-pandas:4:2')::uuid;
+insert into public.lesson_sources (lesson_id, position, title, author, url, licence, licence_url, attribution_note, role) values
+  (md5('lesson:data-analysis-pandas:4:2')::uuid, 1, 'How do I read and write tabular data? (pandas documentation (3.1))', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/02_read_write.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:4:2')::uuid, 2, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:4:2')::uuid, 3, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted'),
+  (md5('lesson:data-analysis-pandas:4:2')::uuid, 4, 'pandas documentation (3.1)', 'AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team, and open source contributors', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html', 'BSD-3-Clause', 'https://opensource.org/license/bsd-3-clause', null, 'adapted');
+
 -- Quiz react-native-basics/1: Getting started quiz (15 questions)
 insert into public.quizzes (id, chapter_id, title, position, is_preview) values
   (md5('course-quiz:react-native-basics:1')::uuid, md5('chapter:react-native-basics:1')::uuid, 'Getting started quiz', 1, true)
@@ -3063,4 +4025,344 @@ insert into public.quiz_answers (id, question_id, position, text, is_correct) va
   (md5('course-answer:python-for-everyone:3:15:2')::uuid, md5('course-question:python-for-everyone:3:15')::uuid, 2, 'The method returns `None` and execution continues silently', false),
   (md5('course-answer:python-for-everyone:3:15:3')::uuid, md5('course-question:python-for-everyone:3:15')::uuid, 3, 'The operation fails and raises a `ValueError`', true),
   (md5('course-answer:python-for-everyone:3:15:4')::uuid, md5('course-question:python-for-everyone:3:15')::uuid, 4, 'Python creates a new temporary file on disk', false)
+on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;
+
+-- Quiz data-analysis-pandas/1: Loading data quiz (15 questions)
+insert into public.quizzes (id, chapter_id, title, position, is_preview) values
+  (md5('course-quiz:data-analysis-pandas:1')::uuid, md5('chapter:data-analysis-pandas:1')::uuid, 'Loading data quiz', 1, true)
+on conflict (id) do update set title = excluded.title, is_preview = excluded.is_preview;
+insert into public.quiz_questions (id, quiz_id, position, prompt, explanation, reference_url) values
+  (md5('course-question:data-analysis-pandas:1:1')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 1, 'What data structure does pandas return when you select a single column from a DataFrame using square brackets, such as `df["Age"]`?', 'Selecting a single column from a DataFrame using bracket notation returns a one-dimensional labelled pandas Series.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/01_table_oriented.html'),
+  (md5('course-question:data-analysis-pandas:1:2')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 2, 'When passing a dictionary of lists to `pd.DataFrame()`, how are the keys and values structured in the resulting table?', 'When constructing a DataFrame from a dictionary of lists, the dictionary keys serve as column headers, and each list becomes a column.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/01_table_oriented.html'),
+  (md5('course-question:data-analysis-pandas:1:3')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 3, 'What happens when you instantiate a Series from a scalar value like `pd.Series(5.0, index=["a", "b", "c"])`?', 'If data is a scalar value, it is repeated to match the full length of the specified index.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/dsintro.html'),
+  (md5('course-question:data-analysis-pandas:1:4')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 4, 'What is the result of an arithmetic operation between two Series with unaligned index labels?', 'Operations between unaligned Series automatically align on labels and result in the union of the indexes, inserting NaN for non-matching labels.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/dsintro.html'),
+  (md5('course-question:data-analysis-pandas:1:5')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 5, 'How does pandas assign the `name` attribute of a Series when selecting a single column from a DataFrame?', 'When extracting a single column from a DataFrame, the Series name attribute is automatically assigned the column''s label.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/dsintro.html'),
+  (md5('course-question:data-analysis-pandas:1:6')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 6, 'Which parameter in `pd.read_csv()` allows automatic delimiter detection using Python''s built-in sniffer tool?', 'Setting sep=None triggers delimiter detection via Python''s csv.Sniffer tool, using the Python parsing engine automatically.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/io.html'),
+  (md5('course-question:data-analysis-pandas:1:7')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 7, 'When reading a CSV file that has no header row, which combination of parameters should you pass to `pd.read_csv()`?', 'If a file lacks headers, specify header=None so the first line is not used as names, and pass names with your list of column labels.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/io.html'),
+  (md5('course-question:data-analysis-pandas:1:8')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 8, 'What is the primary effect of passing `index_col=False` in `pd.read_csv()`?', 'Passing index_col=False forces pandas not to use the first column as the index, which is useful when malformed lines have trailing delimiters.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/io.html'),
+  (md5('course-question:data-analysis-pandas:1:9')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 9, 'What is the behaviour of `pd.read_csv()` when `keep_default_na=False` and `na_values=[''missing'']` are set?', 'When keep_default_na=False and na_values are passed, only the explicitly specified na_values are parsed as NaN.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/io.html'),
+  (md5('course-question:data-analysis-pandas:1:10')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 10, 'Which argument in `pd.read_csv()` accepts a list of column names, integer positions, or a callable to load only selected columns?', 'usecols accepts a list-like collection of column names or positions, or a callable, returning only the subset of requested columns.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/io.html'),
+  (md5('course-question:data-analysis-pandas:1:11')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 11, 'What does accessing the `shape` attribute on a DataFrame return?', 'The shape attribute returns a tuple in the format (nrows, ncolumns). It is an attribute, so it does not use parentheses.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/03_subset_data.html'),
+  (md5('course-question:data-analysis-pandas:1:12')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 12, 'By default, how many rows are returned when calling `head()` or `tail()` without arguments?', 'Both head() and tail() display five rows by default unless a different integer is specified as an argument.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/basics.html'),
+  (md5('course-question:data-analysis-pandas:1:13')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 13, 'How does `describe()` behave by default on a DataFrame containing both numerical and text columns?', 'On a DataFrame with mixed data types, describe() restricts its default summary to numerical columns unless include=''all'' is provided.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/basics.html'),
+  (md5('course-question:data-analysis-pandas:1:14')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 14, 'Which method counts the number of unique non-NA observations within a pandas Series?', 'The nunique() method returns the count of unique non-NA values in a Series or DataFrame column.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/basics.html'),
+  (md5('course-question:data-analysis-pandas:1:15')::uuid, md5('course-quiz:data-analysis-pandas:1')::uuid, 15, 'Which method on a DataFrame provides technical summary details including row count, index range, column dtypes, non-null counts, and memory usage?', 'The info() method prints a technical summary of the DataFrame, showing row and column counts, non-null entries, dtypes, and RAM usage.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/02_read_write.html')
+on conflict (id) do update set prompt = excluded.prompt, explanation = excluded.explanation, reference_url = excluded.reference_url;
+update public.quiz_answers set is_correct = false where question_id in (select id from public.quiz_questions where quiz_id = md5('course-quiz:data-analysis-pandas:1')::uuid);
+insert into public.quiz_answers (id, question_id, position, text, is_correct) values
+  (md5('course-answer:data-analysis-pandas:1:1:1')::uuid, md5('course-question:data-analysis-pandas:1:1')::uuid, 1, 'A pandas Series', true),
+  (md5('course-answer:data-analysis-pandas:1:1:2')::uuid, md5('course-question:data-analysis-pandas:1:1')::uuid, 2, 'A one-column DataFrame', false),
+  (md5('course-answer:data-analysis-pandas:1:1:3')::uuid, md5('course-question:data-analysis-pandas:1:1')::uuid, 3, 'A standard Python dictionary', false),
+  (md5('course-answer:data-analysis-pandas:1:1:4')::uuid, md5('course-question:data-analysis-pandas:1:1')::uuid, 4, 'A two-dimensional NumPy array', false),
+  (md5('course-answer:data-analysis-pandas:1:2:1')::uuid, md5('course-question:data-analysis-pandas:1:2')::uuid, 1, 'Keys become column headers and the lists become the column data', true),
+  (md5('course-answer:data-analysis-pandas:1:2:2')::uuid, md5('course-question:data-analysis-pandas:1:2')::uuid, 2, 'Keys become the index labels and the lists become the rows', false),
+  (md5('course-answer:data-analysis-pandas:1:2:3')::uuid, md5('course-question:data-analysis-pandas:1:2')::uuid, 3, 'Keys become row labels and the list values form a single column', false),
+  (md5('course-answer:data-analysis-pandas:1:2:4')::uuid, md5('course-question:data-analysis-pandas:1:2')::uuid, 4, 'Keys and values are concatenated into a one-dimensional Series', false),
+  (md5('course-answer:data-analysis-pandas:1:3:1')::uuid, md5('course-question:data-analysis-pandas:1:3')::uuid, 1, 'The scalar value is repeated to match the length of the index', true),
+  (md5('course-answer:data-analysis-pandas:1:3:2')::uuid, md5('course-question:data-analysis-pandas:1:3')::uuid, 2, 'The scalar value is assigned to the first label and others are NaN', false),
+  (md5('course-answer:data-analysis-pandas:1:3:3')::uuid, md5('course-question:data-analysis-pandas:1:3')::uuid, 3, 'A ValueError is raised requiring data to have the same length as index', false),
+  (md5('course-answer:data-analysis-pandas:1:3:4')::uuid, md5('course-question:data-analysis-pandas:1:3')::uuid, 4, 'A one-element Series is created ignoring the extra index labels', false),
+  (md5('course-answer:data-analysis-pandas:1:4:1')::uuid, md5('course-question:data-analysis-pandas:1:4')::uuid, 1, 'A Series with the union of the indices, marking missing labels as NaN', true),
+  (md5('course-answer:data-analysis-pandas:1:4:2')::uuid, md5('course-question:data-analysis-pandas:1:4')::uuid, 2, 'A Series containing only the intersection of labels present in both', false),
+  (md5('course-answer:data-analysis-pandas:1:4:3')::uuid, md5('course-question:data-analysis-pandas:1:4')::uuid, 3, 'A ValueError indicating that the operand shapes do not match', false),
+  (md5('course-answer:data-analysis-pandas:1:4:4')::uuid, md5('course-question:data-analysis-pandas:1:4')::uuid, 4, 'A Series where missing index positions are filled with zero by default', false),
+  (md5('course-answer:data-analysis-pandas:1:5:1')::uuid, md5('course-question:data-analysis-pandas:1:5')::uuid, 1, 'It is automatically assigned the column label', true),
+  (md5('course-answer:data-analysis-pandas:1:5:2')::uuid, md5('course-question:data-analysis-pandas:1:5')::uuid, 2, 'It defaults to None unless explicitly set', false),
+  (md5('course-answer:data-analysis-pandas:1:5:3')::uuid, md5('course-question:data-analysis-pandas:1:5')::uuid, 3, 'It is named after the parent DataFrame object', false),
+  (md5('course-answer:data-analysis-pandas:1:5:4')::uuid, md5('course-question:data-analysis-pandas:1:5')::uuid, 4, 'It takes the integer position of the column', false),
+  (md5('course-answer:data-analysis-pandas:1:6:1')::uuid, md5('course-question:data-analysis-pandas:1:6')::uuid, 1, 'sep=None', true),
+  (md5('course-answer:data-analysis-pandas:1:6:2')::uuid, md5('course-question:data-analysis-pandas:1:6')::uuid, 2, 'sep=''auto''', false),
+  (md5('course-answer:data-analysis-pandas:1:6:3')::uuid, md5('course-question:data-analysis-pandas:1:6')::uuid, 3, 'delimiter=''sniff''', false),
+  (md5('course-answer:data-analysis-pandas:1:6:4')::uuid, md5('course-question:data-analysis-pandas:1:6')::uuid, 4, 'engine=''c''', false),
+  (md5('course-answer:data-analysis-pandas:1:7:1')::uuid, md5('course-question:data-analysis-pandas:1:7')::uuid, 1, 'header=None and names=[...]', true),
+  (md5('course-answer:data-analysis-pandas:1:7:2')::uuid, md5('course-question:data-analysis-pandas:1:7')::uuid, 2, 'header=0 and columns=[...]', false),
+  (md5('course-answer:data-analysis-pandas:1:7:3')::uuid, md5('course-question:data-analysis-pandas:1:7')::uuid, 3, 'names=[...] and infer_header=False', false),
+  (md5('course-answer:data-analysis-pandas:1:7:4')::uuid, md5('course-question:data-analysis-pandas:1:7')::uuid, 4, 'index_col=False and header=''none''', false),
+  (md5('course-answer:data-analysis-pandas:1:8:1')::uuid, md5('course-question:data-analysis-pandas:1:8')::uuid, 1, 'It forces pandas not to use the first column as the row index', true),
+  (md5('course-answer:data-analysis-pandas:1:8:2')::uuid, md5('course-question:data-analysis-pandas:1:8')::uuid, 2, 'It prevents pandas from constructing an integer RangeIndex', false),
+  (md5('course-answer:data-analysis-pandas:1:8:3')::uuid, md5('course-question:data-analysis-pandas:1:8')::uuid, 3, 'It deletes the leftmost column from the resulting DataFrame', false),
+  (md5('course-answer:data-analysis-pandas:1:8:4')::uuid, md5('course-question:data-analysis-pandas:1:8')::uuid, 4, 'It disables hierarchical index creation on multi-column headers', false),
+  (md5('course-answer:data-analysis-pandas:1:9:1')::uuid, md5('course-question:data-analysis-pandas:1:9')::uuid, 1, 'Only ''missing'' is parsed as NaN, excluding default NA strings', true),
+  (md5('course-answer:data-analysis-pandas:1:9:2')::uuid, md5('course-question:data-analysis-pandas:1:9')::uuid, 2, 'Both ''missing'' and default NaN strings like ''NA'' are parsed as NaN', false),
+  (md5('course-answer:data-analysis-pandas:1:9:3')::uuid, md5('course-question:data-analysis-pandas:1:9')::uuid, 3, 'All missing value conversions are bypassed and loaded as empty strings', false),
+  (md5('course-answer:data-analysis-pandas:1:9:4')::uuid, md5('course-question:data-analysis-pandas:1:9')::uuid, 4, 'A ParserError is raised because keep_default_na requires na_filter=False', false),
+  (md5('course-answer:data-analysis-pandas:1:10:1')::uuid, md5('course-question:data-analysis-pandas:1:10')::uuid, 1, 'usecols', true),
+  (md5('course-answer:data-analysis-pandas:1:10:2')::uuid, md5('course-question:data-analysis-pandas:1:10')::uuid, 2, 'columns', false),
+  (md5('course-answer:data-analysis-pandas:1:10:3')::uuid, md5('course-question:data-analysis-pandas:1:10')::uuid, 3, 'select_cols', false),
+  (md5('course-answer:data-analysis-pandas:1:10:4')::uuid, md5('course-question:data-analysis-pandas:1:10')::uuid, 4, 'include_columns', false),
+  (md5('course-answer:data-analysis-pandas:1:11:1')::uuid, md5('course-question:data-analysis-pandas:1:11')::uuid, 1, 'A tuple of (nrows, ncolumns)', true),
+  (md5('course-answer:data-analysis-pandas:1:11:2')::uuid, md5('course-question:data-analysis-pandas:1:11')::uuid, 2, 'A list containing [ncolumns, nrows]', false),
+  (md5('course-answer:data-analysis-pandas:1:11:3')::uuid, md5('course-question:data-analysis-pandas:1:11')::uuid, 3, 'An integer representing the total cell count', false),
+  (md5('course-answer:data-analysis-pandas:1:11:4')::uuid, md5('course-question:data-analysis-pandas:1:11')::uuid, 4, 'A pandas Series with row and column counts', false),
+  (md5('course-answer:data-analysis-pandas:1:12:1')::uuid, md5('course-question:data-analysis-pandas:1:12')::uuid, 1, '5 rows', true),
+  (md5('course-answer:data-analysis-pandas:1:12:2')::uuid, md5('course-question:data-analysis-pandas:1:12')::uuid, 2, '10 rows', false),
+  (md5('course-answer:data-analysis-pandas:1:12:3')::uuid, md5('course-question:data-analysis-pandas:1:12')::uuid, 3, '8 rows', false),
+  (md5('course-answer:data-analysis-pandas:1:12:4')::uuid, md5('course-question:data-analysis-pandas:1:12')::uuid, 4, '1 row', false),
+  (md5('course-answer:data-analysis-pandas:1:13:1')::uuid, md5('course-question:data-analysis-pandas:1:13')::uuid, 1, 'It computes summary statistics only for the numerical columns', true),
+  (md5('course-answer:data-analysis-pandas:1:13:2')::uuid, md5('course-question:data-analysis-pandas:1:13')::uuid, 2, 'It includes all columns, using NaN for non-applicable statistics', false),
+  (md5('course-answer:data-analysis-pandas:1:13:3')::uuid, md5('course-question:data-analysis-pandas:1:13')::uuid, 3, 'It raises a TypeError due to mismatched column data types', false),
+  (md5('course-answer:data-analysis-pandas:1:13:4')::uuid, md5('course-question:data-analysis-pandas:1:13')::uuid, 4, 'It summarises categorical columns first and ignores numbers', false),
+  (md5('course-answer:data-analysis-pandas:1:14:1')::uuid, md5('course-question:data-analysis-pandas:1:14')::uuid, 1, 'nunique()', true),
+  (md5('course-answer:data-analysis-pandas:1:14:2')::uuid, md5('course-question:data-analysis-pandas:1:14')::uuid, 2, 'unique_count()', false),
+  (md5('course-answer:data-analysis-pandas:1:14:3')::uuid, md5('course-question:data-analysis-pandas:1:14')::uuid, 3, 'count_unique()', false),
+  (md5('course-answer:data-analysis-pandas:1:14:4')::uuid, md5('course-question:data-analysis-pandas:1:14')::uuid, 4, 'distinct()', false),
+  (md5('course-answer:data-analysis-pandas:1:15:1')::uuid, md5('course-question:data-analysis-pandas:1:15')::uuid, 1, 'info()', true),
+  (md5('course-answer:data-analysis-pandas:1:15:2')::uuid, md5('course-question:data-analysis-pandas:1:15')::uuid, 2, 'describe()', false),
+  (md5('course-answer:data-analysis-pandas:1:15:3')::uuid, md5('course-question:data-analysis-pandas:1:15')::uuid, 3, 'summary()', false),
+  (md5('course-answer:data-analysis-pandas:1:15:4')::uuid, md5('course-question:data-analysis-pandas:1:15')::uuid, 4, 'dtypes()', false)
+on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;
+
+-- Quiz data-analysis-pandas/2: Cleaning and shaping quiz (15 questions)
+insert into public.quizzes (id, chapter_id, title, position, is_preview) values
+  (md5('course-quiz:data-analysis-pandas:2')::uuid, md5('chapter:data-analysis-pandas:2')::uuid, 'Cleaning and shaping quiz', 1, false)
+on conflict (id) do update set title = excluded.title, is_preview = excluded.is_preview;
+insert into public.quiz_questions (id, quiz_id, position, prompt, explanation, reference_url) values
+  (md5('course-question:data-analysis-pandas:2:1')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 1, 'What is the result of evaluating `True | pd.NA` in pandas?', 'In Kleene three-valued logic, `True | pd.NA` evaluates to `True` because the logical OR result is guaranteed to be true regardless of whether the missing value would have been `True` or `False`.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/missing_data.html'),
+  (md5('course-question:data-analysis-pandas:2:2')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 2, 'What occurs when `pd.NA` is evaluated directly in a boolean context, such as calling `bool(pd.NA)` or writing `if pd.NA:`?', 'Because the actual value of NA is unknown, converting NA to a boolean is ambiguous, so `bool(pd.NA)` raises a `TypeError`.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/missing_data.html'),
+  (md5('course-question:data-analysis-pandas:2:3')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 3, 'What value does `pd.Series([], dtype="float64").sum()` return in pandas by default?', 'In pandas reductions, missing values are excluded by default (`skipna=True`). When summing, NA values or entirely empty series evaluate to 0.0, while product calculations evaluate to 1.0.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/missing_data.html'),
+  (md5('course-question:data-analysis-pandas:2:4')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 4, 'What is the result of evaluating `pd.NA == pd.NA` in pandas?', 'In equality comparisons, `pd.NA` propagates unknown values, returning `<NA>`. This differs from `np.nan == np.nan` (which evaluates to `False`) and `None == None` (which evaluates to `True`).', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/missing_data.html'),
+  (md5('course-question:data-analysis-pandas:2:5')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 5, 'Which method converts a DataFrame that uses `np.nan` into nullable data types that use `pd.NA`?', '`convert_dtypes()` converts columns in a DataFrame from NumPy types using `np.nan` to nullable extension data types supporting `pd.NA`, such as `Int64Dtype` or `ArrowDtype`.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/missing_data.html'),
+  (md5('course-question:data-analysis-pandas:2:6')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 6, 'When parsing date strings with `pd.to_datetime()`, what is the effect of setting `errors="coerce"`?', 'Setting `errors="coerce"` causes `pd.to_datetime()` to convert unparseable strings into `pd.NaT` (Not a Time), whereas the default `errors="raise"` raises an exception.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/timeseries.html'),
+  (md5('course-question:data-analysis-pandas:2:7')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 7, 'Which parameter should you pass to `pd.to_datetime()` to parse ambiguous dates where the day appears before the month (such as European formatting)?', 'Passing `dayfirst=True` instructs `pd.to_datetime()` to interpret ambiguous date strings with the day first, matching European date conventions such as DD/MM/YYYY.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/timeseries.html'),
+  (md5('course-question:data-analysis-pandas:2:8')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 8, 'When assembling timestamps from multiple columns using `pd.to_datetime(df)`, which columns are strictly required in the input DataFrame?', 'When assembling datetimes from multiple columns using `pd.to_datetime()`, the columns `year`, `month`, and `day` are required. Units like `hour` and `minute` are optional.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/timeseries.html'),
+  (md5('course-question:data-analysis-pandas:2:9')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 9, 'In pandas, what object type is produced when subtracting one `pd.Timestamp` from another?', 'Subtracting two `pd.Timestamp` objects yields a `pd.Timedelta` object, which defines a precise duration of time.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html'),
+  (md5('course-question:data-analysis-pandas:2:10')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 10, 'How does accessing calendar properties like `year` differ between a datetime Series and a `DatetimeIndex`?', 'Series require the `.dt` accessor to extract date properties like `year` or `day_of_week`. Once a datetime column becomes a `DatetimeIndex`, those properties are accessible directly on the index.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html'),
+  (md5('course-question:data-analysis-pandas:2:11')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 11, 'When reshaping data from long to wide format, why would you use `pivot_table()` instead of `pivot()`?', '`DataFrame.pivot` requires unique index and column combinations and fails if duplicates exist. `DataFrame.pivot_table` handles duplicates by aggregating values using an aggregation function such as `mean`.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/reshaping.html'),
+  (md5('course-question:data-analysis-pandas:2:12')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 12, 'In `DataFrame.pivot_table()`, what is the effect of setting `margins=True`?', 'Passing `margins=True` to `pivot_table` adds row and column partial group aggregates (subtotals and grand totals), labelled with the header `All`.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/07_reshape_table_layout.html'),
+  (md5('course-question:data-analysis-pandas:2:13')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 13, 'By default, which level of a MultiIndex does `DataFrame.unstack()` move from the row index to the column axis?', 'By default, `unstack()` pivots the innermost (last) level of the row index into column labels, serving as the inverse operation to `stack()`.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/reshaping.html'),
+  (md5('course-question:data-analysis-pandas:2:14')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 14, 'When transforming a wide DataFrame into a long format using `DataFrame.melt()`, which parameter defines the columns that should remain as identifier variables?', 'In `DataFrame.melt()`, `id_vars` defines identifier variables that remain as columns, whilst unmentioned columns are unpivoted to row values.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/07_reshape_table_layout.html'),
+  (md5('course-question:data-analysis-pandas:2:15')::uuid, md5('course-quiz:data-analysis-pandas:2')::uuid, 15, 'What happens when `DataFrame.explode()` is called on a column containing an empty list (`[]`)?', 'When exploding a column containing nested lists, `Series.explode` and `DataFrame.explode` replace empty lists with missing value indicators, preserving row structure.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/reshaping.html')
+on conflict (id) do update set prompt = excluded.prompt, explanation = excluded.explanation, reference_url = excluded.reference_url;
+update public.quiz_answers set is_correct = false where question_id in (select id from public.quiz_questions where quiz_id = md5('course-quiz:data-analysis-pandas:2')::uuid);
+insert into public.quiz_answers (id, question_id, position, text, is_correct) values
+  (md5('course-answer:data-analysis-pandas:2:1:1')::uuid, md5('course-question:data-analysis-pandas:2:1')::uuid, 1, 'True', true),
+  (md5('course-answer:data-analysis-pandas:2:1:2')::uuid, md5('course-question:data-analysis-pandas:2:1')::uuid, 2, '<NA>', false),
+  (md5('course-answer:data-analysis-pandas:2:1:3')::uuid, md5('course-question:data-analysis-pandas:2:1')::uuid, 3, 'False', false),
+  (md5('course-answer:data-analysis-pandas:2:1:4')::uuid, md5('course-question:data-analysis-pandas:2:1')::uuid, 4, 'TypeError', false),
+  (md5('course-answer:data-analysis-pandas:2:2:1')::uuid, md5('course-question:data-analysis-pandas:2:2')::uuid, 1, 'It evaluates to False because missing sentinels are treated as falsy.', false),
+  (md5('course-answer:data-analysis-pandas:2:2:2')::uuid, md5('course-question:data-analysis-pandas:2:2')::uuid, 2, 'It evaluates to True because pd.NA is a non-empty singleton object.', false),
+  (md5('course-answer:data-analysis-pandas:2:2:3')::uuid, md5('course-question:data-analysis-pandas:2:2')::uuid, 3, 'It raises a TypeError because converting NA to a boolean is ambiguous.', true),
+  (md5('course-answer:data-analysis-pandas:2:2:4')::uuid, md5('course-question:data-analysis-pandas:2:2')::uuid, 4, 'It propagates silently and leaves the condition unevaluated.', false),
+  (md5('course-answer:data-analysis-pandas:2:3:1')::uuid, md5('course-question:data-analysis-pandas:2:3')::uuid, 1, 'np.nan', false),
+  (md5('course-answer:data-analysis-pandas:2:3:2')::uuid, md5('course-question:data-analysis-pandas:2:3')::uuid, 2, '0.0', true),
+  (md5('course-answer:data-analysis-pandas:2:3:3')::uuid, md5('course-question:data-analysis-pandas:2:3')::uuid, 3, '1.0', false),
+  (md5('course-answer:data-analysis-pandas:2:3:4')::uuid, md5('course-question:data-analysis-pandas:2:3')::uuid, 4, 'pd.NA', false),
+  (md5('course-answer:data-analysis-pandas:2:4:1')::uuid, md5('course-question:data-analysis-pandas:2:4')::uuid, 1, 'True', false),
+  (md5('course-answer:data-analysis-pandas:2:4:2')::uuid, md5('course-question:data-analysis-pandas:2:4')::uuid, 2, 'False', false),
+  (md5('course-answer:data-analysis-pandas:2:4:3')::uuid, md5('course-question:data-analysis-pandas:2:4')::uuid, 3, 'TypeError', false),
+  (md5('course-answer:data-analysis-pandas:2:4:4')::uuid, md5('course-question:data-analysis-pandas:2:4')::uuid, 4, '<NA>', true),
+  (md5('course-answer:data-analysis-pandas:2:5:1')::uuid, md5('course-question:data-analysis-pandas:2:5')::uuid, 1, 'df.convert_dtypes()', true),
+  (md5('course-answer:data-analysis-pandas:2:5:2')::uuid, md5('course-question:data-analysis-pandas:2:5')::uuid, 2, 'df.to_nullable()', false),
+  (md5('course-answer:data-analysis-pandas:2:5:3')::uuid, md5('course-question:data-analysis-pandas:2:5')::uuid, 3, 'df.astype("nullable")', false),
+  (md5('course-answer:data-analysis-pandas:2:5:4')::uuid, md5('course-question:data-analysis-pandas:2:5')::uuid, 4, 'df.fillna_dtypes()', false),
+  (md5('course-answer:data-analysis-pandas:2:6:1')::uuid, md5('course-question:data-analysis-pandas:2:6')::uuid, 1, 'Unparseable strings cause an immediate parser exception.', false),
+  (md5('course-answer:data-analysis-pandas:2:6:2')::uuid, md5('course-question:data-analysis-pandas:2:6')::uuid, 2, 'Unparseable strings are converted into pd.NaT.', true),
+  (md5('course-answer:data-analysis-pandas:2:6:3')::uuid, md5('course-question:data-analysis-pandas:2:6')::uuid, 3, 'Unparseable strings remain unchanged as raw text.', false),
+  (md5('course-answer:data-analysis-pandas:2:6:4')::uuid, md5('course-question:data-analysis-pandas:2:6')::uuid, 4, 'Unparseable strings are set to the unix epoch timestamp.', false),
+  (md5('course-answer:data-analysis-pandas:2:7:1')::uuid, md5('course-question:data-analysis-pandas:2:7')::uuid, 1, 'format="european"', false),
+  (md5('course-answer:data-analysis-pandas:2:7:2')::uuid, md5('course-question:data-analysis-pandas:2:7')::uuid, 2, 'order="dmy"', false),
+  (md5('course-answer:data-analysis-pandas:2:7:3')::uuid, md5('course-question:data-analysis-pandas:2:7')::uuid, 3, 'dayfirst=True', true),
+  (md5('course-answer:data-analysis-pandas:2:7:4')::uuid, md5('course-question:data-analysis-pandas:2:7')::uuid, 4, 'euro_format=True', false),
+  (md5('course-answer:data-analysis-pandas:2:8:1')::uuid, md5('course-question:data-analysis-pandas:2:8')::uuid, 1, 'date, month, and year', false),
+  (md5('course-answer:data-analysis-pandas:2:8:2')::uuid, md5('course-question:data-analysis-pandas:2:8')::uuid, 2, 'year, month, day, and hour', false),
+  (md5('course-answer:data-analysis-pandas:2:8:3')::uuid, md5('course-question:data-analysis-pandas:2:8')::uuid, 3, 'timestamp, year, and day', false),
+  (md5('course-answer:data-analysis-pandas:2:8:4')::uuid, md5('course-question:data-analysis-pandas:2:8')::uuid, 4, 'year, month, and day', true),
+  (md5('course-answer:data-analysis-pandas:2:9:1')::uuid, md5('course-question:data-analysis-pandas:2:9')::uuid, 1, 'A pd.Timedelta object', true),
+  (md5('course-answer:data-analysis-pandas:2:9:2')::uuid, md5('course-question:data-analysis-pandas:2:9')::uuid, 2, 'A pd.Period object', false),
+  (md5('course-answer:data-analysis-pandas:2:9:3')::uuid, md5('course-question:data-analysis-pandas:2:9')::uuid, 3, 'A float representing epoch seconds', false),
+  (md5('course-answer:data-analysis-pandas:2:9:4')::uuid, md5('course-question:data-analysis-pandas:2:9')::uuid, 4, 'A datetime64[us] scalar', false),
+  (md5('course-answer:data-analysis-pandas:2:10:1')::uuid, md5('course-question:data-analysis-pandas:2:10')::uuid, 1, 'Both require calling an explicit .to_period() method before accessing date properties.', false),
+  (md5('course-answer:data-analysis-pandas:2:10:2')::uuid, md5('course-question:data-analysis-pandas:2:10')::uuid, 2, 'A datetime Series requires the .dt accessor, whereas a DatetimeIndex provides properties directly on the index.', true),
+  (md5('course-answer:data-analysis-pandas:2:10:3')::uuid, md5('course-question:data-analysis-pandas:2:10')::uuid, 3, 'A DatetimeIndex requires the .dt accessor, whereas a Series provides properties directly.', false),
+  (md5('course-answer:data-analysis-pandas:2:10:4')::uuid, md5('course-question:data-analysis-pandas:2:10')::uuid, 4, 'A datetime Series returns string labels, whereas a DatetimeIndex returns integers.', false),
+  (md5('course-answer:data-analysis-pandas:2:11:1')::uuid, md5('course-question:data-analysis-pandas:2:11')::uuid, 1, 'pivot() supports numeric columns only, whereas pivot_table() supports categorical data.', false),
+  (md5('course-answer:data-analysis-pandas:2:11:2')::uuid, md5('course-question:data-analysis-pandas:2:11')::uuid, 2, 'pivot_table() converts wide data to long, whereas pivot() converts long to wide.', false),
+  (md5('course-answer:data-analysis-pandas:2:11:3')::uuid, md5('course-question:data-analysis-pandas:2:11')::uuid, 3, 'pivot_table() can aggregate duplicate index and column pairs, whereas pivot() raises an error if duplicates exist.', true),
+  (md5('course-answer:data-analysis-pandas:2:11:4')::uuid, md5('course-question:data-analysis-pandas:2:11')::uuid, 4, 'pivot() requires aggfunc to be specified, whereas pivot_table() cannot aggregate.', false),
+  (md5('course-answer:data-analysis-pandas:2:12:1')::uuid, md5('course-question:data-analysis-pandas:2:12')::uuid, 1, 'It removes missing rows and columns from the outer margins of the table.', false),
+  (md5('course-answer:data-analysis-pandas:2:12:2')::uuid, md5('course-question:data-analysis-pandas:2:12')::uuid, 2, 'It adds extra visual padding around plots generated from the table.', false),
+  (md5('course-answer:data-analysis-pandas:2:12:3')::uuid, md5('course-question:data-analysis-pandas:2:12')::uuid, 3, 'It fills empty combinations with zero instead of missing markers.', false),
+  (md5('course-answer:data-analysis-pandas:2:12:4')::uuid, md5('course-question:data-analysis-pandas:2:12')::uuid, 4, 'It adds row and column partial group aggregates labelled All.', true),
+  (md5('course-answer:data-analysis-pandas:2:13:1')::uuid, md5('course-question:data-analysis-pandas:2:13')::uuid, 1, 'The innermost (last) row level', true),
+  (md5('course-answer:data-analysis-pandas:2:13:2')::uuid, md5('course-question:data-analysis-pandas:2:13')::uuid, 2, 'The outermost (first) row level', false),
+  (md5('course-answer:data-analysis-pandas:2:13:3')::uuid, md5('course-question:data-analysis-pandas:2:13')::uuid, 3, 'All row levels simultaneously', false),
+  (md5('course-answer:data-analysis-pandas:2:13:4')::uuid, md5('course-question:data-analysis-pandas:2:13')::uuid, 4, 'The level specified by sorted alphabetical order', false),
+  (md5('course-answer:data-analysis-pandas:2:14:1')::uuid, md5('course-question:data-analysis-pandas:2:14')::uuid, 1, 'value_vars', false),
+  (md5('course-answer:data-analysis-pandas:2:14:2')::uuid, md5('course-question:data-analysis-pandas:2:14')::uuid, 2, 'id_vars', true),
+  (md5('course-answer:data-analysis-pandas:2:14:3')::uuid, md5('course-question:data-analysis-pandas:2:14')::uuid, 3, 'index_vars', false),
+  (md5('course-answer:data-analysis-pandas:2:14:4')::uuid, md5('course-question:data-analysis-pandas:2:14')::uuid, 4, 'var_name', false),
+  (md5('course-answer:data-analysis-pandas:2:15:1')::uuid, md5('course-question:data-analysis-pandas:2:15')::uuid, 1, 'It raises a ValueError because empty list collections cannot be exploded.', false),
+  (md5('course-answer:data-analysis-pandas:2:15:2')::uuid, md5('course-question:data-analysis-pandas:2:15')::uuid, 2, 'The row containing the empty list is dropped completely from the DataFrame.', false),
+  (md5('course-answer:data-analysis-pandas:2:15:3')::uuid, md5('course-question:data-analysis-pandas:2:15')::uuid, 3, 'The empty list is replaced with a missing value indicator in that row.', true),
+  (md5('course-answer:data-analysis-pandas:2:15:4')::uuid, md5('course-question:data-analysis-pandas:2:15')::uuid, 4, 'The row is preserved with an empty string in place of the list.', false)
+on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;
+
+-- Quiz data-analysis-pandas/3: Asking questions quiz (15 questions)
+insert into public.quizzes (id, chapter_id, title, position, is_preview) values
+  (md5('course-quiz:data-analysis-pandas:3')::uuid, md5('chapter:data-analysis-pandas:3')::uuid, 'Asking questions quiz', 1, false)
+on conflict (id) do update set title = excluded.title, is_preview = excluded.is_preview;
+insert into public.quiz_questions (id, quiz_id, position, prompt, explanation, reference_url) values
+  (md5('course-question:data-analysis-pandas:3:1')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 1, 'When combining multiple conditional statements to filter a pandas DataFrame, which operators and syntax must be used?', 'In pandas, multiple boolean conditions cannot use Python''s standard and or or operators. Instead, you must use bitwise operators such as & (and) and | (or), with each condition surrounded by parentheses.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/03_subset_data.html'),
+  (md5('course-question:data-analysis-pandas:3:2')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 2, 'When using .loc to select both rows and columns from a DataFrame in one step, how are the arguments separated?', 'When using .loc or .iloc, the part before the comma specifies the rows you want to select, and the part after the comma specifies the columns.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/03_subset_data.html'),
+  (md5('course-question:data-analysis-pandas:3:3')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 3, 'How does .iloc differ from .loc when indexing a pandas DataFrame?', '.loc is primarily label-based (using row and column names or boolean conditions), whereas .iloc operates strictly on integer positions from 0 to length minus one.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/03_subset_data.html'),
+  (md5('course-question:data-analysis-pandas:3:4')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 4, 'Which Series method returns True for each row where the value is present within a provided list?', 'The isin() method checks whether each value in a Series is contained in the provided list or collection, returning a boolean Series of the same length.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/03_subset_data.html'),
+  (md5('course-question:data-analysis-pandas:3:5')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 5, 'How does slicing with labels using .loc[''a'':''f''] differ from standard Python integer slicing?', 'Unlike standard Python slices where the stop bound is excluded, label-based slicing with .loc includes both the start bound and the stop bound if they are present in the index.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/indexing.html'),
+  (md5('course-question:data-analysis-pandas:3:6')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 6, 'Which three steps constitute the split-apply-combine workflow implemented by df.groupby()?', 'The split-apply-combine pattern splits the data into groups based on key criteria, applies a function to each group independently, and combines the results into a single data structure.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html'),
+  (md5('course-question:data-analysis-pandas:3:7')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 7, 'In a groupby aggregation, how can you ensure the grouping keys remain as regular columns rather than becoming the index?', 'By default, group keys appear in the index of the result. Passing as_index=False to groupby() keeps the group keys as columns in the returned DataFrame.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/groupby.html'),
+  (md5('course-question:data-analysis-pandas:3:8')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 8, 'When calculating summary statistics on grouped data, how do .count() and .size() differ?', 'In pandas groupby operations, .size() provides the total number of rows in each group including NaN values, whereas .count() excludes missing values for each column.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html'),
+  (md5('course-question:data-analysis-pandas:3:9')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 9, 'How does df.groupby() handle missing values (NA) in grouping keys by default?', 'By default, dropna=True in groupby(), meaning NA values in group keys are excluded during the operation. Setting dropna=False includes them as a distinct group.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/groupby.html'),
+  (md5('course-question:data-analysis-pandas:3:10')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 10, 'What parameter should you pass to .mean() when calling it on a grouped DataFrame containing non-numeric columns?', 'Passing numeric_only=True instructs pandas aggregation methods like .mean() to compute statistics only on columns containing numerical data, avoiding errors on text columns.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html'),
+  (md5('course-question:data-analysis-pandas:3:11')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 11, 'What is the default concatenation axis in pd.concat([df1, df2])?', 'Concatenation with pd.concat() operates along axis=0 by default, stacking the input DataFrames vertically to combine their rows.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/08_combine_dataframes.html'),
+  (md5('course-question:data-analysis-pandas:3:12')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 12, 'When concatenating DataFrames whose index labels carry no meaningful information, which argument creates a clean continuous integer index?', 'Setting ignore_index=True in pd.concat() discards the original index labels along the concatenation axis and constructs a new continuous integer range from 0 to n-1.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/merging.html'),
+  (md5('course-question:data-analysis-pandas:3:13')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 13, 'Which value of the how argument in pd.merge() performs a Cartesian product of rows from both DataFrames?', 'Specifying how=''cross'' in pd.merge() produces a Cartesian product of the rows from both DataFrames, pairing every row of the left table with every row of the right table.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/merging.html'),
+  (md5('course-question:data-analysis-pandas:3:14')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 14, 'Which parameters in pd.merge() should be used when the key columns to join on have different names in the two tables?', 'When key columns do not share the same name across DataFrames, left_on specifies the key in the left table and right_on specifies the key in the right table.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/08_combine_dataframes.html'),
+  (md5('course-question:data-analysis-pandas:3:15')::uuid, md5('course-quiz:data-analysis-pandas:3')::uuid, 15, 'What does setting indicator=True in pd.merge() do?', 'Setting indicator=True appends a categorical column named _merge to the output, indicating whether the record existed in left_only, right_only, or both.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/merging.html')
+on conflict (id) do update set prompt = excluded.prompt, explanation = excluded.explanation, reference_url = excluded.reference_url;
+update public.quiz_answers set is_correct = false where question_id in (select id from public.quiz_questions where quiz_id = md5('course-quiz:data-analysis-pandas:3')::uuid);
+insert into public.quiz_answers (id, question_id, position, text, is_correct) values
+  (md5('course-answer:data-analysis-pandas:3:1:1')::uuid, md5('course-question:data-analysis-pandas:3:1')::uuid, 1, 'The standard Python keywords and and or, without enclosing parentheses', false),
+  (md5('course-answer:data-analysis-pandas:3:1:2')::uuid, md5('course-question:data-analysis-pandas:3:1')::uuid, 2, 'The bitwise operators & and |, with each individual condition enclosed in parentheses', true),
+  (md5('course-answer:data-analysis-pandas:3:1:3')::uuid, md5('course-question:data-analysis-pandas:3:1')::uuid, 3, 'The bitwise operators && and ||, without enclosing parentheses', false),
+  (md5('course-answer:data-analysis-pandas:3:1:4')::uuid, md5('course-question:data-analysis-pandas:3:1')::uuid, 4, 'The logical operators and and or, with each condition wrapped in square brackets', false),
+  (md5('course-answer:data-analysis-pandas:3:2:1')::uuid, md5('course-question:data-analysis-pandas:3:2')::uuid, 1, 'Columns are specified before the comma, and row criteria after the comma', false),
+  (md5('course-answer:data-analysis-pandas:3:2:2')::uuid, md5('course-question:data-analysis-pandas:3:2')::uuid, 2, 'Rows and columns are passed as two distinct chained method calls', false),
+  (md5('course-answer:data-analysis-pandas:3:2:3')::uuid, md5('course-question:data-analysis-pandas:3:2')::uuid, 3, 'Row criteria are placed before the comma, and column labels after the comma', true),
+  (md5('course-answer:data-analysis-pandas:3:2:4')::uuid, md5('course-question:data-analysis-pandas:3:2')::uuid, 4, 'Row and column labels must be concatenated with a colon without commas', false),
+  (md5('course-answer:data-analysis-pandas:3:3:1')::uuid, md5('course-question:data-analysis-pandas:3:3')::uuid, 1, '.iloc selects data based on integer positions, whereas .loc selects data based on labels', true),
+  (md5('course-answer:data-analysis-pandas:3:3:2')::uuid, md5('course-question:data-analysis-pandas:3:3')::uuid, 2, '.iloc accepts only column names, whereas .loc accepts only index names', false),
+  (md5('course-answer:data-analysis-pandas:3:3:3')::uuid, md5('course-question:data-analysis-pandas:3:3')::uuid, 3, '.iloc excludes missing values automatically, whereas .loc retains them', false),
+  (md5('course-answer:data-analysis-pandas:3:3:4')::uuid, md5('course-question:data-analysis-pandas:3:3')::uuid, 4, '.iloc is designed solely for Series objects, whereas .loc operates on DataFrames', false),
+  (md5('course-answer:data-analysis-pandas:3:4:1')::uuid, md5('course-question:data-analysis-pandas:3:4')::uuid, 1, '.contains()', false),
+  (md5('course-answer:data-analysis-pandas:3:4:2')::uuid, md5('course-question:data-analysis-pandas:3:4')::uuid, 2, '.in_list()', false),
+  (md5('course-answer:data-analysis-pandas:3:4:3')::uuid, md5('course-question:data-analysis-pandas:3:4')::uuid, 3, '.exists()', false),
+  (md5('course-answer:data-analysis-pandas:3:4:4')::uuid, md5('course-question:data-analysis-pandas:3:4')::uuid, 4, '.isin()', true),
+  (md5('course-answer:data-analysis-pandas:3:5:1')::uuid, md5('course-question:data-analysis-pandas:3:5')::uuid, 1, 'The start bound is excluded while the stop bound is included', false),
+  (md5('course-answer:data-analysis-pandas:3:5:2')::uuid, md5('course-question:data-analysis-pandas:3:5')::uuid, 2, 'Both the start and stop bounds are excluded from the result', false),
+  (md5('course-answer:data-analysis-pandas:3:5:3')::uuid, md5('course-question:data-analysis-pandas:3:5')::uuid, 3, 'Both the start bound and the stop bound are included in the result', true),
+  (md5('course-answer:data-analysis-pandas:3:5:4')::uuid, md5('course-question:data-analysis-pandas:3:5')::uuid, 4, 'Only every second label between the bounds is returned', false),
+  (md5('course-answer:data-analysis-pandas:3:6:1')::uuid, md5('course-question:data-analysis-pandas:3:6')::uuid, 1, 'Splitting data into groups, applying a function to each group, and combining the results', true),
+  (md5('course-answer:data-analysis-pandas:3:6:2')::uuid, md5('course-question:data-analysis-pandas:3:6')::uuid, 2, 'Splitting columns into rows, applying sorting, and combining matching indices', false),
+  (md5('course-answer:data-analysis-pandas:3:6:3')::uuid, md5('course-question:data-analysis-pandas:3:6')::uuid, 3, 'Splitting null values, applying a fill strategy, and combining unique identifiers', false),
+  (md5('course-answer:data-analysis-pandas:3:6:4')::uuid, md5('course-question:data-analysis-pandas:3:6')::uuid, 4, 'Splitting tables across axes, applying merges, and combining output schemas', false),
+  (md5('course-answer:data-analysis-pandas:3:7:1')::uuid, md5('course-question:data-analysis-pandas:3:7')::uuid, 1, 'Pass keep_cols=True to groupby()', false),
+  (md5('course-answer:data-analysis-pandas:3:7:2')::uuid, md5('course-question:data-analysis-pandas:3:7')::uuid, 2, 'Pass index=False to groupby()', false),
+  (md5('course-answer:data-analysis-pandas:3:7:3')::uuid, md5('course-question:data-analysis-pandas:3:7')::uuid, 3, 'Pass reset_keys=True to groupby()', false),
+  (md5('course-answer:data-analysis-pandas:3:7:4')::uuid, md5('course-question:data-analysis-pandas:3:7')::uuid, 4, 'Pass as_index=False to groupby()', true),
+  (md5('course-answer:data-analysis-pandas:3:8:1')::uuid, md5('course-question:data-analysis-pandas:3:8')::uuid, 1, '.count() includes NaN values, whereas .size() excludes missing values', false),
+  (md5('course-answer:data-analysis-pandas:3:8:2')::uuid, md5('course-question:data-analysis-pandas:3:8')::uuid, 2, '.count() excludes NaN values, whereas .size() includes NaN values', true),
+  (md5('course-answer:data-analysis-pandas:3:8:3')::uuid, md5('course-question:data-analysis-pandas:3:8')::uuid, 3, '.count() returns a DataFrame, whereas .size() cannot be called on a GroupBy object', false),
+  (md5('course-answer:data-analysis-pandas:3:8:4')::uuid, md5('course-question:data-analysis-pandas:3:8')::uuid, 4, '.count() only measures unique values, whereas .size() measures all values', false),
+  (md5('course-answer:data-analysis-pandas:3:9:1')::uuid, md5('course-question:data-analysis-pandas:3:9')::uuid, 1, 'It places missing keys into a group labelled ''Unknown''', false),
+  (md5('course-answer:data-analysis-pandas:3:9:2')::uuid, md5('course-question:data-analysis-pandas:3:9')::uuid, 2, 'It raises a ValueError if any key contains NA', false),
+  (md5('course-answer:data-analysis-pandas:3:9:3')::uuid, md5('course-question:data-analysis-pandas:3:9')::uuid, 3, 'It excludes NA values from group keys unless dropna=False is set', true),
+  (md5('course-answer:data-analysis-pandas:3:9:4')::uuid, md5('course-question:data-analysis-pandas:3:9')::uuid, 4, 'It imputes missing keys using the most frequent group label', false),
+  (md5('course-answer:data-analysis-pandas:3:10:1')::uuid, md5('course-question:data-analysis-pandas:3:10')::uuid, 1, 'numeric_only=True', true),
+  (md5('course-answer:data-analysis-pandas:3:10:2')::uuid, md5('course-question:data-analysis-pandas:3:10')::uuid, 2, 'skip_text=True', false),
+  (md5('course-answer:data-analysis-pandas:3:10:3')::uuid, md5('course-question:data-analysis-pandas:3:10')::uuid, 3, 'errors=''ignore''', false),
+  (md5('course-answer:data-analysis-pandas:3:10:4')::uuid, md5('course-question:data-analysis-pandas:3:10')::uuid, 4, 'drop_strings=True', false),
+  (md5('course-answer:data-analysis-pandas:3:11:1')::uuid, md5('course-question:data-analysis-pandas:3:11')::uuid, 1, 'axis=1, combining tables column-wise', false),
+  (md5('course-answer:data-analysis-pandas:3:11:2')::uuid, md5('course-question:data-analysis-pandas:3:11')::uuid, 2, 'axis=0, combining tables row-wise', true),
+  (md5('course-answer:data-analysis-pandas:3:11:3')::uuid, md5('course-question:data-analysis-pandas:3:11')::uuid, 3, 'axis=''index_level'', combining tables hierarchically', false),
+  (md5('course-answer:data-analysis-pandas:3:11:4')::uuid, md5('course-question:data-analysis-pandas:3:11')::uuid, 4, 'axis=''diagonal'', combining tables across both dimensions', false),
+  (md5('course-answer:data-analysis-pandas:3:12:1')::uuid, md5('course-question:data-analysis-pandas:3:12')::uuid, 1, 'reset_axes=True', false),
+  (md5('course-answer:data-analysis-pandas:3:12:2')::uuid, md5('course-question:data-analysis-pandas:3:12')::uuid, 2, 'drop_index=True', false),
+  (md5('course-answer:data-analysis-pandas:3:12:3')::uuid, md5('course-question:data-analysis-pandas:3:12')::uuid, 3, 'clean_index=True', false),
+  (md5('course-answer:data-analysis-pandas:3:12:4')::uuid, md5('course-question:data-analysis-pandas:3:12')::uuid, 4, 'ignore_index=True', true),
+  (md5('course-answer:data-analysis-pandas:3:13:1')::uuid, md5('course-question:data-analysis-pandas:3:13')::uuid, 1, 'how=''outer''', false),
+  (md5('course-answer:data-analysis-pandas:3:13:2')::uuid, md5('course-question:data-analysis-pandas:3:13')::uuid, 2, 'how=''full''', false),
+  (md5('course-answer:data-analysis-pandas:3:13:3')::uuid, md5('course-question:data-analysis-pandas:3:13')::uuid, 3, 'how=''cross''', true),
+  (md5('course-answer:data-analysis-pandas:3:13:4')::uuid, md5('course-question:data-analysis-pandas:3:13')::uuid, 4, 'how=''product''', false),
+  (md5('course-answer:data-analysis-pandas:3:14:1')::uuid, md5('course-question:data-analysis-pandas:3:14')::uuid, 1, 'left_on and right_on', true),
+  (md5('course-answer:data-analysis-pandas:3:14:2')::uuid, md5('course-question:data-analysis-pandas:3:14')::uuid, 2, 'key_left and key_right', false),
+  (md5('course-answer:data-analysis-pandas:3:14:3')::uuid, md5('course-question:data-analysis-pandas:3:14')::uuid, 3, 'left_index and match_column', false),
+  (md5('course-answer:data-analysis-pandas:3:14:4')::uuid, md5('course-question:data-analysis-pandas:3:14')::uuid, 4, 'from_column and to_column', false),
+  (md5('course-answer:data-analysis-pandas:3:15:1')::uuid, md5('course-question:data-analysis-pandas:3:15')::uuid, 1, 'It calculates the percentage of overlapping keys across both DataFrames', false),
+  (md5('course-answer:data-analysis-pandas:3:15:2')::uuid, md5('course-question:data-analysis-pandas:3:15')::uuid, 2, 'It adds a _merge column showing whether each row came from left_only, right_only, or both', true),
+  (md5('course-answer:data-analysis-pandas:3:15:3')::uuid, md5('course-question:data-analysis-pandas:3:15')::uuid, 3, 'It highlights rows that contain duplicate keys by adding a boolean flag', false),
+  (md5('course-answer:data-analysis-pandas:3:15:4')::uuid, md5('course-question:data-analysis-pandas:3:15')::uuid, 4, 'It prints a summary table of matching and unmatched key counts to stdout', false)
+on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;
+
+-- Quiz data-analysis-pandas/4: Telling the story quiz (15 questions)
+insert into public.quizzes (id, chapter_id, title, position, is_preview) values
+  (md5('course-quiz:data-analysis-pandas:4')::uuid, md5('chapter:data-analysis-pandas:4')::uuid, 'Telling the story quiz', 1, false)
+on conflict (id) do update set title = excluded.title, is_preview = excluded.is_preview;
+insert into public.quiz_questions (id, quiz_id, position, prompt, explanation, reference_url) values
+  (md5('course-question:data-analysis-pandas:4:1')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 1, 'What chart type does `df.plot()` produce by default when called on a DataFrame with numeric columns?', 'By default, calling `plot()` on a DataFrame produces one line plot for each numeric column.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html'),
+  (md5('course-question:data-analysis-pandas:4:2')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 2, 'What underlying graphics object is produced when pandas creates a plot?', 'Every plot object created by pandas is directly built as a Matplotlib object.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html'),
+  (md5('course-question:data-analysis-pandas:4:3')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 3, 'You create an explicit figure and axis using `fig, axs = plt.subplots()`. Which parameter in a pandas plot method directs the drawing onto that axis?', 'Passing `ax=axs` into pandas plotting methods instructs pandas to draw the visual directly onto the prepared Matplotlib axis.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html'),
+  (md5('course-question:data-analysis-pandas:4:4')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 4, 'Which parameter must you set to draw a stacked bar chart using `df.plot.bar()`?', 'Passing `stacked=True` to `plot.bar()` stacks the distinct columns instead of rendering them side by side.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/visualization.html'),
+  (md5('course-question:data-analysis-pandas:4:5')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 5, 'How can you render each DataFrame column into its own separate subplot within a single plot call?', 'The `subplots=True` argument instructs pandas plot functions to draw each data column in an independent subplot.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/04_plotting.html'),
+  (md5('course-question:data-analysis-pandas:4:6')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 6, 'Which method or accessor call generates a horizontal bar plot in pandas?', 'Horizontal bar plots are generated using `df.plot.barh()` or by specifying `kind="barh"`.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/visualization.html'),
+  (md5('course-question:data-analysis-pandas:4:7')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 7, 'Which parameter adjusts the number of bins when drawing a histogram using `df.plot.hist()`?', 'The `bins` keyword argument controls the number of histogram bins.', 'https://pandas.pydata.org/pandas-docs/version/3.1/user_guide/visualization.html'),
+  (md5('course-question:data-analysis-pandas:4:8')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 8, 'According to The Turing Way guide for communication, why should researchers translate technical writing into varied styles such as summaries or blogs?', 'Adapting technical writing into accessible formats widens research impact beyond a specific field to other specialists and the wider public.', 'https://book.the-turing-way.org/communication/comms-overview'),
+  (md5('course-question:data-analysis-pandas:4:9')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 9, 'Which argument in `pd.read_csv()` automatically parses specified date columns into Timestamp objects during ingestion?', 'Passing a list of column names to `parse_dates` converts those text columns into pandas `Timestamp` objects when reading a CSV file.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html'),
+  (md5('course-question:data-analysis-pandas:4:10')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 10, 'When accessing `Series.dt.day_of_week` on a datetime column, what integer values represent Monday and Sunday?', 'In pandas, the `day_of_week` property indexes days starting with Monday as 0 through to Sunday as 6.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html'),
+  (md5('course-question:data-analysis-pandas:4:11')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 11, 'What object type is returned when calculating the difference between two pandas Timestamp values, such as `df["End date"] - df["Start date"]`?', 'Subtracting one Timestamp from another calculates a duration, which pandas represents as a `Timedelta` object.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html'),
+  (md5('course-question:data-analysis-pandas:4:12')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 12, 'What is the key difference between using `.size()` and `.count()` on grouped data?', 'While `size` provides the total number of rows in each group including `NaN` entries, `count` excludes missing values.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html'),
+  (md5('course-question:data-analysis-pandas:4:13')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 13, 'How can you compute distinct sets of summary statistics for different columns simultaneously using `DataFrame.agg()`?', 'Passing a dictionary where keys are column names and values are lists of statistics allows custom aggregations per column via `agg()`.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/06_calculate_statistics.html'),
+  (md5('course-question:data-analysis-pandas:4:14')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 14, 'What technical summary information is displayed when you run `df.info()` on a DataFrame?', 'The `info()` method outputs technical information including index range, total rows, column types, non-null tallies, and memory usage.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/02_read_write.html'),
+  (md5('course-question:data-analysis-pandas:4:15')::uuid, md5('course-quiz:data-analysis-pandas:4')::uuid, 15, 'Which syntax extracts the hour of the day from a pandas datetime column named `trips["Start date"]`?', 'Datetime properties on a Series are accessed through the `.dt` accessor, so `.dt.hour` retrieves the hour integer.', 'https://pandas.pydata.org/pandas-docs/version/3.1/getting_started/intro_tutorials/09_timeseries.html')
+on conflict (id) do update set prompt = excluded.prompt, explanation = excluded.explanation, reference_url = excluded.reference_url;
+update public.quiz_answers set is_correct = false where question_id in (select id from public.quiz_questions where quiz_id = md5('course-quiz:data-analysis-pandas:4')::uuid);
+insert into public.quiz_answers (id, question_id, position, text, is_correct) values
+  (md5('course-answer:data-analysis-pandas:4:1:1')::uuid, md5('course-question:data-analysis-pandas:4:1')::uuid, 1, 'A scatter plot comparing the first two numeric fields', false),
+  (md5('course-answer:data-analysis-pandas:4:1:2')::uuid, md5('course-question:data-analysis-pandas:4:1')::uuid, 2, 'One line plot for each column of numeric data', true),
+  (md5('course-answer:data-analysis-pandas:4:1:3')::uuid, md5('course-question:data-analysis-pandas:4:1')::uuid, 3, 'A single stacked vertical bar chart', false),
+  (md5('course-answer:data-analysis-pandas:4:1:4')::uuid, md5('course-question:data-analysis-pandas:4:1')::uuid, 4, 'A box plot displaying quartiles across all columns', false),
+  (md5('course-answer:data-analysis-pandas:4:2:1')::uuid, md5('course-question:data-analysis-pandas:4:2')::uuid, 1, 'A Matplotlib object', true),
+  (md5('course-answer:data-analysis-pandas:4:2:2')::uuid, md5('course-question:data-analysis-pandas:4:2')::uuid, 2, 'A Seaborn facet', false),
+  (md5('course-answer:data-analysis-pandas:4:2:3')::uuid, md5('course-question:data-analysis-pandas:4:2')::uuid, 3, 'An HTML5 canvas element', false),
+  (md5('course-answer:data-analysis-pandas:4:2:4')::uuid, md5('course-question:data-analysis-pandas:4:2')::uuid, 4, 'An OpenGL rendering surface', false),
+  (md5('course-answer:data-analysis-pandas:4:3:1')::uuid, md5('course-question:data-analysis-pandas:4:3')::uuid, 1, 'axis=axs', false),
+  (md5('course-answer:data-analysis-pandas:4:3:2')::uuid, md5('course-question:data-analysis-pandas:4:3')::uuid, 2, 'target=axs', false),
+  (md5('course-answer:data-analysis-pandas:4:3:3')::uuid, md5('course-question:data-analysis-pandas:4:3')::uuid, 3, 'ax=axs', true),
+  (md5('course-answer:data-analysis-pandas:4:3:4')::uuid, md5('course-question:data-analysis-pandas:4:3')::uuid, 4, 'figure=axs', false),
+  (md5('course-answer:data-analysis-pandas:4:4:1')::uuid, md5('course-question:data-analysis-pandas:4:4')::uuid, 1, 'cumulative=True', false),
+  (md5('course-answer:data-analysis-pandas:4:4:2')::uuid, md5('course-question:data-analysis-pandas:4:4')::uuid, 2, 'align="stacked"', false),
+  (md5('course-answer:data-analysis-pandas:4:4:3')::uuid, md5('course-question:data-analysis-pandas:4:4')::uuid, 3, 'layered=True', false),
+  (md5('course-answer:data-analysis-pandas:4:4:4')::uuid, md5('course-question:data-analysis-pandas:4:4')::uuid, 4, 'stacked=True', true),
+  (md5('course-answer:data-analysis-pandas:4:5:1')::uuid, md5('course-question:data-analysis-pandas:4:5')::uuid, 1, 'Set split=True', false),
+  (md5('course-answer:data-analysis-pandas:4:5:2')::uuid, md5('course-question:data-analysis-pandas:4:5')::uuid, 2, 'Set subplots=True', true),
+  (md5('course-answer:data-analysis-pandas:4:5:3')::uuid, md5('course-question:data-analysis-pandas:4:5')::uuid, 3, 'Set multiple=True', false),
+  (md5('course-answer:data-analysis-pandas:4:5:4')::uuid, md5('course-question:data-analysis-pandas:4:5')::uuid, 4, 'Set layout="grid"', false),
+  (md5('course-answer:data-analysis-pandas:4:6:1')::uuid, md5('course-question:data-analysis-pandas:4:6')::uuid, 1, 'df.plot.horizontal()', false),
+  (md5('course-answer:data-analysis-pandas:4:6:2')::uuid, md5('course-question:data-analysis-pandas:4:6')::uuid, 2, 'df.plot.hbar()', false),
+  (md5('course-answer:data-analysis-pandas:4:6:3')::uuid, md5('course-question:data-analysis-pandas:4:6')::uuid, 3, 'df.plot.bar(horizontal=True)', false),
+  (md5('course-answer:data-analysis-pandas:4:6:4')::uuid, md5('course-question:data-analysis-pandas:4:6')::uuid, 4, 'df.plot.barh()', true),
+  (md5('course-answer:data-analysis-pandas:4:7:1')::uuid, md5('course-question:data-analysis-pandas:4:7')::uuid, 1, 'intervals=20', false),
+  (md5('course-answer:data-analysis-pandas:4:7:2')::uuid, md5('course-question:data-analysis-pandas:4:7')::uuid, 2, 'step=20', false),
+  (md5('course-answer:data-analysis-pandas:4:7:3')::uuid, md5('course-question:data-analysis-pandas:4:7')::uuid, 3, 'bins=20', true),
+  (md5('course-answer:data-analysis-pandas:4:7:4')::uuid, md5('course-question:data-analysis-pandas:4:7')::uuid, 4, 'range=20', false),
+  (md5('course-answer:data-analysis-pandas:4:8:1')::uuid, md5('course-question:data-analysis-pandas:4:8')::uuid, 1, 'To replace the requirement for formal peer review and archiving', false),
+  (md5('course-answer:data-analysis-pandas:4:8:2')::uuid, md5('course-question:data-analysis-pandas:4:8')::uuid, 2, 'To restrict early progress updates strictly to project co-authors', false),
+  (md5('course-answer:data-analysis-pandas:4:8:3')::uuid, md5('course-question:data-analysis-pandas:4:8')::uuid, 3, 'To make research accessible to specialists outside the discipline and the public', true),
+  (md5('course-answer:data-analysis-pandas:4:8:4')::uuid, md5('course-question:data-analysis-pandas:4:8')::uuid, 4, 'To eliminate the necessity of publishing computational source code', false),
+  (md5('course-answer:data-analysis-pandas:4:9:1')::uuid, md5('course-question:data-analysis-pandas:4:9')::uuid, 1, 'parse_dates', true),
+  (md5('course-answer:data-analysis-pandas:4:9:2')::uuid, md5('course-question:data-analysis-pandas:4:9')::uuid, 2, 'convert_dates', false),
+  (md5('course-answer:data-analysis-pandas:4:9:3')::uuid, md5('course-question:data-analysis-pandas:4:9')::uuid, 3, 'datetime_cols', false),
+  (md5('course-answer:data-analysis-pandas:4:9:4')::uuid, md5('course-question:data-analysis-pandas:4:9')::uuid, 4, 'to_timestamp', false),
+  (md5('course-answer:data-analysis-pandas:4:10:1')::uuid, md5('course-question:data-analysis-pandas:4:10')::uuid, 1, 'Monday is 1 and Sunday is 7', false),
+  (md5('course-answer:data-analysis-pandas:4:10:2')::uuid, md5('course-question:data-analysis-pandas:4:10')::uuid, 2, 'Monday is 0 and Sunday is 6', true),
+  (md5('course-answer:data-analysis-pandas:4:10:3')::uuid, md5('course-question:data-analysis-pandas:4:10')::uuid, 3, 'Monday is 7 and Sunday is 1', false),
+  (md5('course-answer:data-analysis-pandas:4:10:4')::uuid, md5('course-question:data-analysis-pandas:4:10')::uuid, 4, 'Monday is 6 and Sunday is 0', false),
+  (md5('course-answer:data-analysis-pandas:4:11:1')::uuid, md5('course-question:data-analysis-pandas:4:11')::uuid, 1, 'PeriodIndex', false),
+  (md5('course-answer:data-analysis-pandas:4:11:2')::uuid, md5('course-question:data-analysis-pandas:4:11')::uuid, 2, 'DateOffset', false),
+  (md5('course-answer:data-analysis-pandas:4:11:3')::uuid, md5('course-question:data-analysis-pandas:4:11')::uuid, 3, 'Timedelta', true),
+  (md5('course-answer:data-analysis-pandas:4:11:4')::uuid, md5('course-question:data-analysis-pandas:4:11')::uuid, 4, 'Timestamp', false),
+  (md5('course-answer:data-analysis-pandas:4:12:1')::uuid, md5('course-question:data-analysis-pandas:4:12')::uuid, 1, 'size includes missing (NaN) values, whereas count excludes them', true),
+  (md5('course-answer:data-analysis-pandas:4:12:2')::uuid, md5('course-question:data-analysis-pandas:4:12')::uuid, 2, 'count includes missing (NaN) values, whereas size excludes them', false),
+  (md5('course-answer:data-analysis-pandas:4:12:3')::uuid, md5('course-question:data-analysis-pandas:4:12')::uuid, 3, 'size only operates on string fields, whereas count accepts numbers', false),
+  (md5('course-answer:data-analysis-pandas:4:12:4')::uuid, md5('course-question:data-analysis-pandas:4:12')::uuid, 4, 'count returns distinct elements, whereas size tallies string lengths', false),
+  (md5('course-answer:data-analysis-pandas:4:13:1')::uuid, md5('course-question:data-analysis-pandas:4:13')::uuid, 1, 'Pass a semicolon-separated string listing each desired metric', false),
+  (md5('course-answer:data-analysis-pandas:4:13:2')::uuid, md5('course-question:data-analysis-pandas:4:13')::uuid, 2, 'Chain separate summary methods like `.mean().median()` together', false),
+  (md5('course-answer:data-analysis-pandas:4:13:3')::uuid, md5('course-question:data-analysis-pandas:4:13')::uuid, 3, 'Provide a tuple of functions directly to `.describe(methods=...)`', false),
+  (md5('course-answer:data-analysis-pandas:4:13:4')::uuid, md5('course-question:data-analysis-pandas:4:13')::uuid, 4, 'Pass a dictionary mapping column names to lists of metric names', true),
+  (md5('course-answer:data-analysis-pandas:4:14:1')::uuid, md5('course-question:data-analysis-pandas:4:14')::uuid, 1, 'Quartiles, medians, and standard deviations for all columns', false),
+  (md5('course-answer:data-analysis-pandas:4:14:2')::uuid, md5('course-question:data-analysis-pandas:4:14')::uuid, 2, 'Row count, column data types, non-null counts, and memory usage', true),
+  (md5('course-answer:data-analysis-pandas:4:14:3')::uuid, md5('course-question:data-analysis-pandas:4:14')::uuid, 3, 'Frequency tables of the most common categories in each column', false),
+  (md5('course-answer:data-analysis-pandas:4:14:4')::uuid, md5('course-question:data-analysis-pandas:4:14')::uuid, 4, 'A random sample of rows alongside index ranges and correlations', false),
+  (md5('course-answer:data-analysis-pandas:4:15:1')::uuid, md5('course-question:data-analysis-pandas:4:15')::uuid, 1, 'trips["Start date"].hour()', false),
+  (md5('course-answer:data-analysis-pandas:4:15:2')::uuid, md5('course-question:data-analysis-pandas:4:15')::uuid, 2, 'trips["Start date"].time.hour', false),
+  (md5('course-answer:data-analysis-pandas:4:15:3')::uuid, md5('course-question:data-analysis-pandas:4:15')::uuid, 3, 'trips["Start date"].to_hour()', false),
+  (md5('course-answer:data-analysis-pandas:4:15:4')::uuid, md5('course-question:data-analysis-pandas:4:15')::uuid, 4, 'trips["Start date"].dt.hour', true)
 on conflict (id) do update set text = excluded.text, is_correct = excluded.is_correct;

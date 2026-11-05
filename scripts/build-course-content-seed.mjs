@@ -189,6 +189,8 @@ if (overrides.length) {
 for (const { lesson, key, item } of lessonItems) {
   const lessonId = id(`lesson:${lesson.course}:${lesson.chapter}:${lesson.position}`);
   out.push(`-- Lesson ${key}: ${item.title}`);
+  // A registry title override (e.g. a fallback topic) renames the lesson itself.
+  if (lesson.title) out.push(`update public.lessons set title = ${sql(lesson.title)} where id = ${lessonId};`);
   // The new notes, then the lesson's existing "*Video: …*" credit (if any) as the last line.
   out.push(
     `update public.lesson_contents set body = ${sql(item.body.trim())} || coalesce(substring(body from ${VIDEO_CREDIT}), '') where lesson_id = ${lessonId};`,
