@@ -21,6 +21,8 @@ export const queryKeys = {
     categories: () => [...queryKeys.courses.all, "categories"] as const,
     details: (courseId: string) => [...queryKeys.courses.all, "details", courseId] as const,
     students: (courseId: string) => [...queryKeys.courses.all, "students", courseId] as const,
+    // The tutor dashboard (prompts/20): under "courses", so course invalidation refreshes it too.
+    mine: (userId: string | null) => [...queryKeys.courses.all, "mine", userId] as const,
   },
   interviews: {
     all: ["interviews"] as const,
