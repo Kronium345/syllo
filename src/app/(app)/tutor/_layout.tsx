@@ -13,6 +13,8 @@ export default function TutorLayout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="course/new" />
       <Stack.Screen name="course/[id]/index" />
+      <Stack.Screen name="course/[id]/edit" />
+      <Stack.Screen name="course/[id]/learners" />
       <Stack.Screen name="course/[id]/lesson/[lessonId]" />
     </Stack>
   );

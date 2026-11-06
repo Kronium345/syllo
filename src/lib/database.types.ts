@@ -1299,6 +1299,17 @@ export type Database = {
       }
       can_edit_course: { Args: { p_course_id: string }; Returns: boolean }
       can_edit_lesson: { Args: { p_lesson_id: string }; Returns: boolean }
+      course_learners: {
+        Args: { p_course_id: string }
+        Returns: {
+          avatar_url: string
+          enrolled_at: string
+          full_name: string
+          lessons_done: number
+          lessons_total: number
+          user_id: string
+        }[]
+      }
       course_student_count: { Args: { p_course_id: string }; Returns: number }
       create_course: {
         Args: {
@@ -1393,6 +1404,10 @@ export type Database = {
       }
       quiz_sessions_left: { Args: never; Returns: number }
       remove_course_cover: { Args: { p_course_id: string }; Returns: string }
+      remove_learner: {
+        Args: { p_course_id: string; p_user_id: string }
+        Returns: undefined
+      }
       remove_lesson_video: { Args: { p_lesson_id: string }; Returns: string }
       rename_chapter: {
         Args: { p_chapter_id: string; p_title: string }

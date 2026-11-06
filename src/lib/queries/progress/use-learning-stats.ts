@@ -15,6 +15,8 @@ export type LearningStats = {
   streakDays: number;
   /** Completed / total lessons for a course card (0–1). */
   progressOf: (course: CourseCard) => number;
+  /** When the learner last completed a lesson of this course (ms since epoch), or 0 if never. */
+  lastStudiedAt: (course: CourseCard) => number;
 };
 
 function dayKey(date: Date): string {
@@ -44,6 +46,9 @@ export function useLearningStats() {
   const data = useMemo<LearningStats | undefined>(() => {
     if (!progress.data || !enrolled.data) return undefined;
     const completedLessonIds = new Set(progress.data.map((row) => row.lessonId));
+    const completedAt = new Map(progress.data.map((row) => [row.lessonId, new Date(row.completedAt).getTime()]));
+    const lastStudiedAt = (course: CourseCard) =>
+      course.lessonIds.reduce((latest, id) => Math.max(latest, completedAt.get(id) ?? 0), 0);
     const progressOf = (course: CourseCard) =>
       course.lessonCount === 0
         ? 0
@@ -54,6 +59,7 @@ export function useLearningStats() {
       certificates: enrolled.data.filter((course) => course.lessonCount > 0 && progressOf(course) === 1).length,
       streakDays: streak(progress.data),
       progressOf,
+      lastStudiedAt,
     };
   }, [progress.data, enrolled.data]);
 

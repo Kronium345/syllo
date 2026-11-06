@@ -472,3 +472,45 @@ export async function removeCourseCover(supabase: AppSupabaseClient, courseId: s
     throw notAllowedOr(error);
   }
 }
+
+/** One enrolled learner as the tutor's Learners page shows them (prompts/26). No contact details. */
+export type CourseLearner = {
+  userId: string;
+  name: string | null;
+  avatarUrl: string | null;
+  enrolledAt: string;
+  lessonsDone: number;
+  lessonsTotal: number;
+};
+
+/** The course's enrolled learners, newest first (owner-checked RPC; others get NotAllowedError). */
+export async function getCourseLearners(
+  supabase: AppSupabaseClient,
+  courseId: string,
+  signal?: AbortSignal,
+): Promise<CourseLearner[]> {
+  const query = supabase.rpc("course_learners", { p_course_id: courseId });
+  try {
+    const { data } = await (signal ? query.abortSignal(signal) : query).throwOnError();
+    // full_name / avatar_url come from a left join, so they can be null despite the generated types.
+    return data.map((row) => ({
+      userId: row.user_id,
+      name: (row.full_name as string | null)?.trim() || null,
+      avatarUrl: (row.avatar_url as string | null) ?? null,
+      enrolledAt: row.enrolled_at,
+      lessonsDone: row.lessons_done,
+      lessonsTotal: row.lessons_total,
+    }));
+  } catch (error) {
+    throw notAllowedOr(error);
+  }
+}
+
+/** Unenrols a learner; their lesson progress is kept. */
+export async function removeLearner(supabase: AppSupabaseClient, courseId: string, userId: string): Promise<void> {
+  try {
+    await supabase.rpc("remove_learner", { p_course_id: courseId, p_user_id: userId }).throwOnError();
+  } catch (error) {
+    throw notAllowedOr(error);
+  }
+}

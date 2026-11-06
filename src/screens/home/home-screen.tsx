@@ -23,7 +23,7 @@ import { greeting } from "@/lib/format-duration";
 import { useAskNotificationsOnce } from "@/lib/notifications/use-study-reminders";
 import { categoriesFor } from "@/lib/onboarding/options";
 import { type CourseCard, useCourseDetails, useCourseFeed } from "@/lib/queries/courses";
-import { useEnrolledCourses, useLatestEnrollment } from "@/lib/queries/enrollments";
+import { useEnrolledCourses } from "@/lib/queries/enrollments";
 import { useMyProfile } from "@/lib/queries/profiles";
 import { type LearningStats, useLearningStats } from "@/lib/queries/progress";
 import { color, type ColorToken, tw } from "@/theme";
@@ -39,7 +39,6 @@ export function HomeScreen() {
   const { user } = useUser();
   const paddingTop = useTopPadding(56);
   const feed = useCourseFeed();
-  const latest = useLatestEnrollment();
   const enrolled = useEnrolledCourses();
   const profile = useMyProfile();
   const stats = useLearningStats();
@@ -55,10 +54,24 @@ export function HomeScreen() {
     ];
   }, [feed.data, profile.data?.interests]);
 
-  const refreshing = feed.isRefetching || latest.isRefetching || stats.isRefetching || enrolled.isRefetching;
+  // The Continue card: the enrolled course studied most recently that isn't finished (a course
+  // never studied ranks by enrolment, newest first). Finished courses don't count as "in progress".
+  const continueCourse = useMemo(() => {
+    if (!enrolled.data || !stats.data) return null;
+    const { progressOf, lastStudiedAt } = stats.data;
+    const unfinished = enrolled.data.filter((course) => !(course.lessonCount > 0 && progressOf(course) >= 1));
+    // Array.sort is stable, so equal times keep the enrolment order (newest first).
+    return [...unfinished].sort((a, b) => lastStudiedAt(b) - lastStudiedAt(a))[0] ?? null;
+  }, [enrolled.data, stats.data]);
+  // With nothing to continue, suggest a recommended course the learner hasn't enrolled in.
+  const suggestion = useMemo(() => {
+    const enrolledIds = new Set((enrolled.data ?? []).map((course) => course.id));
+    return recommended.find((course) => !enrolledIds.has(course.id)) ?? recommended[0];
+  }, [enrolled.data, recommended]);
+
+  const refreshing = feed.isRefetching || stats.isRefetching || enrolled.isRefetching;
   const refresh = () => {
     feed.refetch();
-    latest.refetch();
     enrolled.refetch();
     stats.refetch();
   };
@@ -110,7 +123,7 @@ export function HomeScreen() {
           </AppText>
         ) : (
           <>
-            <ContinueCard course={latest.data ?? null} fallback={recommended[0]} stats={stats.data} />
+            <ContinueCard course={continueCourse} fallback={suggestion} stats={stats.data} />
 
             {/* The learner's enrolled courses, newest first; hidden until they enroll in one. */}
             {enrolled.data && enrolled.data.length > 0 ? (
@@ -194,9 +207,14 @@ function ContinueCard({
   // Resume needs the ordered outline; it loads in the background.
   const details = useCourseDetails(enrolled ? shown.id : null);
 
+  const quizOnly = isQuizOnly(shown);
+  // Waiting for the outline: keep the button busy rather than quietly opening the course page.
+  const waiting = enrolled && !quizOnly && (!details.data || !completed);
+  const buttonTitle = !enrolled ? "Start Learning" : quizOnly ? "Open Course" : done === 0 ? "Start Lesson" : "Resume Lesson";
+
   const resume = () => {
     const lesson = details.data && completed ? nextLesson(details.data, completed) : null;
-    if (enrolled && lesson) router.push({ pathname: "/lesson/[id]", params: { id: lesson.id } });
+    if (enrolled && !quizOnly && lesson) router.push({ pathname: "/lesson/[id]", params: { id: lesson.id } });
     else openCourse(shown.id);
   };
 
@@ -220,7 +238,9 @@ function ContinueCard({
             <ProgressBar progress={progress} size="lg" />
           </View>
           <Button
-            title={enrolled ? "Resume Lesson" : "Start Learning"}
+            title={buttonTitle}
+            loading={waiting && !details.isError}
+            disabled={waiting && !details.isError}
             variant="primary-bold"
             leading={<Icon as={CirclePlay} size="md" color={buttonInk("primary-bold")} />}
             onPress={resume}

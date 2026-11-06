@@ -1,6 +1,7 @@
 // Tutor hooks (Part 2), one per file. Import from "@/lib/queries/tutor".
 export type {
   CourseDetailsInput,
+  CourseLearner,
   NewCourseInput,
   TutorChapter,
   TutorCourse,
@@ -13,6 +14,7 @@ export { type PickedFile, UPLOAD_RULES, fileSize, normaliseMimeType } from "@/se
 export { useAddChapter } from "./use-add-chapter";
 export { useAddLesson } from "./use-add-lesson";
 export { useAddLessonResource } from "./use-add-lesson-resource";
+export { useCourseLearners } from "./use-course-learners";
 export { useCreateCourse } from "./use-create-course";
 export { useDeleteChapter } from "./use-delete-chapter";
 export { useDeleteLesson } from "./use-delete-lesson";
@@ -21,6 +23,7 @@ export { useMoveChapter } from "./use-move-chapter";
 export { useMoveLesson } from "./use-move-lesson";
 export { useMyCourses } from "./use-my-courses";
 export { useRemoveCourseCover } from "./use-remove-course-cover";
+export { useRemoveLearner } from "./use-remove-learner";
 export { useRemoveLessonVideo } from "./use-remove-lesson-video";
 export { useRenameChapter } from "./use-rename-chapter";
 export { useSetCoursePublished } from "./use-set-course-published";

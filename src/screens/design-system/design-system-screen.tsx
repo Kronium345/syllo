@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button, buttonInk } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
+import { ConfirmSheet } from "@/components/ui/confirm-sheet";
 import { Fade } from "@/components/ui/fade";
 import { Glass } from "@/components/ui/glass";
 import { Icon } from "@/components/ui/icon";
@@ -142,6 +143,7 @@ export function DesignSystemScreen() {
   const [search, setSearch] = useState("");
   const [goal, setGoal] = useState(true);
   const [consentOpen, setConsentOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   return (
     <View style={tw`flex-1 bg-canvas`}>
@@ -300,6 +302,19 @@ export function DesignSystemScreen() {
             />
             <Fade to="canvas" via={50} />
           </View>
+        </Section>
+
+        <Section title="Confirm sheet">
+          <Button title="Open confirm sheet" variant="outline" onPress={() => setConfirmOpen(true)} />
+          <ConfirmSheet
+            visible={confirmOpen}
+            title="Leave course?"
+            message="You'll lose access to this course. Your progress is kept if you enrol again."
+            confirmLabel="Leave course"
+            busy={false}
+            onConfirm={() => setConfirmOpen(false)}
+            onClose={() => setConfirmOpen(false)}
+          />
         </Section>
 
         <Section title="Onboarding">

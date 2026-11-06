@@ -329,6 +329,16 @@ export async function enroll(supabase: AppSupabaseClient, courseId: string): Pro
 }
 
 /**
+ * The learner leaves a course (prompts/27): deletes their own enrolment (RLS "Learners leave
+ * their own courses"). lesson_progress is kept, so it comes back if they enrol again. A refused
+ * delete affects 0 rows, so none back means NotAllowedError.
+ */
+export async function leaveCourse(supabase: AppSupabaseClient, courseId: string): Promise<void> {
+  const { data } = await supabase.from("enrollments").delete().eq("course_id", courseId).select("id").throwOnError();
+  if (data.length === 0) throw new NotAllowedError("You aren't enrolled in this course.");
+}
+
+/**
  * Deletes a course (only its own tutor may; RLS). A refused delete affects 0 rows rather
  * than erroring, so the deleted row is selected back and none means NotAllowedError.
  */

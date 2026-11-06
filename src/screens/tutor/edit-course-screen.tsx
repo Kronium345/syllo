@@ -6,7 +6,6 @@ import { ActivityIndicator, KeyboardAvoidingView, Pressable, ScrollView, View } 
 
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonInk } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { IconButton } from "@/components/ui/icon-button";
 import { AppText } from "@/components/ui/text";
@@ -24,25 +23,24 @@ import {
   useMoveChapter,
   useMoveLesson,
   useRenameChapter,
-  useSetCoursePublished,
   useTutorCourse,
   useUpdateCourse,
 } from "@/lib/queries/tutor";
 import { color, tw } from "@/theme";
 
 import { reportInvalid } from "../auth/report-invalid";
-import { ConfirmSheet } from "./confirm-sheet";
+import { ConfirmSheet } from "@/components/ui/confirm-sheet";
 import { CourseCoverSection } from "./course-cover-section";
 import { CourseDetailsFields } from "./course-details-fields";
 import { OutlineChapterCard } from "./outline-chapter-card";
+import { PublishingCard } from "./publishing-card";
 import { reportTutorFailure } from "./report-tutor-failure";
 import { TitleSheet } from "./title-sheet";
 import { type CourseDraft, type CourseDraftErrors, validateCourse } from "./validate-course";
 
-const goBack = () => (router.canGoBack() ? router.back() : router.replace("/tutor"));
 
 /**
- * /tutor/course/[id] (prompts/22): the tutor edits a course's details, builds its outline
+ * /tutor/course/[id]/edit (prompts/22; its own page since prompts/25): the tutor edits a course's details, builds its outline
  * (chapters and lessons), publishes or unpublishes it, or deletes it. Not in the design;
  * built from its tokens. Every write is an RPC that checks the tutor owns the course.
  */
@@ -50,6 +48,9 @@ export function EditCourseScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const paddingTop = useTopPadding(48);
   const course = useTutorCourse(id);
+  // Back to the course overview (prompts/25); with no history (a deep link), open it instead.
+  const goBack = () =>
+    router.canGoBack() ? router.back() : router.replace({ pathname: "/tutor/course/[id]", params: { id } });
 
   return (
     <View style={tw`flex-1 bg-canvas`}>
@@ -118,7 +119,6 @@ type TitleAction =
 type ConfirmAction =
   | { kind: "delete-chapter"; chapter: TutorChapter }
   | { kind: "delete-lesson"; lesson: TutorLesson }
-  | { kind: "unpublish" }
   | { kind: "delete-course" };
 
 function CourseEditor({ course }: { course: TutorCourseDetails }) {
@@ -130,7 +130,6 @@ function CourseEditor({ course }: { course: TutorCourseDetails }) {
   const [confirmAction, setConfirmAction] = useState<ConfirmAction | null>(null);
 
   const update = useUpdateCourse();
-  const setPublished = useSetCoursePublished();
   const deleteCourse = useDeleteCourse();
   const addChapter = useAddChapter();
   const renameChapter = useRenameChapter();
@@ -148,7 +147,6 @@ function CourseEditor({ course }: { course: TutorCourseDetails }) {
     addLesson.isPending ||
     moveLesson.isPending ||
     deleteLesson.isPending;
-  const lessonCount = course.chapters.reduce((total, chapter) => total + chapter.lessons.length, 0);
   const dirty = !sameDraft(draft, draftOf(course));
 
   const change = <K extends keyof CourseDraft>(key: K, value: CourseDraft[K]) => {
@@ -173,12 +171,6 @@ function CourseEditor({ course }: { course: TutorCourseDetails }) {
       { onSuccess: () => toast.success("Changes saved"), onError: (error) => reportTutorFailure(error) },
     );
   };
-
-  const publish = () =>
-    setPublished.mutate(
-      { courseId: course.id, published: true },
-      { onSuccess: () => toast.success("Course published", "Learners can now find it in Explore."), onError: (error) => reportTutorFailure(error) },
-    );
 
   const saveTitle = (value: string) => {
     if (!titleAction) return;
@@ -210,18 +202,6 @@ function CourseEditor({ course }: { course: TutorCourseDetails }) {
           onError: (error) => reportTutorFailure(error),
         });
         break;
-      case "unpublish":
-        setPublished.mutate(
-          { courseId: course.id, published: false },
-          {
-            onSuccess: () => {
-              close();
-              toast.info("Course unpublished", "It's a draft again.");
-            },
-            onError: (error) => reportTutorFailure(error),
-          },
-        );
-        break;
       case "delete-course":
         deleteCourse.mutate(
           { id: course.id, title: course.title },
@@ -229,7 +209,8 @@ function CourseEditor({ course }: { course: TutorCourseDetails }) {
             onSuccess: () => {
               close();
               toast.success("Course deleted");
-              router.replace("/tutor");
+              // Back to the dashboard, past this course's overview (prompts/25), which is gone too.
+              router.dismissTo("/tutor");
             },
             onError: (error) => reportTutorFailure(error),
           },
@@ -261,19 +242,12 @@ function CourseEditor({ course }: { course: TutorCourseDetails }) {
             confirmLabel: "Delete lesson",
             busy: deleteLesson.isPending,
           }
-        : confirmAction.kind === "unpublish"
-          ? {
-              title: "Unpublish course?",
-              message: "Learners won't be able to find or open the course until you publish it again. Their progress is kept.",
-              confirmLabel: "Unpublish",
-              busy: setPublished.isPending,
-            }
-          : {
-              title: "Delete course?",
-              message: `"${course.title}" will be deleted with all its chapters, lessons and quizzes, and learners' enrolments, progress and results. This can't be undone.`,
-              confirmLabel: "Delete course",
-              busy: deleteCourse.isPending,
-            }
+        : {
+            title: "Delete course?",
+            message: `"${course.title}" will be deleted with all its chapters, lessons and quizzes, and learners' enrolments, progress and results. This can't be undone.`,
+            confirmLabel: "Delete course",
+            busy: deleteCourse.isPending,
+          }
     : null;
 
   return (
@@ -340,30 +314,7 @@ function CourseEditor({ course }: { course: TutorCourseDetails }) {
           <AppText variant="heading" accessibilityRole="header">
             Publishing
           </AppText>
-          <Card style={tw`p-4 gap-3`}>
-            <AppText variant="body">
-              {course.isPublished
-                ? "Published: learners can find this course in Explore and enroll."
-                : lessonCount === 0
-                  ? "Draft. Add a lesson to publish."
-                  : "Draft: only you can see this course."}
-            </AppText>
-            {course.isPublished ? (
-              <Button
-                title="Unpublish"
-                variant="outline"
-                disabled={setPublished.isPending}
-                onPress={() => setConfirmAction({ kind: "unpublish" })}
-              />
-            ) : (
-              <Button
-                title="Publish course"
-                loading={setPublished.isPending}
-                disabled={lessonCount === 0 || setPublished.isPending}
-                onPress={publish}
-              />
-            )}
-          </Card>
+          <PublishingCard course={course} />
         </View>
 
         <Button title="Delete course" variant="danger" onPress={() => setConfirmAction({ kind: "delete-course" })} />

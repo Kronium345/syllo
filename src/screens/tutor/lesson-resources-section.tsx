@@ -21,7 +21,7 @@ import {
 } from "@/lib/queries/tutor";
 import { pressScale, tw } from "@/theme";
 
-import { ConfirmSheet } from "./confirm-sheet";
+import { ConfirmSheet } from "@/components/ui/confirm-sheet";
 import { reportTutorFailure } from "./report-tutor-failure";
 import { OUTLINE_TITLE, TitleSheet } from "./title-sheet";
 

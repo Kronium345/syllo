@@ -23,7 +23,7 @@ import {
 } from "@/lib/queries/tutor";
 import { tw } from "@/theme";
 
-import { ConfirmSheet } from "./confirm-sheet";
+import { ConfirmSheet } from "@/components/ui/confirm-sheet";
 import { reportTutorFailure } from "./report-tutor-failure";
 
 /**

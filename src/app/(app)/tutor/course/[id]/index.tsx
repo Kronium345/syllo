@@ -1,3 +1,3 @@
-import { EditCourseScreen } from "@/screens/tutor/edit-course-screen";
+import { CourseOverviewScreen } from "@/screens/tutor/course-overview-screen";
 
-export default EditCourseScreen;
+export default CourseOverviewScreen;

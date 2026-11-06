@@ -16,7 +16,7 @@ import { type TutorLessonDetails, useDeleteLesson, useTutorLesson, useUpdateLess
 import { color, tw } from "@/theme";
 
 import { reportInvalid } from "../auth/report-invalid";
-import { ConfirmSheet } from "./confirm-sheet";
+import { ConfirmSheet } from "@/components/ui/confirm-sheet";
 import { LessonResourcesSection } from "./lesson-resources-section";
 import { LessonVideoSection } from "./lesson-video-section";
 import { NOTES_MAX, NotesEditor } from "./notes-editor";

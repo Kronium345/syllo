@@ -52,7 +52,7 @@ export function NewCourseScreen() {
       {
         onSuccess: (id) => {
           toast.success("Draft created", "Add chapters and lessons next.");
-          router.replace({ pathname: "/tutor/course/[id]", params: { id } });
+          router.replace({ pathname: "/tutor/course/[id]/edit", params: { id } });
         },
         onError: (error) =>
           error instanceof NotAllowedError
