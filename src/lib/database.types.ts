@@ -1263,6 +1263,25 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_chapter: {
+        Args: { p_course_id: string; p_title: string }
+        Returns: string
+      }
+      add_lesson: {
+        Args: { p_chapter_id: string; p_title: string }
+        Returns: string
+      }
+      add_lesson_resource: {
+        Args: {
+          p_file_name: string
+          p_key: string
+          p_lesson_id: string
+          p_mime_type: string
+          p_size_bytes: number
+          p_title: string
+        }
+        Returns: string
+      }
       answer_quiz_question: {
         Args: {
           p_answer_id?: string
@@ -1275,7 +1294,19 @@ export type Database = {
           is_correct: boolean
         }[]
       }
+      can_edit_lesson: { Args: { p_lesson_id: string }; Returns: boolean }
       course_student_count: { Args: { p_course_id: string }; Returns: number }
+      create_course: {
+        Args: {
+          p_access: string
+          p_category: string
+          p_description: string
+          p_level: string
+          p_subtitle: string
+          p_title: string
+        }
+        Returns: string
+      }
       create_general_interview: {
         Args: { p_questions: Json; p_role: string; p_user_id: string }
         Returns: {
@@ -1301,6 +1332,12 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      delete_chapter: { Args: { p_chapter_id: string }; Returns: undefined }
+      delete_lesson: { Args: { p_lesson_id: string }; Returns: undefined }
+      delete_lesson_resource: {
+        Args: { p_resource_id: string }
+        Returns: string
       }
       finish_quiz_attempt: {
         Args: { p_attempt_id: string }
@@ -1342,7 +1379,28 @@ export type Database = {
       }
       give_ai_consent: { Args: never; Returns: undefined }
       interview_sessions_left: { Args: never; Returns: number }
+      move_chapter: {
+        Args: { p_chapter_id: string; p_direction: number }
+        Returns: undefined
+      }
+      move_lesson: {
+        Args: { p_direction: number; p_lesson_id: string }
+        Returns: undefined
+      }
       quiz_sessions_left: { Args: never; Returns: number }
+      remove_lesson_video: { Args: { p_lesson_id: string }; Returns: string }
+      rename_chapter: {
+        Args: { p_chapter_id: string; p_title: string }
+        Returns: undefined
+      }
+      set_course_published: {
+        Args: { p_course_id: string; p_published: boolean }
+        Returns: undefined
+      }
+      set_lesson_video: {
+        Args: { p_duration_seconds: number; p_key: string; p_lesson_id: string }
+        Returns: string
+      }
       start_interview_session: {
         Args: { p_target: string }
         Returns: {
@@ -1410,6 +1468,27 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      update_course: {
+        Args: {
+          p_access: string
+          p_category: string
+          p_course_id: string
+          p_description: string
+          p_level: string
+          p_subtitle: string
+          p_title: string
+        }
+        Returns: undefined
+      }
+      update_lesson: {
+        Args: {
+          p_body: string
+          p_is_preview: boolean
+          p_lesson_id: string
+          p_title: string
+        }
+        Returns: undefined
       }
       viva_sessions_left: { Args: never; Returns: number }
       withdraw_ai_consent: { Args: never; Returns: undefined }

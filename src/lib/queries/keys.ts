@@ -23,6 +23,11 @@ export const queryKeys = {
     students: (courseId: string) => [...queryKeys.courses.all, "students", courseId] as const,
     // The tutor dashboard (prompts/20): under "courses", so course invalidation refreshes it too.
     mine: (userId: string | null) => [...queryKeys.courses.all, "mine", userId] as const,
+    // The course editor (prompts/22).
+    tutor: (courseId: string, userId: string | null) => [...queryKeys.courses.all, "tutor", courseId, userId] as const,
+    // The lesson editor (prompts/23).
+    tutorLesson: (lessonId: string, userId: string | null) =>
+      [...queryKeys.courses.all, "tutor-lesson", lessonId, userId] as const,
   },
   interviews: {
     all: ["interviews"] as const,

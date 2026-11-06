@@ -71,3 +71,41 @@ export async function signR2(key: string, { downloadName }: { downloadName?: str
 export function expiresAt(): string {
   return new Date(Date.now() + LINK_SECONDS * 1000).toISOString();
 }
+
+/** The bucket's S3 endpoint for one object key (each path segment encoded). */
+function r2ObjectUrl(key: string): URL {
+  const path = key.split("/").map(encodeURIComponent).join("/");
+  return new URL(`https://${env("R2_ACCOUNT_ID")}.r2.cloudflarestorage.com/${env("R2_BUCKET")}/${path}`);
+}
+
+function r2Client() {
+  return new AwsClient({
+    accessKeyId: env("R2_ACCESS_KEY_ID"),
+    secretAccessKey: env("R2_SECRET_ACCESS_KEY"),
+    service: "s3",
+    region: "auto",
+  });
+}
+
+/**
+ * A presigned R2 PUT link (prompts/23), valid for LINK_SECONDS. Content-Type and
+ * Content-Length are signed, so R2 refuses an upload of a different type or size.
+ */
+export async function signR2Put(key: string, contentType: string, contentLength: number): Promise<string> {
+  const url = r2ObjectUrl(key);
+  url.searchParams.set("X-Amz-Expires", String(LINK_SECONDS));
+  const request = new Request(url, {
+    method: "PUT",
+    headers: { "Content-Type": contentType, "Content-Length": String(contentLength) },
+  });
+  const signed = await r2Client().sign(request, {
+    aws: { signQuery: true, allHeaders: true },
+  });
+  return signed.url;
+}
+
+/** Deletes one object from the bucket (404 counts as already gone). */
+export async function deleteR2(key: string): Promise<void> {
+  const response = await r2Client().fetch(r2ObjectUrl(key), { method: "DELETE" });
+  if (!response.ok && response.status !== 404) throw new Error(`R2 delete failed: ${response.status}`);
+}
