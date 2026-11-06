@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { ChevronLeft, Plus } from "lucide-react-native";
 import { useState } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ActivityIndicator, KeyboardAvoidingView, Pressable, ScrollView, View } from "react-native";
 
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +32,7 @@ import { color, tw } from "@/theme";
 
 import { reportInvalid } from "../auth/report-invalid";
 import { ConfirmSheet } from "./confirm-sheet";
+import { CourseCoverSection } from "./course-cover-section";
 import { CourseDetailsFields } from "./course-details-fields";
 import { OutlineChapterCard } from "./outline-chapter-card";
 import { reportTutorFailure } from "./report-tutor-failure";
@@ -120,6 +122,8 @@ type ConfirmAction =
   | { kind: "delete-course" };
 
 function CourseEditor({ course }: { course: TutorCourseDetails }) {
+  // Clear the system navigation bar (Android draws edge to edge), plus the usual 40.
+  const insets = useSafeAreaInsets();
   const [draft, setDraft] = useState<CourseDraft>(() => draftOf(course));
   const [errors, setErrors] = useState<CourseDraftErrors>({});
   const [titleAction, setTitleAction] = useState<TitleAction | null>(null);
@@ -274,7 +278,14 @@ function CourseEditor({ course }: { course: TutorCourseDetails }) {
 
   return (
     <KeyboardAvoidingView style={tw`flex-1`} behavior={process.env.EXPO_OS === "ios" ? "padding" : undefined}>
-      <ScrollView contentContainerStyle={tw`px-screen pb-10 gap-8`} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={[tw`px-screen gap-8`, { paddingBottom: insets.bottom + 40 }]} keyboardShouldPersistTaps="handled">
+        <View style={tw`gap-4`}>
+          <AppText variant="heading" accessibilityRole="header">
+            Cover image
+          </AppText>
+          <CourseCoverSection course={course} />
+        </View>
+
         <View style={tw`gap-4`}>
           <AppText variant="heading" accessibilityRole="header">
             Details

@@ -9,8 +9,7 @@ import { Icon } from "@/components/ui/icon";
 import { AppText } from "@/components/ui/text";
 import { toast } from "@/components/ui/toast";
 import { orderedLessons, twoDigits } from "@/lib/course-outline";
-import { courseCover } from "@/lib/local-images";
-import { type CourseDetails, useCourseDetails, useStudentCount } from "@/lib/queries/courses";
+import { type CourseDetails, useCourseCover, useCourseDetails, useStudentCount } from "@/lib/queries/courses";
 import { type Lesson, useLesson, useLessonVideo } from "@/lib/queries/lessons";
 import { useProgress, useSetLessonCompleted } from "@/lib/queries/progress";
 import { usePremium } from "@/lib/queries/purchases";
@@ -71,6 +70,7 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
   const hosted = useLessonVideo(lesson.id, { enabled: !!videoKey });
   const videoUrl = videoKey ? (hosted.data?.url ?? null) : (lesson.content?.videoUrl ?? null);
   const students = useStudentCount(course.id);
+  const cover = useCourseCover(course);
   const progress = useProgress();
   const setCompleted = useSetLessonCompleted();
   const completed = (progress.data ?? []).some((row) => row.lessonId === lesson.id);
@@ -121,7 +121,7 @@ function LessonBody({ lesson, course }: { lesson: Lesson; course: CourseDetails 
         loading={!!videoKey && hosted.isPending}
         // An expired signed link: fetch a new one, which the player switches to.
         onSourceError={videoKey ? () => hosted.refetch() : undefined}
-        poster={courseCover(course)}
+        poster={cover}
         fallbackDuration={lesson.durationSeconds}
         onBack={nativeHeader ? undefined : () => leaveLesson(course.id)}
       />

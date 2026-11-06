@@ -1,5 +1,6 @@
 import { router } from "expo-router";
 import { ChevronLeft, Plus } from "lucide-react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ActivityIndicator, FlatList, Pressable, View } from "react-native";
 
 import { Button, buttonInk } from "@/components/ui/button";
@@ -16,6 +17,8 @@ const newCourse = () => router.push("/tutor/course/new");
 
 /** /tutor (prompts/20): the tutor's courses, published and drafts, newest first, and "New course". */
 export function TutorDashboardScreen() {
+  // Clear the system navigation bar (Android draws edge to edge), plus the usual 40.
+  const insets = useSafeAreaInsets();
   const paddingTop = useTopPadding(48);
   const courses = useMyCourses();
 
@@ -57,7 +60,7 @@ export function TutorDashboardScreen() {
         <FlatList
           data={courses.data}
           keyExtractor={(course) => course.id}
-          contentContainerStyle={tw`px-screen pb-10 gap-3 grow`}
+          contentContainerStyle={[tw`px-screen gap-3 grow`, { paddingBottom: insets.bottom + 40 }]}
           renderItem={({ item }) => (
             <TutorCourseCard
               course={item}

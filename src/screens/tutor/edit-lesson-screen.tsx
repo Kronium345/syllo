@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
 import { useState } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ActivityIndicator, KeyboardAvoidingView, Pressable, ScrollView, Switch, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
@@ -83,6 +84,8 @@ const draftOf = (lesson: TutorLessonDetails): LessonDraft => ({
 });
 
 function LessonEditor({ lesson }: { lesson: TutorLessonDetails }) {
+  // Clear the system navigation bar (Android draws edge to edge), plus the usual 40.
+  const insets = useSafeAreaInsets();
   const [draft, setDraft] = useState<LessonDraft>(() => draftOf(lesson));
   const [errors, setErrors] = useState<{ title?: string; body?: string }>({});
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -126,7 +129,7 @@ function LessonEditor({ lesson }: { lesson: TutorLessonDetails }) {
 
   return (
     <KeyboardAvoidingView style={tw`flex-1`} behavior={process.env.EXPO_OS === "ios" ? "padding" : undefined}>
-      <ScrollView contentContainerStyle={tw`px-screen pb-10 gap-8`} keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={[tw`px-screen gap-8`, { paddingBottom: insets.bottom + 40 }]} keyboardShouldPersistTaps="handled">
         <View style={tw`gap-4`}>
           <TextField
             label="Title"

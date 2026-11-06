@@ -118,6 +118,7 @@ export type Database = {
           access: string
           category: string | null
           cover_image_url: string | null
+          cover_key: string | null
           created_at: string
           description: string | null
           id: string
@@ -134,6 +135,7 @@ export type Database = {
           access?: string
           category?: string | null
           cover_image_url?: string | null
+          cover_key?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -150,6 +152,7 @@ export type Database = {
           access?: string
           category?: string | null
           cover_image_url?: string | null
+          cover_key?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -1294,6 +1297,7 @@ export type Database = {
           is_correct: boolean
         }[]
       }
+      can_edit_course: { Args: { p_course_id: string }; Returns: boolean }
       can_edit_lesson: { Args: { p_lesson_id: string }; Returns: boolean }
       course_student_count: { Args: { p_course_id: string }; Returns: number }
       create_course: {
@@ -1388,10 +1392,15 @@ export type Database = {
         Returns: undefined
       }
       quiz_sessions_left: { Args: never; Returns: number }
+      remove_course_cover: { Args: { p_course_id: string }; Returns: string }
       remove_lesson_video: { Args: { p_lesson_id: string }; Returns: string }
       rename_chapter: {
         Args: { p_chapter_id: string; p_title: string }
         Returns: undefined
+      }
+      set_course_cover: {
+        Args: { p_course_id: string; p_key: string }
+        Returns: string
       }
       set_course_published: {
         Args: { p_course_id: string; p_published: boolean }

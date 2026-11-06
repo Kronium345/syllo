@@ -34,11 +34,40 @@ const KIND_LABELS: Record<string, string> = {
   "application/zip": "ZIP archive",
 };
 
+const EXTENSIONS: Record<string, string> = {
+  "application/pdf": "pdf",
+  "text/csv": "csv",
+  "text/plain": "txt",
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "application/zip": "zip",
+};
+
+/**
+ * The picked file's real name, or null. On Android the system picker returns a content URI
+ * (".../document:24914"), and expo-file-system's `name` is that last segment, not the file's
+ * display name, so anything without a normal extension doesn't count.
+ */
+function realFileName(name: string): string | null {
+  return /^[^:/\\]+\.[a-z0-9]{2,4}$/i.test(name) ? name : null;
+}
+
 /** "Week 1 slides" from "week-1_slides.pdf": the default title for a new resource. */
 function titleFromFileName(name: string): string {
   const base = name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim();
   const title = base.charAt(0).toUpperCase() + base.slice(1);
   return title.slice(0, OUTLINE_TITLE.max);
+}
+
+/** "week-1-slides.pdf" from the title, for files picked without a usable name. */
+function fileNameFromTitle(title: string, mimeType: string): string {
+  const base =
+    title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 60) || "resource";
+  return `${base}.${EXTENSIONS[mimeType] ?? "bin"}`;
 }
 
 /**
@@ -57,10 +86,12 @@ export function LessonResourcesSection({ lesson }: { lesson: TutorLessonDetails 
     const result = await File.pickFileAsync({ mimeTypes: UPLOAD_RULES.resource.mimeTypes }).catch(() => null);
     if (!result || result.canceled) return;
     const file = result.result;
+    const name = realFileName(file.name);
+    // Without a real name, the title the tutor types becomes the file name (see upload).
     const candidate: PickedFile = {
       uri: file.uri,
-      name: file.name,
-      mimeType: normaliseMimeType(file.type, file.name),
+      name: name ?? "",
+      mimeType: normaliseMimeType(file.type, name ?? ""),
       sizeBytes: file.size,
     };
     if (!UPLOAD_RULES.resource.mimeTypes.includes(candidate.mimeType)) {
@@ -76,7 +107,7 @@ export function LessonResourcesSection({ lesson }: { lesson: TutorLessonDetails 
 
   const upload = (title: string) => {
     if (!picked) return;
-    const file = picked;
+    const file = picked.name ? picked : { ...picked, name: fileNameFromTitle(title, picked.mimeType) };
     setPicked(null);
     setProgress(0);
     add.mutate(
@@ -156,7 +187,7 @@ export function LessonResourcesSection({ lesson }: { lesson: TutorLessonDetails 
           visible
           title="Name this file"
           label="Resource title"
-          initial={titleFromFileName(picked.name)}
+          initial={picked.name ? titleFromFileName(picked.name) : ""}
           saveLabel="Upload"
           saving={false}
           onSave={upload}

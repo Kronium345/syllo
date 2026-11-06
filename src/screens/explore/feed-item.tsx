@@ -7,13 +7,12 @@ import { AppText } from "@/components/ui/text";
 import { levelLabel } from "@/lib/course-level";
 import { ratingLabel } from "@/lib/course-rating";
 import { formatHoursMinutes } from "@/lib/format-duration";
-import { courseCover } from "@/lib/local-images";
-import type { CourseCard } from "@/lib/queries/courses";
+import { type CourseCard, useCourseCover } from "@/lib/queries/courses";
 import { pressScale, tw } from "@/theme";
 
 /** One course in Explore's feed (course_search_feed #course-item). */
 export function FeedItem({ course, first, onPress }: { course: CourseCard; first: boolean; onPress: () => void }) {
-  const cover = courseCover(course);
+  const cover = useCourseCover(course);
   return (
     <Pressable
       accessibilityRole="button"

@@ -21,6 +21,8 @@ export const queryKeys = {
     categories: () => [...queryKeys.courses.all, "categories"] as const,
     details: (courseId: string) => [...queryKeys.courses.all, "details", courseId] as const,
     students: (courseId: string) => [...queryKeys.courses.all, "students", courseId] as const,
+    // A signed link to an uploaded cover (prompts/24); the key is part of it, so a new cover refetches.
+    cover: (courseId: string, coverKey: string | null) => [...queryKeys.courses.all, "cover", courseId, coverKey] as const,
     // The tutor dashboard (prompts/20): under "courses", so course invalidation refreshes it too.
     mine: (userId: string | null) => [...queryKeys.courses.all, "mine", userId] as const,
     // The course editor (prompts/22).

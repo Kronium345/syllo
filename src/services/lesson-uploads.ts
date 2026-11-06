@@ -4,14 +4,21 @@ import { File, UploadType } from "expo-file-system";
 import type { AppSupabaseClient } from "@/lib/supabase";
 
 import { NotAllowedError } from "./errors";
-import { addLessonResource, deleteLessonResource, removeLessonVideo, setLessonVideo } from "./tutor";
+import {
+  addLessonResource,
+  deleteLessonResource,
+  removeCourseCover,
+  removeLessonVideo,
+  setCourseCover,
+  setLessonVideo,
+} from "./tutor";
 
 // Tutor uploads to R2 (prompts/23). The lesson-upload Edge Function signs a PUT link for the
 // lesson's own uploads/<course>/<lesson>/ folder (type and size are part of the signature), the
 // file goes straight from the phone to R2, and the RPCs in tutor.ts then save the key. Replaced
 // and deleted files are removed through the same function. No React here.
 
-export type UploadKind = "video" | "resource";
+export type UploadKind = "video" | "resource" | "cover";
 
 const MB = 1024 * 1024;
 
@@ -22,6 +29,8 @@ export const UPLOAD_RULES: Record<UploadKind, { maxBytes: number; mimeTypes: str
     maxBytes: 25 * MB,
     mimeTypes: ["application/pdf", "text/csv", "text/plain", "image/png", "image/jpeg", "application/zip"],
   },
+  // Course covers (prompts/24).
+  cover: { maxBytes: 5 * MB, mimeTypes: ["image/jpeg", "image/png"] },
 };
 
 /** A file picked on the device, ready to upload. */
@@ -167,4 +176,41 @@ export async function deleteLessonResourceFile(
 ): Promise<void> {
   const key = await deleteLessonResource(supabase, resourceId);
   await deleteOldUpload(supabase, lessonId, key);
+}
+
+/** Course covers (prompts/24): the same function, addressed by course instead of lesson. */
+async function deleteOldCover(supabase: AppSupabaseClient, courseId: string, key: string | null): Promise<void> {
+  if (!key?.startsWith(`uploads/${courseId}/cover-`)) return;
+  await callUploadFunction<{ ok: true }>(supabase, { action: "delete", courseId, key }).catch((error: Error) =>
+    console.warn("Couldn't delete the old cover:", error.message),
+  );
+}
+
+/** Uploads a cover image and makes it the course's cover (the old upload, if any, is deleted). */
+export async function uploadCourseCover(
+  supabase: AppSupabaseClient,
+  input: { courseId: string; file: PickedFile; onProgress?: (fraction: number) => void },
+): Promise<void> {
+  const { url, key } = await callUploadFunction<{ url: string; key: string }>(supabase, {
+    action: "sign",
+    courseId: input.courseId,
+    kind: "cover",
+    mimeType: input.file.mimeType,
+    sizeBytes: input.file.sizeBytes,
+  });
+  await putFile(url, input.file, input.onProgress);
+  let previous: string | null;
+  try {
+    previous = await setCourseCover(supabase, input.courseId, key);
+  } catch (error) {
+    await deleteOldCover(supabase, input.courseId, key);
+    throw error;
+  }
+  await deleteOldCover(supabase, input.courseId, previous);
+}
+
+/** Removes the course's uploaded cover and deletes the file. */
+export async function removeCourseCoverFile(supabase: AppSupabaseClient, courseId: string): Promise<void> {
+  const previous = await removeCourseCover(supabase, courseId);
+  await deleteOldCover(supabase, courseId, previous);
 }

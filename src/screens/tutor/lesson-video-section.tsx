@@ -49,7 +49,9 @@ export function LessonVideoSection({ lesson }: { lesson: TutorLessonDetails }) {
       uri: asset.uri,
       name,
       mimeType: normaliseMimeType(asset.mimeType, name),
-      sizeBytes: asset.fileSize ?? fileSize(asset.uri),
+      // The real size on disk: the picker's fileSize can describe the original, not the cropped copy,
+      // and the upload link only accepts the exact size it was signed for.
+      sizeBytes: fileSize(asset.uri),
     };
     const rules = UPLOAD_RULES.video;
     if (!rules.mimeTypes.includes(file.mimeType)) {

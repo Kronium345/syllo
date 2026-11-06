@@ -4,7 +4,7 @@ import { View, Pressable } from "react-native";
 import { Badge } from "@/components/ui/badge";
 import { AppText } from "@/components/ui/text";
 import { levelLabel } from "@/lib/course-level";
-import { courseCover } from "@/lib/local-images";
+import { useCourseCover } from "@/lib/queries/courses";
 import type { TutorCourse } from "@/lib/queries/tutor";
 import { pressScale, tw } from "@/theme";
 
@@ -20,7 +20,7 @@ function outlineSummary(course: TutorCourse): string {
 
 /** One of the tutor's courses on the dashboard (not in the design; built from its tokens). */
 export function TutorCourseCard({ course, onPress }: { course: TutorCourse; onPress: () => void }) {
-  const cover = courseCover(course);
+  const cover = useCourseCover(course);
   const status = course.isPublished ? "Published" : "Draft";
   const details = [course.access === "premium" ? "Premium" : "Free", course.level ? levelLabel(course.level) : null]
     .filter(Boolean)

@@ -13,6 +13,8 @@ export type TutorCourse = {
   slug: string;
   title: string;
   coverImageUrl: string | null;
+  /** An uploaded cover in R2 (prompts/24); draw covers with useCourseCover. */
+  coverKey: string | null;
   isPublished: boolean;
   access: CourseAccess;
   level: CourseLevel | null;
@@ -27,6 +29,7 @@ type TutorCourseRow = {
   slug: string;
   title: string;
   cover_image_url: string | null;
+  cover_key: string | null;
   is_published: boolean;
   access: string;
   level: string | null;
@@ -47,7 +50,7 @@ export async function getMyCourses(
   const query = supabase
     .from("courses")
     .select(
-      "id, slug, title, cover_image_url, is_published, access, level, created_at, tutors!inner(profile_id), chapters(lessons(id), quizzes(id))",
+      "id, slug, title, cover_image_url, cover_key, is_published, access, level, created_at, tutors!inner(profile_id), chapters(lessons(id), quizzes(id))",
     )
     .eq("tutors.profile_id", userId)
     .order("created_at", { ascending: false });
@@ -57,6 +60,7 @@ export async function getMyCourses(
     slug: row.slug,
     title: row.title,
     coverImageUrl: row.cover_image_url,
+    coverKey: row.cover_key,
     isPublished: row.is_published,
     access: row.access === "premium" ? "premium" : "free",
     level: toLevel(row.level),
@@ -119,6 +123,8 @@ export type TutorCourseDetails = {
   access: CourseAccess;
   isPublished: boolean;
   coverImageUrl: string | null;
+  /** An uploaded cover in R2 (prompts/24); draw covers with useCourseCover. */
+  coverKey: string | null;
   chapters: TutorChapter[];
 };
 
@@ -133,6 +139,7 @@ type TutorCourseDetailsRow = {
   access: string;
   is_published: boolean;
   cover_image_url: string | null;
+  cover_key: string | null;
   chapters: {
     id: string;
     title: string;
@@ -155,7 +162,7 @@ export async function getTutorCourse(
   const query = supabase
     .from("courses")
     .select(
-      "id, slug, title, subtitle, description, category, level, access, is_published, cover_image_url, tutors!inner(profile_id), chapters(id, title, position, lessons(id, title, position, duration_seconds, is_preview), quizzes(id))",
+      "id, slug, title, subtitle, description, category, level, access, is_published, cover_image_url, cover_key, tutors!inner(profile_id), chapters(id, title, position, lessons(id, title, position, duration_seconds, is_preview), quizzes(id))",
     )
     .eq("id", courseId)
     .eq("tutors.profile_id", userId);
@@ -173,6 +180,7 @@ export async function getTutorCourse(
     access: row.access === "premium" ? "premium" : "free",
     isPublished: row.is_published,
     coverImageUrl: row.cover_image_url,
+    coverKey: row.cover_key,
     chapters: [...row.chapters]
       .sort((a, b) => a.position - b.position)
       .map((chapter) => ({
@@ -439,6 +447,26 @@ export async function addLessonResource(supabase: AppSupabaseClient, input: NewR
 export async function deleteLessonResource(supabase: AppSupabaseClient, resourceId: string): Promise<string | null> {
   try {
     const { data } = await supabase.rpc("delete_lesson_resource", { p_resource_id: resourceId }).throwOnError();
+    return data ?? null;
+  } catch (error) {
+    throw notAllowedOr(error);
+  }
+}
+
+/** Points the course at an uploaded cover (prompts/24); resolves to the key it replaced, if any. */
+export async function setCourseCover(supabase: AppSupabaseClient, courseId: string, key: string): Promise<string | null> {
+  try {
+    const { data } = await supabase.rpc("set_course_cover", { p_course_id: courseId, p_key: key }).throwOnError();
+    return data ?? null;
+  } catch (error) {
+    throw notAllowedOr(error);
+  }
+}
+
+/** Removes the course's uploaded cover; resolves to the removed key, if any. */
+export async function removeCourseCover(supabase: AppSupabaseClient, courseId: string): Promise<string | null> {
+  try {
+    const { data } = await supabase.rpc("remove_course_cover", { p_course_id: courseId }).throwOnError();
     return data ?? null;
   } catch (error) {
     throw notAllowedOr(error);

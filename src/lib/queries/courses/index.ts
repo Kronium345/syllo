@@ -12,6 +12,8 @@ export type {
   LessonOutline,
 } from "@/services/courses";
 export { useCategories } from "./use-categories";
+export { useCourseCover } from "./use-course-cover";
+export { useCourseCoverUrl } from "./use-course-cover-url";
 export { useCourseDetails } from "./use-course-details";
 export { useCourseFeed } from "./use-course-feed";
 export { useDeleteCourse } from "./use-delete-course";

@@ -19,8 +19,8 @@ import { nextLesson, orderedLessons } from "@/lib/course-outline";
 import { ratingLabel } from "@/lib/course-rating";
 import { formatHoursMinutes } from "@/lib/format-duration";
 import { formatCount } from "@/lib/format-number";
-import { courseCover, tutorPhoto } from "@/lib/local-images";
-import { type CourseDetails, useCourseDetails } from "@/lib/queries/courses";
+import { tutorPhoto } from "@/lib/local-images";
+import { type CourseDetails, useCourseCover, useCourseDetails } from "@/lib/queries/courses";
 import { useEnroll } from "@/lib/queries/enrollments";
 import { useFollowTutor } from "@/lib/queries/follows";
 import { useProgress } from "@/lib/queries/progress";
@@ -143,7 +143,7 @@ function CourseBody({
   const [openChapters, setOpenChapters] = useState<Set<string>>(
     () => new Set(course.chapters[0] ? [course.chapters[0].id] : []),
   );
-  const cover = courseCover(course);
+  const cover = useCourseCover(course);
   const photo = course.tutor ? tutorPhoto(course.tutor) : null;
   const insets = useSafeAreaInsets();
 

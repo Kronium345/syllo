@@ -7,13 +7,12 @@ import { Icon } from "@/components/ui/icon";
 import { AppText } from "@/components/ui/text";
 import { ratingLabel } from "@/lib/course-rating";
 import { formatTotalHours } from "@/lib/format-duration";
-import { courseCover } from "@/lib/local-images";
-import type { CourseCard } from "@/lib/queries/courses";
+import { type CourseCard, useCourseCover } from "@/lib/queries/courses";
 import { pressScale, tw } from "@/theme";
 
 /** A 240-wide carousel card (learning_dashboard #course-card). */
 export function RecommendedCard({ course, onPress }: { course: CourseCard; onPress: () => void }) {
-  const cover = courseCover(course);
+  const cover = useCourseCover(course);
   return (
     <Pressable
       accessibilityRole="button"

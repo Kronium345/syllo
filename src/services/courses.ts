@@ -1,3 +1,5 @@
+import { FunctionsHttpError } from "@supabase/supabase-js";
+
 import type { AppSupabaseClient } from "@/lib/supabase";
 
 import { NotAllowedError, PremiumRequiredError } from "./errors";
@@ -14,6 +16,8 @@ export type CourseCard = {
   slug: string;
   title: string;
   coverImageUrl: string | null;
+  /** An uploaded cover in R2 (prompts/24); draw covers with useCourseCover. */
+  coverKey: string | null;
   category: string | null;
   level: CourseLevel | null;
   /** free: anyone can enroll. premium: needs Pro (prompts/16). */
@@ -44,13 +48,14 @@ export type CourseFeedFilter = {
 };
 
 const CARD_COLUMNS =
-  "id, slug, title, cover_image_url, category, level, access, rating_average, rating_count, tutors(name), chapters(lessons(id, duration_seconds))";
+  "id, slug, title, cover_image_url, cover_key, category, level, access, rating_average, rating_count, tutors(name), chapters(lessons(id, duration_seconds))";
 
 type CardRow = {
   id: string;
   slug: string;
   title: string;
   cover_image_url: string | null;
+  cover_key: string | null;
   category: string | null;
   level: string | null;
   access: string;
@@ -67,6 +72,7 @@ function toCard(row: CardRow): CourseCard {
     slug: row.slug,
     title: row.title,
     coverImageUrl: row.cover_image_url,
+    coverKey: row.cover_key,
     category: row.category,
     level: isCourseLevel(row.level) ? row.level : null,
     access: toAccess(row.access),
@@ -174,6 +180,8 @@ export type CourseDetails = {
   title: string;
   description: string | null;
   coverImageUrl: string | null;
+  /** An uploaded cover in R2 (prompts/24); draw covers with useCourseCover. */
+  coverKey: string | null;
   level: CourseLevel | null;
   access: CourseAccess;
   ratingAverage: number | null;
@@ -190,6 +198,7 @@ type DetailsRow = {
   title: string;
   description: string | null;
   cover_image_url: string | null;
+  cover_key: string | null;
   level: string | null;
   access: string;
   rating_average: number | null;
@@ -225,7 +234,7 @@ export async function getCourseDetails(
   const query = supabase
     .from("courses")
     .select(
-      "id, slug, title, description, cover_image_url, level, access, rating_average, rating_count, " +
+      "id, slug, title, description, cover_image_url, cover_key, level, access, rating_average, rating_count, " +
         "tutors(id, name, headline, avatar_url, tutor_follows(tutor_id)), " +
         "chapters(id, title, position, lessons(id, title, position, duration_seconds, is_preview), quizzes(id, title, is_preview, quiz_questions(count))), " +
         "enrollments(id)",
@@ -240,6 +249,7 @@ export async function getCourseDetails(
     title: row.title,
     description: row.description,
     coverImageUrl: row.cover_image_url,
+    coverKey: row.cover_key,
     level: isCourseLevel(row.level) ? row.level : null,
     access: toAccess(row.access),
     ratingAverage: row.rating_average === null ? null : Number(row.rating_average),
@@ -315,4 +325,26 @@ export async function enroll(supabase: AppSupabaseClient, courseId: string): Pro
 export async function deleteCourse(supabase: AppSupabaseClient, courseId: string): Promise<void> {
   const { data } = await supabase.from("courses").delete().eq("id", courseId).select("id").throwOnError();
   if (data.length === 0) throw new NotAllowedError("Only its tutor can.");
+}
+
+/** A signed link to a course's uploaded cover (prompts/24) and when it stops working. */
+export type CourseCoverLink = { url: string; expiresAt: string };
+
+/**
+ * Asks the course-cover Edge Function for a 1-hour link to the course's uploaded cover. It reads
+ * the course as the learner, so RLS decides (published, or the tutor's own draft). Resolves to
+ * null when there's no uploaded cover to show.
+ */
+export async function getCourseCoverUrl(supabase: AppSupabaseClient, courseId: string): Promise<CourseCoverLink | null> {
+  // Edge Function calls have no .throwOnError(); throw the returned error ourselves.
+  const { data, error } = await supabase.functions.invoke<CourseCoverLink>("course-cover", {
+    method: "POST",
+    body: { courseId },
+  });
+  if (error) {
+    const status = error instanceof FunctionsHttpError ? (error.context as Response).status : 0;
+    if (status === 404) return null;
+    throw error;
+  }
+  return data?.url ? { url: data.url, expiresAt: data.expiresAt } : null;
 }

@@ -6,8 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Icon } from "@/components/ui/icon";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { AppText } from "@/components/ui/text";
-import { courseCover } from "@/lib/local-images";
-import type { CourseCard } from "@/lib/queries/courses";
+import { type CourseCard, useCourseCover } from "@/lib/queries/courses";
 import { pressScale, tw } from "@/theme";
 
 /**
@@ -24,7 +23,7 @@ export function EnrolledCourseCard({
   completed: ReadonlySet<string> | undefined;
   onPress: () => void;
 }) {
-  const cover = courseCover(course);
+  const cover = useCourseCover(course);
   const total = course.lessonIds.length;
   const done = completed ? course.lessonIds.filter((id) => completed.has(id)).length : 0;
   const finished = total > 0 && done >= total;
