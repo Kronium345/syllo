@@ -17,6 +17,7 @@ import { AppText } from "@/components/ui/text";
 import { useTopPadding } from "@/components/ui/use-top-padding";
 import { featureComingSoon } from "@/lib/coming-soon";
 import { nextLesson } from "@/lib/course-outline";
+import { isQuizOnly, quizCountLabel } from "@/lib/course-length";
 import { displayFirstName, profileImageUrl } from "@/lib/display-name";
 import { greeting } from "@/lib/format-duration";
 import { useAskNotificationsOnce } from "@/lib/notifications/use-study-reminders";
@@ -209,7 +210,7 @@ function ContinueCard({
           </AppText>
           <AppText variant="callout" style={tw`mb-5`}>
             {by}
-            {done}/{shown.lessonCount} Lessons
+            {isQuizOnly(shown) ? quizCountLabel(shown.quizCount) : `${done}/${shown.lessonCount} Lessons`}
           </AppText>
           <View style={tw`mb-6`}>
             <View style={tw`flex-row justify-between items-center mb-2`}>

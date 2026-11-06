@@ -73,6 +73,7 @@
     "generate:app-icon": "node scripts/generate-app-icon.mjs",
     "generate:android-icon": "node scripts/generate-android-adaptive-foreground.mjs",
     "generate:splash": "node scripts/generate-splash.mjs",
+    "generate:course-covers": "node scripts/generate-course-covers.mjs",
     "upload:lesson-videos": "node scripts/upload-lesson-videos.mjs"
   },
   "private": true

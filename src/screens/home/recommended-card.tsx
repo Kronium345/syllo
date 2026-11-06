@@ -1,10 +1,11 @@
 import { Image } from "expo-image";
-import { Clock } from "lucide-react-native";
+import { ClipboardCheck, Clock } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 
 import { Badge } from "@/components/ui/badge";
 import { Icon } from "@/components/ui/icon";
 import { AppText } from "@/components/ui/text";
+import { isQuizOnly, quizCountLabel } from "@/lib/course-length";
 import { ratingLabel } from "@/lib/course-rating";
 import { formatTotalHours } from "@/lib/format-duration";
 import { type CourseCard, useCourseCover } from "@/lib/queries/courses";
@@ -40,8 +41,10 @@ export function RecommendedCard({ course, onPress }: { course: CourseCard; onPre
           {course.title}
         </AppText>
         <View style={tw`flex-row items-center gap-2`}>
-          <Icon as={Clock} size="sm" color="muted" />
-          <AppText variant="footnote">{formatTotalHours(course.durationSeconds)}</AppText>
+          <Icon as={isQuizOnly(course) ? ClipboardCheck : Clock} size="sm" color="muted" />
+          <AppText variant="footnote">
+            {isQuizOnly(course) ? quizCountLabel(course.quizCount) : formatTotalHours(course.durationSeconds)}
+          </AppText>
         </View>
       </View>
     </Pressable>

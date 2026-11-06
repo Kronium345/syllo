@@ -27,6 +27,8 @@ export type CourseCard = {
   ratingCount: number;
   tutorName: string | null;
   lessonCount: number;
+  /** Quizzes across the chapters: quiz-only courses (Pharmacy Exam Prep) show this instead of a length. */
+  quizCount: number;
   durationSeconds: number;
   /** Every lesson id, for progress against lesson_progress. */
   lessonIds: string[];
@@ -48,7 +50,7 @@ export type CourseFeedFilter = {
 };
 
 const CARD_COLUMNS =
-  "id, slug, title, cover_image_url, cover_key, category, level, access, rating_average, rating_count, tutors(name), chapters(lessons(id, duration_seconds))";
+  "id, slug, title, cover_image_url, cover_key, category, level, access, rating_average, rating_count, tutors(name), chapters(lessons(id, duration_seconds), quizzes(id))";
 
 type CardRow = {
   id: string;
@@ -62,7 +64,7 @@ type CardRow = {
   rating_average: number | null;
   rating_count: number;
   tutors: { name: string } | null;
-  chapters: { lessons: { id: string; duration_seconds: number }[] }[];
+  chapters: { lessons: { id: string; duration_seconds: number }[]; quizzes: { id: string }[] }[];
 };
 
 function toCard(row: CardRow): CourseCard {
@@ -80,6 +82,7 @@ function toCard(row: CardRow): CourseCard {
     ratingCount: row.rating_count,
     tutorName: row.tutors?.name ?? null,
     lessonCount: lessons.length,
+    quizCount: row.chapters.reduce((total, chapter) => total + chapter.quizzes.length, 0),
     durationSeconds: lessons.reduce((total, lesson) => total + lesson.duration_seconds, 0),
     lessonIds: lessons.map((lesson) => lesson.id),
   };
@@ -124,7 +127,9 @@ export async function getCourseFeed(
   filter: CourseFeedFilter,
   signal?: AbortSignal,
 ): Promise<CourseCard[]> {
-  let query = supabase.from("courses").select(CARD_COLUMNS);
+  // Published only: since prompts/20 a tutor can also read their own drafts, which must not
+  // appear in Explore or Home.
+  let query = supabase.from("courses").select(CARD_COLUMNS).eq("is_published", true);
   const search = filter.search?.trim();
   if (search) query = query.ilike("title", likePattern(search));
   if (filter.categories?.length) query = query.in("category", filter.categories);
@@ -145,7 +150,12 @@ export async function getCourseFeed(
 
 /** The distinct categories of published courses, for Explore's chips. */
 export async function getCategories(supabase: AppSupabaseClient, signal?: AbortSignal): Promise<string[]> {
-  const query = supabase.from("courses").select("category").not("category", "is", null).order("category");
+  const query = supabase
+    .from("courses")
+    .select("category")
+    .eq("is_published", true)
+    .not("category", "is", null)
+    .order("category");
   const { data } = await (signal ? query.abortSignal(signal) : query).throwOnError();
   return [...new Set(data.map((row) => row.category).filter((category): category is string => !!category))];
 }

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Icon } from "@/components/ui/icon";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { AppText } from "@/components/ui/text";
+import { isQuizOnly, quizCountLabel } from "@/lib/course-length";
 import { type CourseCard, useCourseCover } from "@/lib/queries/courses";
 import { pressScale, tw } from "@/theme";
 
@@ -27,7 +28,11 @@ export function EnrolledCourseCard({
   const total = course.lessonIds.length;
   const done = completed ? course.lessonIds.filter((id) => completed.has(id)).length : 0;
   const finished = total > 0 && done >= total;
-  const label = finished ? "Completed" : `${done}/${total} lessons`;
+  const label = isQuizOnly(course)
+    ? quizCountLabel(course.quizCount)
+    : finished
+      ? "Completed"
+      : `${done}/${total} lessons`;
 
   return (
     <Pressable

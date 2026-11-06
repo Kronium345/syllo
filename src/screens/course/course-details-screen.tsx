@@ -1,7 +1,7 @@
 import ShareIcon from "@expo/material-symbols/share.xml";
 import { Image } from "expo-image";
 import { router, Stack, useLocalSearchParams } from "expo-router";
-import { ChevronLeft, ChevronRight, Clock, LayoutTemplate, Share2, Star } from "lucide-react-native";
+import { ChevronLeft, ChevronRight, ClipboardCheck, Clock, LayoutTemplate, Share2, Star } from "lucide-react-native";
 import { useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -15,6 +15,7 @@ import { StickyFooter } from "@/components/ui/sticky-footer";
 import { AppText } from "@/components/ui/text";
 import { toast } from "@/components/ui/toast";
 import { useTopPadding } from "@/components/ui/use-top-padding";
+import { isQuizOnly } from "@/lib/course-length";
 import { nextLesson, orderedLessons } from "@/lib/course-outline";
 import { ratingLabel } from "@/lib/course-rating";
 import { formatHoursMinutes } from "@/lib/format-duration";
@@ -140,6 +141,8 @@ function CourseBody({
   const lessons = orderedLessons(course);
   const lessonsDone = lessons.filter((lesson) => completed.has(lesson.id)).length;
   const durationSeconds = lessons.reduce((total, lesson) => total + lesson.durationSeconds, 0);
+  const quizCount = course.chapters.reduce((total, chapter) => total + chapter.quizzes.length, 0);
+  const quizOnly = isQuizOnly({ lessonCount: lessons.length, quizCount });
   const [openChapters, setOpenChapters] = useState<Set<string>>(
     () => new Set(course.chapters[0] ? [course.chapters[0].id] : []),
   );
@@ -244,16 +247,28 @@ function CourseBody({
                   <AppText style={tw`text-14 text-muted`}>({formatCount(course.ratingCount)})</AppText>
                 ) : null}
               </View>
-              <View style={tw`flex-row items-center gap-1.5`}>
-                <Icon as={Clock} size="md" color="muted" />
-                <AppText style={tw`text-14 text-muted`}>{formatHoursMinutes(durationSeconds)}</AppText>
-              </View>
-              <View style={tw`flex-row items-center gap-1.5`}>
-                <Icon as={LayoutTemplate} size="md" color="muted" />
-                <AppText style={tw`text-14 text-muted`}>
-                  {lessons.length} {lessons.length === 1 ? "Lesson" : "Lessons"}
-                </AppText>
-              </View>
+              {quizOnly ? (
+                // A quiz-only course (Pharmacy Exam Prep) has no length or lessons to show.
+                <View style={tw`flex-row items-center gap-1.5`}>
+                  <Icon as={ClipboardCheck} size="md" color="muted" />
+                  <AppText style={tw`text-14 text-muted`}>
+                    {quizCount} {quizCount === 1 ? "Quiz" : "Quizzes"}
+                  </AppText>
+                </View>
+              ) : (
+                <>
+                  <View style={tw`flex-row items-center gap-1.5`}>
+                    <Icon as={Clock} size="md" color="muted" />
+                    <AppText style={tw`text-14 text-muted`}>{formatHoursMinutes(durationSeconds)}</AppText>
+                  </View>
+                  <View style={tw`flex-row items-center gap-1.5`}>
+                    <Icon as={LayoutTemplate} size="md" color="muted" />
+                    <AppText style={tw`text-14 text-muted`}>
+                      {lessons.length} {lessons.length === 1 ? "Lesson" : "Lessons"}
+                    </AppText>
+                  </View>
+                </>
+              )}
             </View>
           </View>
 

@@ -1,11 +1,12 @@
 import { Image } from "expo-image";
-import { ChartNoAxesColumnIncreasing, Clock, Star, User } from "lucide-react-native";
+import { ChartNoAxesColumnIncreasing, ClipboardCheck, Clock, Star, User } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 
 import { Icon } from "@/components/ui/icon";
 import { AppText } from "@/components/ui/text";
 import { levelLabel } from "@/lib/course-level";
 import { ratingLabel } from "@/lib/course-rating";
+import { isQuizOnly, quizCountLabel } from "@/lib/course-length";
 import { formatHoursMinutes } from "@/lib/format-duration";
 import { type CourseCard, useCourseCover } from "@/lib/queries/courses";
 import { pressScale, tw } from "@/theme";
@@ -49,8 +50,10 @@ export function FeedItem({ course, first, onPress }: { course: CourseCard; first
           </View>
         ) : null}
         <View style={tw`flex-row items-center gap-1`}>
-          <Icon as={Clock} size="sm" color="muted" />
-          <AppText variant="caption">{formatHoursMinutes(course.durationSeconds)}</AppText>
+          <Icon as={isQuizOnly(course) ? ClipboardCheck : Clock} size="sm" color="muted" />
+          <AppText variant="caption">
+            {isQuizOnly(course) ? quizCountLabel(course.quizCount) : formatHoursMinutes(course.durationSeconds)}
+          </AppText>
         </View>
         {course.level ? (
           <View style={tw`flex-row items-center gap-1`}>
