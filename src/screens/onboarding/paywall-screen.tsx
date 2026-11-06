@@ -1,7 +1,7 @@
 import { useUser } from "@clerk/expo";
 import { Image } from "expo-image";
 import { router } from "expo-router";
-import { Check, Clock, X } from "lucide-react-native";
+import { Check, X } from "lucide-react-native";
 import { useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, View } from "react-native";
 
@@ -27,7 +27,7 @@ import { useCompleteOnboarding } from "@/lib/queries/profiles";
 import { color, pressScale, tw } from "@/theme";
 
 // Pro features (the user's list, replacing the prototype's three rows).
-const FEATURES = ["All standard courses", "Unlimited quizzes", "Offline downloads", "Certificates and awards", "Viva and interview practice with AI feedback"];
+const FEATURES = ["All standard courses", "Unlimited quizzes", "Viva and interview practice with AI feedback"];
 
 type PlanId = "annual" | "monthly";
 
@@ -151,15 +151,6 @@ export function PaywallScreen({ mode = "onboarding" }: { mode?: "onboarding" | "
         </View>
 
         <View style={tw`px-screen -mt-6 pb-6`}>
-          <View
-            style={tw`flex-row items-center gap-2 self-center bg-danger-tint border border-danger-line px-3 py-1.5 rounded-lg mb-6`}
-          >
-            <Icon as={Clock} size="md" color="danger" />
-            <AppText style={tw`text-13 font-bold text-danger-deep`}>
-              SPRING SALE: {savings ?? 40}% OFF ends in 12:45
-            </AppText>
-          </View>
-
           <AppText variant="title-xl" accessibilityRole="header" style={tw`text-center mb-8`}>
             Unlock your potential
           </AppText>
