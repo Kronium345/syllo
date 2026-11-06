@@ -3,7 +3,7 @@ import { File, UploadType } from "expo-file-system";
 
 import type { AppSupabaseClient } from "@/lib/supabase";
 
-import { NotAllowedError } from "./errors";
+import { NotAllowedError, UploadError } from "./errors";
 import {
   addLessonResource,
   deleteLessonResource,
@@ -69,7 +69,15 @@ async function callUploadFunction<T>(supabase: AppSupabaseClient, body: Record<s
   // Edge Function calls have no .throwOnError(); throw the returned error ourselves.
   const { data, error } = await supabase.functions.invoke<T>("lesson-upload", { method: "POST", body });
   if (error) {
-    if (httpStatus(error) === 403) throw new NotAllowedError("Not allowed to change this lesson.");
+    const status = httpStatus(error);
+    if (status === 403) throw new NotAllowedError("Not allowed to change this lesson.");
+    // 422: the function refused the file itself (wrong type, too big) and says why.
+    if (status === 422) {
+      const reply = await ((error as FunctionsHttpError).context as Response)
+        .json()
+        .catch(() => null as { error?: string } | null);
+      throw new UploadError(reply?.error ?? "That file can't be uploaded.", "refused");
+    }
     throw error;
   }
   if (!data) throw new Error("lesson-upload returned nothing");
@@ -95,15 +103,30 @@ export async function signUpload(
 
 /** PUTs the file to a signed link, reporting progress from 0 to 1. */
 export async function putFile(url: string, file: PickedFile, onProgress?: (fraction: number) => void): Promise<void> {
-  const result = await new File(file.uri).upload(url, {
-    httpMethod: "PUT",
-    uploadType: UploadType.BINARY_CONTENT,
-    headers: { "Content-Type": file.mimeType },
-    onProgress: ({ bytesSent, totalBytes }) => {
-      if (totalBytes > 0) onProgress?.(Math.min(1, bytesSent / totalBytes));
-    },
-  });
-  if (result.status < 200 || result.status >= 300) throw new Error(`Upload failed with status ${result.status}`);
+  let status: number;
+  try {
+    const result = await new File(file.uri).upload(url, {
+      httpMethod: "PUT",
+      uploadType: UploadType.BINARY_CONTENT,
+      headers: { "Content-Type": file.mimeType },
+      onProgress: ({ bytesSent, totalBytes }) => {
+        if (totalBytes > 0) onProgress?.(Math.min(1, bytesSent / totalBytes));
+      },
+    });
+    status = result.status;
+  } catch {
+    throw new UploadError("The connection dropped during the upload. Check your connection and try again.", "network");
+  }
+  if (status >= 200 && status < 300) return;
+  // The link is signed for the file's exact type and size; R2 answers 403 to anything else
+  // (prompts/24: a cropped copy whose reported size was wrong), or once the link has expired.
+  if (status === 403) {
+    throw new UploadError(
+      "Storage refused the file: it no longer matches what was prepared (its size or type changed, or the upload took over an hour). Pick the file again.",
+      "rejected",
+    );
+  }
+  throw new UploadError(`Storage couldn't save the file (error ${status}). Try again in a moment.`, "storage");
 }
 
 /** Deletes an old upload of this lesson from R2 (only its own uploads/ folder is allowed). */

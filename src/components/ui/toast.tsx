@@ -12,6 +12,8 @@ import { AppText } from "./text";
 // rounded-2xl and custom-shadow, and a tinted icon badge per tone.
 
 const VISIBILITY_MS = 3500;
+// Errors often explain what to do next (e.g. why an upload failed), so they stay longer.
+const ERROR_VISIBILITY_MS = 6000;
 
 const tones: Record<"success" | "error" | "info", { tint: string; color: ColorToken; icon: LucideIcon }> = {
   success: { tint: "bg-success-tint", color: "success-deep", icon: CircleCheck },
@@ -52,7 +54,12 @@ export function ToastHost() {
 }
 
 const show = (type: keyof typeof tones) => (title: string, message?: string) =>
-  Toast.show({ type, text1: title, text2: message });
+  Toast.show({
+    type,
+    text1: title,
+    text2: message,
+    visibilityTime: type === "error" ? ERROR_VISIBILITY_MS : VISIBILITY_MS,
+  });
 
 /** App feedback. Screens call this, never the toast library directly. */
 export const toast = {

@@ -71,3 +71,18 @@ export class RoleNotAcceptedError extends Error {
     this.name = "RoleNotAcceptedError";
   }
 }
+
+/**
+ * A tutor upload that didn't go through (prompts/23, 24). `message` is written for the tutor and
+ * says why: the file was refused before upload (type/size), storage rejected it (it no longer
+ * matches what was signed), storage answered with another error, or the connection dropped.
+ */
+export class UploadError extends Error {
+  constructor(
+    message: string,
+    readonly reason: "refused" | "rejected" | "storage" | "network",
+  ) {
+    super(message);
+    this.name = "UploadError";
+  }
+}
