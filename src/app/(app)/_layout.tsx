@@ -4,6 +4,7 @@ import { ActivityIndicator, Pressable, View } from "react-native";
 import { AppText } from "@/components/ui/text";
 import { StudyReminders } from "@/lib/notifications/use-study-reminders";
 import { useMyProfile } from "@/lib/queries/profiles";
+import { useIsTutor } from "@/lib/roles";
 import { useSyncProfile } from "@/lib/use-sync-profile";
 import { color, tw } from "@/theme";
 
@@ -21,6 +22,7 @@ export default function AppLayout() {
   // Keeps an existing row's name and photo in step with Clerk (never creates it).
   useSyncProfile();
   const profile = useMyProfile();
+  const isTutor = useIsTutor();
 
   if (profile.isPending) {
     return (
@@ -77,6 +79,10 @@ export default function AppLayout() {
           <Stack.Screen name="interview/[id]/results" />
           <Stack.Screen name="credits" />
           <Stack.Screen name="premium" />
+          {/* Tutor area (Part 2): only users whose Clerk role is "tutor"; others are sent home. */}
+          <Stack.Protected guard={isTutor} redirectTo="/home">
+            <Stack.Screen name="tutor" />
+          </Stack.Protected>
         </Stack.Protected>
       </Stack>
     </>

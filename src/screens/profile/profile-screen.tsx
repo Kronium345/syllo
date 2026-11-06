@@ -1,6 +1,6 @@
 import { useUser } from "@clerk/expo";
 import { useRouter } from "expo-router";
-import { CircleHelp, Settings, User } from "lucide-react-native";
+import { CircleHelp, GraduationCap, Settings, User } from "lucide-react-native";
 import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -9,6 +9,7 @@ import { IconButton } from "@/components/ui/icon-button";
 import { ProfileRow, ProfileRowGroup } from "@/components/ui/profile-row";
 import { AppText } from "@/components/ui/text";
 import { displayFirstName, profileImageUrl } from "@/lib/display-name";
+import { useIsTutor } from "@/lib/roles";
 import { emailSupport } from "@/lib/support";
 import { tw } from "@/theme";
 
@@ -19,6 +20,7 @@ import { SettingsSheet } from "./settings-sheet";
 // Not in the design: built from its tokens (canvas page, title-xl, bordered cards).
 export function ProfileScreen() {
   const router = useRouter();
+  const isTutor = useIsTutor();
   const insets = useSafeAreaInsets();
   const { user } = useUser();
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -40,6 +42,10 @@ export function ProfileScreen() {
 
         <ProfileRowGroup>
           <ProfileRow icon={User} label="Account" onPress={() => router.push("/account")} />
+          {/* Tutor area (Part 2): only for users whose Clerk role is "tutor". */}
+          {isTutor ? (
+            <ProfileRow icon={GraduationCap} label="Manage courses" onPress={() => router.push("/tutor")} />
+          ) : null}
           <ProfileRow icon={CircleHelp} label="Help & support" onPress={emailSupport} />
         </ProfileRowGroup>
       </ScrollView>
